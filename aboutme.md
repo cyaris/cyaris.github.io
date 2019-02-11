@@ -11,6 +11,4 @@ subtitle: Feel free to reach out!
 
 ### Resume
 
-Here you can download the [latest version of my resume.][1]
-
-[1]:{{ site.url }}/download/Charlie Yaris | Resume.pdf
+Here you can download the [latest version of my resume]({{ site.url }}/assets/Charlie Yaris | Resume.pdf).

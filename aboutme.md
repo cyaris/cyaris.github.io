@@ -9,7 +9,7 @@ Hi there! My name is Charlie. I live in Chicago with my girlfriend, Leah, and my
 
 ### Resume
 
-Access the [latest version of my resume]({{ site.url }}/assets/Charlie_Yaris_Resume.pdf).
+Access the [latest version of my resume]({{ site.url }}/assets/Charlie_Yaris_Resume.pdf){:target="_blank"}.
 
 ### Contact
 

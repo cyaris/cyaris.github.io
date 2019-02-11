@@ -16,15 +16,15 @@ github:
   baseURL: "https://github.com/"
   icon: "fa-github"
 
-twitter:
-  name: "Twitter"
-  baseURL: "https://twitter.com/"
-  icon: "fa-twitter"
-
 kaggle:
   name: "Kaggle"
   baseURL: "https://kaggle.com/"
   icon: "fa-kaggle"
+  
+twitter:
+  name: "Twitter"
+  baseURL: "https://twitter.com/"
+  icon: "fa-twitter"
 
 reddit:
   name: "Reddit"

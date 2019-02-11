@@ -79,8 +79,6 @@ social-network-links:
 share-links-active:
   linkedin: true
   github: false
-  kaggle: false
-  tableau: false
   facebook: true
   twitter: true
 
@@ -147,7 +145,7 @@ timezone: "America/Vancouver"
 markdown: kramdown
 highlighter: rouge
 permalink: /:year-:month-:day-:title/
-paginate: 5
+paginate: 10
 
 kramdown:
   input: GFM

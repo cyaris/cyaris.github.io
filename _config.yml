@@ -14,7 +14,7 @@ baseurl: ""
 # Of course don't forget to change the username and projectname to YOUR username and project
 
 # Name of website
-title: Charlie Yaris
+title: Home
 
 # Short description of your site
 description: Exploring Data and Learning Tools
@@ -24,6 +24,7 @@ description: Exploring Data and Learning Tools
 # List of links in the navigation bar
 navbar-links:
   About Me: "aboutme"
+  Resume: "resume"
   Mastermind: "mastermind"
   Archive: "posts"
 

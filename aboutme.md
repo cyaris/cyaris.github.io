@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About me
+title: About Me
 subtitle: Feel free to reach out!
 ---
 
@@ -10,3 +10,7 @@ subtitle: Feel free to reach out!
 - phone
 
 ### Resume
+
+Here you can download the [latest version of my resume.][1]
+
+[1]:{{ site.url }}/download/Charlie Yaris | Resume.pdf

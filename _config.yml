@@ -79,6 +79,7 @@ social-network-links:
 share-links-active:
   linkedin: false
   github: false
+  kaggle: false
   tableau: false
 
 # How to display the link to the website in the footer

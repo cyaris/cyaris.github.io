@@ -86,6 +86,11 @@ steam:
   baseURL: "https://steamcommunity.com/id/"
   icon: "fa-steam"
 
+tableau:
+  name: "Tableau Public"
+  baseURL: "https://public.tableau.com/profile/"
+  icon: ![Tableau]({{ site.url }}/img/tableau_logo.jpg)
+
 twitch:
   name: "Twitch"
   baseURL: "https://www.twitch.tv/"

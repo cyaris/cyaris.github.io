@@ -21,6 +21,11 @@ twitter:
   baseURL: "https://twitter.com/"
   icon: "fa-twitter"
 
+twitter:
+  name: "Kaggle"
+  baseURL: "https://kaggle.com/"
+  icon: "fa-kaggle"
+
 reddit:
   name: "Reddit"
   baseURL: "https://reddit.com/u/"

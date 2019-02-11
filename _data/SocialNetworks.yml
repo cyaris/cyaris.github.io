@@ -89,7 +89,7 @@ steam:
 tableau:
   name: "Tableau Public"
   baseURL: "https://public.tableau.com/profile/"
-  icon: ![Tableau]({{ site.url }}/img/tableau_logo.jpg)
+  icon: "fa-bar-chart"
 
 twitch:
   name: "Twitch"

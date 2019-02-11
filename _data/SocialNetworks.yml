@@ -21,7 +21,7 @@ twitter:
   baseURL: "https://twitter.com/"
   icon: "fa-twitter"
 
-twitter:
+kaggle:
   name: "Kaggle"
   baseURL: "https://kaggle.com/"
   icon: "fa-kaggle"

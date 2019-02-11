@@ -13,5 +13,5 @@ Access the [latest version of my resume]({{ site.url }}/assets/Charlie_Yaris_Res
 
 ### Contact
 
-- email:[ charlieyari@gmail.com](mailto:charlieyaris@gmail.com)
+- email:[ charlieyaris@gmail.com](mailto:charlieyaris@gmail.com)
 - phone: (973)-747-5068

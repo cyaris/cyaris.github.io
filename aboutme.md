@@ -6,9 +6,9 @@ subtitle: Feel free to reach out!
 
 ### Contact
 
-- email
-- phone
+- email: charlieyari@gmail.com
+- phone: (973)-747-5068
 
 ### Resume
 
-Here you can access the [latest version of my resume]({{ site.url }}/assets/Charlie_Yaris_Resume.pdf).
+Access the [latest version of my resume]({{ site.url }}/assets/Charlie_Yaris_Resume.pdf).

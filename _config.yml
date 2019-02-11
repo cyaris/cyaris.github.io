@@ -24,9 +24,8 @@ description: Exploring Data and Learning Tools
 # List of links in the navigation bar
 navbar-links:
   About Me: "aboutme"
-  Resources:
-    - GitHub Pages: https://github.com/cyaris
-  Author's home: "http://charlieyaris.com"
+  Mastermind: "mastermind"
+  Archive: "posts.md"
 
 # Image to show in the navigation bar - image must be a square (width = height)
 # Remove this parameter if you don't want an image in the navbar
@@ -76,8 +75,8 @@ social-network-links:
 
 # Select which share links to show in posts
 share-links-active:
-  github: true
-  linkedin: true
+  github: false
+  linkedin: false
 
 # How to display the link to the website in the footer
 # Remove this if you don't want a link in the footer

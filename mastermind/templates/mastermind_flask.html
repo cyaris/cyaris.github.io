@@ -1,6 +1,14 @@
+
 <html>
 	<head>
 		<title>Mastermind</title>
+		<script type="text/javascript">
+			function removeWelcome() {
+			    var elem = document.getElementById('welcome');
+			    elem.parentNode.removeChild(elem);
+			    return false;
+			}
+		</script>
 	  <style type="text/css">
 
 			h1 {
@@ -13,35 +21,39 @@
 			  font-weight: bold;
 			}
 
-			.wrapper {
-			    text-align: center;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-			}
-
 			.button {
 			    position: absolute;
 					display: flex;
 					justify-content: center;
-			    top: 60%;
+			    top: 135px;
 					background-color: #4CAF50; /* Green */
 					border: none;
 					color: white;
 					padding: 15px 32px;
 					text-align: center;
 					text-decoration: none;
+					background-color: #4CAF50; /* Green */
 					display: inline-block;
 					font-size: 16px;
 					}
 
+			#welcome {
+			    text-align: center;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+			}
+
 	  </style>
 	</head>
-<body>
-	<p>Hi there! I'm in the process of adding a game to this page. I'll am going to include a brief description here of its development process, including the tools that were used. Stay tuned for more soon!</p>
-	<div class="wrapper">
-		<!-- <button class="button"><a href="play/">Play Game</a></button> -->
-		<!-- <body action="/play/" method="POST">{{message}}</body> -->
-	</div>
-</body>
+	<body>
+		<div id="welcome">
+			<p align="left">Hi there! I'm in the process of adding a game to this page. I'll am going to include a brief description here of its development process, including the tools that were used. Stay tuned for more soon!</p>
+				<button class="button" onclick="removeWelcome()">Play Game</button>
+		</div>
+	</body>
+	<br>
+	<br>
+	<br>
+	<br>
 </html>

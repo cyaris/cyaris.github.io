@@ -5,6 +5,14 @@ subtitle: <a href="https://github.com/cyaris/mastermind" target="_blank">Project
 social-share: true
 ---
 
-<p class="message">
-  Hey there! I'll be adding a game here soon.
-</p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{% include_relative mastermind/templates/mastermind_flask.html %}

@@ -5,4 +5,4 @@ subtitle: <a href="https://github.com/cyaris/mastermind" target="_blank">Project
 social-share: true
 ---
 
-{% include mastermind_home.html %}
+{% include mastermind.html %}

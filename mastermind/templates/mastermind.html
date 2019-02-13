@@ -1,14 +1,13 @@
-
 <html>
 	<head>
 		<title>Mastermind</title>
-		<script type="text/javascript">
-			function removeWelcome() {
-			    var elem = document.getElementById('welcome');
+		<!-- <script type="text/javascript">
+			function removeIntroduction() {
+			    var elem = document.getElementById('introduction');
 			    elem.parentNode.removeChild(elem);
 			    return false;
 			}
-		</script>
+		</script> -->
 	  <style type="text/css">
 
 			h1 {
@@ -37,7 +36,7 @@
 					font-size: 16px;
 					}
 
-			#welcome {
+			#introduction {
 			    text-align: center;
 					display: flex;
 					align-items: center;
@@ -47,9 +46,9 @@
 	  </style>
 	</head>
 	<body>
-		<div id="welcome">
-			<p align="left">Hi there! I'm in the process of adding a game to this page. I'll am going to include a brief description here of its development process, including the tools that were used. Stay tuned for more soon!</p>
-				<button class="button" onclick="removeWelcome()">Play Game</button>
+		<div id="introduction">
+			<p align="left">Hi there! I'm in the process of adding a game to this page. I am going to include a brief description here of its development process, including the tools that were used. Stay tuned for more soon!</p>
+			<button class="button"><a href="../play_mastermind/">Play Game</a></button>
 		</div>
 	</body>
 	<br>

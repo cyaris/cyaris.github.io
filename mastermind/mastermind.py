@@ -3,48 +3,6 @@ import os
 from sys import exit
 from colored import fore, style
 
-class Game(object):
-
-    def player_name(self):
-        # welcome_message = "\nWelcome to " + style.BOLD + fore.DARK_RED_2 + "M"
-        # + fore.ORANGE_3 + "a" + fore.YELLOW_1 + "s"
-        # + fore.GREEN_1 + "t" + fore.DODGER_BLUE_1 + "e"
-        # + fore.PURPLE_4B + "r" + fore.DARK_RED_2 + "m"
-        # + fore.ORANGE_3 + "i" + fore.YELLOW_1 + "n"
-        # + fore.GREEN_1 + "d" + fore.DODGER_BLUE_1 + "!" + style.RESET
-        # + "\nWho do I have the pleasure of challenging today?\n"
-        # self.player_name = input("Name > ")
-        # return self.player_name
-        player_input = "hi"
-        return player_input
-
-    def start_game(self):
-        try:
-            os.remove("mastermind_board.txt")
-        except:
-            pass
-        print("_" * 60)
-        decision = True
-        while decision:
-            print(f"\nPick a level {self.player_name}.")
-            level_choice = input("> ")
-            if level_choice=='1':
-                return 'level_one'
-            elif level_choice=='2':
-                return 'level_two'
-            elif level_choice=='3':
-                return 'level_three'
-            else:
-                print("\nTry 1, 2, or 3.")
-
-    def exit_game(self):
-        print("_" * 60)
-        print("\nYou've exited the game.")
-        print(style.BOLD + fore.WHITE
-        + f"Hope you'll play again soon {self.player_name}!\n"
-        + style.RESET)
-        exit()
-
 
 class Level(object):
 
@@ -295,14 +253,12 @@ class Level3(Level):
 class GameMap(object):
 
     levels = {
-        'game': Game(),
         'level_one': Level1(),
         'level_two': Level2(),
         'level_three': Level3(),
     }
 
 #
-# run_game = Game()
 # welcome_input = run_game.welcome_game()
 # level_choice = run_game.start_game()
 # level_go = GameMap.levels[level_choice]

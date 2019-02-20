@@ -147,34 +147,6 @@
 				    .interpolator(d3.interpolateCubehelixDefault)
 				    .domain([1,100])
 
-				  // create a tooltip
-				  var tooltip1 = d3.select("#game_board")
-				    .append("div")
-					    .style("opacity", 0);
-
-				  // Three function that change the tooltip when user hover / move / leave a cell
-				  var mouseover1 = function(d) {
-				    d3.select(this)
-				      .style("stroke-width", 4)
-				      .style("stroke", "black")
-				      .style("opacity", 1)
-				  };
-
-				  var mousemove1 = function(d) {
-				    tooltip1
-				      .style("left", (d3.mouse(this)[0]+70) + "px")
-				      .style("top", (d3.mouse(this)[1]) + "px")
-				  };
-
-				  var mouseleave1 = function(d) {
-				    tooltip1
-				      .style("opacity", 0)
-				    d3.select(this)
-				      .style("stroke-width", 2)
-				      .style("stroke", "black")
-				      .style("opacity", 1)
-				  };
-
 				  // add the squares
 				  var rect = svg1.selectAll()
 					    .data(data, function(d) {return d.group+':'+d.variable;})
@@ -196,10 +168,7 @@
 																						})
 					      .style("stroke-width", 2)
 					      .style("stroke", "black")
-					      .style("opacity", 1)
-					    .on("mouseover", mouseover1)
-					    .on("mousemove", mousemove1)
-					    .on("mouseleave", mouseleave1);
+					      .style("opacity", 1);
 
 				rect.append("text")
 							.attr("x", function(d) { return x(d.group) + 24})
@@ -222,26 +191,26 @@
 					colorScale = d3.scaleOrdinal(d3[categorical[0].name]);
 
 			// create a tooltip
-			var tooltip2 = d3.select("#color_buttons")
+			var tooltip = d3.select("#color_buttons")
 				.append("div")
 					.style("opacity", 0);
 
 			// Three function that change the tooltip when user hover / move / leave a cell
-			var mouseover2 = function(d) {
+			var mouseover = function(d) {
 				d3.select(this)
 					.style("stroke-width", 4)
 					.style("stroke", "black")
 					.style("opacity", 1)
 			};
 
-			var mousemove2 = function(d) {
-				tooltip2
+			var mousemove = function(d) {
+				tooltip
 					.style("left", (d3.mouse(this)[0]+70) + "px")
 					.style("top", (d3.mouse(this)[1]) + "px")
 			};
 
-			var mouseleave2 = function(d) {
-				tooltip2
+			var mouseleave = function(d) {
+				tooltip
 					.style("opacity", 0)
 				d3.select(this)
 					.style("stroke-width", 2)
@@ -273,9 +242,9 @@
 				    .attr('r', (w*3.5)/interval)
 				    .attr('transform', function (d, i) {
 				        return "translate(" + ((w/2-r) * Math.cos((interval*i) * Math.PI/180)) + "," + ((w/2-r) * Math.sin((interval*i) * Math.PI/180)) + ")"})
-			    .on("mouseover", mouseover2)
-			    .on("mousemove", mousemove2)
-			    .on("mouseleave", mouseleave2)
+			    .on("mouseover", mouseover)
+			    .on("mousemove", mousemove)
+			    .on("mouseleave", mouseleave)
 					.on("click", function() {
 		          click += 1;
 							fillDic[click] = d3.select(this).style("fill");

@@ -27,7 +27,7 @@
 	<body>
 		<div id="level_message" align="center"></div>
 		<script>
-		document.getElementById("level_message").innerHTML = "You have " + numTries[level] + " tries to crack the four color code."
+		document.getElementById("level_message").innerHTML = String(numTries[level]) + " tries to crack the four color code."
 		</script>
 		<script src="https://d3js.org/d3.v4.js"></script>
 		<!-- Load color palettes -->

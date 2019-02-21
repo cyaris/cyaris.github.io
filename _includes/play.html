@@ -7,7 +7,17 @@
 		<!-- Load d3.js -->
 		<script>
 
-		var levelAddress = window.location.href,
+		var booleanDic = {
+				true: 1,
+				false: 0
+				},
+				pieceDic = {
+				1: ". ",
+				2: ": ",
+				3: ":.",
+				4: "::"
+				},
+				levelAddress = window.location.href,
 				level = levelAddress.charAt(levelAddress.length-2),
 				colorOptions = Array("yellow", "blue", "red", "green", "orange", "purple"),
 				color1 = colorOptions[Math.floor(Math.random()*colorOptions.length)],
@@ -15,11 +25,13 @@
 				color3 = colorOptions[Math.floor(Math.random()*colorOptions.length)],
 				color4 = colorOptions[Math.floor(Math.random()*colorOptions.length)],
 				colorCode = Array(color1, color2, color3, color4),
-				numTries = {
+				maxTurns = {
 					1: 12,
 					2: 10,
 					3: 8
 				};
+
+		console.log(colorCode);
 
 		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,7 +40,7 @@
 		<div id="level_message" align="center"></div>
 		<script>
 
-		document.getElementById("level_message").innerHTML = String(numTries[level]) + " tries to crack the four color code."
+		document.getElementById("level_message").innerHTML = String(maxTurns[level]) + " tries to crack the four color code."
 
 		</script>
 		<script src="https://d3js.org/d3.v4.js"></script>
@@ -72,6 +84,16 @@
 					2: 40,
 					3: 32
 				},
+				clickScoreDic = {
+				},
+				gridScoreDic = {
+				},
+				guessDic = {
+				},
+				gridA = 1,
+				gridB = 2,
+				gridC = 3,
+				gridD = 4,
 				fillDic = {
 					W: 100,
 					B: 100
@@ -80,6 +102,13 @@
 
 		for (i = 1; i < maxClicks[level]+1; i++) {
 		  fillDic[i] = 100
+		};
+		for (i = 1; i < maxTurns[level]+1; i++) {
+		  clickScoreDic[i] = Array(gridA, gridB, gridC, gridD),
+			gridA += 4,
+			gridB += 4,
+			gridC += 4,
+			gridD += 4
 		};
 		//Read the data
 		var createBoard = function(fillDic) {
@@ -140,10 +169,64 @@
 						.attr("ry", 4)
 						.attr("width", x.bandwidth() )
 						.attr("height", y.bandwidth() )
-			    .text(function(d) { if (d.group == "W")
-					 										 {return d.rect_index}
-															else if (d.group == "B")
-															 {return d.rect_index}
+			    .text(function(d) { if (d.group == "W" && clickCount%4==0)
+															{ colorCodeCopy = Array(color1, color2, color3, color4),
+																dCount = 0,
+																wCount = 0,
+																guessColors = Array(guessDic[clickCount-3], guessDic[clickCount-2], guessDic[clickCount-1], guessDic[clickCount]);
+																console.log(clickCount)
+																console.log(guessDic);
+																console.log(guessColors);
+																for (i = 0; i < 4; i++) {
+																	if (guessColors[i-dCount] == colorCodeCopy[i])
+																		{ delete guessColors[i-dCount],
+																			delete colorCodeCopy[i-dCount],
+																			guessColors = guessColors.filter(Boolean),
+																			colorCodeCopy = colorCodeCopy.filter(Boolean),
+																			dCount+=1; }
+																}
+																// console.log(guessColors.length);
+																while (guessColors.length > 0) {
+																	if (colorCodeCopy.includes(guessColors[0]))
+																	{ wCount+=1,
+																	  dIndex = colorCodeCopy.indexOf(guessColors[0]),
+																		delete guessColors[0],
+																		delete colorCodeCopy[dIndex],
+																		guessColors = guessColors.filter(Boolean),
+																		colorCodeCopy = colorCodeCopy.filter(Boolean); }
+																	else
+																		{delete guessColors[0],
+																		guessColors = guessColors.filter(Boolean); }
+																};
+																return wCount
+														}
+														// guess_colors = [self.color_1, self.color_2, self.color_3, self.color_4]
+										        // color_delete = self.color_code[:]
+										        // guess_check = guess_colors[:]
+										        // for guess in self.color_code:
+										        //     if guess_check[self.color_index - self.deletion_count]==guess:
+										        //         self.black_count += 1
+										        //         del(guess_check[self.color_index - self.deletion_count])
+										        //         del(color_delete[self.color_index - self.deletion_count])
+										        //         self.deletion_count += 1
+										        //     self.color_index += 1
+										        // while guess_check:
+										        //     if guess_check[0] in color_delete:
+										        //         self.white_count += 1
+										        //         delete_index = color_delete.index(guess_check[0])
+										        //         del(guess_check[0])
+										        //         del(color_delete[delete_index])
+										        //     else:
+										        //         del(guess_check[0])
+
+															 // {return d.score_index}
+															else if (d.group == "B" && clickCount%4==0)
+															{ gridScoreDic[d.score_index] = pieceDic[
+																booleanDic[guessDic[clickCount-3] == colorCode[0]] +
+																booleanDic[guessDic[clickCount-2] == colorCode[1]] +
+																booleanDic[guessDic[clickCount-1] == colorCode[2]] +
+																booleanDic[guessDic[clickCount] == colorCode[3]]];
+															 return gridScoreDic[d.score_index]}
 															else
 															 {return null}
 														 })
@@ -151,7 +234,7 @@
 						.style("stroke-width", 1)
 						.style("stroke", "black");
 
-			});};
+		});};
 
 		createBoard(fillDic);
 
@@ -213,8 +296,9 @@
 		    .on("mousemove", mousemove)
 		    .on("mouseleave", mouseleave)
 				.on("click", function() {
-	          clickCount += 1;
-						fillDic[clickCount] = d3.select(this).style("fill");
+	          clickCount += 1,
+						fillDic[clickCount] = d3.select(this).style("fill"),
+						guessDic[clickCount] = colorDic[d3.select(this).style("fill")],
 						createBoard(fillDic);
 
 				});

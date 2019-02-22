@@ -7,13 +7,13 @@
 		<!-- Load d3.js -->
 		<script>
 
-		var booleanDic = {
+		var boolDic = {
 				true: 1,
 				false: 0
 				},
 				pieceDic = {
-				1: ". ",
-				2: ": ",
+				1: ".",
+				2: ":",
 				3: ":.",
 				4: "::"
 				},
@@ -175,19 +175,17 @@
 																		wCount = 0,
 																		guessColors = Array(
 																			guessDic[(d.variable*4)-3], guessDic[(d.variable*4)-2], guessDic[(d.variable*4)-1], guessDic[d.variable*4]);
-																// console.log(guessDic);
-																console.log(guessColors);
 																for (i = 0; i < 4; i++) {
-																	if (guessColors[i-dCount] == colorCodeCopy[i])
-																		{ delete guessColors[i-dCount];
+																	if (guessColors[i-dCount] == colorCode[i])
+																		{ console.log(i);
+																			console.log(guessColors[i-dCount]);
+																			console.log(colorCodeCopy[i-dCount]);
+																			delete guessColors[i-dCount];
 																			delete colorCodeCopy[i-dCount];
-																			// console.log(colorCodeCopy);
 																			guessColors = guessColors.filter(Boolean);
 																			colorCodeCopy = colorCodeCopy.filter(Boolean);
-																			// console.log(colorCodeCopy);
 																			dCount+=1; }
 																}
-																// console.log(guessColors.length);
 																while (guessColors.length > 0) {
 																	if (colorCodeCopy.includes(guessColors[0]))
 																	{ wCount+=1,
@@ -202,38 +200,20 @@
 																gridScoreDic[d.score_index] = pieceDic[wCount]};
 																return gridScoreDic[d.score_index]
 														}
-														// guess_colors = [self.color_1, self.color_2, self.color_3, self.color_4]
-										        // color_delete = self.color_code[:]
-										        // guess_check = guess_colors[:]
-										        // for guess in self.color_code:
-										        //     if guess_check[self.color_index - self.deletion_count]==guess:
-										        //         self.black_count += 1
-										        //         del(guess_check[self.color_index - self.deletion_count])
-										        //         del(color_delete[self.color_index - self.deletion_count])
-										        //         self.deletion_count += 1
-										        //     self.color_index += 1
-										        // while guess_check:
-										        //     if guess_check[0] in color_delete:
-										        //         self.white_count += 1
-										        //         delete_index = color_delete.index(guess_check[0])
-										        //         del(guess_check[0])
-										        //         del(color_delete[delete_index])
-										        //     else:
-										        //         del(guess_check[0])
-
-															 // {return d.score_index}
-															else if (d.group=="B" && clickCount%4==0 && clickCount!=0)
-															{ gridScoreDic[d.score_index] = pieceDic[
-																booleanDic[guessDic[(d.variable*4)-3] == colorCode[0]] +
-																booleanDic[guessDic[(d.variable*4)-2] == colorCode[1]] +
-																booleanDic[guessDic[(d.variable*4)-1] == colorCode[2]] +
-																booleanDic[guessDic[(d.variable*4)] == colorCode[3]]];
+														else if (d.group=="B" && clickCount%4==0 && clickCount!=0)
+														{ gridScoreDic[d.score_index] = pieceDic[
+															boolDic[guessDic[(d.variable*4)-3] == colorCode[0]] +
+															boolDic[guessDic[(d.variable*4)-2] == colorCode[1]] +
+															boolDic[guessDic[(d.variable*4)-1] == colorCode[2]] +
+															boolDic[guessDic[(d.variable*4)] == colorCode[3]]];
+														 return gridScoreDic[d.score_index] }
+														 else if ((d.group=="W" || d.group=="B")&& clickCount%4!=0 && clickCount!=0) {
 															 return gridScoreDic[d.score_index] }
 															else
 															 { return null }
 														 })
-						.style("font-size", 16)
-						.style("stroke-width", 1)
+						.style("font-size", 25)
+						.style("stroke-width", 1.5)
 						.style("stroke", "black");
 
 		});};

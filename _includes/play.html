@@ -111,7 +111,7 @@
 			gridD += 4
 		};
 		//Read the data
-		var createBoard = function(fillDic) {
+		var createBoard = function(fillDic, guessDic) {
 			d3.csv("../assets/game_board" + String(level) + ".csv", function(data) {
 			  // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
 			  var turnSlots = d3.map(data, function(d){ return d.group; }).keys(),
@@ -169,36 +169,38 @@
 						.attr("ry", 4)
 						.attr("width", x.bandwidth() )
 						.attr("height", y.bandwidth() )
-			    .text(function(d) { if (d.group == "W" && clickCount%4==0)
-															{ colorCodeCopy = Array(color1, color2, color3, color4),
-																dCount = 0,
-																wCount = 0,
-																guessColors = Array(guessDic[clickCount-3], guessDic[clickCount-2], guessDic[clickCount-1], guessDic[clickCount]);
-																console.log(clickCount)
-																console.log(guessDic);
+			    .text(function(d) { if (d.group=="W" && clickCount%4==0 && clickCount!=0)
+															{ var colorCodeCopy = Array(color1, color2, color3, color4);
+																		dCount = 0,
+																		wCount = 0,
+																		guessColors = Array(
+																			guessDic[(d.variable*4)-3], guessDic[(d.variable*4)-2], guessDic[(d.variable*4)-1], guessDic[d.variable*4]);
+																// console.log(guessDic);
 																console.log(guessColors);
 																for (i = 0; i < 4; i++) {
 																	if (guessColors[i-dCount] == colorCodeCopy[i])
-																		{ delete guessColors[i-dCount],
-																			delete colorCodeCopy[i-dCount],
-																			guessColors = guessColors.filter(Boolean),
-																			colorCodeCopy = colorCodeCopy.filter(Boolean),
+																		{ delete guessColors[i-dCount];
+																			delete colorCodeCopy[i-dCount];
+																			// console.log(colorCodeCopy);
+																			guessColors = guessColors.filter(Boolean);
+																			colorCodeCopy = colorCodeCopy.filter(Boolean);
+																			// console.log(colorCodeCopy);
 																			dCount+=1; }
 																}
 																// console.log(guessColors.length);
 																while (guessColors.length > 0) {
 																	if (colorCodeCopy.includes(guessColors[0]))
 																	{ wCount+=1,
-																	  dIndex = colorCodeCopy.indexOf(guessColors[0]),
-																		delete guessColors[0],
-																		delete colorCodeCopy[dIndex],
-																		guessColors = guessColors.filter(Boolean),
+																	  dIndex = colorCodeCopy.indexOf(guessColors[0]);
+																		delete guessColors[0];
+																		delete colorCodeCopy[dIndex];
+																		guessColors = guessColors.filter(Boolean);
 																		colorCodeCopy = colorCodeCopy.filter(Boolean); }
 																	else
-																		{delete guessColors[0],
-																		guessColors = guessColors.filter(Boolean); }
-																};
-																return wCount
+																		{ delete guessColors[0];
+																		  guessColors = guessColors.filter(Boolean); }
+																gridScoreDic[d.score_index] = pieceDic[wCount]};
+																return gridScoreDic[d.score_index]
 														}
 														// guess_colors = [self.color_1, self.color_2, self.color_3, self.color_4]
 										        // color_delete = self.color_code[:]
@@ -220,15 +222,15 @@
 										        //         del(guess_check[0])
 
 															 // {return d.score_index}
-															else if (d.group == "B" && clickCount%4==0)
+															else if (d.group=="B" && clickCount%4==0 && clickCount!=0)
 															{ gridScoreDic[d.score_index] = pieceDic[
-																booleanDic[guessDic[clickCount-3] == colorCode[0]] +
-																booleanDic[guessDic[clickCount-2] == colorCode[1]] +
-																booleanDic[guessDic[clickCount-1] == colorCode[2]] +
-																booleanDic[guessDic[clickCount] == colorCode[3]]];
-															 return gridScoreDic[d.score_index]}
+																booleanDic[guessDic[(d.variable*4)-3] == colorCode[0]] +
+																booleanDic[guessDic[(d.variable*4)-2] == colorCode[1]] +
+																booleanDic[guessDic[(d.variable*4)-1] == colorCode[2]] +
+																booleanDic[guessDic[(d.variable*4)] == colorCode[3]]];
+															 return gridScoreDic[d.score_index] }
 															else
-															 {return null}
+															 { return null }
 														 })
 						.style("font-size", 16)
 						.style("stroke-width", 1)
@@ -299,7 +301,7 @@
 	          clickCount += 1,
 						fillDic[clickCount] = d3.select(this).style("fill"),
 						guessDic[clickCount] = colorDic[d3.select(this).style("fill")],
-						createBoard(fillDic);
+						createBoard(fillDic, guessDic);
 
 				});
 

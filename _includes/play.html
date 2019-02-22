@@ -15,7 +15,11 @@
 				1: ".",
 				2: ":",
 				3: ":.",
-				4: "::"
+				4: "::",
+				".": 1,
+				":": 2,
+				":.": 3,
+				"::": 4
 				},
 				levelAddress = window.location.href,
 				level = levelAddress.charAt(levelAddress.length-2),
@@ -95,8 +99,8 @@
 				gridC = 3,
 				gridD = 4,
 				fillDic = {
-					W: 100,
-					B: 100
+					W: "rgb(211,211,211)",
+					B: "rgb(211,211,211)"
 				},
 				i;
 
@@ -127,18 +131,79 @@
 							    .padding(0.05);
 
 				svg1.append("g")
-			    .style("font-size", 15)
-			    .call(d3.axisTop(x).tickSize(0))
-						.select(".domain").remove()
+				    .style("font-size", 15)
+				    .call(d3.axisTop(x).tickSize(0))
+							.select(".domain").remove()
 
 				svg1.append("g")
-			    .style("font-size", 15)
-					.call(d3.axisLeft(y).tickSize(0))
-			    	.select(".domain").remove()
+				    .style("font-size", 15)
+						.call(d3.axisLeft(y).tickSize(0))
+				    	.select(".domain").remove()
 			  // Build color scale
 			  var myColor = d3.scaleSequential()
-			    .interpolator(d3.interpolateCubehelixDefault)
-			    .domain([1,100])
+										    .interpolator(d3.interpolateCubehelixDefault)
+										    .domain([1,100])
+
+
+				var tooltip1 = d3.select("#game_board")
+													.append("div")
+														.style("opacity", 0)
+														.attr("class", "tooltip")
+														.style("background-color", "white")
+														.style("border", "solid")
+														.style("border-width", "2px")
+														.style("border-radius", "5px")
+														.style("padding", "5px")
+
+				// Three function that change the tooltip when user hover / move / leave a cell
+				var mouseover1 = function(d) {
+					if (d.group == "W"|| d.group =="B")
+					{ tooltip1
+						 .style("opacity", 1)
+					 d3.select(this)
+						 .style("stroke-width", 4)
+						 .style("stroke", "black")
+						 .style("opacity", 1) }
+				}
+				var mousemove1 = function(d) {
+					if ( gridScoreDic[d.score_index] == null)
+						{ toolNumber = 0 }
+					else
+						{ toolNumber = pieceDic[gridScoreDic[d.score_index]] }
+					if ( d.group =="W" )
+						{ colorState = "wrong" }
+					if ( d.group =="B" )
+						{ colorState = "right" }
+					if ( toolNumber == 1 )
+						{ colorPlur = " color " }
+					else
+						{ colorPlur = " colors " }
+					if ( toolNumber != 0) {
+						tooltip1
+							.html("You have " + toolNumber + colorPlur + "<br>in the " + colorState + " place.")
+							.style("left", (d3.mouse(this)[0]+70) + "px")
+							.style("top", (d3.mouse(this)[1]) + "px")
+						}
+					else if ( toolNumber == 0 && (d.variable)<=(clickCount/4)) {
+						tooltip1
+							.html("You have " + toolNumber + colorPlur + "<br>in the " + colorState + " place.")
+							.style("left", (d3.mouse(this)[0]+70) + "px")
+							.style("top", (d3.mouse(this)[1]) + "px")
+						}
+					else
+						{ tooltip1
+								.html("This round has<br>not yet been played.")
+								.style("left", (d3.mouse(this)[0]+70) + "px")
+								.style("top", (d3.mouse(this)[1]) + "px") }
+					}
+				var mouseleave1 = function(d) {
+					tooltip1
+						.style("opacity", 0)
+					d3.select(this)
+						.style("stroke-width", 2)
+						.style("stroke", "black")
+						.style("opacity", 1)
+				}
 			  // add the squares
 			  var rect = svg1.selectAll()
 				    .data(data, function(d) {return d.group+':'+d.variable;})
@@ -151,16 +216,19 @@
 				      .attr("ry", 4)
 				      .attr("width", x.bandwidth() )
 				      .attr("height", y.bandwidth() )
-				      .style("fill", function(d) { if (clickCount == 0)
+				      .style("fill", function(d) { if (clickCount == 0 && d.group!="W" && d.group!="B")
 																						{return myColor(100)}
-																					 else if (fillDic[d.color_index] == 100)
+																					 else if (fillDic[d.color_index] == 100 && d.group!="W" && d.group!="B")
 																						{return myColor(100)}
 																					 else
 																					 	{return fillDic[d.color_index]}
 																					})
 				      .style("stroke-width", 2)
 				      .style("stroke", "black")
-				      .style("opacity", 1);
+				      .style("opacity", 1)
+					    .on("mouseover", mouseover1)
+					    .on("mousemove", mousemove1)
+					    .on("mouseleave", mouseleave1);
 
 			rect.append("text")
 						.attr("x", function(d) { return x(d.group) + 24})
@@ -224,25 +292,25 @@
 				categorical = [{ "name" : "schemeSet1", "n": 6}],
 				colorScale = d3.scaleOrdinal(d3[categorical[0].name]);
 		// create a tooltip
-		var tooltip = d3.select("#color_buttons")
+		var tooltip2 = d3.select("#color_buttons")
 			.append("div")
 				.style("opacity", 0);
 		// Three function that change the tooltip when user hover / move / leave a cell
-		var mouseover = function(d) {
+		var mouseover2 = function(d) {
 			d3.select(this)
 				.style("stroke-width", 5)
 				.style("stroke", "black")
 				.style("opacity", 1)
 		};
 
-		var mousemove = function(d) {
-			tooltip
+		var mousemove2 = function(d) {
+			tooltip2
 				.style("left", (d3.mouse(this)[0]+70) + "px")
 				.style("top", (d3.mouse(this)[1]) + "px")
 		};
 
-		var mouseleave = function(d) {
-			tooltip
+		var mouseleave2 = function(d) {
+			tooltip2
 				.style("opacity", 0)
 			d3.select(this)
 				.style("stroke-width", 2)
@@ -274,9 +342,9 @@
 			    .attr('r', (w*3.5)/interval)
 			    .attr('transform', function (d, i) {
 			        return "translate(" + ((w/2-r) * Math.cos((interval*i) * Math.PI/180)) + "," + ((w/2-r) * Math.sin((interval*i) * Math.PI/180)) + ")"})
-		    .on("mouseover", mouseover)
-		    .on("mousemove", mousemove)
-		    .on("mouseleave", mouseleave)
+		    .on("mouseover", mouseover2)
+		    .on("mousemove", mousemove2)
+		    .on("mouseleave", mouseleave2)
 				.on("click", function() {
 	          clickCount += 1,
 						fillDic[clickCount] = d3.select(this).style("fill"),

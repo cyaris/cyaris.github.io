@@ -39,6 +39,21 @@
 
 		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+
+		@media (max-width:602px){
+        #color_buttons {
+            margin-left:22.5%;
+        }
+
+    }
+    @media (min-width:602px){
+      #color_buttons {
+        margin-left:13.5%;
+      }
+    }
+
+		</style>
 	</head>
 	<body>
 		<div id="level_message" align="center"></div>
@@ -53,7 +68,7 @@
 		<!-- Create a div where the graph will take place -->
 		<div id="game_board" align="center"></div>
 		<!-- Create a div where the color selection will take place -->
-		<div id="color_buttons" align="center"></div>
+		<div id="color_buttons" align="center" style="margin-top:-60px; margin-bottom:-100px; "></div>
 		<script>
 
 		var	height_dic = {
@@ -63,7 +78,7 @@
 		};
 		// set the dimensions and margins of the graph
 		var margin = {top: 30, right: 25, bottom: 30, left: 25},
-			  width = 450 - margin.left - margin.right,
+			  width = 350 - margin.left - margin.right,
 			  height = height_dic[level] - margin.top - margin.bottom;
 		// append the svg object to the body of the page
 		var svg1 = d3.select("#game_board")
@@ -200,7 +215,7 @@
 					tooltip1
 						.style("opacity", 0)
 					d3.select(this)
-						.style("stroke-width", 2)
+						.style("stroke-width", 1)
 						.style("stroke", "black")
 						.style("opacity", 1)
 				}
@@ -223,7 +238,7 @@
 																					 else
 																					 	{return fillDic[d.color_index]}
 																					})
-				      .style("stroke-width", 2)
+				      .style("stroke-width", 1)
 				      .style("stroke", "black")
 				      .style("opacity", 1)
 					    .on("mouseover", mouseover1)
@@ -318,7 +333,7 @@
 				.style("opacity", 1)
 		};
 
-		var r = 150,
+		var r = 100,
 		    w = r * 3,
 		    h = w,
 		    rad = Math.PI/180,
@@ -339,7 +354,7 @@
 					.style("stroke", "black")
 					.style("opacity", 1)
 			    .attr('fill', function(d, i ) { return colorScale(d); })
-			    .attr('r', (w*3.5)/interval)
+			    .attr('r', (w*3)/interval)
 			    .attr('transform', function (d, i) {
 			        return "translate(" + ((w/2-r) * Math.cos((interval*i) * Math.PI/180)) + "," + ((w/2-r) * Math.sin((interval*i) * Math.PI/180)) + ")"})
 		    .on("mouseover", mouseover2)

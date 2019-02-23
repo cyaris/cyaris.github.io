@@ -45,8 +45,8 @@
         #color_buttons {
             margin-left:22.5%;
         }
-
     }
+
     @media (min-width:602px){
       #color_buttons {
         margin-left:13.5%;
@@ -59,7 +59,8 @@
 		<div id="level_message" align="center"></div>
 		<script>
 
-		document.getElementById("level_message").innerHTML = String(maxTurns[level]) + " tries to crack the four color code."
+		document.getElementById("level_message").innerHTML = String(maxTurns[level])
+		+ " tries to crack the four color code."
 
 		</script>
 		<script src="https://d3js.org/d3.v4.js"></script>
@@ -119,10 +120,10 @@
 				},
 				i;
 
-		for (i = 1; i < maxClicks[level]+1; i++) {
+		for ( i = 1; i < maxClicks[level]+1; i++ ) {
 		  fillDic[i] = 100
 		};
-		for (i = 1; i < maxTurns[level]+1; i++) {
+		for ( i = 1; i < maxTurns[level]+1; i++ ) {
 		  clickScoreDic[i] = Array(gridA, gridB, gridC, gridD),
 			gridA += 4,
 			gridB += 4,
@@ -130,7 +131,7 @@
 			gridD += 4
 		};
 		//Read the data
-		var createBoard = function(fillDic, guessDic) {
+		var createBoard = function(fillDic, guessDic, clickCount) {
 			d3.csv("../assets/game_board" + String(level) + ".csv", function(data) {
 			  // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
 			  var turnSlots = d3.map(data, function(d){ return d.group; }).keys(),
@@ -159,69 +160,73 @@
 										    .interpolator(d3.interpolateCubehelixDefault)
 										    .domain([1,100])
 
-
 				var tooltip1 = d3.select("#game_board")
-													.append("div")
-														.style("opacity", 0)
-														.attr("class", "tooltip")
-														.style("background-color", "white")
-														.style("border", "solid")
-														.style("border-width", "2px")
-														.style("border-radius", "5px")
-														.style("padding", "5px")
-
+												 .append("div")
+													 .style("opacity", 0)
+													 .attr("class", "tooltip")
+													 .style("background-color", "white")
+													 .style("border", "solid")
+													 .style("border-width", "2px")
+													 .style("border-radius", "5px")
+													 .style("padding", "5px")
 				// Three function that change the tooltip when user hover / move / leave a cell
 				var mouseover1 = function(d) {
-					if (d.group == "W"|| d.group =="B")
+					if (d.group == "W" || d.group =="B")
 					{ tooltip1
 						 .style("opacity", 1)
 					 d3.select(this)
 						 .style("stroke-width", 4)
 						 .style("stroke", "black")
 						 .style("opacity", 1) }
-				}
+					 }
+
 				var mousemove1 = function(d) {
-					if ( gridScoreDic[d.score_index] == null)
-						{ toolNumber = 0 }
-					else
-						{ toolNumber = pieceDic[gridScoreDic[d.score_index]] }
-					if ( d.group =="W" )
-						{ colorState = "wrong" }
-					if ( d.group =="B" )
-						{ colorState = "right" }
-					if ( toolNumber == 1 )
-						{ colorPlur = " color " }
-					else
-						{ colorPlur = " colors " }
-					if ( toolNumber != 0) {
-						tooltip1
-							.html("You have " + toolNumber + colorPlur + "<br>in the " + colorState + " place.")
-							.style("left", (d3.mouse(this)[0]+70) + "px")
-							.style("top", (d3.mouse(this)[1]) + "px")
-						}
-					else if ( toolNumber == 0 && (d.variable)<=(clickCount/4)) {
-						tooltip1
-							.html("You have " + toolNumber + colorPlur + "<br>in the " + colorState + " place.")
-							.style("left", (d3.mouse(this)[0]+70) + "px")
-							.style("top", (d3.mouse(this)[1]) + "px")
-						}
-					else
-						{ tooltip1
-								.html("This round has<br>not yet been played.")
+					if ( d.group=="W" || d.group=="B" ) {
+						if ( gridScoreDic[d.score_index]==null )
+							{ toolNumber = 0 }
+						else
+							{ toolNumber = pieceDic[gridScoreDic[d.score_index]] }
+						if ( d.group=="W" )
+							{ colorState = " wrong" }
+						if ( d.group=="B" )
+							{ colorState = " right" }
+						if ( toolNumber==1)
+							{ cPlur = "" }
+						else
+							{ cPlur = "s" }
+						if ( toolNumber!=0 ) {
+							tooltip1
+								.html("You have " + toolNumber + " right color" + cPlur
+								+ " <br>in the " + colorState + " place.")
 								.style("left", (d3.mouse(this)[0]+70) + "px")
-								.style("top", (d3.mouse(this)[1]) + "px") }
-					}
+								.style("top", (d3.mouse(this)[1]) + "px")
+							}
+						else if ( toolNumber==0 && (d.variable)<=(clickCount/4) ) {
+							tooltip1
+								.html("You have no right color" + cPlur
+								+ " <br>in the " + colorState + " place.")
+								.style("left", (d3.mouse(this)[0]+70) + "px")
+								.style("top", (d3.mouse(this)[1]) + "px")
+							}
+						else
+							{ tooltip1
+									.html("This round has<br>not yet been played.")
+									.style("left", (d3.mouse(this)[0]+70) + "px")
+									.style("top", (d3.mouse(this)[1]) + "px") }
+					}}
+
 				var mouseleave1 = function(d) {
-					tooltip1
-						.style("opacity", 0)
-					d3.select(this)
-						.style("stroke-width", 1)
-						.style("stroke", "black")
-						.style("opacity", 1)
-				}
+					if ( d.group=="W" || d.group=="B" ) {
+						tooltip1
+							.style("opacity", 0)
+						d3.select(this)
+							.style("stroke-width", 1)
+							.style("stroke", "black")
+							.style("opacity", 1)
+				}}
 			  // add the squares
 			  var rect = svg1.selectAll()
-				    .data(data, function(d) {return d.group+':'+d.variable;})
+				    .data(data, function(d) { return d.group+':'+d.variable; })
 				    .enter();
 
 				rect.append("rect")
@@ -231,46 +236,50 @@
 				      .attr("ry", 4)
 				      .attr("width", x.bandwidth() )
 				      .attr("height", y.bandwidth() )
-				      .style("fill", function(d) { if (clickCount == 0 && d.group!="W" && d.group!="B")
-																						{return myColor(100)}
-																					 else if (fillDic[d.color_index] == 100 && d.group!="W" && d.group!="B")
-																						{return myColor(100)}
+				      .style("fill", function(d) { if ( clickCount==0 && d.group!="W" && d.group!="B" )
+																						{ return myColor(100) }
+																					 else if ( fillDic[d.color_index]==100 && d.group!="W" && d.group!="B" )
+																						{ return myColor(100) }
 																					 else
-																					 	{return fillDic[d.color_index]}
+																					 	{ return fillDic[d.color_index] }
 																					})
-				      .style("stroke-width", 1)
-				      .style("stroke", "black")
+							.style("stroke-width", function(d) { if ( d.color_index==clickCount+1 )
+																										{ return 4 }
+																									 else
+																									 	{ return 1 }
+																									})
+							.style("stroke", "black")
 				      .style("opacity", 1)
 					    .on("mouseover", mouseover1)
 					    .on("mousemove", mousemove1)
 					    .on("mouseleave", mouseleave1);
 
 			rect.append("text")
-						.attr("x", function(d) { return x(d.group) + 24})
-						.attr("y", function(d) { return y(d.variable) + 23})
+						.attr("x", function(d) { return x(d.group) + 17.5 })
+						.attr("y", function(d) { return y(d.variable) + 23.5 })
 						.attr("rx", 4)
 						.attr("ry", 4)
 						.attr("width", x.bandwidth() )
 						.attr("height", y.bandwidth() )
-			    .text(function(d) { if (d.group=="W" && clickCount%4==0 && clickCount!=0)
+			    .text(function(d) { if ( d.group=="W" && clickCount%4==0 && clickCount!=0 )
 															{ var colorCodeCopy = Array(color1, color2, color3, color4);
 																		dCount = 0,
 																		wCount = 0,
 																		guessColors = Array(
-																			guessDic[(d.variable*4)-3], guessDic[(d.variable*4)-2], guessDic[(d.variable*4)-1], guessDic[d.variable*4]);
-																for (i = 0; i < 4; i++) {
-																	if (guessColors[i-dCount] == colorCode[i])
-																		{ console.log(i);
-																			console.log(guessColors[i-dCount]);
-																			console.log(colorCodeCopy[i-dCount]);
-																			delete guessColors[i-dCount];
+																			guessDic[(d.variable*4)-3],
+																			guessDic[(d.variable*4)-2],
+																			guessDic[(d.variable*4)-1],
+																			guessDic[d.variable*4]);
+																for ( i = 0; i < 4; i++ ) {
+																	if ( guessColors[i-dCount]==colorCode[i] )
+																		{ delete guessColors[i-dCount];
 																			delete colorCodeCopy[i-dCount];
 																			guessColors = guessColors.filter(Boolean);
 																			colorCodeCopy = colorCodeCopy.filter(Boolean);
 																			dCount+=1; }
 																}
-																while (guessColors.length > 0) {
-																	if (colorCodeCopy.includes(guessColors[0]))
+																while ( guessColors.length > 0 ) {
+																	if ( colorCodeCopy.includes(guessColors[0]) )
 																	{ wCount+=1,
 																	  dIndex = colorCodeCopy.indexOf(guessColors[0]);
 																		delete guessColors[0];
@@ -283,33 +292,35 @@
 																gridScoreDic[d.score_index] = pieceDic[wCount]};
 																return gridScoreDic[d.score_index]
 														}
-														else if (d.group=="B" && clickCount%4==0 && clickCount!=0)
+														else if ( d.group=="B" && clickCount%4==0 && clickCount!=0 )
 														{ gridScoreDic[d.score_index] = pieceDic[
-															boolDic[guessDic[(d.variable*4)-3] == colorCode[0]] +
-															boolDic[guessDic[(d.variable*4)-2] == colorCode[1]] +
-															boolDic[guessDic[(d.variable*4)-1] == colorCode[2]] +
-															boolDic[guessDic[(d.variable*4)] == colorCode[3]]];
+															boolDic[guessDic[(d.variable*4)-3]==colorCode[0]] +
+															boolDic[guessDic[(d.variable*4)-2]==colorCode[1]] +
+															boolDic[guessDic[(d.variable*4)-1]==colorCode[2]] +
+															boolDic[guessDic[(d.variable*4)]==colorCode[3]]];
 														 return gridScoreDic[d.score_index] }
-														 else if ((d.group=="W" || d.group=="B")&& clickCount%4!=0 && clickCount!=0) {
+														 else if (( d.group=="W" || d.group=="B" ) &&
+														 clickCount%4!=0 && clickCount!=0 ) {
 															 return gridScoreDic[d.score_index] }
 															else
 															 { return null }
 														 })
 						.style("font-size", 25)
 						.style("stroke-width", 1.5)
-						.style("stroke", "black");
+						.style("stroke", "black")
 
 		});};
 
-		createBoard(fillDic);
+		createBoard(fillDic, guessDic, clickCount);
 
 		var data = [1, 2, 3, 4, 5, 6],
-				categorical = [{ "name" : "schemeSet1", "n": 6}],
+				categorical = [{ "name" : "schemeSet1", "n": 6 }],
 				colorScale = d3.scaleOrdinal(d3[categorical[0].name]);
 		// create a tooltip
 		var tooltip2 = d3.select("#color_buttons")
 			.append("div")
-				.style("opacity", 0);
+				.style("opacity", 0)
+				.attr("class", "tooltip");
 		// Three function that change the tooltip when user hover / move / leave a cell
 		var mouseover2 = function(d) {
 			d3.select(this)
@@ -350,13 +361,15 @@
 		    .data(data)
 		    .enter()
 				.append("circle")
-					.style("stroke-width", 3)
+					.style("stroke-width", 2)
 					.style("stroke", "black")
 					.style("opacity", 1)
 			    .attr('fill', function(d, i ) { return colorScale(d); })
 			    .attr('r', (w*3)/interval)
 			    .attr('transform', function (d, i) {
-			        return "translate(" + ((w/2-r) * Math.cos((interval*i) * Math.PI/180)) + "," + ((w/2-r) * Math.sin((interval*i) * Math.PI/180)) + ")"})
+			        return "translate(" + ((w/2-r) * Math.cos((interval*i)
+							* Math.PI/180)) + "," + ((w/2-r) * Math.sin((interval*i)
+							* Math.PI/180)) + ")"})
 		    .on("mouseover", mouseover2)
 		    .on("mousemove", mousemove2)
 		    .on("mouseleave", mouseleave2)
@@ -364,8 +377,7 @@
 	          clickCount += 1,
 						fillDic[clickCount] = d3.select(this).style("fill"),
 						guessDic[clickCount] = colorDic[d3.select(this).style("fill")],
-						createBoard(fillDic, guessDic);
-
+						createBoard(fillDic, guessDic, clickCount);
 				});
 
 		</script>

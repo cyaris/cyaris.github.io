@@ -1,13 +1,6 @@
 <html>
 	<head>
 		<title>Mastermind</title>
-		<!-- <script type="text/javascript">
-			function removeIntroduction() {
-			    var elem = document.getElementById('introduction');
-			    elem.parentNode.removeChild(elem);
-			    return false;
-			}
-		</script> -->
 	  <style type="text/css">
 
 			h1 {
@@ -20,22 +13,6 @@
 			  font-weight: bold;
 			}
 
-			.button {
-			    position: absolute;
-					display: flex;
-					justify-content: center;
-			    top: 135px;
-					background-color: #4CAF50; /* Green */
-					border: none;
-					color: white;
-					padding: 15px 32px;
-					text-align: center;
-					text-decoration: none;
-					background-color: #4CAF50; /* Green */
-					display: inline-block;
-					font-size: 16px;
-					}
-
 			#introduction {
 			    text-align: center;
 					display: flex;
@@ -43,12 +20,47 @@
 					justify-content: center;
 			}
 
+			.center {
+				text-align: center;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				/* width: 50px; */
+			}
+
+			.btn-group button {
+			  background-color: #4CAF50; /* Green background */
+			  border: 1px solid green; /* Green border */
+			  color: white; /* White text */
+			  padding: 10px 24px; /* Some padding */
+			  cursor: pointer; /* Pointer/hand icon */
+			  float: center; /* Float the buttons side by side */
+			}
+
+			.btn-group button:not(:last-child) {
+			  border-right: none; /* Prevent double borders */
+			}
+			/* Clear floats (clearfix hack) */
+			.btn-group:after {
+			  content: "";
+			  clear: both;
+			  display: table;
+			}
+			/* Add a background color on hover */
+			.btn-group button:hover {
+			  background-color: #3e8e41;
+			}
+
 	  </style>
 	</head>
 	<body>
 		<div id="introduction">
 			<p align="left">Hi there! I'm in the process of adding a game to this page. I am going to include a brief description here of its development process, including the tools that were used. Stay tuned for more soon!</p>
-			<button class="button"><a href="../play_mastermind/">Play Game</a></button>
+		</div>
+		<div class="center">
+			<div class="btn-group">
+				<a href="../play_mastermind/"><button class="button">Play Game</button></a>
+			</div>
 		</div>
 	</body>
 	<br>

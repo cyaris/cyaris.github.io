@@ -19,8 +19,8 @@ github:
 kaggle:
   name: "Kaggle"
   baseURL: "https://kaggle.com/"
-  icon: "fa-kaggle"
-  
+  icon: "fa-table"
+
 twitter:
   name: "Twitter"
   baseURL: "https://twitter.com/"

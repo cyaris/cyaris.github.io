@@ -371,11 +371,6 @@
 
 				if ( bScores!=[] && bScores[bScores.length-1]=="::" ) {
 
-
-					// var margin = {top: 23.5, right: 123, bottom: 0, left: 25},
-					// 		width = 350 - margin.left - margin.right,
-					// 		height = 50;
-
 					var svg3 = d3.select("#end_game")
 						.append("svg")
 						  .attr("width", width + margin.left + margin.right)
@@ -402,84 +397,86 @@
 
 					document.getElementById("hidden-button-win").style.display = "block";
 					document.getElementById("color_buttons").style.display = "none";
+					document.getElementById("color_buttons_text").style.display = "none";
 				}
 
 					else if ( bScores!=[] && bScores[bScores.length-1]!="::" && clickCount==maxClicks[level] ) {
 
 						d3.csv("../assets/end_game.csv", function(data) {
-							// set the dimensions and margins of the graph
-							var margin = {top: 23.5, right: 123, bottom: 150, left: 25},
-								  width = 350 - margin.left - margin.right,
-								  height = 200;
-						  // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
-						  var turnSlots = d3.map(data, function(d){ return d.group; }).keys(),
-									numTurns = d3.map(data, function(d){ return d.variable; }).keys();
-						  // Build X and Y scales and axis:
-						  var x = d3.scaleBand()
-										    .range([ 0, width ])
-										    .domain(turnSlots)
-										    .padding(0.05),
-									y = d3.scaleBand()
-										    .range([0, height-160 ])
-										    .domain(numTurns)
-										    .padding(0.05);
+								// set the dimensions and margins of the graph
+								var margin = {top: 23.5, right: 123, bottom: 150, left: 25},
+									  width = 350 - margin.left - margin.right,
+									  height = 200;
+							  // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
+							  var turnSlots = d3.map(data, function(d){ return d.group; }).keys(),
+										numTurns = d3.map(data, function(d){ return d.variable; }).keys();
+							  // Build X and Y scales and axis:
+							  var x = d3.scaleBand()
+											    .range([ 0, width ])
+											    .domain(turnSlots)
+											    .padding(0.05),
+										y = d3.scaleBand()
+											    .range([0, height-160 ])
+											    .domain(numTurns)
+											    .padding(0.05);
 
-						var svg3 = d3.select("#end_game")
-							.append("svg")
-							  .attr("width", width + margin.left + margin.right)
-							  .attr("height",  height)
-							.append("g")
-							  .attr("transform",
-							        "translate(" + margin.left + "," + margin.top + ")");
+							var svg3 = d3.select("#end_game")
+								.append("svg")
+								  .attr("width", width + margin.left + margin.right)
+								  .attr("height",  height)
+								.append("g")
+								  .attr("transform",
+								        "translate(" + margin.left + "," + margin.top + ")");
 
-						var endGame = svg3.selectAll()
-						    .data(data, function(d) { return d.group+':'+d.variable; })
-						    .enter();
+							var endGame = svg3.selectAll()
+							    .data(data, function(d) { return d.group+':'+d.variable; })
+							    .enter();
 
-						endGame.append("text")
-				 			 .attr("x", 0)
-				 			 .attr("y", -5)
-				 			 .attr("rx", 4)
-				 			 .attr("ry", 4)
-				 			 .attr("width", x.bandwidth() )
-				 			 .attr("height", y.bandwidth() )
-				 			 .text( "You lose!" )
-							 	 .style("font-family", "Lora")
-				 				 .style("font-size", "25px")
-				 				 .style("fill", "black")
+							endGame.append("text")
+					 			 .attr("x", 0)
+					 			 .attr("y", -5)
+					 			 .attr("rx", 4)
+					 			 .attr("ry", 4)
+					 			 .attr("width", x.bandwidth() )
+					 			 .attr("height", y.bandwidth() )
+					 			 .text( "You lose!" )
+								 	 .style("font-family", "Lora")
+					 				 .style("font-size", "25px")
+					 				 .style("fill", "black")
 
-						endGame.append("text")
-				 			 .attr("x", 0)
-				 			 .attr("y", 35)
-				 			 .attr("rx", 4)
-				 			 .attr("ry", 4)
-				 			 .attr("width", x.bandwidth() )
-				 			 .attr("height", y.bandwidth() )
-				 			 .text( "Here's the code:" )
-							 	 .style("font-family", "Lora")
-								 .style("font-size", "20px")
-								 .style("fill", "black")
+							endGame.append("text")
+					 			 .attr("x", 0)
+					 			 .attr("y", 35)
+					 			 .attr("rx", 4)
+					 			 .attr("ry", 4)
+					 			 .attr("width", x.bandwidth() )
+					 			 .attr("height", y.bandwidth() )
+					 			 .text( "Here's the code:" )
+								 	 .style("font-family", "Lora")
+									 .style("font-size", "20px")
+									 .style("fill", "black")
 
-						endGame.append("rect")
-									.attr("x", function(d) { return x(d.group) })
-									.attr("y", function(d) { return y(d.variable) + 43 })
-						      .attr("rx", 4)
-						      .attr("ry", 4)
-						      .attr("width", x.bandwidth() )
-						      .attr("height", y.bandwidth() )
-						      .style("fill", function(d) {
-										colorFill = colorDic[colorCode[0]];
-										delete colorCode[0];
-										colorCode = colorCode.filter(Boolean);
-										return colorFill
-									})
-									.style("stroke-width", 1)
-									.style("stroke", "black")
-						      .style("opacity", 1);
+							endGame.append("rect")
+										.attr("x", function(d) { return x(d.group) })
+										.attr("y", function(d) { return y(d.variable) + 43 })
+							      .attr("rx", 4)
+							      .attr("ry", 4)
+							      .attr("width", x.bandwidth() )
+							      .attr("height", y.bandwidth() )
+							      .style("fill", function(d) {
+											colorFill = colorDic[colorCode[0]];
+											delete colorCode[0];
+											colorCode = colorCode.filter(Boolean);
+											return colorFill
+										})
+										.style("stroke-width", 1)
+										.style("stroke", "black")
+							      .style("opacity", 1);
 								})
 
 					document.getElementById("hidden-button-lose").style.display = "block";
 					document.getElementById("color_buttons").style.display = "none";
+					document.getElementById("color_buttons_text").style.display = "none";
 
 		}}
 
@@ -520,11 +517,11 @@
 				.style("opacity", 1)
 		};
 
-		var r = 100,
-		    w = r * 3,
-		    h = w,
-		    rad = Math.PI/180,
-		    interval = 360/data.length;
+	 var r = 100,
+	     w = r * 3,
+	     h = w,
+	     rad = Math.PI/180,
+	     interval = 360/data.length;
 
 		var svg2 = d3.select('#color_buttons')
 		    .append('svg')
@@ -532,6 +529,34 @@
 			    .attr('height', h)
 		    .append('g')
 		    	.attr('transform', 'translate(' + r + ',' + r + ')');
+
+		var colorButtonsText = svg2.selectAll()
+				.data(data, function(d) { return d.group+':'+d.variable; })
+				.enter();
+
+		colorButtonsText.append("text")
+			 .attr("x", -17.5)
+			 .attr("y", -5)
+			 .attr("rx", 4)
+			 .attr("ry", 4)
+			 .attr("width", w )
+			 .attr("height", h )
+			 .text( "Choose" )
+				 .style("font-family", "cursive")
+				 .style("font-size", "15px")
+				 .style("fill", "black");
+
+		colorButtonsText.append("text")
+			 .attr("x", -18.5)
+			 .attr("y", 15)
+			 .attr("rx", 4)
+			 .attr("ry", 4)
+			 .attr("width", w )
+			 .attr("height", h )
+			 .text( "a Color" )
+				 .style("font-family", "cursive")
+				 .style("font-size", "15px")
+				 .style("fill", "black");
 
 		svg2.selectAll("circle")
 		    .data(data)
@@ -553,8 +578,7 @@
 	          clickCount += 1,
 						fillDic[clickCount] = d3.select(this).style("fill"),
 						guessDic[clickCount] = colorDic[d3.select(this).style("fill")],
-						createBoard(fillDic, guessDic, clickCount);
-				});
+						createBoard(fillDic, guessDic, clickCount)});
 
 		</script>
 	</body>

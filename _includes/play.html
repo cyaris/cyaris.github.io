@@ -44,18 +44,12 @@
         #color_buttons {
             margin-left:22.5%;
         }
-				#hidden-button-lose-text {
-					margin-left:10%;
-				}
     }
 
     @media (min-width:602px){
       #color_buttons {
         margin-left:13.5%;
       }
-				#hidden-button-lose-text {
-					margin-left:228px;
-				}
     }
 
 		.center {
@@ -97,6 +91,18 @@
 			display: none;
 		}
 
+		.blinking{
+		    animation:blinkingText 1s infinite;
+		}
+
+		@keyframes blinkingText{
+		    0%{     color: #000;    }
+		    49%{     color: #000;    }
+		    50%{    color: transparent; }
+		    99%{    color: transparent;  }
+		    100%{   color: #000;    }
+		}
+
 		</style>
 	</head>
 	<body>
@@ -116,7 +122,7 @@
 		<div id="end_game" align="center"></div>
 		<div id="hidden-button-win">
 			<div id="hidden-button-win-text">
-				<p align="center" style="margin-top:-25px; margin-bottom:5px;"><font size="5.5"><b>You Win</b></font></p>
+				<span class="blinking"><p align="center" style="margin-left:-3.5px; margin-top:-25px; margin-bottom:5px;"><font size="5.5"><b>You win!</b></font></p></span>
 			</div>
 			<div class="center">
 				<div class="btn-group">
@@ -129,13 +135,12 @@
 		</div>
 		<div id="hidden-button-lose">
 			<div id="hidden-button-lose-text">
-				<p align="left" style="margin-top:-220px;"><font size="5.5"><b>You lose!</b></font></p>
-				<p align="left" style="margin-top:-30px; margin-bottom:70px;">Here's the code:</p>
+				<span class="blinking"><p align="center" style="margin-left:-190px; margin-top:-220px;"><font size="5.5"><b>You lose!</b></font></p></span>
+				<p align="center" style="margin-left:-158px; margin-top:-30px; margin-bottom:70px;">Here's the code:</p>
 			</div>
 			<div class="center">
 				<div class="btn-group">
 					<a href="../play_mastermind/"><button class="button">Play Again</button></a>
-					<br>
 					<br>
 					<br>
 					<br>
@@ -279,21 +284,21 @@
 							{ cPlur = "s" }
 						if ( toolNumber!=0 ) {
 							tooltip1
-								.html("You have " + toolNumber + " right color" + cPlur
-								+ " <br>in the " + colorState + " place.")
+								.html(toolNumber + " right color" + cPlur + " in"
+								+ "<br>the " + colorState + " place.")
 								.style("left", (d3.mouse(this)[0]+70) + "px")
 								.style("top", (d3.mouse(this)[1]) + "px")
 							}
 						else if ( toolNumber==0 && (d.variable)<=(clickCount/4) ) {
 							tooltip1
-								.html("You have no right color" + cPlur
-								+ " <br>in the " + colorState + " place.")
+								.html("No right color" + cPlur + " in"
+								+ "<br>the " + colorState + " place.")
 								.style("left", (d3.mouse(this)[0]+70) + "px")
 								.style("top", (d3.mouse(this)[1]) + "px")
 							}
 						else
 							{ tooltip1
-									.html("This round has<br>not yet been played.")
+									.html("This round hasn't<br>been played yet.")
 									.style("left", (d3.mouse(this)[0]+70) + "px")
 									.style("top", (d3.mouse(this)[1]) + "px") }
 					}}

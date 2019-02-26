@@ -44,12 +44,18 @@
         #color_buttons {
             margin-left:22.5%;
         }
+				#hidden-button-lose-text {
+					margin-left:10%;
+				}
     }
 
     @media (min-width:602px){
       #color_buttons {
         margin-left:13.5%;
       }
+				#hidden-button-lose-text {
+					margin-left:228px;
+				}
     }
 
 		.center {
@@ -109,7 +115,9 @@
 		<div id="game_board" align="center"></div>
 		<div id="end_game" align="center"></div>
 		<div id="hidden-button-win">
-			<p align="center" style="margin-top:-25px; margin-bottom:5px;"><font size="5.5"><b>You win!</b></font></p>
+			<div id="hidden-button-win-text">
+				<p align="center" style="margin-top:-25px; margin-bottom:5px;"><font size="5.5"><b>You Win</b></font></p>
+			</div>
 			<div class="center">
 				<div class="btn-group">
 					<a href="../play_mastermind/"><button class="button">Play Again</button></a>
@@ -120,8 +128,10 @@
 			</div>
 		</div>
 		<div id="hidden-button-lose">
-			<p align="left" style="margin-left:228px; margin-top:-220px;"><font size="5.5"><b>You lose!</b></font></p>
-			<p align="left" style="margin-left:228px; margin-top:-30px; margin-bottom:70px;">Here's the code:</p>
+			<div id="hidden-button-lose-text">
+				<p align="left" style="margin-top:-220px;"><font size="5.5"><b>You lose!</b></font></p>
+				<p align="left" style="margin-top:-30px; margin-bottom:70px;">Here's the code:</p>
+			</div>
 			<div class="center">
 				<div class="btn-group">
 					<a href="../play_mastermind/"><button class="button">Play Again</button></a>

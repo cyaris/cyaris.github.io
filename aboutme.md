@@ -4,7 +4,7 @@ title: About Me
 ---
 
 ### Friendly Bio
-Hi there! My name is Charlie. I live in Chicago and recently graduated from the Metis data science bootcamp. Between college and joining Metis, I worked in Seattle as a Marketing Analyst where I automated my team’s workflow with SQL queries and macro functions. I'm particularly passionate about data science as a tool for better understanding the world. Aside from data, my interests include plants, music, my kindle, and pizza.<br><br>Feel free to reach out and learn more!
+Hi there!<br>My name is Charlie. I live in Chicago and recently graduated from the Metis data science bootcamp. Between college and joining Metis, I worked in Seattle as a Marketing Analyst where I automated my team’s workflow with SQL queries and macro functions. I'm particularly passionate about data science as a tool for better understanding the world. Aside from data, my interests include plants, music, my kindle, and pizza.<br><br>Feel free to reach out and learn more!
 
 ### Contact
 

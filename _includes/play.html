@@ -15,30 +15,61 @@
 				2: ":",
 				3: ":.",
 				4: "::",
+				5: "★",
 				".": 1,
 				":": 2,
 				":.": 3,
-				"::": 4
+				"::": 4,
+				"★": 5
 				},
+				winningSymDic = {
+					1: "::",
+					2: "::",
+					3: "★",
+					4: "★"
+				}
 				levelAddress = window.location.href,
 				level = levelAddress.charAt(levelAddress.length-2),
 				colorOptions = {
 					1: Array("yellow", "blue", "red", "green", "orange", "purple"),
-					2:  Array("yellow", "blue", "red", "green", "orange", "purple", "brown"),
-					3:  Array("yellow", "blue", "red", "green", "orange", "purple", "brown", "pink")},
+					2: Array("yellow", "blue", "red", "green", "orange", "purple", "brown", "pink"),
+					3: Array("yellow", "blue", "red", "green", "orange", "purple"),
+					4: Array("yellow", "blue", "red", "green", "orange", "purple", "brown", "pink")
+				},
 				color1 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
 				color2 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
 				color3 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
 				color4 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
-				colorCode = Array(color1, color2, color3, color4)
+				color5 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
+				colorCode = Array(color1, color2, color3, color4, color5),
 				maxTurns = {
 					1: 8,
-					2: 10,
-					3: 12
-				};
+					2: 9,
+					3: 9,
+					4: 10
+				},
+				colorCodeLength = {
+					1: 4,
+					2: 4,
+					3: 5,
+					4: 5
+				},
+				colorCodeLengthText = {
+					1: "four",
+					2: "four",
+					3: "five",
+					4: "five"
+				},
+				fontSizeDic = {
+					".": 25,
+					":": 25,
+					":.": 25,
+					"::": 25,
+					"★": 12
+				}
+				colorCode = colorCode.slice(0, colorCodeLength[level]);
 
 		console.log(colorCode);
-		console.log(level);
 
 		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -114,7 +145,7 @@
 		<script>
 
 		document.getElementById("level_message").innerHTML = String(maxTurns[level])
-		+ " tries to crack the four color code.<br>" + String(colorOptions[level].length) + " possible colors."
+		+ " tries to crack the " + colorCodeLengthText[level] + " color code.<br>" + String(colorOptions[level].length) + " possible colors."
 
 		</script>
 		<!-- Load d3.js -->
@@ -157,8 +188,9 @@
 
 		var	height_dic = {
 			1: 354,
-			2: 427,
-			3: 500
+			2: 390.5,
+			3: 390.5,
+			4: 427
 		};
 		// set the dimensions and margins of the graph
 		var margin = {top: 30, right: 25, bottom: 30, left: 25},
@@ -194,18 +226,17 @@
 				clickCount = 0,
 				maxClicks = {
 					1: 32,
-					2: 40,
-					3: 48
+					2: 36,
+					3: 45,
+					4: 50
 				},
-				clickScoreDic = {
-				},
+				// clickScoreDic = {
+				// },
 				gridScoreDic = {
 				},
 				guessDic = {
 				},
 				bScores = Array(),
-				xArray = Array(1, 2, 3, 4),
-				yArray = Array(1, 1, 1, 1),
 				gridA = 1,
 				gridB = 2,
 				gridC = 3,
@@ -214,17 +245,16 @@
 					W: "rgb(211,211,211)",
 					B: "rgb(211,211,211)"
 				},
+				rectTextLoc = {
+					1: Array(17.5, 23.5),
+					2: Array(17.5, 23.5),
+					3: Array(14, 23.5),
+					4: Array(14, 23.5),
+				},
 				i;
 
 		for ( i = 1; i < maxClicks[level]+1; i++ ) {
 		  fillDic[i] = 100
-		};
-		for ( i = 1; i < maxTurns[level]+1; i++ ) {
-		  clickScoreDic[i] = Array(gridA, gridB, gridC, gridD),
-			gridA += 4,
-			gridB += 4,
-			gridC += 4,
-			gridD += 4
 		};
 		//Read the data
 		var createBoard = function(fillDic, guessDic, clickCount) {
@@ -267,7 +297,7 @@
 													 .style("padding", "5px")
 				// Three function that change the tooltip when user hover / move / leave a cell
 				var mouseover1 = function(d) {
-					if (d.group == "W" || d.group =="B")
+					if ( d.group=="W" || d.group=="B" )
 					{ tooltip1
 						 .style("opacity", 1)
 					 d3.select(this)
@@ -297,7 +327,7 @@
 								.style("left", (d3.mouse(this)[0]+70) + "px")
 								.style("top", (d3.mouse(this)[1]) + "px")
 							}
-						else if ( toolNumber==0 && (d.variable)<=(clickCount/4) ) {
+						else if ( toolNumber==0 && (d.variable)<=(clickCount/colorCodeLength[level]) ) {
 							tooltip1
 								.html("No right color" + cPlur + " in"
 								+ "<br>the " + colorState + " place.")
@@ -351,14 +381,14 @@
 					    .on("mouseleave", mouseleave1);
 
 			rect.append("text")
-						.attr("x", function(d) { return x(d.group) + 17.5 })
-						.attr("y", function(d) { return y(d.variable) + 23.5 })
+						.attr("x", function(d) { return x(d.group) + rectTextLoc[level][0] })
+						.attr("y", function(d) { return y(d.variable) + rectTextLoc[level][1] })
 						.attr("rx", 4)
 						.attr("ry", 4)
 						.attr("width", x.bandwidth() )
 						.attr("height", y.bandwidth() )
-			    .text(function(d) { if ( d.group=="W" && clickCount%4==0 && clickCount!=0 )
-															{ var colorCodeCopy = Array(color1, color2, color3, color4);
+			    .text(function(d) { if ( d.group=="W" && clickCount%colorCodeLength[level]==0 && clickCount!=0 && colorCodeLength[level]==4 )
+															{ var colorCodeCopy = Array(color1, color2, color3, color4),
 																		dCount = 0,
 																		wCount = 0,
 																		guessColors = Array(
@@ -388,7 +418,39 @@
 																gridScoreDic[d.score_index] = pieceDic[wCount]};
 																return gridScoreDic[d.score_index]
 														}
-														else if ( d.group=="B" && clickCount%4==0 && clickCount!=0 )
+														else if ( d.group=="W" && clickCount%colorCodeLength[level]==0 && clickCount!=0 && colorCodeLength[level]==5 )
+															{ var colorCodeCopy = Array(color1, color2, color3, color4, color5),
+																		dCount = 0,
+																		wCount = 0,
+																		guessColors = Array(
+																			guessDic[(d.variable*5)-4],
+																			guessDic[(d.variable*5)-3],
+																			guessDic[(d.variable*5)-2],
+																			guessDic[(d.variable*5)-1],
+																			guessDic[d.variable*5]);
+																for ( i = 0; i < 5; i++ ) {
+																	if ( guessColors[i-dCount]==colorCode[i] )
+																		{ delete guessColors[i-dCount];
+																			delete colorCodeCopy[i-dCount];
+																			guessColors = guessColors.filter(Boolean);
+																			colorCodeCopy = colorCodeCopy.filter(Boolean);
+																			dCount+=1; }
+																}
+																while ( guessColors.length > 0 ) {
+																	if ( colorCodeCopy.includes(guessColors[0]) )
+																	{ wCount+=1,
+																		dIndex = colorCodeCopy.indexOf(guessColors[0]);
+																		delete guessColors[0];
+																		delete colorCodeCopy[dIndex];
+																		guessColors = guessColors.filter(Boolean);
+																		colorCodeCopy = colorCodeCopy.filter(Boolean); }
+																	else
+																		{ delete guessColors[0];
+																			guessColors = guessColors.filter(Boolean); }
+																gridScoreDic[d.score_index] = pieceDic[wCount]};
+																return gridScoreDic[d.score_index]
+														}
+														else if ( d.group=="B" && clickCount%colorCodeLength[level]==0 && clickCount!=0 && colorCodeLength[level]==4 )
 														{ gridScoreDic[d.score_index] = pieceDic[
 															boolDic[guessDic[(d.variable*4)-3]==colorCode[0]] +
 															boolDic[guessDic[(d.variable*4)-2]==colorCode[1]] +
@@ -398,27 +460,38 @@
 																bScores[d.variable] = gridScoreDic[d.score_index]
 															}
 														 return gridScoreDic[d.score_index] }
+														else if ( d.group=="B" && clickCount%colorCodeLength[level]==0 && clickCount!=0 && colorCodeLength[level]==5 )
+														{ gridScoreDic[d.score_index] = pieceDic[
+															boolDic[guessDic[(d.variable*5)-4]==colorCode[0]] +
+															boolDic[guessDic[(d.variable*5)-3]==colorCode[1]] +
+															boolDic[guessDic[(d.variable*5)-2]==colorCode[2]] +
+															boolDic[guessDic[(d.variable*5)-1]==colorCode[3]] +
+															boolDic[guessDic[(d.variable*5)]==colorCode[4]]];
+															if ( String(gridScoreDic[d.score_index]) != "undefined") {
+																bScores[d.variable] = gridScoreDic[d.score_index]
+															}
+														 return gridScoreDic[d.score_index] }
 														 else if (( d.group=="W" || d.group=="B" ) &&
-														 clickCount%4!=0 && clickCount!=0 ) {
+														 clickCount%colorCodeLength[level]!=0 && clickCount!=0 ) {
 															 return gridScoreDic[d.score_index] }
 														 else
 															{ return null }
 														 })
-						.style("font-size", 25)
+						.style("font-size", function(d) { return fontSizeDic[gridScoreDic[d.score_index]] })
 						.style("stroke-width", 1.5)
 						.style("stroke", "black")
 
 			var endGameExecute = function(clickCount, gridScoreDic, bScores) {
 
-				if ( bScores!=[] && bScores[bScores.length-1]=="::" ) {
+				if ( bScores!=[] && bScores[bScores.length-1]==winningSymDic[level] ) {
 
 					document.getElementById("hidden-button-win").style.display = "block";
 					document.getElementById("color_buttons").style.display = "none";
 				}
 
-					else if ( bScores!=[] && bScores[bScores.length-1]!="::" && clickCount==maxClicks[level] ) {
+					else if ( bScores!=[] && bScores[bScores.length-1]!=winningSymDic[level] && clickCount==maxClicks[level] ) {
 
-						d3.csv("../assets/end_game.csv", function(data) {
+						d3.csv("../assets/end_game" + colorCodeLength[level] + ".csv", function(data) {
 								// set the dimensions and margins of the graph
 								var margin = {top: 23.5, right: 123, bottom: 150, left: 25},
 									  width = 350 - margin.left - margin.right,
@@ -479,8 +552,9 @@
 
 		var dataDic = {
 			1: Array(1, 2, 3, 4, 5, 6),
-			2: Array(1, 2, 3, 4, 5, 6, 7),
-			3: Array(1, 2, 3, 4, 5, 6, 7, 8)
+			2: Array(1, 2, 3, 4, 5, 6, 7, 8),
+			3: Array(1, 2, 3, 4, 5, 6),
+			4: Array(1, 2, 3, 4, 5, 6, 7, 8)
 		},
 				data = dataDic[level]
 				categorical = [{ "name" : "schemeSet1", "n": dataDic[level].length }],
@@ -521,8 +595,9 @@
 	     interval = 360/data.length
 			 wIntervalDic = {
 				 1: 3,
-				 2: 2.6,
-				 3: 2.2
+				 2: 2.2,
+				 3: 3,
+				 4: 2.2
 			 };
 
 		var svg2 = d3.select('#color_buttons')

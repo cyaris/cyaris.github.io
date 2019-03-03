@@ -493,7 +493,13 @@
 
 						d3.csv("../assets/end_game" + colorCodeLength[level] + ".csv", function(data) {
 								// set the dimensions and margins of the graph
-								var margin = {top: 23.5, right: 123, bottom: 150, left: 25},
+								var rightDic = {
+									1: 123,
+									2: 123,
+									3: 108,
+									4: 108
+								},
+										margin = {top: 23.5, right: rightDic[level], bottom: 150, left: 25},
 									  width = 350 - margin.left - margin.right,
 									  height = 200;
 							  // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
@@ -521,6 +527,9 @@
 							    .data(data, function(d) { return d.group+':'+d.variable; })
 							    .enter();
 
+							// var endGameGridLoc = {
+							//
+							// }
 							endGame.append("rect")
 										.attr("x", function(d) { return x(d.group) })
 										.attr("y", function(d) { return y(d.variable) + 33 })

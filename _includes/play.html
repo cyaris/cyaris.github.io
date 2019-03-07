@@ -297,7 +297,7 @@
 													 .style("padding", "5px")
 				// Three function that change the tooltip when user hover / move / leave a cell
 				var mouseover1 = function(d) {
-					if ( d.group=="W" || d.group=="B" )
+					if ( (d.group=="W" || d.group=="B") )
 					{ tooltip1
 						 .style("opacity", 1)
 					 d3.select(this)
@@ -381,8 +381,7 @@
 					    .on("mouseleave", mouseleave1);
 
 			rect.append("text")
-						.attr("x", function(d) { return x(d.group) + rectTextLoc[level][0] })
-						.attr("y", function(d) { return y(d.variable) + rectTextLoc[level][1] })
+						.attr("pointer-events", "none")
 						.attr("rx", 4)
 						.attr("ry", 4)
 						.attr("width", x.bandwidth() )
@@ -480,6 +479,9 @@
 						.style("font-size", function(d) { return fontSizeDic[gridScoreDic[d.score_index]] })
 						.style("stroke-width", 1.5)
 						.style("stroke", "black")
+						.attr("x", function(d) { return x(d.group) + rectTextLoc[level][0] })
+						.attr("y", function(d) { if (gridScoreDic[d.score_index]=="★") { return y(d.variable) + rectTextLoc[level][1] - 2 }
+					else { return y(d.variable) + rectTextLoc[level][1] }});
 
 			var endGameExecute = function(clickCount, gridScoreDic, bScores) {
 

@@ -381,11 +381,6 @@
 					    .on("mouseleave", mouseleave1);
 
 			rect.append("text")
-						.attr("pointer-events", "none")
-						.attr("rx", 4)
-						.attr("ry", 4)
-						.attr("width", x.bandwidth() )
-						.attr("height", y.bandwidth() )
 			    .text(function(d) { if ( d.group=="W" && clickCount%colorCodeLength[level]==0 && clickCount!=0 && colorCodeLength[level]==4 )
 															{ var colorCodeCopy = Array(color1, color2, color3, color4),
 																		dCount = 0,
@@ -476,12 +471,19 @@
 														 else
 															{ return null }
 														 })
+						.attr("pointer-events", "none")
+						.attr("x", function(d) { return x(d.group) + rectTextLoc[level][0] })
+						.attr("y", function(d) { if (gridScoreDic[d.score_index]=="★")
+																			{ return y(d.variable) + rectTextLoc[level][1] - 2 }
+																		 else
+																		  { return y(d.variable) + rectTextLoc[level][1] }})
+						.attr("rx", 4)
+						.attr("ry", 4)
+						.attr("width", x.bandwidth() )
+						.attr("height", y.bandwidth() )
 						.style("font-size", function(d) { return fontSizeDic[gridScoreDic[d.score_index]] })
 						.style("stroke-width", 1.5)
 						.style("stroke", "black")
-						.attr("x", function(d) { return x(d.group) + rectTextLoc[level][0] })
-						.attr("y", function(d) { if (gridScoreDic[d.score_index]=="★") { return y(d.variable) + rectTextLoc[level][1] - 2 }
-					else { return y(d.variable) + rectTextLoc[level][1] }});
 
 			var endGameExecute = function(clickCount, gridScoreDic, bScores) {
 

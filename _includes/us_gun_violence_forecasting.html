@@ -45,7 +45,7 @@
 			// set the ranges
 			var x = d3.scaleTime().range([0, width]);
 			var y = d3.scaleLinear().range([height, 0]);
-			// Get the data
+
 			var createGraph = function() {
 
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(error, data) {
@@ -55,11 +55,25 @@
 						minYear = d3.min(data, function(d) { return d.year }),
 						maxYear = d3.max(data, function(d) { return d.year }),
 						numYears = maxYear - minYear,
+						obsMaxYear = [],
 						allDates = [],
 						nydDic = {},
 						yearIndex = [],
 						allYears = [],
-						daysPerYearDic = {}
+						obsPerYearDic = {}
+				// format the data
+				data.forEach(function(d) {
+				    d.date = parseTime(d.date);
+						d.index = +d.index;
+						if ( d.nyd!=null && d.nyd!='' ) {
+							nydDic[d.nyd] = d.index
+						};
+						allDates.push(d.date);
+				    d.num_harmed = +d.num_harmed;
+						d.trend = +d.trend;
+						d.year = +d.year;
+						d.non_observation = +d.non_observation;
+				});
 
 				for (var i = 1; i <= numYears; i++) {
 				    yearIndex.push(Number(i));
@@ -70,25 +84,15 @@
 						numDaysCount = 0;
 						data.forEach(function(d) {
 							if ( d.year==i )
-							{ return numDaysCount+=1; }
+							{ numDaysCount+=1; }
+							if ( d.year==i && d.non_observation!=1 )
+							{ obsMaxYear.push(Number(i)); }
 						});
-						daysPerYearDic[i] = numDaysCount;
+						obsPerYearDic[i] = numDaysCount;
 				}
-				// format the data
-				data.forEach(function(d) {
-				    d.date = parseTime(d.date);
-						d.index = +d.index;
-						if (d.nyd!=null && d.nyd!='') {
-							nydDic[d.nyd] = d.index
-						};
-						allDates.push(d.date);
-				    d.num_harmed = +d.num_harmed;
-						d.trend = +d.trend;
-						d.year = +d.year;
-						d.non_observation = +d.non_observation;
-				});
-
-				var nydKeys = Object.keys(nydDic);
+				
+				var nydKeys = Object.keys(nydDic),
+						obsMaxYear = d3.max(obsMaxYear);
 				// Scale the range of the data
 				x.domain(d3.extent(data, function(d) { return d.date; }));
 				y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
@@ -131,6 +135,11 @@
 			      .call(d3.axisLeft(y));
 
 				var mouseover = function(d) {
+					console.log(allYears[Number(d)]);
+					if (allYears[Number(d)] < obsMaxYear)
+					{ console.log('Forecast with observations up to the end of ' + allYears[Number(d)]); }
+					else
+					{  console.log('Forecast with all observations.'); };
 					d3.select(this)
 						.style("stroke-width", 3)
 						.style("stroke", "black")
@@ -154,7 +163,7 @@
 							.attr("y", function(d) { return 0 })
 				      .attr("rx", 4)
 				      .attr("ry", 4)
-				      .attr("width", function(d) { return (width/numRows)*daysPerYearDic[allYears[Number(d)]] } )
+				      .attr("width", function(d) { return (width/numRows)*obsPerYearDic[allYears[Number(d)]] } )
 				      .attr("height", height )
 				      .style("fill", 'transparent')
 							.style("stroke-width", 0)

@@ -12,7 +12,7 @@
 
 		.line {
 		  fill: none;
-		  stroke: steelblue;
+		  stroke: red;
 		  stroke-width: 2px;
 		}
 
@@ -48,17 +48,68 @@
 			// Get the data
 			var createGraph = function() {
 
-				d3.csv("../assets/us_victim_forecast_data.csv", function(error, data) {
+				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(error, data) {
 				if (error) throw error;
+
+				var numRows = data.length,
+						minYear = d3.min(data, function(d) { return d.year }),
+						maxYear = d3.max(data, function(d) { return d.year }),
+						numYears = maxYear - minYear,
+						allDates = [],
+						nydDic = {},
+						yearIndex = [],
+						allYears = [],
+						daysPerYearDic = {}
+
+				for (var i = 1; i <= numYears; i++) {
+				    yearIndex.push(Number(i));
+				}
+
+				for ( var i = minYear; i <= maxYear; i++ ) {
+				    allYears.push(Number(i));
+						numDaysCount = 0;
+						data.forEach(function(d) {
+							if ( d.year==i )
+							{ return numDaysCount+=1; }
+						});
+						daysPerYearDic[i] = numDaysCount;
+				}
 				// format the data
 				data.forEach(function(d) {
 				    d.date = parseTime(d.date);
-				    d.num_victims = +d.num_victims;
+						d.index = +d.index;
+						if (d.nyd!=null && d.nyd!='') {
+							nydDic[d.nyd] = d.index
+						};
+						allDates.push(d.date);
+				    d.num_harmed = +d.num_harmed;
 						d.trend = +d.trend;
+						d.year = +d.year;
+						d.non_observation = +d.non_observation;
 				});
+
+				var nydKeys = Object.keys(nydDic);
 				// Scale the range of the data
 				x.domain(d3.extent(data, function(d) { return d.date; }));
-				y.domain([0, d3.max(data, function(d) { return d.num_victims + 25; })]);
+				y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
+				// Add the valueline path.
+				svg.selectAll("circle")
+										.data(data)
+										.enter()
+										.append("circle")
+											.style("fill", function(d) { if ( d.non_observation==1 )
+																														{ return 'transparent' }
+																													 else
+																													 	{ return 'white' }
+																													})
+											.style("stroke", function(d) { if ( d.non_observation==1 )
+																														{ return 'transparent' }
+																													 else
+																													 	{ return 'black' }
+																													})
+								      .attr("r", 2)
+											.attr("cx", function(d) { return x(d.date); })
+											.attr("cy", function(d) { return y(d.num_harmed); });
 				// define the line
 				var valueLine = d3.line()
 						.x(function(d) { return x(d.date); })
@@ -69,26 +120,6 @@
 						.style("stroke-width", 3)
 						.attr("class", "line")
 						.attr("d", valueLine);
-				// Add the valueline path.
-				svg.selectAll("circle")
-										.data(data)
-										.enter()
-										.append("circle")
-											// .style("fill", function(d) { if ( d.num_victims==null)
-											// 																			{ return null }
-											// 																		 else
-											// 																		 	{ return 'white' }
-											// 																		})
-											// .style("stroke", function(d) { if ( d.num_victims==null)
-											// 																			{ return 'white' }
-											// 																		 else
-											// 																		 	{ return 'black' }
-											// 																		})
-											.style("fill", 'white')
-											.style("stroke", 'black')
-								      .attr("r", 2)
-											.attr("cx", function(d) { return x(d.date); })
-											.attr("cy", function(d) { return y(d.num_victims); });
 				// Add the X Axis
 			  svg.append("g")
 			      .attr("transform", "translate(0," + height + ")")
@@ -98,6 +129,40 @@
 			  svg.append("g")
 						.style("font-size", "12px")
 			      .call(d3.axisLeft(y));
+
+				var mouseover = function(d) {
+					d3.select(this)
+						.style("stroke-width", 3)
+						.style("stroke", "black")
+						.style("cursor", "pointer");
+				};
+
+				var mouseleave = function(d) {
+					d3.select(this)
+						.style("stroke-width", 0)
+						.style("stroke", "transparent")
+						.style("cursor", "pointer");
+				};
+
+				// add the squares
+			  var rect = svg.selectAll()
+				    .data(nydKeys, function(d) { return d; })
+				    .enter();
+
+				rect.append("rect")
+							.attr("x", function(d) { return x(allDates[nydDic[d]]) })
+							.attr("y", function(d) { return 0 })
+				      .attr("rx", 4)
+				      .attr("ry", 4)
+				      .attr("width", function(d) { return (width/numRows)*daysPerYearDic[allYears[Number(d)]] } )
+				      .attr("height", height )
+				      .style("fill", 'transparent')
+							.style("stroke-width", 0)
+							.style("stroke", "transparent")
+				      .style("opacity", 1)
+							.on("mouseover", mouseover)
+							.on("mouseleave", mouseleave);
+
 				});
 		};
 

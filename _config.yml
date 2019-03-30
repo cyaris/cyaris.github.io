@@ -25,6 +25,7 @@ description: Exploring Data | Learning Tools
 navbar-links:
   About Me: "aboutme"
   Resume: "resume"
+  <center style="margin-top:-10px;">Gun Violence<br>Forecasting</center>: "us_gun_violence_forecasting"
   Mastermind: "mastermind"
   Archive: "posts"
 

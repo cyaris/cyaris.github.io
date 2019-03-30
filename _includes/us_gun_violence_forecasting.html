@@ -1,0 +1,108 @@
+<!-- <!DOCTYPE html> -->
+<html>
+	<head>
+		<title>US Gun Violence Forecasting</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+
+		svg {
+			border: 1px solid #000;
+		}
+
+		.line {
+		  fill: none;
+		  stroke: steelblue;
+		  stroke-width: 2px;
+		}
+
+		</style>
+	</head>
+	<body>
+		<!-- <script>
+		</script> -->
+		<!-- Load d3.js -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<!-- Load color palettes -->
+		<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+		<!-- Create a div where the graph will take place -->
+		<div id="line_graph" align="center"  style="margin-bottom:40px;"></div>
+		<script>
+			// set the dimensions and margins of the graph
+			var margin = {top: 20, right: 20, bottom: 35, left: 40},
+			    width = 750 - margin.left - margin.right,
+			    height = 425 - margin.top - margin.bottom;
+			// append the svg object to the body of the page
+			var svg = d3.select("#line_graph")
+					.append("svg")
+					  .attr("width", width + margin.left + margin.right)
+					  .attr("height", height + margin.top + margin.bottom)
+					.append("g")
+					  .attr("transform",
+					        "translate(" + margin.left + "," + margin.top + ")");
+			// parse the date / time
+			var parseTime = d3.timeParse("%Y-%m-%d");
+			// set the ranges
+			var x = d3.scaleTime().range([0, width]);
+			var y = d3.scaleLinear().range([height, 0]);
+			// Get the data
+			var createGraph = function() {
+
+				d3.csv("../assets/us_victim_forecast_data.csv", function(error, data) {
+				if (error) throw error;
+				// format the data
+				data.forEach(function(d) {
+				    d.date = parseTime(d.date);
+				    d.num_victims = +d.num_victims;
+						d.trend = +d.trend;
+				});
+				// Scale the range of the data
+				x.domain(d3.extent(data, function(d) { return d.date; }));
+				y.domain([0, d3.max(data, function(d) { return d.num_victims + 25; })]);
+				// define the line
+				var valueLine = d3.line()
+						.x(function(d) { return x(d.date); })
+						.y(function(d) { return y(d.trend); });
+				// Add the valueline path.
+				svg.append("path")
+						.data([data])
+						.style("stroke-width", 3)
+						.attr("class", "line")
+						.attr("d", valueLine);
+				// Add the valueline path.
+				svg.selectAll("circle")
+										.data(data)
+										.enter()
+										.append("circle")
+											// .style("fill", function(d) { if ( d.num_victims==null)
+											// 																			{ return null }
+											// 																		 else
+											// 																		 	{ return 'white' }
+											// 																		})
+											// .style("stroke", function(d) { if ( d.num_victims==null)
+											// 																			{ return 'white' }
+											// 																		 else
+											// 																		 	{ return 'black' }
+											// 																		})
+											.style("fill", 'white')
+											.style("stroke", 'black')
+								      .attr("r", 2)
+											.attr("cx", function(d) { return x(d.date); })
+											.attr("cy", function(d) { return y(d.num_victims); });
+				// Add the X Axis
+			  svg.append("g")
+			      .attr("transform", "translate(0," + height + ")")
+						.style("font-size", "12px")
+			      .call(d3.axisBottom(x));
+			  // Add the Y Axis
+			  svg.append("g")
+						.style("font-size", "12px")
+			      .call(d3.axisLeft(y));
+				});
+		};
+
+			createGraph();
+
+		</script>
+	</body>
+</html>

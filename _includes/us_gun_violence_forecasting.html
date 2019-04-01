@@ -49,10 +49,14 @@
 			    height = 425 - margin.top - margin.bottom;
 			// set the dimensions of the margin rects
 			var marginRectDic = {
-						0: {"x": margin.left * -1, "y": 0, "width": margin.left, "height": height},
-						1: {"x": width, "y": 0, "width": margin.right, "height": height},
-						2: {"x": margin.left * -1, "y": margin.top * -1, "width": width + margin.left + margin.right, "height": margin.top},
-						3: {"x": margin.left * -1, "y": height, "width": width + margin.left + margin.right, "height": margin.bottom},
+						0: {"x": margin.left * -1, "y": 0,
+						"width": margin.left, "height": height},
+						1: {"x": width, "y": 0,
+						"width": margin.right, "height": height},
+						2: {"x": margin.left * -1, "y": margin.top * -1,
+						"width": width + margin.left + margin.right, "height": margin.top},
+						3: {"x": margin.left * -1, "y": height,
+						"width": width + margin.left + margin.right, "height": margin.bottom},
 					},
 					marginRectDicKeys = Object.keys(marginRectDic);
 			// append the svg object to the body of the page
@@ -129,19 +133,22 @@
 						.data(data)
 						.enter()
 						.append("circle")
+							.attr("pointer-events", "none")
 							.attr("r", 2)
 							.attr("cx", function(d) { return x(d.date); })
 							.attr("cy", function(d) { return y(d.num_harmed); })
-							.style("fill", function(d) { if ( d.non_observation==1 )
-																						{ return 'transparent' }
-																					 else
-																					 	{ return 'white' }
-																					})
-							.style("stroke", function(d) { if ( d.non_observation==1 )
-																										{ return 'transparent' }
-																									 else
-																									 	{ return 'black' }
-																									});
+							.style("fill", function(d) {
+								if ( d.non_observation==1 )
+								{ return 'transparent' }
+								else
+								{ return 'white' }
+							})
+							.style("stroke", function(d) {
+								if ( d.non_observation==1 )
+								{ return 'transparent' }
+								else
+								{ return 'black' }
+							});
 				// define the line
 				var valueLine = d3.line()
 						.x(function(d) { return x(d.date); })
@@ -182,19 +189,22 @@
 				// Add the circles.
 				svg.selectAll("circle")
 						.data(data)
-							.attr("r", 2)
-							.attr("cx", function(d) { return x(d.date); })
-							.attr("cy", function(d) { return y(d.num_harmed); })
-							.style("fill", function(d) { if ( d.non_observation==1 || d.year > hoverYear )
-																						{ return 'transparent' }
-																					 else
-																						{ return 'white' }
-																					})
-							.style("stroke", function(d) { if ( d.non_observation==1 || d.year > hoverYear )
-																										{ return 'transparent' }
-																									 else
-																										{ return 'black' }
-																									});
+						.attr("pointer-events", "none")
+						.attr("r", 2)
+						.attr("cx", function(d) { return x(d.date); })
+						.attr("cy", function(d) { return y(d.num_harmed); })
+						.style("fill", function(d) {
+							if ( d.non_observation==1 || d.year > hoverYear )
+							{ return 'transparent' }
+							else
+							{ return 'white' }
+						})
+						.style("stroke", function(d) {
+							if ( d.non_observation==1 || d.year > hoverYear )
+							{ return 'transparent' }
+							else
+							{ return 'black' }
+						});
 				// Add the valueline path.
 				svg.select("path")
 						.data([data])

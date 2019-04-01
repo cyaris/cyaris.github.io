@@ -6,21 +6,36 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 
+		#lvRescale {
+			font: 12px Arial;
+		}
+
 		svg {
 			border: 1px solid #000;
 		}
 
 		.line {
 		  fill: none;
-		  stroke: red;
 		  stroke-width: 2px;
 		}
 
 		</style>
 	</head>
 	<body>
-		<!-- <script>
-		</script> -->
+		<script>
+
+		function lvBtnClick() {
+		  var change = document.getElementById("lvRescaleBtn");
+		  if (change.innerHTML == "Rescale without<br>Las Vegas Shooting")
+			{ change.innerHTML = "Rescale with<br>Las Vegas Shooting"; }
+			else
+			{ change.innerHTML = "Rescale without<br>Las Vegas Shooting"; }
+		}
+
+		</script>
+		<div id="lvRescale" style="margin-bottom:10px">
+		    <button id="lvRescaleBtn" onClick="lvBtnClick()">Rescale without<br>Las Vegas Shooting</button>
+		</div>
 		<!-- Load d3.js -->
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 		<!-- Load color palettes -->
@@ -32,6 +47,14 @@
 			var margin = {top: 20, right: 20, bottom: 35, left: 40},
 			    width = 750 - margin.left - margin.right,
 			    height = 425 - margin.top - margin.bottom;
+			// set the dimensions of the margin rects
+			var marginRectDic = {
+						0: {"x": margin.left * -1, "y": 0, "width": margin.left, "height": height},
+						1: {"x": width, "y": 0, "width": margin.right, "height": height},
+						2: {"x": margin.left * -1, "y": margin.top * -1, "width": width + margin.left + margin.right, "height": margin.top},
+						3: {"x": margin.left * -1, "y": height, "width": width + margin.left + margin.right, "height": margin.bottom},
+					},
+					marginRectDicKeys = Object.keys(marginRectDic);
 			// append the svg object to the body of the page
 			var svg = d3.select("#line_graph")
 					.append("svg")
@@ -41,79 +64,84 @@
 					  .attr("transform",
 					        "translate(" + margin.left + "," + margin.top + ")");
 			// parse the date / time
-			var parseTime = d3.timeParse("%Y-%m-%d");
+			var parseTime = d3.timeParse("%Y-%m-%d"),
 			// set the ranges
-			var x = d3.scaleTime().range([0, width]);
-			var y = d3.scaleLinear().range([height, 0]);
+					x = d3.scaleTime().range([0, width]),
+					y = d3.scaleLinear().range([height, 0]);
+
+			d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
+			var numRows = data.length,
+					minYear = d3.min(data, function(d) { return d.year }),
+					maxYear = d3.max(data, function(d) { return d.year }),
+					numYears = maxYear - minYear,
+					obsMaxYear = [],
+					allDates = [],
+					nydDic = {},
+					yearIndex = [],
+					allYears = [],
+					obsPerYearDic = {};
+			// format the data
+			data.forEach(function(d) {
+					d.date = parseTime(d.date);
+					d.index = +d.index;
+					if ( d.nyd!=null && d.nyd!='' ) {
+						nydDic[d.nyd] = d.index
+					};
+					allDates.push(d.date);
+					d.year = +d.year;
+					d.non_observation = +d.non_observation;
+			});
+
+			for (var i = 1; i <= numYears; i++) {
+					yearIndex.push(Number(i));
+			};
+
+			for ( var i = minYear; i <= maxYear; i++ ) {
+					allYears.push(Number(i));
+					numDaysCount = 0;
+					data.forEach(function(d) {
+						if ( d.year==i )
+						{ numDaysCount+=1; }
+						if ( d.year==i && d.non_observation!=1 )
+						{ obsMaxYear.push(Number(i)); }
+					});
+					obsPerYearDic[i] = numDaysCount;
+			};
+
+			var nydKeys = Object.keys(nydDic),
+					obsMaxYear = d3.max(obsMaxYear);
 
 			var createGraph = function() {
-
-				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(error, data) {
-				if (error) throw error;
-
-				var numRows = data.length,
-						minYear = d3.min(data, function(d) { return d.year }),
-						maxYear = d3.max(data, function(d) { return d.year }),
-						numYears = maxYear - minYear,
-						obsMaxYear = [],
-						allDates = [],
-						nydDic = {},
-						yearIndex = [],
-						allYears = [],
-						obsPerYearDic = {}
+				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 				// format the data
 				data.forEach(function(d) {
-				    d.date = parseTime(d.date);
-						d.index = +d.index;
-						if ( d.nyd!=null && d.nyd!='' ) {
-							nydDic[d.nyd] = d.index
-						};
-						allDates.push(d.date);
-				    d.num_harmed = +d.num_harmed;
+						d.date = parseTime(d.date);
+						d.num_harmed = +d.num_harmed;
 						d.trend = +d.trend;
 						d.year = +d.year;
 						d.non_observation = +d.non_observation;
 				});
-
-				for (var i = 1; i <= numYears; i++) {
-				    yearIndex.push(Number(i));
-				}
-
-				for ( var i = minYear; i <= maxYear; i++ ) {
-				    allYears.push(Number(i));
-						numDaysCount = 0;
-						data.forEach(function(d) {
-							if ( d.year==i )
-							{ numDaysCount+=1; }
-							if ( d.year==i && d.non_observation!=1 )
-							{ obsMaxYear.push(Number(i)); }
-						});
-						obsPerYearDic[i] = numDaysCount;
-				}
-				
-				var nydKeys = Object.keys(nydDic),
-						obsMaxYear = d3.max(obsMaxYear);
 				// Scale the range of the data
 				x.domain(d3.extent(data, function(d) { return d.date; }));
 				y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
-				// Add the valueline path.
+				// Add the circles.
 				svg.selectAll("circle")
-										.data(data)
-										.enter()
-										.append("circle")
-											.style("fill", function(d) { if ( d.non_observation==1 )
-																														{ return 'transparent' }
-																													 else
-																													 	{ return 'white' }
-																													})
-											.style("stroke", function(d) { if ( d.non_observation==1 )
-																														{ return 'transparent' }
-																													 else
-																													 	{ return 'black' }
-																													})
-								      .attr("r", 2)
-											.attr("cx", function(d) { return x(d.date); })
-											.attr("cy", function(d) { return y(d.num_harmed); });
+						.data(data)
+						.enter()
+						.append("circle")
+							.attr("r", 2)
+							.attr("cx", function(d) { return x(d.date); })
+							.attr("cy", function(d) { return y(d.num_harmed); })
+							.style("fill", function(d) { if ( d.non_observation==1 )
+																						{ return 'transparent' }
+																					 else
+																					 	{ return 'white' }
+																					})
+							.style("stroke", function(d) { if ( d.non_observation==1 )
+																										{ return 'transparent' }
+																									 else
+																									 	{ return 'black' }
+																									});
 				// define the line
 				var valueLine = d3.line()
 						.x(function(d) { return x(d.date); })
@@ -121,9 +149,11 @@
 				// Add the valueline path.
 				svg.append("path")
 						.data([data])
-						.style("stroke-width", 3)
+						.attr("pointer-events", "none")
 						.attr("class", "line")
-						.attr("d", valueLine);
+						.attr("d", valueLine)
+						.style("stroke", "red")
+						.style("stroke-width", 3);
 				// Add the X Axis
 			  svg.append("g")
 			      .attr("transform", "translate(0," + height + ")")
@@ -133,49 +163,121 @@
 			  svg.append("g")
 						.style("font-size", "12px")
 			      .call(d3.axisLeft(y));
-
-				var mouseover = function(d) {
-					console.log(allYears[Number(d)]);
-					if (allYears[Number(d)] < obsMaxYear)
-					{ console.log('Forecast with observations up to the end of ' + allYears[Number(d)]); }
-					else
-					{  console.log('Forecast with all observations.'); };
-					d3.select(this)
-						.style("stroke-width", 3)
-						.style("stroke", "black")
-						.style("cursor", "pointer");
-				};
-
-				var mouseleave = function(d) {
-					d3.select(this)
-						.style("stroke-width", 0)
-						.style("stroke", "transparent")
-						.style("cursor", "pointer");
-				};
-
-				// add the squares
-			  var rect = svg.selectAll()
-				    .data(nydKeys, function(d) { return d; })
-				    .enter();
-
-				rect.append("rect")
-							.attr("x", function(d) { return x(allDates[nydDic[d]]) })
-							.attr("y", function(d) { return 0 })
-				      .attr("rx", 4)
-				      .attr("ry", 4)
-				      .attr("width", function(d) { return (width/numRows)*obsPerYearDic[allYears[Number(d)]] } )
-				      .attr("height", height )
-				      .style("fill", 'transparent')
-							.style("stroke-width", 0)
-							.style("stroke", "transparent")
-				      .style("opacity", 1)
-							.on("mouseover", mouseover)
-							.on("mouseleave", mouseleave);
-
 				});
 		};
 
+			var updateGraph = function(trendColor, hoverYear) {
+				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
+				// format the data
+				data.forEach(function(d) {
+						d.date = parseTime(d.date);
+						d.num_harmed = +d.num_harmed;
+						d.trend = +d.trend;
+						d.year = +d.year;
+						d.non_observation = +d.non_observation;
+				});
+				// Scale the range of the data
+				x.domain(d3.extent(data, function(d) { return d.date; }));
+				y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
+				// Add the circles.
+				svg.selectAll("circle")
+						.data(data)
+							.attr("r", 2)
+							.attr("cx", function(d) { return x(d.date); })
+							.attr("cy", function(d) { return y(d.num_harmed); })
+							.style("fill", function(d) { if ( d.non_observation==1 || d.year > hoverYear )
+																						{ return 'transparent' }
+																					 else
+																						{ return 'white' }
+																					})
+							.style("stroke", function(d) { if ( d.non_observation==1 || d.year > hoverYear )
+																										{ return 'transparent' }
+																									 else
+																										{ return 'black' }
+																									});
+				// Add the valueline path.
+				svg.select("path")
+						.data([data])
+						.attr("pointer-events", "none")
+						.attr("class", "line")
+						.style("stroke", trendColor)
+						.style("stroke-width", 3);
+				});
+		};
+
+			var createRect = function() {
+				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
+				// format the data
+				data.forEach(function(d) {
+						d.date = parseTime(d.date);
+						d.num_harmed = +d.num_harmed;
+				});
+				// Scale the range of the data
+				x.domain(d3.extent(data, function(d) { return d.date; }));
+				y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
+
+				var yearMouseover = function(d) {
+					d3.select(this)
+						.style("stroke", "black")
+						.style("stroke-width", 3)
+						.style("cursor", "pointer");
+					if (allYears[Number(d)] < obsMaxYear)
+					{ updateGraph('grey', allYears[Number(d)]); }
+					else
+					{ updateGraph('red', obsMaxYear); };
+				};
+
+				var marginMouseover = function(d) {
+					updateGraph('red', obsMaxYear);
+				};
+
+				var mouseLeave = function(d) {
+					d3.select(this)
+						.style("stroke", "transparent")
+						.style("stroke-width", 0);
+				};
+				// add the year rect boundaries
+				var yearRect = svg.selectAll()
+						.data(nydKeys, function(d) { return d; })
+						.enter();
+				// add the margin rect boundaries
+				var marginRect = svg.selectAll()
+						.data(marginRectDicKeys, function(d) { return d; })
+						.enter();
+
+				yearRect.append("rect")
+							.attr("x", function(d) { return x(allDates[nydDic[d]]); })
+							.attr("y", function(d) { return 0 })
+							.attr("rx", 4)
+							.attr("ry", 4)
+							.attr("width", function(d) { return (width/numRows)*obsPerYearDic[allYears[Number(d)]] } )
+							.attr("height", height )
+							.style("fill", "transparent")
+							.style("stroke", "transparent")
+							// .style("stroke-width", 3)
+							.on("mouseover", yearMouseover)
+							.on("mouseleave", mouseLeave);
+
+				marginRect.append("rect")
+						.attr("x", function(d) { return marginRectDic[d]["x"]; })
+						.attr("y", function(d) { return marginRectDic[d]["y"]; })
+						.attr("rx", 4)
+						.attr("ry", 4)
+						.attr("width", function(d) { return marginRectDic[d]["width"]; })
+						.attr("height", function(d) { return marginRectDic[d]["height"]; })
+						.style("fill", 'transparent')
+						.style("stroke", "transparent")
+						// .style("stroke", "black")
+						.style("stroke-width", 3)
+						.on("mouseover", marginMouseover);
+
+				});
+			};
+
 			createGraph();
+			createRect();
+
+		});
 
 		</script>
 	</body>

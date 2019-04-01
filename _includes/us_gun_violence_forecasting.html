@@ -6,10 +6,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 
-		#lvRescale {
-			font: 12px Arial;
-		}
-
 		svg {
 			border: 1px solid #000;
 		}
@@ -19,28 +15,38 @@
 		  stroke-width: 2px;
 		}
 
+		svg text {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			pointer-events: none;
+		}
+
 		</style>
 	</head>
 	<body>
-		<script>
+		<!-- <script>
 
 		function lvBtnClick() {
 		  var change = document.getElementById("lvRescaleBtn");
 		  if (change.innerHTML == "Rescale without<br>Las Vegas Shooting")
-			{ change.innerHTML = "Rescale with<br>Las Vegas Shooting"; }
+			{ yMax = allObs[]; change.innerHTML = "Rescale with<br>Las Vegas Shooting"; }
 			else
-			{ change.innerHTML = "Rescale without<br>Las Vegas Shooting"; }
+			{ yMax = allObs[1]; change.innerHTML = "Rescale without<br>Las Vegas Shooting"; }
 		}
 
-		</script>
-		<div id="lvRescale" style="margin-bottom:10px">
+		</script> -->
+		<!-- <div id="lvRescale" style="margin-bottom:10px">
 		    <button id="lvRescaleBtn" onClick="lvBtnClick()">Rescale without<br>Las Vegas Shooting</button>
-		</div>
+		</div> -->
 		<!-- Load d3.js -->
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 		<!-- Load color palettes -->
 		<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 		<!-- Create a div where the graph will take place -->
+		<div id="las_vegas_button" align="left"  style="margin-bottom:30;"></div>
 		<div id="line_graph" align="center"  style="margin-bottom:40px;"></div>
 		<script>
 			// set the dimensions and margins of the graph
@@ -73,6 +79,19 @@
 					x = d3.scaleTime().range([0, width]),
 					y = d3.scaleLinear().range([height, 0]);
 
+			var mouseover = function(d) {
+				d3.select(this)
+					.style("stroke", "black")
+					.style("stroke-width", 3)
+					.style("cursor", "pointer");
+			};
+
+			var mouseLeave = function(d) {
+				d3.select(this)
+					.style("stroke", "transparent")
+					.style("stroke-width", 0);
+			};
+
 			d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 			var numRows = data.length,
 					minYear = d3.min(data, function(d) { return d.year }),
@@ -80,6 +99,7 @@
 					numYears = maxYear - minYear,
 					obsMaxYear = [],
 					allDates = [],
+					allObs = [],
 					nydDic = {},
 					yearIndex = [],
 					allYears = [],
@@ -91,6 +111,8 @@
 					if ( d.nyd!=null && d.nyd!='' ) {
 						nydDic[d.nyd] = d.index
 					};
+					d.num_harmed = +d.num_harmed;
+					allObs.push(d.num_harmed);
 					allDates.push(d.date);
 					d.year = +d.year;
 					d.non_observation = +d.non_observation;
@@ -113,7 +135,80 @@
 			};
 
 			var nydKeys = Object.keys(nydDic),
-					obsMaxYear = d3.max(obsMaxYear);
+					obsMaxYear = d3.max(obsMaxYear),
+					allObs = allObs.sort(function(a,b){return b-a}),
+					maxOb = d3.max(allObs),
+					yMax = maxOb;
+
+			var w = 125,
+					h = 40,
+					lvText = "without";
+			// append the svg object to the body of the page
+			var svg2 = d3.select("#las_vegas_button")
+					.append("svg")
+					  .attr("width", w+4.5)
+					  .attr("height", h+4.5)
+						.style("cursor", "pointer");
+
+			svg2.append("rect")
+					.attr("x", 1.5)
+					.attr("y", 1.5)
+					// .attr("rx", 4)
+					// .attr("ry", 4)
+					.attr("width", w)
+					.attr("height", h)
+					.style("fill", "transparent")
+					.style("stroke-width", 0)
+				.on("mouseover", mouseover)
+				.on("mouseleave", mouseLeave)
+				.on("click", function() {
+					if (yMax==maxOb)
+					{ yMax = allObs[1];
+						console.log(yMax);
+						svg2.append("rect")
+								.attr("pointer-events", "none")
+								.attr("x", 80)
+								.attr("y", 5)
+								.attr("rx", 4)
+								.attr("ry", 4)
+								.attr("width", w/4)
+								.attr("height", h/2.5)
+								.style("fill", "white");
+						createRect(yMax);
+						updateGraph(yMax, 'red', obsMaxYear);
+				}
+					else
+					{ yMax=maxOb;
+						console.log(yMax);
+						svg2.append("text")
+							 .attr("pointer-events", "none")
+							 .attr("x", 80)
+							 .attr("y", 17.5)
+							 .text("out")
+								 .style("font-size", "12px")
+								 .style("fill", "black");
+						createRect(yMax);
+						updateGraph(yMax, 'red', obsMaxYear);
+					}
+				});
+
+		svg2.append("text")
+			 .attr("pointer-events", "none")
+			 .attr("x", 10)
+			 .attr("y", 17.5)
+			 .text("Rescale without")
+				 .style("font-size", "12px")
+				 .style("fill", "black");
+
+		svg2.append("text")
+			 .attr("pointer-events", "none")
+			 .attr("x", 10)
+			 .attr("y", 32.5)
+			 .text("Las Vegas Shooting")
+				 .style("font-size", "12px")
+				 .style("fill", "black");
+
+			console.log(yMax);
 
 			var createGraph = function() {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
@@ -163,17 +258,20 @@
 						.style("stroke-width", 3);
 				// Add the X Axis
 			  svg.append("g")
+						.attr("class", "x axis")
 			      .attr("transform", "translate(0," + height + ")")
 						.style("font-size", "12px")
 			      .call(d3.axisBottom(x));
 			  // Add the Y Axis
 			  svg.append("g")
+						.attr("class", "y axis")
 						.style("font-size", "12px")
 			      .call(d3.axisLeft(y));
+
 				});
 		};
 
-			var updateGraph = function(trendColor, hoverYear) {
+			var updateGraph = function(maximumY, trendColor, hoverYear) {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 				// format the data
 				data.forEach(function(d) {
@@ -185,7 +283,8 @@
 				});
 				// Scale the range of the data
 				x.domain(d3.extent(data, function(d) { return d.date; }));
-				y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
+				y.domain([0, maximumY + 25]);
+				// y.domain([0, maximumY + 25]);
 				// Add the circles.
 				svg.selectAll("circle")
 						.data(data)
@@ -205,17 +304,23 @@
 							else
 							{ return 'black' }
 						});
+				// define the line
+				var valueLine = d3.line()
+						.x(function(d) { return x(d.date); })
+						.y(function(d) { return y(d.trend); });
 				// Add the valueline path.
 				svg.select("path")
 						.data([data])
 						.attr("pointer-events", "none")
 						.attr("class", "line")
+						.attr("d", valueLine)
 						.style("stroke", trendColor)
 						.style("stroke-width", 3);
+
 				});
 		};
 
-			var createRect = function() {
+			var createRect = function(maximumY) {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 				// format the data
 				data.forEach(function(d) {
@@ -224,7 +329,8 @@
 				});
 				// Scale the range of the data
 				x.domain(d3.extent(data, function(d) { return d.date; }));
-				y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
+				// y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
+				y.domain([0, maximumY + 25]);
 
 				var yearMouseover = function(d) {
 					d3.select(this)
@@ -232,19 +338,13 @@
 						.style("stroke-width", 3)
 						.style("cursor", "pointer");
 					if (allYears[Number(d)] < obsMaxYear)
-					{ updateGraph('grey', allYears[Number(d)]); }
+					{ updateGraph(yMax, 'grey', allYears[Number(d)]); }
 					else
-					{ updateGraph('red', obsMaxYear); };
+					{ updateGraph(yMax, 'red', obsMaxYear); };
 				};
 
 				var marginMouseover = function(d) {
-					updateGraph('red', obsMaxYear);
-				};
-
-				var mouseLeave = function(d) {
-					d3.select(this)
-						.style("stroke", "transparent")
-						.style("stroke-width", 0);
+					updateGraph(yMax, 'red', obsMaxYear);
 				};
 				// add the year rect boundaries
 				var yearRect = svg.selectAll()
@@ -285,7 +385,7 @@
 			};
 
 			createGraph();
-			createRect();
+			createRect(yMax);
 
 		});
 

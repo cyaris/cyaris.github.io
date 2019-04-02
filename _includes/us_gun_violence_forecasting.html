@@ -82,14 +82,17 @@
 		<div id="hidden_line_graph_explained" align="left"  style="margin-top:20px; margin-bottom:20px;">
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
-		<div id="las_vegas_button" align="left"  style="margin-top:100px; margin-bottom:20px;"></div>
+		<div id="las_vegas_button" align="left"  style="margin-top:100px; margin-bottom:17.5px;"></div>
 		<!-- Create a div where the graph will take place -->
 		<div id="line_graph" align="center"  style="margin-bottom:40px;"></div>
 		<script>
 			// set the dimensions and margins of the graph
 			var margin = {top: 20, right: 20, bottom: 35, left: 40},
 			    width = 750 - margin.left - margin.right,
-			    height = 425 - margin.top - margin.bottom;
+			    height = 425 - margin.top - margin.bottom,
+					// and for the las vegas svg
+					lvWidth = 165,
+					lvHeight = 40;
 			// set the dimensions of the margin rects
 			var marginRectDic = {
 						0: {"x": margin.left * -1, "y": 0,
@@ -112,7 +115,7 @@
 					        "translate(" + margin.left + "," + margin.top + ")");
 			// parse the date / time
 			var parseTime = d3.timeParse("%Y-%m-%d"),
-			// set the ranges
+					// set the ranges
 					x = d3.scaleTime().range([0, width]),
 					y = d3.scaleLinear().range([height, 0]);
 
@@ -162,6 +165,8 @@
 					obsMaxYear = d3.max(obsMaxYear),
 					allObs = allObs.sort(function(a,b){return b-a}),
 					maxOb = d3.max(allObs),
+					// set initial yMax
+					// which will be changed as scale is adjusted
 					yMax = maxOb,
 					maxDiff = allObs[0]-allObs[1],
 					minDate = d3.min(allDates);
@@ -174,45 +179,39 @@
 												 .html("The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation effects the distribution of the entire graph.");
 
 			var lvMouseover = function(d) {
-				lvTooltip
-						.style("opacity", 1);
-				updateGraph(yMax, 'red', obsMaxYear, "yes");
-					 };
-
-			var lvMouseleave = function(d) {
-				lvTooltip
-					.style("opacity", 0);
-				updateGraph(yMax, 'red', obsMaxYear, "no");
-					};
-
-			var checkMarkHover = function(d) {
-				d3.select(this)
-					.style("stroke", "black")
-					.style("stroke-width", 2)
-					.style("cursor", "pointer");
-				};
-
-			var checkMarkLeave = function(d) {
-				d3.select(this)
-					.style("stroke", "black")
-					.style("stroke-width", 1);
-				};
-
-			var w = 165,
-					h = 40;
+						lvTooltip
+							.style("opacity", 1);
+						updateGraph(yMax, "red", obsMaxYear, "yes");
+			},
+					lvMouseleave = function(d) {
+						lvTooltip
+							.style("opacity", 0);
+						updateGraph(yMax, "red", obsMaxYear, "no");
+			},
+					checkMarkHover = function(d) {
+						d3.select(this)
+							.style("stroke", "black")
+							.style("stroke-width", 2)
+							.style("cursor", "pointer");
+			},
+					checkMarkLeave = function(d) {
+						d3.select(this)
+							.style("stroke", "black")
+							.style("stroke-width", 1);
+			};
 			// append the svg object to the body of the page
 			var svg2 = d3.select("#las_vegas_button")
 					.append("svg")
-					  .attr("width", w+4.5)
-					  .attr("height", h+4.5)
+					  .attr("width", lvWidth)
+					  .attr("height", lvHeight)
 						.on("mouseover", lvMouseover)
 						.on("mouseleave", lvMouseleave);
 
 			svg2.append("rect")
 					.attr("x", 2)
-					.attr("y", 9)
-					.attr("width", w/6.5)
-					.attr("height", h/1.65)
+					.attr("y", 6.5)
+					.attr("width", lvWidth/6.5)
+					.attr("height", lvHeight/1.65)
 					// .attr("id", 'hover')
 					.style("cursor", "pointer")
 					.style("fill", "transparent")
@@ -224,29 +223,21 @@
 					if (yMax==maxOb)
 					{ yMax = allObs[1];
 						createRect(yMax);
-						updateGraph(yMax, 'red', obsMaxYear, "no");
+						updateGraph(yMax, "red", obsMaxYear, "no");
 						d3.select("#checkMark").remove();
 				}
 					else
-					{ yMax=maxOb;
+					{ yMax = maxOb;
 						createRect(yMax);
-						updateGraph(yMax, 'red', obsMaxYear, "yes");
-
-						svg2.append("text")
-								 .attr("pointer-events", "none")
-								 .attr("x", 7)
-								 .attr("y", 28.5)
-								 .attr("id", 'checkMark')
-								 .text("✓")
-									 .style("font-size", "20px")
-									 .style("fill", "black");
+						updateGraph(yMax, "red", obsMaxYear, "yes");
+						addCheckMark();
 					}
 				});
 
 				svg2.append("text")
 					 .attr("pointer-events", "none")
 					 .attr("x", 35)
-					 .attr("y", 17.5)
+					 .attr("y", 15)
 					 .text("Scaled with")
 						 .style("font-size", "12px")
 						 .style("fill", "black");
@@ -254,19 +245,23 @@
 				svg2.append("text")
 					 .attr("pointer-events", "none")
 					 .attr("x", 35)
-					 .attr("y", 32.5)
+					 .attr("y", 30)
 					 .text("Las Vegas Shooting")
 						 .style("font-size", "12px")
 						 .style("fill", "black");
 
-				svg2.append("text")
-						 .attr("pointer-events", "none")
-						 .attr("x", 7)
-						 .attr("y", 28.5)
-						 .attr("id", 'checkMark')
-						 .text("✓")
-							 .style("font-size", "20px")
-							 .style("fill", "black");
+				var addCheckMark = function() {
+					svg2.append("text")
+							 .attr("pointer-events", "none")
+							 .attr("x", 7)
+							 .attr("y", 26)
+							 .attr("id", 'checkMark')
+							 .text("✓")
+								 .style("font-size", "20px")
+								 .style("fill", "black");
+				};
+
+				addCheckMark();
 
 			var createGraph = function() {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
@@ -338,9 +333,9 @@
 						d.year = +d.year;
 						d.non_observation = +d.non_observation;
 				});
-				// Scale the range of the data
+				// Rescale the range of the data vertically
 				y.domain([0, maximumY + 25]);
-				// Add the circles.
+				// Update the circles.
 				svg1.selectAll("circle")
 						.attr("cy", function(d) { return y(d.num_harmed); })
 						.style("fill", function(d) {
@@ -363,7 +358,7 @@
 							else
 							{ return 1; }
 						});
-				// re-define the line
+				// Re-define the line
 				var valueLine = d3.line()
 						.x(function(d) { return x(d.date); })
 						.y(function(d) { return y(d.trend); });
@@ -371,22 +366,22 @@
 				svg1.select("path")
 						.attr("d", valueLine)
 						.style("stroke", trendColor);
-				// Add the Y Axis
+				// Update the Y Axis
 				svg1.select(".y")
 			      .call(d3.axisLeft(y));
+
 				});
 		};
 
 			var createRect = function(maximumY) {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
-				// format the data
+				// Format the data
 				data.forEach(function(d) {
 						d.date = parseTime(d.date);
 						d.num_harmed = +d.num_harmed;
 				});
 				// Scale the range of the data
 				x.domain(d3.extent(data, function(d) { return d.date; }));
-				// y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
 				y.domain([0, maximumY + 25]);
 
 				var yearMouseover = function(d) {
@@ -395,53 +390,45 @@
 						.style("stroke-width", 3)
 						.style("cursor", "pointer");
 					if (allYears[Number(d)] < obsMaxYear)
-					{ updateGraph(yMax, 'grey', allYears[Number(d)], "no"); }
+					{ updateGraph(yMax, "grey", allYears[Number(d)], "no"); }
 					else
-					{ updateGraph(yMax, 'red', obsMaxYear, "no"); };
+					{ updateGraph(yMax, "red", obsMaxYear, "no"); };
+				},
+						yearMouseleave = function(d) {
+							d3.select(this)
+							.style("stroke", "transparent")
+							.style("stroke-width", 0);
+				},
+						marginMouseover = function(d) {
+							updateGraph(yMax, "red", obsMaxYear, "no");
 				};
-
-				var yearMouseleave = function(d) {
-					d3.select(this)
-						.style("stroke", "transparent")
-						.style("stroke-width", 0);
-				};
-
-				var marginMouseover = function(d) {
-					updateGraph(yMax, 'red', obsMaxYear, "no");
-				};
-				// add the year rect boundaries
+				// Add the year rect boundaries
 				var yearRect = svg1.selectAll()
 						.data(nydKeys, function(d) { return d; })
 						.enter();
-				// add the margin rect boundaries
-				var marginRect = svg1.selectAll()
-						.data(marginRectDicKeys, function(d) { return d; })
-						.enter();
-
+				// Add the year rectangles
 				yearRect.append("rect")
 							.attr("x", function(d) { return x(allDates[nydDic[d]]); })
 							.attr("y", function(d) { return 0 })
-							.attr("rx", 4)
-							.attr("ry", 4)
 							.attr("width", function(d) { return (width/numRows)*obsPerYearDic[allYears[Number(d)]] } )
 							.attr("height", height )
 							.style("fill", "transparent")
 							.style("stroke", "transparent")
-							// .style("stroke-width", 3)
 							.on("mouseover", yearMouseover)
 							.on("mouseleave", yearMouseleave);
 
+				// Add the margin rect boundaries
+				var marginRect = svg1.selectAll()
+						.data(marginRectDicKeys, function(d) { return d; })
+						.enter();
+				// Add the margin rectangles
 				marginRect.append("rect")
 						.attr("x", function(d) { return marginRectDic[d]["x"]; })
 						.attr("y", function(d) { return marginRectDic[d]["y"]; })
-						.attr("rx", 4)
-						.attr("ry", 4)
 						.attr("width", function(d) { return marginRectDic[d]["width"]; })
 						.attr("height", function(d) { return marginRectDic[d]["height"]; })
 						.style("fill", 'transparent')
 						.style("stroke", "transparent")
-						// .style("stroke", "black")
-						.style("stroke-width", 3)
 						.on("mouseover", marginMouseover);
 
 				});

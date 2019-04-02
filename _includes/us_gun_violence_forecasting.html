@@ -10,6 +10,10 @@
 			border: 1px solid #000;
 		}
 
+		/* svg {
+ 			border: 1px solid #000;
+ 		} */
+
 		.line {
 		  fill: none;
 		  stroke-width: 2px;
@@ -22,6 +26,21 @@
 			-ms-user-select: none;
 			user-select: none;
 			pointer-events: none;
+		}
+
+		div.tooltip {
+		  /* position: absolute; */
+		  /* text-align: center; */
+		  width: 265px;
+		  height: 120px;
+		  padding: 10px;
+			font-family: 'Lora', 'Times New Roman', serif;
+			font-size: 12px;
+			stroke: black;
+		  background: white;
+		  border: solid;
+			border-width: 1px;
+		  border-radius: 5px;
 		}
 
 		</style>
@@ -46,7 +65,7 @@
 		<!-- Load color palettes -->
 		<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 		<!-- Create a div where the graph will take place -->
-		<div id="las_vegas_button" align="left"  style="margin-bottom:30;"></div>
+		<div id="las_vegas_button" align="left"  style="margin-top:100px; margin-bottom:20px;"></div>
 		<div id="line_graph" align="center"  style="margin-bottom:40px;"></div>
 		<script>
 			// set the dimensions and margins of the graph
@@ -78,19 +97,6 @@
 			// set the ranges
 					x = d3.scaleTime().range([0, width]),
 					y = d3.scaleLinear().range([height, 0]);
-
-			var mouseover = function(d) {
-				d3.select(this)
-					.style("stroke", "black")
-					.style("stroke-width", 2)
-					.style("cursor", "pointer");
-			};
-
-			var mouseleave = function(d) {
-				d3.select(this)
-					.style("stroke", "black")
-					.style("stroke-width", 1);
-			};
 
 			d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 			var numRows = data.length,
@@ -138,15 +144,50 @@
 					obsMaxYear = d3.max(obsMaxYear),
 					allObs = allObs.sort(function(a,b){return b-a}),
 					maxOb = d3.max(allObs),
-					yMax = maxOb;
+					yMax = maxOb,
+					maxDiff = allObs[0]-allObs[1],
+					minDate = d3.min(allDates);
 
 			var w = 165,
 					h = 40;
+
+			var lvTooltip = d3.select("#las_vegas_button")
+											 .append("div")
+												 .attr("class", "tooltip")
+												 .style("left", "175px")
+												 .style("top", "60px")
+												 .html("The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation effects the distribution of the entire graph.");
+
+			var lvMouseover = function(d) {
+				lvTooltip
+						.style("opacity", 1);
+				updateGraph(yMax, 'red', obsMaxYear, "yes");
+					 };
+
+			var lvMouseleave = function(d) {
+				lvTooltip
+					.style("opacity", 0);
+					};
+
+			 var checkMarkHover = function(d) {
+					d3.select(this)
+						.style("stroke", "black")
+						.style("stroke-width", 2)
+						.style("cursor", "pointer");
+				};
+
+				var checkMarkLeave = function(d) {
+					d3.select(this)
+						.style("stroke", "black")
+						.style("stroke-width", 1);
+				};
 			// append the svg object to the body of the page
 			var svg2 = d3.select("#las_vegas_button")
 					.append("svg")
 					  .attr("width", w+4.5)
-					  .attr("height", h+4.5);
+					  .attr("height", h+4.5)
+						.on("mouseover", lvMouseover)
+						.on("mouseleave", lvMouseleave);
 
 			svg2.append("rect")
 					.attr("x", 2)
@@ -158,19 +199,19 @@
 					.style("fill", "transparent")
 					.style("stroke", "black")
 					.style("stroke-width", 1)
-				.on("mouseover", mouseover)
-				.on("mouseleave", mouseleave)
+				.on("mouseover", checkMarkHover)
+				.on("mouseleave", checkMarkLeave)
 				.on("click", function() {
 					if (yMax==maxOb)
 					{ yMax = allObs[1];
 						createRect(yMax);
-						updateGraph(yMax, 'red', obsMaxYear);
+						updateGraph(yMax, 'red', obsMaxYear, "no");
 						d3.select("#checkMark").remove();
 				}
 					else
 					{ yMax=maxOb;
 						createRect(yMax);
-						updateGraph(yMax, 'red', obsMaxYear);
+						updateGraph(yMax, 'red', obsMaxYear, "yes");
 
 						svg2.append("text")
 								 .attr("pointer-events", "none")
@@ -269,7 +310,7 @@
 				});
 		};
 
-			var updateGraph = function(maximumY, trendColor, hoverYear) {
+			var updateGraph = function(maximumY, trendColor, hoverYear, highlightMax) {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 				// format the data
 				data.forEach(function(d) {
@@ -282,7 +323,6 @@
 				// Scale the range of the data
 				x.domain(d3.extent(data, function(d) { return d.date; }));
 				y.domain([0, maximumY + 25]);
-				// y.domain([0, maximumY + 25]);
 				// Add the circles.
 				svg1.selectAll("circle")
 						.data(data)
@@ -300,7 +340,13 @@
 							if ( d.non_observation==1 || d.year > hoverYear )
 							{ return 'transparent' }
 							else
-							{ return 'black' }
+							{ return 'black' };})
+						.style("stroke-width", function(d) {
+							if ( highlightMax=="yes" )
+								{ if (d.num_harmed==maxOb) { return 5; }
+									else { return 1; }}
+							else
+							{ return 1; }
 						});
 				// define the line
 				var valueLine = d3.line()
@@ -336,13 +382,19 @@
 						.style("stroke-width", 3)
 						.style("cursor", "pointer");
 					if (allYears[Number(d)] < obsMaxYear)
-					{ updateGraph(yMax, 'grey', allYears[Number(d)]); }
+					{ updateGraph(yMax, 'grey', allYears[Number(d)], "no"); }
 					else
-					{ updateGraph(yMax, 'red', obsMaxYear); };
+					{ updateGraph(yMax, 'red', obsMaxYear, "no"); };
+				};
+
+				var yearMouseleave = function(d) {
+					d3.select(this)
+						.style("stroke", "transparent")
+						.style("stroke-width", 0);
 				};
 
 				var marginMouseover = function(d) {
-					updateGraph(yMax, 'red', obsMaxYear);
+					updateGraph(yMax, 'red', obsMaxYear, "no");
 				};
 				// add the year rect boundaries
 				var yearRect = svg1.selectAll()
@@ -364,7 +416,7 @@
 							.style("stroke", "transparent")
 							// .style("stroke-width", 3)
 							.on("mouseover", yearMouseover)
-							.on("mouseleave", mouseleave);
+							.on("mouseleave", yearMouseleave);
 
 				marginRect.append("rect")
 						.attr("x", function(d) { return marginRectDic[d]["x"]; })

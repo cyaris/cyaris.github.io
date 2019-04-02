@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 
-		svg {
+	 #line_graph {
 			border: 1px solid #000;
 		}
 
@@ -66,7 +66,7 @@
 					},
 					marginRectDicKeys = Object.keys(marginRectDic);
 			// append the svg object to the body of the page
-			var svg = d3.select("#line_graph")
+			var svg1 = d3.select("#line_graph")
 					.append("svg")
 					  .attr("width", width + margin.left + margin.right)
 					  .attr("height", height + margin.top + margin.bottom)
@@ -82,14 +82,14 @@
 			var mouseover = function(d) {
 				d3.select(this)
 					.style("stroke", "black")
-					.style("stroke-width", 3)
+					.style("stroke-width", 2)
 					.style("cursor", "pointer");
 			};
 
-			var mouseLeave = function(d) {
+			var mouseleave = function(d) {
 				d3.select(this)
-					.style("stroke", "transparent")
-					.style("stroke-width", 0);
+					.style("stroke", "black")
+					.style("stroke-width", 1);
 			};
 
 			d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
@@ -140,75 +140,73 @@
 					maxOb = d3.max(allObs),
 					yMax = maxOb;
 
-			var w = 125,
-					h = 40,
-					lvText = "without";
+			var w = 165,
+					h = 40;
 			// append the svg object to the body of the page
 			var svg2 = d3.select("#las_vegas_button")
 					.append("svg")
 					  .attr("width", w+4.5)
-					  .attr("height", h+4.5)
-						.style("cursor", "pointer");
+					  .attr("height", h+4.5);
 
 			svg2.append("rect")
-					.attr("x", 1.5)
-					.attr("y", 1.5)
-					// .attr("rx", 4)
-					// .attr("ry", 4)
-					.attr("width", w)
-					.attr("height", h)
+					.attr("x", 2)
+					.attr("y", 9)
+					.attr("width", w/6.5)
+					.attr("height", h/1.65)
+					// .attr("id", 'hover')
+					.style("cursor", "pointer")
 					.style("fill", "transparent")
-					.style("stroke-width", 0)
+					.style("stroke", "black")
+					.style("stroke-width", 1)
 				.on("mouseover", mouseover)
-				.on("mouseleave", mouseLeave)
+				.on("mouseleave", mouseleave)
 				.on("click", function() {
 					if (yMax==maxOb)
 					{ yMax = allObs[1];
-						console.log(yMax);
-						svg2.append("rect")
-								.attr("pointer-events", "none")
-								.attr("x", 80)
-								.attr("y", 5)
-								.attr("rx", 4)
-								.attr("ry", 4)
-								.attr("width", w/4)
-								.attr("height", h/2.5)
-								.style("fill", "white");
 						createRect(yMax);
 						updateGraph(yMax, 'red', obsMaxYear);
+						d3.select("#checkMark").remove();
 				}
 					else
 					{ yMax=maxOb;
-						console.log(yMax);
-						svg2.append("text")
-							 .attr("pointer-events", "none")
-							 .attr("x", 80)
-							 .attr("y", 17.5)
-							 .text("out")
-								 .style("font-size", "12px")
-								 .style("fill", "black");
 						createRect(yMax);
 						updateGraph(yMax, 'red', obsMaxYear);
+
+						svg2.append("text")
+								 .attr("pointer-events", "none")
+								 .attr("x", 7)
+								 .attr("y", 28.5)
+								 .attr("id", 'checkMark')
+								 .text("✓")
+									 .style("font-size", "20px")
+									 .style("fill", "black");
 					}
 				});
 
-		svg2.append("text")
-			 .attr("pointer-events", "none")
-			 .attr("x", 10)
-			 .attr("y", 17.5)
-			 .text("Rescale without")
-				 .style("font-size", "12px")
-				 .style("fill", "black");
+				svg2.append("text")
+					 .attr("pointer-events", "none")
+					 .attr("x", 35)
+					 .attr("y", 17.5)
+					 .text("Scaled with")
+						 .style("font-size", "12px")
+						 .style("fill", "black");
 
-		svg2.append("text")
-			 .attr("pointer-events", "none")
-			 .attr("x", 10)
-			 .attr("y", 32.5)
-			 .text("Las Vegas Shooting")
-				 .style("font-size", "12px")
-				 .style("fill", "black");
+				svg2.append("text")
+					 .attr("pointer-events", "none")
+					 .attr("x", 35)
+					 .attr("y", 32.5)
+					 .text("Las Vegas Shooting")
+						 .style("font-size", "12px")
+						 .style("fill", "black");
 
-			console.log(yMax);
+				svg2.append("text")
+						 .attr("pointer-events", "none")
+						 .attr("x", 7)
+						 .attr("y", 28.5)
+						 .attr("id", 'checkMark')
+						 .text("✓")
+							 .style("font-size", "20px")
+							 .style("fill", "black");
 
 			var createGraph = function() {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
@@ -224,7 +222,7 @@
 				x.domain(d3.extent(data, function(d) { return d.date; }));
 				y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
 				// Add the circles.
-				svg.selectAll("circle")
+				svg1.selectAll("circle")
 						.data(data)
 						.enter()
 						.append("circle")
@@ -249,7 +247,7 @@
 						.x(function(d) { return x(d.date); })
 						.y(function(d) { return y(d.trend); });
 				// Add the valueline path.
-				svg.append("path")
+				svg1.append("path")
 						.data([data])
 						.attr("pointer-events", "none")
 						.attr("class", "line")
@@ -257,13 +255,13 @@
 						.style("stroke", "red")
 						.style("stroke-width", 3);
 				// Add the X Axis
-			  svg.append("g")
+			  svg1.append("g")
 						.attr("class", "x axis")
 			      .attr("transform", "translate(0," + height + ")")
 						.style("font-size", "12px")
 			      .call(d3.axisBottom(x));
 			  // Add the Y Axis
-			  svg.append("g")
+			  svg1.append("g")
 						.attr("class", "y axis")
 						.style("font-size", "12px")
 			      .call(d3.axisLeft(y));
@@ -286,7 +284,7 @@
 				y.domain([0, maximumY + 25]);
 				// y.domain([0, maximumY + 25]);
 				// Add the circles.
-				svg.selectAll("circle")
+				svg1.selectAll("circle")
 						.data(data)
 						.attr("pointer-events", "none")
 						.attr("r", 2)
@@ -309,7 +307,7 @@
 						.x(function(d) { return x(d.date); })
 						.y(function(d) { return y(d.trend); });
 				// Add the valueline path.
-				svg.select("path")
+				svg1.select("path")
 						.data([data])
 						.attr("pointer-events", "none")
 						.attr("class", "line")
@@ -347,11 +345,11 @@
 					updateGraph(yMax, 'red', obsMaxYear);
 				};
 				// add the year rect boundaries
-				var yearRect = svg.selectAll()
+				var yearRect = svg1.selectAll()
 						.data(nydKeys, function(d) { return d; })
 						.enter();
 				// add the margin rect boundaries
-				var marginRect = svg.selectAll()
+				var marginRect = svg1.selectAll()
 						.data(marginRectDicKeys, function(d) { return d; })
 						.enter();
 
@@ -366,7 +364,7 @@
 							.style("stroke", "transparent")
 							// .style("stroke-width", 3)
 							.on("mouseover", yearMouseover)
-							.on("mouseleave", mouseLeave);
+							.on("mouseleave", mouseleave);
 
 				marginRect.append("rect")
 						.attr("x", function(d) { return marginRectDic[d]["x"]; })

@@ -126,6 +126,26 @@
 					x = d3.scaleTime().range([0, width]),
 					y = d3.scaleLinear().range([height, 0]);
 
+			function getTextWidth(svgInput, textInput, fontSize) {
+
+				var textWidth = []
+
+				svgInput.append('g')
+						    .selectAll('.dummyText')
+						    .data(textInput)
+						    .enter()
+						    .append("text")
+							    .attr("font-size", String(fontSize) + "px")
+							    .text(function(d) { return d; })
+							    .each(function(d,i) {
+							        var thisWidth = this.getComputedTextLength()
+							        textWidth.push(thisWidth)
+							        this.remove();
+				    });
+				{ var textWidth = textWidth.reduce((a, b) => a + b, 0);
+					return textWidth; }
+				};
+
 			d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 			var numRows = data.length,
 					minYear = d3.min(data, function(d) { return d.year }),
@@ -137,7 +157,8 @@
 					nydDic = {},
 					yearIndex = [],
 					allYears = [],
-					obsPerYearDic = {};
+					obsPerYearDic = {},
+					obsCumDic = {};
 			// format the data
 			data.forEach(function(d) {
 					d.date = parseTime(d.date);
@@ -158,117 +179,122 @@
 
 			for ( var i = minYear; i <= maxYear; i++ ) {
 					allYears.push(Number(i));
-					numDaysCount = 0;
+					numDaysYearCount = 0;
+					numDaysCumCount = 0;
 					data.forEach(function(d) {
+						numDaysCumCount+=1;
 						if ( d.year==i )
-						{ numDaysCount+=1; }
+						{ numDaysYearCount+=1;
+							obsCumDic[i] = numDaysCumCount; }
 						if ( d.year==i && d.non_observation!=1 )
 						{ obsMaxYear.push(Number(i)); }
 					});
-					obsPerYearDic[i] = numDaysCount;
+					obsPerYearDic[i] = numDaysYearCount;
 			};
 
 			var nydKeys = Object.keys(nydDic),
 					obsMaxYear = d3.max(obsMaxYear),
 					allObs = allObs.sort(function(a,b){return b-a}),
 					maxOb = d3.max(allObs),
-					// set initial yMax
-					// which will be changed as scale is adjusted
+					// set initial yMax which will be changed as scale is adjusted
 					yMax = maxOb,
 					maxDiff = allObs[0]-allObs[1],
 					minDate = d3.min(allDates);
 
-			var lvTooltip = d3.select("#las_vegas_button")
+			var createLVSVG = function() {
+
+				var lvTooltip = d3.select("#las_vegas_button")
 											 .append("div")
 												 .attr("class", "tooltip")
 												 .style("left", "175px")
 												 .style("top", "55px")
 												 .html("The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation effects the distribution of the entire graph.");
 
-			var lvMouseover = function(d) {
-						lvTooltip
-							.style("opacity", 1);
-						updateGraph(yMax, "red", obsMaxYear, "yes");
-			},
-					lvMouseleave = function(d) {
-						lvTooltip
-							.style("opacity", 0);
-						updateGraph(yMax, "red", obsMaxYear, "no");
-			},
-					checkMarkHover = function(d) {
-						d3.select(this)
-							.style("stroke", "black")
-							.style("stroke-width", 2)
-							.style("cursor", "pointer");
-			},
-					checkMarkLeave = function(d) {
-						d3.select(this)
-							.style("stroke", "black")
-							.style("stroke-width", 1);
-			};
-			// append the svg object to the body of the page
-			var svg2 = d3.select("#las_vegas_button")
-					.append("svg")
-					  .attr("width", lvWidth)
-					  .attr("height", lvHeight)
-						.on("mouseover", lvMouseover)
-						.on("mouseleave", lvMouseleave);
-
-			svg2.append("rect")
-					.attr("x", 2)
-					.attr("y", 6.5)
-					.attr("width", lvWidth/6.5)
-					.attr("height", lvHeight/1.65)
-					// .attr("id", 'hover')
-					.style("cursor", "pointer")
-					.style("fill", "transparent")
-					.style("stroke", "black")
-					.style("stroke-width", 1)
-				.on("mouseover", checkMarkHover)
-				.on("mouseleave", checkMarkLeave)
-				.on("click", function() {
-					if (yMax==maxOb)
-					{ yMax = allObs[1];
-						createRect(yMax);
-						updateGraph(yMax, "red", obsMaxYear, "no");
-						d3.select("#checkMark").remove();
-				}
-					else
-					{ yMax = maxOb;
-						createRect(yMax);
-						updateGraph(yMax, "red", obsMaxYear, "yes");
-						addCheckMark();
-					}
-				});
-
-				svg2.append("text")
-					 .attr("pointer-events", "none")
-					 .attr("x", 35)
-					 .attr("y", 15)
-					 .text("Scaled with")
-						 .style("font-size", "12px")
-						 .style("fill", "black");
-
-				svg2.append("text")
-					 .attr("pointer-events", "none")
-					 .attr("x", 35)
-					 .attr("y", 30)
-					 .text("Las Vegas Shooting")
-						 .style("font-size", "12px")
-						 .style("fill", "black");
-
-				var addCheckMark = function() {
-					svg2.append("text")
-							 .attr("pointer-events", "none")
-							 .attr("x", 7)
-							 .attr("y", 26)
-							 .attr("id", 'checkMark')
-							 .text("✓")
-								 .style("font-size", "20px")
-								 .style("fill", "black");
+				var lvMouseover = function(d) {
+							lvTooltip
+								.style("opacity", 1);
+							updateGraph(yMax, "red", obsMaxYear, "yes");
+				},
+						lvMouseleave = function(d) {
+							lvTooltip
+								.style("opacity", 0);
+							updateGraph(yMax, "red", obsMaxYear, "no");
+				},
+						checkMarkHover = function(d) {
+							d3.select(this)
+								.style("stroke", "black")
+								.style("stroke-width", 2)
+								.style("cursor", "pointer");
+				},
+						checkMarkLeave = function(d) {
+							d3.select(this)
+								.style("stroke", "black")
+								.style("stroke-width", 1);
 				};
+				// append the svg object to the body of the page
+				var svg2 = d3.select("#las_vegas_button")
+						.append("svg")
+						  .attr("width", lvWidth)
+						  .attr("height", lvHeight)
+							.on("mouseover", lvMouseover)
+							.on("mouseleave", lvMouseleave);
 
-				addCheckMark();
+				svg2.append("rect")
+						.attr("x", 2)
+						.attr("y", 6.5)
+						.attr("width", lvWidth/6.5)
+						.attr("height", lvHeight/1.65)
+						// .attr("id", 'hover')
+						.style("cursor", "pointer")
+						.style("fill", "transparent")
+						.style("stroke", "black")
+						.style("stroke-width", 1)
+					.on("mouseover", checkMarkHover)
+					.on("mouseleave", checkMarkLeave)
+					.on("click", function() {
+						if (yMax==maxOb)
+						{ yMax = allObs[1];
+							createRect(yMax);
+							updateGraph(yMax, "red", obsMaxYear, "no");
+							d3.select("#checkMark").remove();
+					}
+						else
+						{ yMax = maxOb;
+							createRect(yMax);
+							updateGraph(yMax, "red", obsMaxYear, "yes");
+							addCheckMark();
+						}
+					});
+
+					svg2.append("text")
+						 .attr("pointer-events", "none")
+						 .attr("x", 35)
+						 .attr("y", 15)
+						 .text("Scaled with")
+							 .style("font-size", "12px")
+							 .style("fill", "black");
+
+					svg2.append("text")
+						 .attr("pointer-events", "none")
+						 .attr("x", 35)
+						 .attr("y", 30)
+						 .text("Las Vegas Shooting")
+							 .style("font-size", "12px")
+							 .style("fill", "black");
+
+					var addCheckMark = function() {
+						svg2.append("text")
+								 .attr("pointer-events", "none")
+								 .attr("x", 7)
+								 .attr("y", 26)
+								 .attr("id", 'checkMark')
+								 .text("✓")
+									 .style("font-size", "20px")
+									 .style("fill", "black");
+					};
+
+					addCheckMark();
+			};
 
 			var createGraph = function() {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
@@ -316,9 +342,38 @@
 						.attr("d", valueLine)
 						.style("stroke", "red")
 						.style("stroke-width", 3);
+				// Add observation timeframe label
+				svg1.append("text")
+						.attr("pointer-events", "none")
+						.attr("x", width-145)
+						.attr("y", 0)
+						.text("Observation Timeframe:")
+							.style("font-size", "12px")
+							.style("fill", "black");
+
+				svg1.append("text")
+						.attr("pointer-events", "none")
+						.attr("id", "obs_text")
+						.attr("x", width-84.5)
+						.attr("y", 15)
+						.text(String(allYears[0]) + "–Present")
+							.style("font-size", "12px")
+							.style("fill", "black");
+
+				var textInput = numRows.toLocaleString() + " total days",
+						textWidthOut = getTextWidth(svg1, textInput, 12);
+
+				svg1.append("text")
+						.attr("pointer-events", "none")
+						.attr("id", "obs_text")
+						.attr("x", (width-16) - textWidthOut)
+						.attr("y", 29)
+						.text(textInput)
+							.style("font-size", "12px")
+							.style("fill", "black");
 				// Add the X Axis
 			  svg1.append("g")
-						.attr("class", "x axis")
+						.attr("id", "x axis")
 			      .attr("transform", "translate(0," + height + ")")
 						.style("font-size", "12px")
 			      .call(d3.axisBottom(x));
@@ -373,6 +428,39 @@
 				svg1.select("path")
 						.attr("d", valueLine)
 						.style("stroke", trendColor);
+				// Remove observation year label and replace with new one
+				d3.selectAll("#obs_text").remove();
+
+				svg1.append("text")
+						.attr("pointer-events", "none")
+						.attr("id", "obs_text")
+						.attr("x", function(d) {
+							if ( hoverYear>=obsMaxYear)
+							{ return width-84.5; }
+							else
+							{ return width-66; }
+						})
+						.attr("y", 15)
+						.text(function(d) {
+							if ( hoverYear>=obsMaxYear)
+							{ return String(allYears[0]) + "–Present" }
+							else
+							{ return String(allYears[0]) + "–" + String(hoverYear); }
+						})
+							.style("font-size", "12px")
+							.style("fill", "black");
+
+				var textInput = obsCumDic[hoverYear].toLocaleString() + " total days",
+						textWidthOut = getTextWidth(svg1, textInput, 12);
+
+				svg1.append("text")
+						.attr("pointer-events", "none")
+						.attr("id", "obs_text")
+						.attr("x", (width-16) - textWidthOut)
+						.attr("y", 29)
+						.text(textInput)
+							.style("font-size", "12px")
+							.style("fill", "black");
 				// Update the Y Axis
 				svg1.select(".y")
 			      .call(d3.axisLeft(y));
@@ -441,6 +529,7 @@
 				});
 			};
 
+			createLVSVG();
 			createGraph();
 			createRect(yMax);
 

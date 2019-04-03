@@ -158,7 +158,8 @@
 					yearIndex = [],
 					allYears = [],
 					obsPerYearDic = {},
-					obsCumDic = {};
+					obsCumDic = {},
+					incidentCumDic = {};
 			// format the data
 			data.forEach(function(d) {
 					d.date = parseTime(d.date);
@@ -171,6 +172,7 @@
 					allDates.push(d.date);
 					d.year = +d.year;
 					d.non_observation = +d.non_observation;
+					d.num_incidents = +d.num_incidents;
 			});
 
 			for (var i = 1; i <= numYears; i++) {
@@ -181,11 +183,14 @@
 					allYears.push(Number(i));
 					numDaysYearCount = 0;
 					numDaysCumCount = 0;
+					numIncidentCumCount = 0;
 					data.forEach(function(d) {
 						numDaysCumCount+=1;
+						numIncidentCumCount+=d.num_incidents;
 						if ( d.year==i )
 						{ numDaysYearCount+=1;
-							obsCumDic[i] = numDaysCumCount; }
+							obsCumDic[i] = numDaysCumCount;
+							incidentCumDic[i] = numIncidentCumCount; }
 						if ( d.year==i && d.non_observation!=1 )
 						{ obsMaxYear.push(Number(i)); }
 					});
@@ -371,6 +376,18 @@
 						.text(textInput)
 							.style("font-size", "12px")
 							.style("fill", "black");
+
+				var textInput = incidentCumDic[obsMaxYear].toLocaleString() + " Total Incidents",
+						textWidthOut = getTextWidth(svg1, textInput, 12);
+
+				svg1.append("text")
+						.attr("pointer-events", "none")
+						.attr("id", "obs_text")
+						.attr("x", (width-16) - textWidthOut)
+						.attr("y", 43)
+						.text(textInput)
+							.style("font-size", "12px")
+							.style("fill", "black");
 				// Add the X Axis
 			  svg1.append("g")
 						.attr("id", "x axis")
@@ -462,6 +479,18 @@
 						.attr("id", "obs_text")
 						.attr("x", (width-16) - textWidthOut)
 						.attr("y", 29)
+						.text(textInput)
+							.style("font-size", "12px")
+							.style("fill", "black");
+
+				var textInput = incidentCumDic[hoverYear].toLocaleString() + " Total Incidents",
+						textWidthOut = getTextWidth(svg1, textInput, 12);
+
+				svg1.append("text")
+						.attr("pointer-events", "none")
+						.attr("id", "obs_text")
+						.attr("x", (width-16) - textWidthOut)
+						.attr("y", 43)
 						.text(textInput)
 							.style("font-size", "12px")
 							.style("fill", "black");

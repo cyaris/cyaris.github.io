@@ -345,9 +345,9 @@
 				// Add observation timeframe label
 				svg1.append("text")
 						.attr("pointer-events", "none")
-						.attr("x", width-145)
+						.attr("x", width-163)
 						.attr("y", 0)
-						.text("Observation Timeframe:")
+						.text("Model Based on Data From:")
 							.style("font-size", "12px")
 							.style("fill", "black");
 
@@ -360,7 +360,7 @@
 							.style("font-size", "12px")
 							.style("fill", "black");
 
-				var textInput = numRows.toLocaleString() + " total days",
+				var textInput = numRows.toLocaleString() + " Total Days",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 
 				svg1.append("text")
@@ -435,22 +435,26 @@
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
 						.attr("x", function(d) {
-							if ( hoverYear>=obsMaxYear)
+							if ( hoverYear>=obsMaxYear )
 							{ return width-84.5; }
+							else if ( hoverYear==minYear )
+							{ return width-35; }
 							else
 							{ return width-66; }
 						})
 						.attr("y", 15)
 						.text(function(d) {
-							if ( hoverYear>=obsMaxYear)
+							if ( hoverYear>=obsMaxYear )
 							{ return String(allYears[0]) + "–Present" }
+							else if ( hoverYear==minYear )
+							{ return String(allYears[0]); }
 							else
 							{ return String(allYears[0]) + "–" + String(hoverYear); }
 						})
 							.style("font-size", "12px")
 							.style("fill", "black");
 
-				var textInput = obsCumDic[hoverYear].toLocaleString() + " total days",
+				var textInput = obsCumDic[hoverYear].toLocaleString() + " Total Days",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 
 				svg1.append("text")

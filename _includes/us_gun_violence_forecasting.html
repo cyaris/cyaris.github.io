@@ -6,11 +6,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 
-	 #line_graph {
-			border: 1px solid #000;
-		}
+		/* svg {
+ 			border: 1px solid #000;
+ 		} */
 
-		@media (max-width:750px){
+		@media (max-width:822.5px){
 	      #las_vegas_button {
 						display: none;
 	      }
@@ -19,15 +19,11 @@
 	      }
 	  }
 
-	  @media (min-width:750px){
+	  @media (min-width:822.5px){
 			#hidden_line_graph_explained {
 				display: none;
 	    }
 	  }
-
-		/* svg {
- 			border: 1px solid #000;
- 		} */
 
 		.line {
 		  fill: none;
@@ -89,14 +85,14 @@
 		<div id="hidden_line_graph_explained" align="left"  style="margin-top:20px; margin-bottom:20px;">
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
-		<div id="las_vegas_button" align="left"  style="margin-top:100px; margin-bottom:17.5px;"></div>
+		<div id="las_vegas_button" align="left"  style="margin-top:100px; margin-bottom:18.5px;"></div>
 		<!-- Create a div where the graph will take place -->
 		<div id="line_graph" align="center"  style="margin-bottom:40px;"></div>
 		<script>
 			// set the dimensions and margins of the graph
-			var margin = {top: 20, right: 20, bottom: 35, left: 40},
-			    width = 750 - margin.left - margin.right,
-			    height = 425 - margin.top - margin.bottom,
+			var margin = {top: 20, right: 20, bottom: 65, left: 65},
+			    width = 822.5 - margin.left - margin.right,
+			    height = 495 - margin.top - margin.bottom,
 					// and for the las vegas svg
 					lvWidth = 165,
 					lvHeight = 40;
@@ -120,6 +116,15 @@
 					.append("g")
 					  .attr("transform",
 					        "translate(" + margin.left + "," + margin.top + ")");
+
+			svg1.append("rect")
+						.attr("pointer-events", "none")
+						.attr("x", ((margin.left/2) * -1)-5.5)
+						.attr("y", (margin.top * -1)+.5)
+						.attr("width", width + (margin.left/2) + margin.right + 5)
+						.attr("height", height + margin.top + (margin.bottom/2))
+						.style("fill", "transparent")
+						.style("stroke", "black");
 			// parse the date / time
 			var parseTime = d3.timeParse("%Y-%m-%d"),
 					// set the ranges
@@ -128,21 +133,21 @@
 
 			function getTextWidth(svgInput, textInput, fontSize) {
 
-				var textWidth = []
+				var textWidthArray = []
 
 				svgInput.append('g')
 						    .selectAll('.dummyText')
-						    .data(textInput)
+						    .data([textInput])
 						    .enter()
 						    .append("text")
 							    .attr("font-size", String(fontSize) + "px")
 							    .text(function(d) { return d; })
 							    .each(function(d,i) {
-							        var thisWidth = this.getComputedTextLength()
-							        textWidth.push(thisWidth)
+							        var thisWidth = this.getComputedTextLength();
+							        textWidthArray.push(thisWidth);
 							        this.remove();
 				    });
-				{ var textWidth = textWidth.reduce((a, b) => a + b, 0);
+				{ var textWidth = textWidthArray.reduce((a, b) => a + b, 0);
 					return textWidth; }
 				};
 
@@ -245,7 +250,7 @@
 							.on("mouseleave", lvMouseleave);
 
 				svg2.append("rect")
-						.attr("x", 2)
+						.attr("x", 27)
 						.attr("y", 6.5)
 						.attr("width", lvWidth/6.5)
 						.attr("height", lvHeight/1.65)
@@ -273,7 +278,7 @@
 
 					svg2.append("text")
 						 .attr("pointer-events", "none")
-						 .attr("x", 35)
+						 .attr("x", 60)
 						 .attr("y", 15)
 						 .text("Scaled with")
 							 .style("font-size", "12px")
@@ -281,7 +286,7 @@
 
 					svg2.append("text")
 						 .attr("pointer-events", "none")
-						 .attr("x", 35)
+						 .attr("x", 60)
 						 .attr("y", 30)
 						 .text("Las Vegas Shooting")
 							 .style("font-size", "12px")
@@ -290,7 +295,7 @@
 					var addCheckMark = function() {
 						svg2.append("text")
 								 .attr("pointer-events", "none")
-								 .attr("x", 7)
+								 .attr("x", 32)
 								 .attr("y", 26)
 								 .attr("id", 'checkMark')
 								 .text("✓")
@@ -371,8 +376,8 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", (width-16) - textWidthOut)
-						.attr("y", 29)
+						.attr("x", (width-11) - textWidthOut)
+						.attr("y", 30)
 						.text(textInput)
 							.style("font-size", "12px")
 							.style("fill", "black");
@@ -383,22 +388,43 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", (width-16) - textWidthOut)
-						.attr("y", 43)
+						.attr("x", (width-11) - textWidthOut)
+						.attr("y", 45)
 						.text(textInput)
 							.style("font-size", "12px")
 							.style("fill", "black");
 				// Add the X Axis
 			  svg1.append("g")
+						.attr("pointer-events", "none")
 						.attr("id", "x axis")
 			      .attr("transform", "translate(0," + height + ")")
 						.style("font-size", "12px")
 			      .call(d3.axisBottom(x));
 			  // Add the Y Axis
 			  svg1.append("g")
+						.attr("pointer-events", "none")
 						.attr("class", "y axis")
 						.style("font-size", "12px")
 			      .call(d3.axisLeft(y));
+			  // Add label for x axis
+			  svg1.append("text")
+			      .attr("transform",
+			            "translate(" + (width/2) + " ," +
+			                           (height + margin.top + 37.5) + ")")
+						.attr("font-size", "18")
+						.style("stroke-width", 1.5)
+			      .style("text-anchor", "middle")
+			      .text("Date");
+			  // Add label for y axis
+			  svg1.append("text")
+			      .attr("transform", "rotate(-90)")
+			      .attr("x", 0-(height/2))
+			      .attr("y", 14-margin.left)
+						.attr("font-size", "18")
+						.style("stroke-width", 1.5)
+			      .style("text-anchor", "middle")
+			      .text("Total Killed or Injured");
+
 				});
 		};
 
@@ -477,8 +503,8 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", (width-16) - textWidthOut)
-						.attr("y", 29)
+						.attr("x", (width-11) - textWidthOut)
+						.attr("y", 30)
 						.text(textInput)
 							.style("font-size", "12px")
 							.style("fill", "black");
@@ -489,8 +515,8 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", (width-16) - textWidthOut)
-						.attr("y", 43)
+						.attr("x", (width-11) - textWidthOut)
+						.attr("y", 45)
 						.text(textInput)
 							.style("font-size", "12px")
 							.style("fill", "black");

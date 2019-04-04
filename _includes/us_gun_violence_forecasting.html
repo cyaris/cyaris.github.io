@@ -91,22 +91,22 @@
 		<script>
 			// set the dimensions and margins of the graph
 			var margin = {top: 20, right: 20, bottom: 65, left: 65},
-			    width = 822.5 - margin.left - margin.right,
-			    height = 495 - margin.top - margin.bottom,
+			    width = 750 - margin.left - margin.right,
+			    height = 450 - margin.top - margin.bottom,
 					// and for the las vegas svg
 					lvWidth = 175,
-					lvHeight = 40;
-			// set the dimensions of the margin rects
-			var marginRectDic = {
-						0: {"x": margin.left * -1, "y": 0,
-						"width": margin.left, "height": height},
-						1: {"x": width, "y": 0,
-						"width": margin.right, "height": height},
-						2: {"x": margin.left * -1, "y": margin.top * -1,
-						"width": width + margin.left + margin.right, "height": margin.top},
-						3: {"x": margin.left * -1, "y": height,
-						"width": width + margin.left + margin.right, "height": margin.bottom},
-					},
+					lvHeight = 40,
+					// set the dimensions of the margin rects
+					marginRectDic = {
+								0: {"x": margin.left * -1, "y": 0,
+								"width": margin.left, "height": height},
+								1: {"x": width, "y": 0,
+								"width": margin.right, "height": height},
+								2: {"x": margin.left * -1, "y": margin.top * -1,
+								"width": width + margin.left + margin.right, "height": margin.top},
+								3: {"x": margin.left * -1, "y": height,
+								"width": width + margin.left + margin.right, "height": margin.bottom},
+							},
 					marginRectDicKeys = Object.keys(marginRectDic);
 			// append the svg object to the body of the page
 			var svg1 = d3.select("#line_graph")
@@ -125,6 +125,24 @@
 						.attr("height", height + margin.top + (margin.bottom/2))
 						.style("fill", "transparent")
 						.style("stroke", "black");
+			// Add label for x axis
+		  svg1.append("text")
+		      .attr("transform", "translate(" +
+					(width/2) + " ," +
+					(height + margin.top + 37.5) + ")")
+					.attr("font-size", "18")
+					.style("stroke-width", 1.5)
+		      .style("text-anchor", "middle")
+		      .text("Date");
+		  // Add label for y axis
+		  svg1.append("text")
+		      .attr("transform", "rotate(-90)")
+		      .attr("x", 0-(height/2))
+		      .attr("y", 14-margin.left)
+					.attr("font-size", "18")
+					.style("stroke-width", 1.5)
+		      .style("text-anchor", "middle")
+		      .text("Total Killed or Injured");
 			// parse the date / time
 			var parseTime = d3.timeParse("%Y-%m-%d"),
 					// set the ranges
@@ -406,24 +424,6 @@
 						.attr("class", "y axis")
 						.style("font-size", "12px")
 			      .call(d3.axisLeft(y));
-			  // Add label for x axis
-			  svg1.append("text")
-			      .attr("transform",
-			            "translate(" + (width/2) + " ," +
-			                           (height + margin.top + 37.5) + ")")
-						.attr("font-size", "18")
-						.style("stroke-width", 1.5)
-			      .style("text-anchor", "middle")
-			      .text("Date");
-			  // Add label for y axis
-			  svg1.append("text")
-			      .attr("transform", "rotate(-90)")
-			      .attr("x", 0-(height/2))
-			      .attr("y", 14-margin.left)
-						.attr("font-size", "18")
-						.style("stroke-width", 1.5)
-			      .style("text-anchor", "middle")
-			      .text("Total Killed or Injured");
 
 				});
 		};

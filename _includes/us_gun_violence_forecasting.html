@@ -355,7 +355,7 @@
 				// Add observation timeframe label
 				svg1.append("text")
 						.attr("pointer-events", "none")
-						.attr("x", width-163)
+						.attr("x", width-152)
 						.attr("y", 0)
 						.text("Model Based on Data From:")
 							.style("font-size", "12px")
@@ -364,7 +364,7 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", width-84.5)
+						.attr("x", width-73.5)
 						.attr("y", 15)
 						.text(String(allYears[0]) + "–Present")
 							.style("font-size", "12px")
@@ -376,7 +376,7 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", (width-11) - textWidthOut)
+						.attr("x", width - textWidthOut)
 						.attr("y", 30)
 						.text(textInput)
 							.style("font-size", "12px")
@@ -388,7 +388,7 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", (width-11) - textWidthOut)
+						.attr("x", width - textWidthOut)
 						.attr("y", 45)
 						.text(textInput)
 							.style("font-size", "12px")
@@ -479,11 +479,11 @@
 						.attr("id", "obs_text")
 						.attr("x", function(d) {
 							if ( hoverYear>=obsMaxYear )
-							{ return width-84.5; }
+							{ return width-73.5; }
 							else if ( hoverYear==minYear )
-							{ return width-35; }
+							{ return width-24; }
 							else
-							{ return width-66; }
+							{ return width-55; }
 						})
 						.attr("y", 15)
 						.text(function(d) {
@@ -503,7 +503,7 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", (width-11) - textWidthOut)
+						.attr("x", width - textWidthOut)
 						.attr("y", 30)
 						.text(textInput)
 							.style("font-size", "12px")
@@ -515,7 +515,7 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", (width-11) - textWidthOut)
+						.attr("x", width - textWidthOut)
 						.attr("y", 45)
 						.text(textInput)
 							.style("font-size", "12px")

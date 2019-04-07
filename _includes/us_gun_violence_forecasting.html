@@ -10,7 +10,7 @@
  			border: 1px solid #000;
  		} */
 
-		@media (max-width:822.5px){
+		@media (max-width:750px){
 	      #las_vegas_button {
 						display: none;
 	      }
@@ -19,7 +19,7 @@
 	      }
 	  }
 
-	  @media (min-width:822.5px){
+	  @media (min-width:750px){
 			#hidden_line_graph_explained {
 				display: none;
 	    }
@@ -27,7 +27,7 @@
 
 		.line {
 		  fill: none;
-		  stroke-width: 2px;
+		  stroke-width: 3px;
 		}
 
 		svg text {
@@ -64,28 +64,14 @@
 		</style>
 	</head>
 	<body>
-		<!-- <script>
-
-		function lvBtnClick() {
-		  var change = document.getElementById("lvRescaleBtn");
-		  if (change.innerHTML == "Rescale without<br>Las Vegas Shooting")
-			{ yMax = allObs[]; change.innerHTML = "Rescale with<br>Las Vegas Shooting"; }
-			else
-			{ yMax = allObs[1]; change.innerHTML = "Rescale without<br>Las Vegas Shooting"; }
-		}
-
-		</script> -->
-		<!-- <div id="lvRescale" style="margin-bottom:10px">
-		    <button id="lvRescaleBtn" onClick="lvBtnClick()">Rescale without<br>Las Vegas Shooting</button>
-		</div> -->
 		<!-- Load d3.js -->
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 		<!-- Load color palettes -->
-		<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-		<div id="hidden_line_graph_explained" align="left"  style="margin-top:20px; margin-bottom:20px;">
+		<!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
+		<div id="hidden_line_graph_explained" align="left"  style="margin-bottom:20px;">
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
-		<div id="las_vegas_button" align="left"  style="margin-top:100px; margin-bottom:18.5px;"></div>
+		<div id="las_vegas_button" align="left"  style="margin-top:75; margin-bottom:7.5px;"></div>
 		<!-- Create a div where the graph will take place -->
 		<div id="line_graph" align="center"  style="margin-bottom:40px;"></div>
 		<script>
@@ -125,6 +111,22 @@
 						.attr("height", height + margin.top + (margin.bottom/2))
 						.style("fill", "transparent")
 						.style("stroke", "black");
+
+			// var xAxisTooltip = d3.select("#line_graph")
+			// 							 .append("div")
+			// 								 .attr("class", "tooltip")
+			// 								 .style("left", "200px")
+			// 								 .style("top", "200px")
+			// 								 .style("bottom", "-200px")
+			// 								 .html("Observations grouped by date across the US."),
+			// 		xAxMouseover = function(d) {
+			// 			xAxisTooltip
+			// 				.style("opacity", 1);
+			// },
+			// 		xAxMouseleave = function(d) {
+			// 			xAxisTooltip
+			// 				.style("opacity", 0);
+			// };
 			// Add label for x axis
 		  svg1.append("text")
 		      .attr("transform", "translate(" +
@@ -134,11 +136,13 @@
 					.style("stroke-width", 1.5)
 		      .style("text-anchor", "middle")
 		      .text("Date");
+					// .on("mouseover", xAxMouseover)
+					// .on("mouseleave", xAxMouseleave);
 		  // Add label for y axis
 		  svg1.append("text")
 		      .attr("transform", "rotate(-90)")
 		      .attr("x", 0-(height/2))
-		      .attr("y", 14-margin.left)
+		      .attr("y", 15-margin.left)
 					.attr("font-size", "18")
 					.style("stroke-width", 1.5)
 		      .style("text-anchor", "middle")
@@ -235,7 +239,7 @@
 											 .append("div")
 												 .attr("class", "tooltip")
 												 .style("left", "200px")
-												 .style("top", "55px")
+												 .style("top", "-75px")
 												 .html("The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation effects the distribution of the entire graph.");
 
 				var lvMouseover = function(d) {
@@ -269,7 +273,7 @@
 
 				svg2.append("rect")
 						.attr("x", 27)
-						.attr("y", 6.5)
+						.attr("y", 9)
 						.attr("width", lvWidth/6.5)
 						.attr("height", lvHeight/1.65)
 						// .attr("id", 'hover')
@@ -297,7 +301,7 @@
 					svg2.append("text")
 						 .attr("pointer-events", "none")
 						 .attr("x", 60)
-						 .attr("y", 15)
+						 .attr("y", 17.5)
 						 .text("Scaled with")
 							 .style("font-size", "12px")
 							 .style("fill", "black");
@@ -305,7 +309,7 @@
 					svg2.append("text")
 						 .attr("pointer-events", "none")
 						 .attr("x", 60)
-						 .attr("y", 30)
+						 .attr("y", 32.5)
 						 .text("Las Vegas Shooting")
 							 .style("font-size", "12px")
 							 .style("fill", "black");
@@ -314,7 +318,7 @@
 						svg2.append("text")
 								 .attr("pointer-events", "none")
 								 .attr("x", 32)
-								 .attr("y", 26)
+								 .attr("y", 28)
 								 .attr("id", 'checkMark')
 								 .text("✓")
 									 .style("font-size", "20px")
@@ -388,7 +392,7 @@
 							.style("font-size", "12px")
 							.style("fill", "black");
 
-				var textInput = numRows.toLocaleString() + " Total Days",
+				var textInput = obsCumDic[obsMaxYear].toLocaleString() + " Total Days",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 
 				svg1.append("text")
@@ -541,7 +545,7 @@
 				var yearMouseover = function(d) {
 					d3.select(this)
 						.style("stroke", "black")
-						.style("stroke-width", 3)
+						.style("stroke-width", 1)
 						.style("cursor", "pointer");
 					if (allYears[Number(d)] < obsMaxYear)
 					{ updateGraph(yMax, "grey", allYears[Number(d)], "no"); }
@@ -570,7 +574,6 @@
 							.style("stroke", "transparent")
 							.on("mouseover", yearMouseover)
 							.on("mouseleave", yearMouseleave);
-
 				// Add the margin rect boundaries
 				var marginRect = svg1.selectAll()
 						.data(marginRectDicKeys, function(d) { return d; })

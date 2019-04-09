@@ -557,7 +557,7 @@
 								if ( allYears[Number(d)] < obsMaxYear )
 								{ return (width/numRows)*obsCumDic[allYears[Number(d)]]; }
 								else
-								{ return (width/numRows)*obsCumDic[obsMaxYear]; }
+								{ return 0; }
 							})
 							.attr("height", height)
 							.style("fill", "transparent")

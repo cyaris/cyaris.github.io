@@ -42,8 +42,6 @@
 		div.tooltip {
 		  /* position: absolute; */
 		  /* text-align: center; */
-		  width: 265px;
-		  height: 120px;
 		  padding: 10px;
 			font-family: 'Lora', 'Times New Roman', serif;
 			font-size: 12px;
@@ -59,6 +57,21 @@
 			-ms-user-select: none;
 			user-select: none;
 			pointer-events: none;
+		}
+
+		#lvTooltip {
+			width: 265px;
+			height: 120px;
+		}
+
+		#xAxisTooltip {
+			width: 160px;
+			height: 52.5px;
+		}
+
+		#yAxisTooltip {
+			width: 125px;
+			height: 52.5px;
 		}
 
 		</style>
@@ -111,24 +124,9 @@
 						.attr("height", height + margin.top + (margin.bottom/2))
 						.style("fill", "transparent")
 						.style("stroke", "black");
-
-			// var xAxisTooltip = d3.select("#line_graph")
-			// 							 .append("div")
-			// 								 .attr("class", "tooltip")
-			// 								 .style("left", "200px")
-			// 								 .style("top", "200px")
-			// 								 .style("bottom", "-200px")
-			// 								 .html("Observations grouped by date across the US."),
-			// 		xAxMouseover = function(d) {
-			// 			xAxisTooltip
-			// 				.style("opacity", 1);
-			// },
-			// 		xAxMouseleave = function(d) {
-			// 			xAxisTooltip
-			// 				.style("opacity", 0);
-			// };
 			// Add label for x axis
 		  svg1.append("text")
+					.attr("pointer-events", "none")
 		      .attr("transform", "translate(" +
 					(width/2) + " ," +
 					(height + margin.top + 37.5) + ")")
@@ -136,10 +134,9 @@
 					.style("stroke-width", 1.5)
 		      .style("text-anchor", "middle")
 		      .text("Date");
-					// .on("mouseover", xAxMouseover)
-					// .on("mouseleave", xAxMouseleave);
 		  // Add label for y axis
 		  svg1.append("text")
+					.attr("pointer-events", "none")
 		      .attr("transform", "rotate(-90)")
 		      .attr("x", 0-(height/2))
 		      .attr("y", 15-margin.left)
@@ -185,7 +182,9 @@
 					yearIndex = [],
 					allYears = [],
 					obsPerYearDic = {},
+					daysCumDic = {},
 					obsCumDic = {},
+					numObsCumCount = 0,
 					incidentCumDic = {};
 			// format the data
 			data.forEach(function(d) {
@@ -216,12 +215,14 @@
 						numIncidentCumCount+=d.num_incidents;
 						if ( d.year==i )
 						{ numDaysYearCount+=1;
-							obsCumDic[i] = numDaysCumCount;
+							daysCumDic[i] = numDaysCumCount;
 							incidentCumDic[i] = numIncidentCumCount; }
 						if ( d.year==i && d.non_observation!=1 )
-						{ obsMaxYear.push(Number(i)); }
+						{ obsMaxYear.push(Number(i));
+							numObsCumCount+=1; }
 					});
 					obsPerYearDic[i] = numDaysYearCount;
+					obsCumDic[i] = numObsCumCount;
 			};
 
 			var nydKeys = Object.keys(nydDic),
@@ -238,6 +239,7 @@
 				var lvTooltip = d3.select("#las_vegas_button")
 											 .append("div")
 												 .attr("class", "tooltip")
+												 .attr("id", "lvTooltip")
 												 .style("left", "200px")
 												 .style("top", "-75px")
 												 .html("The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation effects the distribution of the entire graph.");
@@ -392,7 +394,7 @@
 							.style("font-size", "12px")
 							.style("fill", "black");
 
-				var textInput = obsCumDic[obsMaxYear].toLocaleString() + " Total Days",
+				var textInput = daysCumDic[obsMaxYear].toLocaleString() + " Total Days",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 
 				svg1.append("text")
@@ -501,7 +503,7 @@
 							.style("font-size", "12px")
 							.style("fill", "black");
 
-				var textInput = obsCumDic[hoverYear].toLocaleString() + " Total Days",
+				var textInput = daysCumDic[hoverYear].toLocaleString() + " Total Days",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 
 				svg1.append("text")
@@ -543,14 +545,29 @@
 				y.domain([0, maximumY + 25]);
 
 				var yearMouseover = function(d) {
-					d3.select(this)
-						.style("stroke", "black")
-						.style("stroke-width", 1)
-						.style("cursor", "pointer");
-					if (allYears[Number(d)] < obsMaxYear)
-					{ updateGraph(yMax, "grey", allYears[Number(d)], "no"); }
-					else
-					{ updateGraph(yMax, "red", obsMaxYear, "no"); };
+
+					d3.select("#highlight_rect").remove();
+
+					svg1.append("rect")
+							.attr("pointer-events", "none")
+							.attr("id", "highlight_rect")
+							.attr("x", 0)
+							.attr("y", 0)
+							.attr("width", function() {
+								if ( allYears[Number(d)] < obsMaxYear )
+								{ return (width/numRows)*obsCumDic[allYears[Number(d)]]; }
+								else
+								{ return (width/numRows)*obsCumDic[obsMaxYear]; }
+							})
+							.attr("height", height)
+							.style("fill", "transparent")
+							.style("stroke-width", 1)
+							.style("stroke", "black");
+
+						if (allYears[Number(d)] < obsMaxYear)
+						{ updateGraph(yMax, "grey", allYears[Number(d)], "no"); }
+						else
+						{ updateGraph(yMax, "red", obsMaxYear, "no"); };
 				},
 						yearMouseleave = function(d) {
 							d3.select(this)
@@ -567,9 +584,9 @@
 				// Add the year rectangles
 				yearRect.append("rect")
 							.attr("x", function(d) { return x(allDates[nydDic[d]]); })
-							.attr("y", function(d) { return 0 })
-							.attr("width", function(d) { return (width/numRows)*obsPerYearDic[allYears[Number(d)]] } )
-							.attr("height", height )
+							.attr("y", 0)
+							.attr("width", function(d) { return (width/numRows)*obsPerYearDic[allYears[Number(d)]]; } )
+							.attr("height", height)
 							.style("fill", "transparent")
 							.style("stroke", "transparent")
 							.on("mouseover", yearMouseover)
@@ -587,6 +604,60 @@
 						.style("fill", 'transparent')
 						.style("stroke", "transparent")
 						.on("mouseover", marginMouseover);
+
+				var xAxisTooltip = d3.select("#line_graph")
+											 .append("div")
+												 .attr("class", "tooltip")
+												 .attr("id", "xAxisTooltip")
+												 .style("left", "455px")
+												 .style("top", "465px")
+												 .style("bottom", "0px")
+												 .html("Observations grouped by date across the US."),
+						xAxMouseover = function(d) {
+							xAxisTooltip
+								.style("opacity", 1);
+				},
+						xAxMouseleave = function(d) {
+							xAxisTooltip
+								.style("opacity", 0);
+				};
+
+				svg1.append("rect")
+							.attr("x", (width/2)-28.5)
+							.attr("y", height + margin.top + 21)
+							.attr("width", 60)
+							.attr("height", 20)
+							.style("fill", "transparent")
+							.style("stroke", "transparent")
+							.on("mouseover", xAxMouseover)
+							.on("mouseleave", xAxMouseleave);
+
+				var yAxisTooltip = d3.select("#line_graph")
+											 .append("div")
+												 .attr("class", "tooltip")
+												 .attr("id", "yAxisTooltip")
+												 .style("left", "17.5px")
+												 .style("top", "100px")
+												 .style("bottom", "0px")
+												 .html("Uninjured victims are not included."),
+						yAxMouseover = function(d) {
+							yAxisTooltip
+								.style("opacity", 1);
+				},
+						yAxMouseleave = function(d) {
+							yAxisTooltip
+								.style("opacity", 0);
+				};
+
+				svg1.append("rect")
+							.attr("x", -65)
+							.attr("y", (height/2)-95)
+							.attr("width", 22.5)
+							.attr("height", 190)
+							.style("fill", "transparent")
+							.style("stroke", "transparent")
+							.on("mouseover", yAxMouseover)
+							.on("mouseleave", yAxMouseleave);
 
 				});
 			};

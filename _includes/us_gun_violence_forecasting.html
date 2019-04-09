@@ -388,7 +388,7 @@
 				svg1.append("text")
 						.attr("pointer-events", "none")
 						.attr("id", "obs_text")
-						.attr("x", width-73.5)
+						.attr("x", width-74.5)
 						.attr("y", 15)
 						.text(String(allYears[0]) + "–Present")
 							.style("font-size", "12px")
@@ -485,11 +485,11 @@
 						.attr("id", "obs_text")
 						.attr("x", function(d) {
 							if ( hoverYear>=obsMaxYear )
-							{ return width-73.5; }
+							{ return width-74.5; }
 							else if ( hoverYear==minYear )
-							{ return width-24; }
+							{ return width-25; }
 							else
-							{ return width-55; }
+							{ return width-56; }
 						})
 						.attr("y", 15)
 						.text(function(d) {

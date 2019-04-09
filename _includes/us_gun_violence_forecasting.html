@@ -65,12 +65,12 @@
 		}
 
 		#xAxisTooltip {
-			width: 160px;
+			width: 142.5px;
 			height: 52.5px;
 		}
 
 		#yAxisTooltip {
-			width: 125px;
+			width: 122.5px;
 			height: 52.5px;
 		}
 
@@ -79,7 +79,6 @@
 	<body>
 		<!-- Load d3.js -->
 		<script src="https://d3js.org/d3.v4.min.js"></script>
-		<!-- Load color palettes -->
 		<!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
 		<div id="hidden_line_graph_explained" align="left"  style="margin-bottom:20px;">
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
@@ -93,7 +92,7 @@
 			    width = 750 - margin.left - margin.right,
 			    height = 450 - margin.top - margin.bottom,
 					// and for the las vegas svg
-					lvWidth = 175,
+					lvWidth = 200,
 					lvHeight = 40,
 					// set the dimensions of the margin rects
 					marginRectDic = {
@@ -130,17 +129,18 @@
 		      .attr("transform", "translate(" +
 					(width/2) + " ," +
 					(height + margin.top + 37.5) + ")")
-					.attr("font-size", "18")
-					.style("stroke-width", 1.5)
-		      .style("text-anchor", "middle")
-		      .text("Date");
+					.attr("font-size", "18px")
+					.attr("x", -32.5)
+						.style("stroke-width", 1.5)
+			      // .style("text-anchor", "middle")
+			      .text("Date");
 		  // Add label for y axis
 		  svg1.append("text")
 					.attr("pointer-events", "none")
 		      .attr("transform", "rotate(-90)")
 		      .attr("x", 0-(height/2))
 		      .attr("y", 15-margin.left)
-					.attr("font-size", "18")
+					.attr("font-size", "18px")
 					.style("stroke-width", 1.5)
 		      .style("text-anchor", "middle")
 		      .text("Total Killed or Injured");
@@ -149,6 +149,28 @@
 					// set the ranges
 					x = d3.scaleTime().range([0, width]),
 					y = d3.scaleLinear().range([height, 0]);
+
+			var addTooltipSymbol = function(svgInput, circX, circY, textX, textY, textRotate) {
+				svgInput.append("circle")
+							.attr("pointer-events", "none")
+							.attr("id", "tooltip_symbol")
+							.attr("cx", circX)
+							.attr("cy", circY)
+		 			    .attr('fill', "rgb(0,0,205)")
+		 			    .attr('r', 7.5);
+
+				svgInput.append("text")
+							.attr("pointer-events", "none")
+							.attr("id", "tooltip_symbol")
+							.attr("transform", textRotate)
+							.attr("x", textX)
+							.attr("y", textY)
+							.text("i")
+								.style('fill', "white")
+								.style('stroke', "white")
+								.style('font-size', "11.5px")
+								.style('font-weight', "3px");
+			};
 
 			function getTextWidth(svgInput, textInput, fontSize) {
 
@@ -240,7 +262,7 @@
 											 .append("div")
 												 .attr("class", "tooltip")
 												 .attr("id", "lvTooltip")
-												 .style("left", "200px")
+												 .style("left", "220px")
 												 .style("top", "-75px")
 												 .html("The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation effects the distribution of the entire graph.");
 
@@ -276,9 +298,8 @@
 				svg2.append("rect")
 						.attr("x", 27)
 						.attr("y", 9)
-						.attr("width", lvWidth/6.5)
+						.attr("width", lvWidth/7.75)
 						.attr("height", lvHeight/1.65)
-						// .attr("id", 'hover')
 						.style("cursor", "pointer")
 						.style("fill", "transparent")
 						.style("stroke", "black")
@@ -316,6 +337,8 @@
 							 .style("font-size", "12px")
 							 .style("fill", "black");
 
+					addTooltipSymbol(svg2, lvWidth-16.5, 27.5, lvWidth-18, 31, "rotate(0)");
+
 					var addCheckMark = function() {
 						svg2.append("text")
 								 .attr("pointer-events", "none")
@@ -349,6 +372,7 @@
 						.enter()
 						.append("circle")
 							.attr("pointer-events", "none")
+							.attr("id", "circle_obs")
 							.attr("r", 2)
 							.attr("cx", function(d) { return x(d.date); })
 							.attr("cy", function(d) { return y(d.num_harmed); })
@@ -447,7 +471,7 @@
 				// Rescale the range of the data vertically
 				y.domain([0, maximumY + 25]);
 				// Update the circles.
-				svg1.selectAll("circle")
+				svg1.selectAll("#circle_obs")
 						.attr("cy", function(d) { return y(d.num_harmed); })
 						.style("fill", function(d) {
 							if ( d.non_observation==1 || d.year > hoverYear )
@@ -608,7 +632,7 @@
 												 .style("left", "455px")
 												 .style("top", "465px")
 												 .style("bottom", "0px")
-												 .html("Observations grouped by date across the US."),
+												 .html("Incidents grouped by date across the US."),
 						xAxMouseover = function(d) {
 							xAxisTooltip
 								.style("opacity", 1);
@@ -619,21 +643,23 @@
 				};
 
 				svg1.append("rect")
-							.attr("x", (width/2)-28.5)
+							.attr("x", (width/2)-40)
 							.attr("y", height + margin.top + 21)
-							.attr("width", 60)
+							.attr("width", 70)
 							.attr("height", 20)
 							.style("fill", "transparent")
 							.style("stroke", "transparent")
 							.on("mouseover", xAxMouseover)
 							.on("mouseleave", xAxMouseleave);
 
+				addTooltipSymbol(svg1, (width/2) + 21, height + margin.top + 32, (width/2) + 19.5, height + margin.top + 35.5, "rotate(0)");
+
 				var yAxisTooltip = d3.select("#line_graph")
 											 .append("div")
 												 .attr("class", "tooltip")
 												 .attr("id", "yAxisTooltip")
 												 .style("left", "17.5px")
-												 .style("top", "100px")
+												 .style("top", "80px")
 												 .style("bottom", "0px")
 												 .html("Uninjured victims are not included."),
 						yAxMouseover = function(d) {
@@ -647,13 +673,15 @@
 
 				svg1.append("rect")
 							.attr("x", -65)
-							.attr("y", (height/2)-95)
+							.attr("y", (height/2)-115)
 							.attr("width", 22.5)
-							.attr("height", 190)
+							.attr("height", 210)
 							.style("fill", "transparent")
 							.style("stroke", "transparent")
 							.on("mouseover", yAxMouseover)
 							.on("mouseleave", yAxMouseleave);
+
+				addTooltipSymbol(svg1, -54, (height/2)-106.5, -77.5, -50, "rotate(-90)");
 
 				});
 			};

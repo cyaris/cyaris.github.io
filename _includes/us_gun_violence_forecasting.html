@@ -546,8 +546,6 @@
 
 				var yearMouseover = function(d) {
 
-					d3.select("#highlight_rect").remove();
-
 					svg1.append("rect")
 							.attr("pointer-events", "none")
 							.attr("id", "highlight_rect")
@@ -570,9 +568,7 @@
 						{ updateGraph(yMax, "red", obsMaxYear, "no"); };
 				},
 						yearMouseleave = function(d) {
-							d3.select(this)
-							.style("stroke", "transparent")
-							.style("stroke-width", 0);
+							d3.select("#highlight_rect").remove();
 				},
 						marginMouseover = function(d) {
 							updateGraph(yMax, "red", obsMaxYear, "no");

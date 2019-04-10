@@ -30,7 +30,7 @@
 
 		.line {
 		  fill: none;
-		  stroke-width: 3px;
+		  stroke-width: 1px;
 		}
 
 		svg text {
@@ -283,7 +283,7 @@
 
 				var nydKeys = Object.keys(nydDic),
 						obsMaxYear = d3.max(obsMaxYear),
-						obsMaxYearTrend = "trend_" + String(obsMaxYear),
+						obsMaxYearPred = "pred_" + String(obsMaxYear),
 						allObs = allObs.sort(function(a,b){return b-a}),
 						maxOb = d3.max(allObs),
 						// set initial yMax which will be changed as scale is adjusted
@@ -369,13 +369,14 @@
 					data.forEach(function(d) {
 							d.date = parseTime(d.date);
 							d.num_harmed = +d.num_harmed;
-							d[obsMaxYearTrend] = +d[obsMaxYearTrend];
+							d[obsMaxYearPred] = +d[obsMaxYearPred];
 							d.year = +d.year;
 							d.non_observation = +d.non_observation;
 					});
 					// Scale the range of the data
 					x.domain(d3.extent(data, function(d) { return d.date; }));
 					y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
+
 					// Add the circles.
 					svg1.selectAll("circle")
 							.data(data)
@@ -401,8 +402,8 @@
 					// define the line
 					var obsMaxYearLine = d3.line()
 							.x(function(d) { return x(d.date); })
-							.y(function(d) { return y(d[obsMaxYearTrend]); });
-					// Add the overall trend line path.
+							.y(function(d) { return y(d[obsMaxYearPred]); });
+					// Add the overall Pred line path.
 					svg1.append("path")
 							.data([data])
 							.attr("pointer-events", "none")
@@ -442,17 +443,38 @@
 
 			var updateGraph = function(maximumY, hoverYear, highlightMax) {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
-					var hoverYearTrend = "trend_" + String(hoverYear);
+					var hoverYearPred = "pred_" + String(hoverYear);
 					// format the data
 					data.forEach(function(d) {
 							d.date = parseTime(d.date);
 							d.num_harmed = +d.num_harmed;
-							d[hoverYearTrend] = +d[hoverYearTrend];
+							d[hoverYearPred] = +d[hoverYearPred];
 							d.year = +d.year;
 							d.non_observation = +d.non_observation;
 					});
 					// Rescale the range of the data vertically
 					y.domain([0, maximumY + 25]);
+
+					d3.select("#hover_line").remove();
+
+					var hoverYearLine = d3.line()
+							.x(function(d) { return x(d.date); })
+							.y(function(d) { return y(d[hoverYearPred]); });
+					// Add the overall Pred line path.
+					svg1.append("path")
+							.data([data])
+							.attr("pointer-events", "none")
+							.attr("class", "line")
+							.attr("id", "hover_line")
+							.attr("d", hoverYearLine)
+							// .style("stroke-dasharray", ("3, 5"))
+							.style("stroke", function(d) {
+								if ( hoverYear==obsMaxYear )
+								{ return "transparent" }
+								else
+								{ return "rgb(0,192,127)" }
+							});
+
 					// Update the circles.
 					svg1.selectAll("#circle_obs")
 							.attr("cy", function(d) { return y(d.num_harmed); })
@@ -475,26 +497,6 @@
 										{ return 1; }}
 								else
 								{ return 1; }
-							});
-
-					d3.select("#hover_line").remove();
-
-					var hoverYearLine = d3.line()
-							.x(function(d) { return x(d.date); })
-							.y(function(d) { return y(d[hoverYearTrend]); });
-					// Add the overall trend line path.
-					svg1.append("path")
-							.data([data])
-							.attr("pointer-events", "none")
-							.attr("class", "line")
-							.attr("id", "hover_line")
-							.attr("d", hoverYearLine)
-							.style("stroke-dasharray", ("3, 3"))
-							.style("stroke", function(d) {
-								if ( hoverYear==obsMaxYear )
-								{ return "transparent" }
-								else
-								{ return "rgb(0,192,127)" }
 							});
 					// Remove observation year label and replace with new one
 					d3.selectAll("#obs_text").remove();

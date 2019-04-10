@@ -17,6 +17,9 @@
 				#line_graph {
 						display: none;
 	      }
+				#data_credit {
+						display: none;
+	      }
 	  }
 
 	  @media (min-width:750px){
@@ -85,7 +88,10 @@
 		</div>
 		<div id="las_vegas_button" align="left"  style="margin-top:75; margin-bottom:7.5px;"></div>
 		<!-- Create a div where the graph will take place -->
-		<div id="line_graph" align="center"  style="margin-bottom:40px;"></div>
+		<div id="line_graph" align="center"></div>
+		<div id="data_credit" align="left"  style="margin-bottom:40px;">
+			<p>All data provided by <a href="https://gunviolencearchive.org" target="_blank">Gun Violence Archive (GVA)</a>, a not for profit corporation formed in 2013 to provide online public access to accurate information about gun-related violence in the United States.</p>
+		</div>
 		<script>
 			// set the dimensions and margins of the graph
 			var margin = {top: 20, right: 20, bottom: 65, left: 65},
@@ -335,7 +341,7 @@
 
 					addStdText(svg2, null, 60, 32.5, "Las Vegas Shooting", "12px");
 
-					addTooltipSymbol(svg2, lvWidth-16.5, 28, lvWidth-18, 31.5, "rotate(0)");
+					addTooltipSymbol(svg2, lvWidth-16.5, 28.5, lvWidth-18, 32, "rotate(0)");
 
 					addStdText(svg2, "checkMark", 32, 28, "✓", "20px");
 			};

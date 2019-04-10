@@ -283,14 +283,13 @@
 
 				var nydKeys = Object.keys(nydDic),
 						obsMaxYear = d3.max(obsMaxYear),
+						obsMaxYearTrend = "trend_" + String(obsMaxYear),
 						allObs = allObs.sort(function(a,b){return b-a}),
 						maxOb = d3.max(allObs),
 						// set initial yMax which will be changed as scale is adjusted
 						yMax = maxOb,
 						maxDiff = allObs[0]-allObs[1],
 						minDate = d3.min(allDates);
-
-			var createSVG2 = function() {
 
 				var lvTooltip = d3.select("#las_vegas_button")
 											 .append("div")
@@ -303,12 +302,12 @@
 				var lvMouseover = function(d) {
 							lvTooltip
 								.style("opacity", 1);
-							updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "yes");
+							updateGraph(yMax, obsMaxYear, "yes");
 				},
 						lvMouseleave = function(d) {
 							lvTooltip
 								.style("opacity", 0);
-							updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no");
+							updateGraph(yMax, obsMaxYear, "no");
 				},
 						checkMarkHover = function(d) {
 							d3.select(this)
@@ -344,13 +343,13 @@
 						if (yMax==maxOb)
 						{ yMax = allObs[1];
 							createRect(yMax);
-							updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no");
+							updateGraph(yMax, obsMaxYear, "no");
 							d3.select("#checkMark").remove();
 					}
 						else
 						{ yMax = maxOb;
 							createRect(yMax);
-							updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "yes");
+							updateGraph(yMax, obsMaxYear, "yes");
 							addStdText(svg2, "checkMark", 32, 28, "20px", 0, "normal", "✓");
 						}
 					});
@@ -362,7 +361,6 @@
 					addTooltipSymbol(svg2, lvWidth-16.5, 28.5, lvWidth-18, 32, "rotate(0)");
 
 					addStdText(svg2, "checkMark", 32, 28, "20px", 0, "normal", "✓");
-			};
 
 			var createGraph = function() {
 
@@ -371,7 +369,7 @@
 					data.forEach(function(d) {
 							d.date = parseTime(d.date);
 							d.num_harmed = +d.num_harmed;
-							d.trend = +d.trend;
+							d[obsMaxYearTrend] = +d[obsMaxYearTrend];
 							d.year = +d.year;
 							d.non_observation = +d.non_observation;
 					});
@@ -401,17 +399,16 @@
 									{ return 'black' }
 								});
 					// define the line
-					var valueLine = d3.line()
+					var obsMaxYearLine = d3.line()
 							.x(function(d) { return x(d.date); })
-							.y(function(d) { return y(d.trend); });
-					// Add the valueline path.
+							.y(function(d) { return y(d[obsMaxYearTrend]); });
+					// Add the overall trend line path.
 					svg1.append("path")
 							.data([data])
 							.attr("pointer-events", "none")
 							.attr("class", "line")
-							.attr("d", valueLine)
-							.style("stroke", "rgb(255,59,48)")
-							.style("stroke-width", 3);
+							.attr("d", obsMaxYearLine)
+							.style("stroke", "rgb(250,98,95)");
 
 					// Add observation timeframe label
 					addStdText(svg1, null, width-152, 0, "12px", 0, "normal", "Model Based on Data From:");
@@ -443,13 +440,14 @@
 				});
 		};
 
-			var updateGraph = function(maximumY, trendColor, hoverYear, highlightMax) {
+			var updateGraph = function(maximumY, hoverYear, highlightMax) {
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
+					var hoverYearTrend = "trend_" + String(hoverYear);
 					// format the data
 					data.forEach(function(d) {
 							d.date = parseTime(d.date);
 							d.num_harmed = +d.num_harmed;
-							d.trend = +d.trend;
+							d[hoverYearTrend] = +d[hoverYearTrend];
 							d.year = +d.year;
 							d.non_observation = +d.non_observation;
 					});
@@ -478,14 +476,26 @@
 								else
 								{ return 1; }
 							});
-					// Re-define the line
-					var valueLine = d3.line()
+
+					d3.select("#hover_line").remove();
+
+					var hoverYearLine = d3.line()
 							.x(function(d) { return x(d.date); })
-							.y(function(d) { return y(d.trend); });
-					// Add the valueline path.
-					svg1.select("path")
-							.attr("d", valueLine)
-							.style("stroke", trendColor);
+							.y(function(d) { return y(d[hoverYearTrend]); });
+					// Add the overall trend line path.
+					svg1.append("path")
+							.data([data])
+							.attr("pointer-events", "none")
+							.attr("class", "line")
+							.attr("id", "hover_line")
+							.attr("d", hoverYearLine)
+							.style("stroke-dasharray", ("3, 3"))
+							.style("stroke", function(d) {
+								if ( hoverYear==obsMaxYear )
+								{ return "transparent" }
+								else
+								{ return "rgb(0,192,127)" }
+							});
 					// Remove observation year label and replace with new one
 					d3.selectAll("#obs_text").remove();
 
@@ -559,11 +569,11 @@
 							if (allYears[Number(d)] < obsMaxYear)
 							{ d3.select("#hover_instruction").remove();
 								addStdText(svg3, "hover_instruction", 41, 17.5, "13.5px", 0.5, "italic", "Comparing Historical Forecasts...");
-								updateGraph(yMax, "grey", allYears[Number(d)], "no"); }
+								updateGraph(yMax, allYears[Number(d)], "no"); }
 							else
 							{ d3.select("#hover_instruction").remove();
 								addStdText(svg3, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
-								updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no"); };
+								updateGraph(yMax, obsMaxYear, "no"); };
 					},
 							yearMouseleave = function(d) {
 								d3.select("#highlight_rect").remove();
@@ -571,7 +581,7 @@
 								addStdText(svg3, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
 					},
 							marginMouseover = function(d) {
-								updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no");
+								updateGraph(yMax, obsMaxYear, "no");
 					};
 					// Add the year rect boundaries
 					var yearRect = svg1.selectAll()
@@ -612,6 +622,7 @@
 							xAxMouseover = function(d) {
 								xAxisTooltip
 									.style("opacity", 1);
+									updateGraph(yMax, obsMaxYear, "no");
 					},
 							xAxMouseleave = function(d) {
 								xAxisTooltip
@@ -642,6 +653,7 @@
 							yAxMouseover = function(d) {
 								yAxisTooltip
 									.style("opacity", 1);
+									updateGraph(yMax, obsMaxYear, "no");
 					},
 							yAxMouseleave = function(d) {
 								yAxisTooltip
@@ -662,7 +674,6 @@
 				});
 			};
 
-			createSVG2();
 			createGraph();
 			createRect(yMax);
 

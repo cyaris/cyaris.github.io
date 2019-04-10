@@ -567,6 +567,8 @@
 					},
 							yearMouseleave = function(d) {
 								d3.select("#highlight_rect").remove();
+								d3.selectAll("#hover_instruction").remove();
+								addStdText(svg3, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
 					},
 							marginMouseover = function(d) {
 								updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no");

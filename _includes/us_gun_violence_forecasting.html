@@ -351,7 +351,7 @@
 						{ yMax = maxOb;
 							createRect(yMax);
 							updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "yes");
-							addStdText(svg2, "checkMark", 32, 28, "20px", 0, "✓");
+							addStdText(svg2, "checkMark", 32, 28, "20px", 0, "normal", "✓");
 						}
 					});
 
@@ -557,17 +557,17 @@
 								.style("stroke", "black");
 
 							if (allYears[Number(d)] < obsMaxYear)
-							{ d3.selectAll("#hover_instruction").remove();
+							{ d3.select("#hover_instruction").remove();
 								addStdText(svg3, "hover_instruction", 41, 17.5, "13.5px", 0.5, "italic", "Comparing Historical Forecasts...");
 								updateGraph(yMax, "grey", allYears[Number(d)], "no"); }
 							else
-							{ d3.selectAll("#hover_instruction").remove();
+							{ d3.select("#hover_instruction").remove();
 								addStdText(svg3, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
 								updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no"); };
 					},
 							yearMouseleave = function(d) {
 								d3.select("#highlight_rect").remove();
-								d3.selectAll("#hover_instruction").remove();
+								d3.select("#hover_instruction").remove();
 								addStdText(svg3, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
 					},
 							marginMouseover = function(d) {

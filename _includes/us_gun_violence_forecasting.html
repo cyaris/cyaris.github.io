@@ -44,7 +44,7 @@
 
 		div.tooltip {
 		  /* position: absolute; */
-		  /* text-align: center; */
+		  text-align: left;
 		  padding: 10px;
 			font-family: 'Lora', 'Times New Roman', serif;
 			font-size: 12px;
@@ -68,13 +68,13 @@
 		}
 
 		#xAxisTooltip {
-			width: 142.5px;
+			width: 147.5px;
 			height: 52.5px;
 		}
 
 		#yAxisTooltip {
-			width: 122.5px;
-			height: 52.5px;
+			width: 162.5px;
+			height: 55px;
 		}
 
 		</style>
@@ -86,7 +86,8 @@
 		<div id="hidden_line_graph_explained" align="left"  style="margin-bottom:20px;">
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
-		<div id="las_vegas_button" align="left"  style="margin-top:75; margin-bottom:7.5px;"></div>
+		<div id="las_vegas_button" align="left" style="margin-top:75; margin-bottom:-31.5px;"></div>
+		<div id="line_graph_instructions" align="right" style="margin-bottom:7.5px;"></div>
 		<!-- Create a div where the graph will take place -->
 		<div id="line_graph" align="center"></div>
 		<div id="data_credit" align="left"  style="margin-bottom:40px;">
@@ -135,27 +136,27 @@
 		      .attr("transform", "translate(" +
 					(width/2) + " ," +
 					(height + margin.top + 37.5) + ")")
-					.attr("font-size", "18px")
 					.attr("x", -32.5)
-						.style("stroke-width", 1.5)
-			      .text("Date");
+		      .text("Date")
+						.style("font-size", "18px")
+						.style("stroke-width", 1.5);
 		  // Add label for y axis
 		  svg1.append("text")
 					.attr("pointer-events", "none")
 		      .attr("transform", "rotate(-90)")
 		      .attr("x", 0-(height/2))
 		      .attr("y", 15-margin.left)
-					.attr("font-size", "18px")
-					.style("stroke-width", 1.5)
-		      .style("text-anchor", "middle")
-		      .text("Total Killed or Injured");
+		      .text("Total Killed or Injured")
+						.style("font-size", "18px")
+						.style("stroke-width", 1.5)
+						.style("text-anchor", "middle")
 			// parse the date / time
 			var parseTime = d3.timeParse("%Y-%m-%d"),
 					// set the ranges
 					x = d3.scaleTime().range([0, width]),
 					y = d3.scaleLinear().range([height, 0]);
 
-			var addStdText = function(svgInput, idInput, textX, textY, textInput, fontSize) {
+			var addStdText = function(svgInput, idInput, textX, textY, fontSize, strokeWidth, fontStyle, textInput) {
 
 			 svgInput.append("text")
 					.attr("pointer-events", "none")
@@ -163,9 +164,24 @@
 					.attr("x", textX)
 					.attr("y", textY)
 					.text(textInput)
+						.style("fill", "black")
 						.style("font-size", fontSize)
-						.style("fill", "black");
+						.style("font-style", fontStyle)
+						.style('stroke-width', strokeWidth)
+						.style('stroke', function(d) {
+							if ( strokeWidth==0 )
+							{ return "transparent" }
+							else
+							 { return "black" }
+						 });
 			};
+			// adding svg3 here so it becomes a global variable that can be accessed by svg1
+			var svg3 = d3.select("#line_graph_instructions")
+					.append("svg")
+						.attr("width", 263.5)
+						.attr("height", 25);
+
+			addStdText(svg3, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
 
 			var addTooltipSymbol = function(svgInput, circX, circY, textX, textY, textRotate) {
 
@@ -174,6 +190,7 @@
 							.attr("cx", circX)
 							.attr("cy", circY)
 		 			    .attr('fill', "rgb(0,122,255)")
+							.attr('opacity', 0.9)
 		 			    .attr('r', 7.5);
 
 				svgInput.append("text")
@@ -183,8 +200,9 @@
 							.attr("y", textY)
 							.text("i")
 								.style('stroke', "white")
+								.style('fill', "white")
 								.style('font-size', "11.5px")
-								.style('font-weight', "2.5px");
+								.style('font-weight', 500);
 			};
 
 			function getTextWidth(svgInput, textInput, fontSize) {
@@ -272,7 +290,7 @@
 						maxDiff = allObs[0]-allObs[1],
 						minDate = d3.min(allDates);
 
-			var createLVSVG = function() {
+			var createSVG2 = function() {
 
 				var lvTooltip = d3.select("#las_vegas_button")
 											 .append("div")
@@ -285,12 +303,12 @@
 				var lvMouseover = function(d) {
 							lvTooltip
 								.style("opacity", 1);
-							updateGraph(yMax, "red", obsMaxYear, "yes");
+							updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "yes");
 				},
 						lvMouseleave = function(d) {
 							lvTooltip
 								.style("opacity", 0);
-							updateGraph(yMax, "red", obsMaxYear, "no");
+							updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no");
 				},
 						checkMarkHover = function(d) {
 							d3.select(this)
@@ -326,24 +344,24 @@
 						if (yMax==maxOb)
 						{ yMax = allObs[1];
 							createRect(yMax);
-							updateGraph(yMax, "red", obsMaxYear, "no");
+							updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no");
 							d3.select("#checkMark").remove();
 					}
 						else
 						{ yMax = maxOb;
 							createRect(yMax);
-							updateGraph(yMax, "red", obsMaxYear, "yes");
-							addStdText(svg2, "checkMark", 32, 28, "✓", "20px");
+							updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "yes");
+							addStdText(svg2, "checkMark", 32, 28, "20px", 0, "✓");
 						}
 					});
 
-					addStdText(svg2, null, 60, 17.5, "Scaled with", "12px");
+					addStdText(svg2, null, 60, 17.5, "12px", 0, "normal",  "Scaled with");
 
-					addStdText(svg2, null, 60, 32.5, "Las Vegas Shooting", "12px");
+					addStdText(svg2, null, 60, 32.5, "12px", 0, "normal", "Las Vegas Shooting");
 
 					addTooltipSymbol(svg2, lvWidth-16.5, 28.5, lvWidth-18, 32, "rotate(0)");
 
-					addStdText(svg2, "checkMark", 32, 28, "✓", "20px");
+					addStdText(svg2, "checkMark", 32, 28, "20px", 0, "normal", "✓");
 			};
 
 			var createGraph = function() {
@@ -392,22 +410,23 @@
 							.attr("pointer-events", "none")
 							.attr("class", "line")
 							.attr("d", valueLine)
-							.style("stroke", "red")
+							.style("stroke", "rgb(255,59,48)")
 							.style("stroke-width", 3);
-					// Add observation timeframe label
-					addStdText(svg1, null, width-152, 0, "Model Based on Data From:", "12px");
 
-					addStdText(svg1, "obs_text", width-74.5, 15, String(allYears[0]) + "–Present", "12px");
+					// Add observation timeframe label
+					addStdText(svg1, null, width-152, 0, "12px", 0, "normal", "Model Based on Data From:");
+
+					addStdText(svg1, "obs_text", width-74.5, 15, "12px", 0, "normal", String(allYears[0]) + "–Present");
 
 					var textInput = daysCumDic[obsMaxYear].toLocaleString() + " Total Days",
 							textWidthOut = getTextWidth(svg1, textInput, 12);
 
-					addStdText(svg1, "obs_text", width - textWidthOut, 30, textInput, "12px");
+					addStdText(svg1, "obs_text", width - textWidthOut, 30, "12px", 0, "normal", textInput);
 
 					var textInput = incidentCumDic[obsMaxYear].toLocaleString() + " Total Incidents",
 							textWidthOut = getTextWidth(svg1, textInput, 12);
 
-					addStdText(svg1, "obs_text", width - textWidthOut, 45, textInput, "12px");
+					addStdText(svg1, "obs_text", width - textWidthOut, 45, "12px", 0, "normal", textInput);
 					// Add the X Axis
 				  svg1.append("g")
 							.attr("pointer-events", "none")
@@ -496,12 +515,12 @@
 					var textInput = daysCumDic[hoverYear].toLocaleString() + " Total Days",
 							textWidthOut = getTextWidth(svg1, textInput, 12);
 
-					addStdText(svg1, "obs_text", width - textWidthOut, 30, textInput, "12px");
+					addStdText(svg1, "obs_text", width - textWidthOut, 30, "12px", 0, "normal", textInput);
 
 					var textInput = incidentCumDic[hoverYear].toLocaleString() + " Total Incidents",
 							textWidthOut = getTextWidth(svg1, textInput, 12);
 
-					addStdText(svg1, "obs_text", width - textWidthOut, 45, textInput, "12px");
+					addStdText(svg1, "obs_text", width - textWidthOut, 45, "12px", 0, "normal", textInput);
 					// Update the Y Axis
 					svg1.select(".y")
 				      .call(d3.axisLeft(y));
@@ -538,15 +557,19 @@
 								.style("stroke", "black");
 
 							if (allYears[Number(d)] < obsMaxYear)
-							{ updateGraph(yMax, "grey", allYears[Number(d)], "no"); }
+							{ d3.selectAll("#hover_instruction").remove();
+								addStdText(svg3, "hover_instruction", 41, 17.5, "13.5px", 0.5, "italic", "Comparing Historical Forecasts...");
+								updateGraph(yMax, "grey", allYears[Number(d)], "no"); }
 							else
-							{ updateGraph(yMax, "red", obsMaxYear, "no"); };
+							{ d3.selectAll("#hover_instruction").remove();
+								addStdText(svg3, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
+								updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no"); };
 					},
 							yearMouseleave = function(d) {
 								d3.select("#highlight_rect").remove();
 					},
 							marginMouseover = function(d) {
-								updateGraph(yMax, "red", obsMaxYear, "no");
+								updateGraph(yMax, "rgb(255,59,48)", obsMaxYear, "no");
 					};
 					// Add the year rect boundaries
 					var yearRect = svg1.selectAll()
@@ -583,7 +606,7 @@
 													 .style("left", "455px")
 													 .style("top", "465px")
 													 .style("bottom", "0px")
-													 .html("Incidents grouped by date across the US."),
+													 .html("Incidents are grouped by date across the US."),
 							xAxMouseover = function(d) {
 								xAxisTooltip
 									.style("opacity", 1);
@@ -610,10 +633,10 @@
 												 .append("div")
 													 .attr("class", "tooltip")
 													 .attr("id", "yAxisTooltip")
-													 .style("left", "17.5px")
-													 .style("top", "80px")
+													 .style("left", "15px")
+													 .style("top", "70px")
 													 .style("bottom", "0px")
-													 .html("Uninjured victims are not included."),
+													 .html("Victims with unreported injuries are not included."),
 							yAxMouseover = function(d) {
 								yAxisTooltip
 									.style("opacity", 1);
@@ -637,7 +660,7 @@
 				});
 			};
 
-			createLVSVG();
+			createSVG2();
 			createGraph();
 			createRect(yMax);
 

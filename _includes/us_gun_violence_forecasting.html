@@ -455,12 +455,20 @@
 					// Rescale the range of the data vertically
 					y.domain([0, maximumY + 25]);
 
-					d3.select("#hover_line").remove();
+					// Redefine the overall Pred line path.
+					var obsMaxYearLine = d3.line()
+							.x(function(d) { return x(d.date); })
+							.y(function(d) { return y(d[obsMaxYearPred]); });
 
+					svg1.select("path")
+							.attr("d", obsMaxYearLine);
+
+					d3.select("#hover_line").remove();
+					// add the hover_line
 					var hoverYearLine = d3.line()
 							.x(function(d) { return x(d.date); })
 							.y(function(d) { return y(d[hoverYearPred]); });
-					// Add the overall Pred line path.
+
 					svg1.append("path")
 							.data([data])
 							.attr("pointer-events", "none")

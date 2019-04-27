@@ -5,4 +5,4 @@ subtitle: <a href="https://github.com/cyaris/mastermind/blob/master/Web%20Interf
 social-share: true
 ---
 
-{% include mastermind.html %}
+{% include /mastermind/mastermind.html %}

@@ -303,7 +303,31 @@
 							d3.select(this)
 								.style("stroke", "black")
 								.style("stroke-width", 1);
-							};
+							},
+						lvTooltip = d3.select("#las_vegas_button")
+											 .append("div")
+												 .attr("class", "tooltip")
+												 .attr("id", "lvTooltip")
+												 .style("left", "220px")
+												 .style("top", "-75px")
+												 .html("The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation affects the distribution of the entire graph."),
+						lvMouseover = function(d) {
+							lvTooltip
+								.style("opacity", 1);
+							updateGraph(yMax, obsMaxYear, "yes", showObs, showTS, sliderStep.value());
+				},
+						lvMouseleave = function(d) {
+							lvTooltip
+								.style("opacity", 0);
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
+				};
+				// append the svg object to the body of the page
+				var svg3 = d3.select("#las_vegas_button")
+						.append("svg")
+						  .attr("width", checkFilterWidth)
+						  .attr("height", checkFilterHeight)
+							.on("mouseover", lvMouseover)
+							.on("mouseleave", lvMouseleave);
 
 				var svg5 = d3.select("#metrics_and_statistics")
 						.append("svg")
@@ -312,8 +336,6 @@
 						// .append("g")
 						//   .attr("transform",
 						//         "translate(" + margin.left + "," + margin.top + ")");
-
-				addStdText(svg5, null, null, (margin.left/2-5.5)+(((width+margin.left)/5)*3)+22.5, 15, "12px", 0, "normal", null, "Model Smoothing");
 
 				var smoothStepData = [0, 5, 10, 15, 20],
 						sliderStep = d3.sliderBottom()
@@ -331,11 +353,6 @@
 							.attr('transform', 'translate(488,35)')
 							.style("font-size", "12px")
 							.call(sliderStep);
-
-				addStdText(svg5, null, null, (margin.left/2-5.5) + 2.5, 15, "15px", 0, "normal", null, "Overall Model");
-				addStdText(svg5, null, null, (margin.left/2-5.5)+((width+margin.left)/5), 15, "15px", 0, "normal", null, "Comparative Model");
-				addStdText(svg5, "obsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 26, "20px", 0, "normal", null, "✓");
-				addStdText(svg5, "tsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 70, "20px", 0, "normal", null, "✓");
 
 				var obsClick = function() {
 						if ( showObs=="yes" )
@@ -358,28 +375,51 @@
 						else
 						{ showTS = "yes";
 							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
-							addStdText(svg5, "tsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 70, "20px", 0, "normal", null, "✓");
+							addStdText(svg5, "tsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 71, "20px", 0, "normal", null, "✓");
+						}
+					},
+					lvClick = function() {
+						if ( yMax==maxOb )
+						{ yMax = allObs[1];
+							createYearRects(yMax);
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
+							d3.select("#lvCheckMark").remove();
+					}
+						else
+						{ yMax = maxOb;
+							createYearRects(yMax);
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
+							addStdText(svg3, "lvCheckMark", null, 32, 28, "20px", 0, "normal", null, "✓");
 						}
 					};
 
+				addStdRect(svg3, 27,  9, checkFilterWidth/7.75, checkFilterHeight/1.65, "transparent", "black", checkMarkHover, checkMarkLeave, lvClick);
 				addStdRect(svg5, width + margin.left + margin.right - (checkFilterWidth/7.75) - 1,  6.5, checkFilterWidth/7.75, checkFilterHeight/1.65, "transparent", "black", checkMarkHover, checkMarkLeave, obsClick);
 				addStdRect(svg5, width + margin.left + margin.right - (checkFilterWidth/7.75) - 1,  51.5, checkFilterWidth/7.75, checkFilterHeight/1.65, "transparent", "black", checkMarkHover, checkMarkLeave, tsClick);
+
+				addStdText(svg3, "lvCheckMark", null, 32, 28, "20px", 0, "normal", null, "✓");
+				addStdText(svg5, "obsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 26, "20px", 0, "normal", null, "✓");
+				addStdText(svg5, "tsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 71, "20px", 0, "normal", null, "✓");
+
+				addStdText(svg3, null, null, 60, 17.5, "12px", 0, "normal", null, "Scaled with");
+				addStdText(svg3, null, null, 60, 32.5, "12px", 0, "normal", null, "Las Vegas Shooting");
+				addStdText(svg5, null, null, (margin.left/2-5.5) + 2.5, 15, "15px", 0, "normal", null, "Overall Model");
+				addStdText(svg5, null, null, (margin.left/2-5.5)+((width+margin.left)/5), 15, "15px", 0, "normal", null, "Comparative Model");
+				addStdText(svg5, null, null, (margin.left/2-5.5)+(((width+margin.left)/5)*3)+22.5, 15, "12px", 0, "normal", null, "Model Smoothing");
+
+				addTooltipSymbol(svg3, checkFilterWidth-16.5, 28.5, checkFilterWidth-18, 32, "rotate(0)");
 				// Add observation timeframe label
-				var textInput =  "Displaying",
-						textWidthOut = getTextWidth(svg5, textInput, 12);
-				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 15, "12px", 0, "normal", null, textInput);
+				var textWidthOut = getTextWidth(svg5, "Displaying", 12);
+				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 15, "12px", 0, "normal", null, "Displaying");
 				// Add observation timeframe label
-				var textInput =  "Observations",
-						textWidthOut = getTextWidth(svg5, textInput, 12);
-				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 30, "12px", 0, "normal", null, textInput);
+				var textWidthOut = getTextWidth(svg5, "Observations", 12);
+				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 30, "12px", 0, "normal", null, "Observations");
 				// Add observation timeframe label
-				var textInput =  "Displaying",
-						textWidthOut = getTextWidth(svg5, textInput, 12);
-				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 60, "12px", 0, "normal", null, textInput);
+				var textWidthOut = getTextWidth(svg5, "Displaying", 12);
+				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 60, "12px", 0, "normal", null, "Displaying");
 				// Add observation timeframe label
-				var textInput =  "Time Series",
-						textWidthOut = getTextWidth(svg5, textInput, 12);
-				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 75, "12px", 0, "normal", null, textInput);
+				var textWidthOut = getTextWidth(svg5, "Time Series", 12);
+				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 75, "12px", 0, "normal", null, "Time Series");
 		    // // Add the overall Pred line path.
 		    svg5.append("line")
 		        .attr("pointer-events", "none")
@@ -398,53 +438,6 @@
 						.attr("y1", 25)
 						.attr("y2", 25)
 		        .style("stroke", "rgb(0,192,127)");
-
-				var lvTooltip = d3.select("#las_vegas_button")
-											 .append("div")
-												 .attr("class", "tooltip")
-												 .attr("id", "lvTooltip")
-												 .style("left", "220px")
-												 .style("top", "-75px")
-												 .html("The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation affects the distribution of the entire graph.");
-
-				var lvMouseover = function(d) {
-							lvTooltip
-								.style("opacity", 1);
-							updateGraph(yMax, obsMaxYear, "yes", showObs, showTS, sliderStep.value());
-				},
-						lvMouseleave = function(d) {
-							lvTooltip
-								.style("opacity", 0);
-							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
-				};
-				// append the svg object to the body of the page
-				var svg3 = d3.select("#las_vegas_button")
-						.append("svg")
-						  .attr("width", checkFilterWidth)
-						  .attr("height", checkFilterHeight)
-							.on("mouseover", lvMouseover)
-							.on("mouseleave", lvMouseleave);
-
-				var lvClick = function() {
-						if ( yMax==maxOb )
-						{ yMax = allObs[1];
-							createYearRects(yMax);
-							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
-							d3.select("#lvCheckMark").remove();
-					}
-						else
-						{ yMax = maxOb;
-							createYearRects(yMax);
-							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
-							addStdText(svg3, "lvCheckMark", null, 32, 28, "20px", 0, "normal", null, "✓");
-						}
-					};
-
-				addStdRect(svg3, 27,  9, checkFilterWidth/7.75, checkFilterHeight/1.65, "transparent", "black", checkMarkHover, checkMarkLeave, lvClick);
-				addStdText(svg3, null, null, 60, 17.5, "12px", 0, "normal", null, "Scaled with");
-				addStdText(svg3, null, null, 60, 32.5, "12px", 0, "normal", null, "Las Vegas Shooting");
-				addTooltipSymbol(svg3, checkFilterWidth-16.5, 28.5, checkFilterWidth-18, 32, "rotate(0)");
-				addStdText(svg3, "lvCheckMark", null, 32, 28, "20px", 0, "normal", null, "✓");
 
 		var createGraph = function() {
 
@@ -498,7 +491,7 @@
 				// Add observation timeframe label
 				var textInput =  String(allYears[0]) + "–Present",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
-				addStdText(svg1, "obs_text", null, width-textWidthOut, 0, "12px", 0, "normal", null, textInput);
+				addStdText(svg1, "obs_text", null, width - textWidthOut, 0, "12px", 0, "normal", null, textInput);
 
 				var textInput = daysCumDic[obsMaxYear].toLocaleString() + " Total Days",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
@@ -710,21 +703,7 @@
 													 .style("top", "465px")
 													 .style("bottom", "0px")
 													 .html("Incidents are grouped by date across the US."),
-							xAxMouseover = function(d) {
-								xAxisTooltip
-									.style("opacity", 1);
-									updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
-					},
-							xAxMouseleave = function(d) {
-								xAxisTooltip
-									.style("opacity", 0);
-					};
-
-					addStdRect(svg1, (width/2)-40, height + margin.top + 21, 70, 20, "transparent", "transparent", xAxMouseover, xAxMouseleave, null);
-					addTooltipSymbol(svg1, (width/2) + 21, height + margin.top + 32,
-					(width/2) + 19.5, height + margin.top + 35.5, "rotate(0)");
-
-					var yAxisTooltip = d3.select("#line_graph")
+							yAxisTooltip = d3.select("#line_graph")
 												 .append("div")
 													 .attr("class", "tooltip")
 													 .attr("id", "yAxisTooltip")
@@ -732,18 +711,30 @@
 													 .style("top", "70px")
 													 .style("bottom", "0px")
 													 .html("Victims with unreported injuries are not included."),
+							xAxMouseover = function(d) {
+								xAxisTooltip
+									.style("opacity", 1);
+									updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
+					},
 							yAxMouseover = function(d) {
 								yAxisTooltip
 									.style("opacity", 1);
 									updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
+					},
+							xAxMouseleave = function(d) {
+								xAxisTooltip
+									.style("opacity", 0);
 					},
 							yAxMouseleave = function(d) {
 								yAxisTooltip
 									.style("opacity", 0);
 					};
 
+					addStdRect(svg1, (width/2)-40, height + margin.top + 21, 70, 20, "transparent", "transparent", xAxMouseover, xAxMouseleave, null);
 					addStdRect(svg1, -65, (height/2)-115, 22.5, 210, "transparent", "transparent", xAxMouseover, xAxMouseleave, null);
+					addTooltipSymbol(svg1, (width/2) + 21, height + margin.top + 32, (width/2) + 19.5, height + margin.top + 35.5, "rotate(0)");
 					addTooltipSymbol(svg1, -54, (height/2)-106.5, -77.5, -50, "rotate(-90)");
+
 				});
 			};
 

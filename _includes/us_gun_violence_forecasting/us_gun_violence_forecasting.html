@@ -456,10 +456,10 @@
 						if ( d.non_observation!=1 )
 						{
 						difference = d[obsMaxYearPredRaw] - d.num_harmed;
-						overallRMSE += Math.sqrt(Math.pow(difference, 2));
+						overallRMSE += Math.pow(difference, 2);
 					};
 		    });
-				var overallRMSERounded = Number(parseFloat(overallRMSE).toFixed(2)).toLocaleString();
+				var overallRMSERounded = Number(parseFloat(Math.sqrt(overallRMSE)).toFixed(2)).toLocaleString();
 		    // Scale the range of the data
 		    x.domain(d3.extent(data, function(d) { return d.date; }));
 		    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
@@ -547,10 +547,14 @@
 						if ( d.non_observation!=1 )
 						{
 						difference = d[hoverYearPredRaw] - d.num_harmed;
-						hoverRMSE += Math.sqrt(Math.pow(difference, 2));
+						hoverRMSE += Math.pow(difference, 2);
 					};
 		    });
-				var hoverRMSERounded = Number(parseFloat(hoverRMSE).toFixed(2)).toLocaleString();
+				var hoverRMSERounded = Number(parseFloat(Math.sqrt(hoverRMSE)).toFixed(2)).toLocaleString();
+
+		    d3.select("#hover_line").remove();
+		    d3.selectAll("#obs_text").remove();
+				d3.selectAll("#hover_metrics").remove();
 		    // Rescale the range of the data vertically
 		    y.domain([0, maximumY + 25]);
 		    // Redefine the overall Pred line path.
@@ -565,8 +569,6 @@
 		          { return "transparent" }
 		          else
 		          { return "rgb(250,98,95)" };});
-
-		    d3.select("#hover_line").remove();
 		    // add the hover_line
 		    var hoverYearLine = d3.line()
 		        .x(function(d) { return x(d.date); })
@@ -603,9 +605,6 @@
 		          else
 		          { return 0.5; }
 		        });
-		    // Remove observation year label and replace with new one
-		    d3.selectAll("#obs_text").remove();
-				d3.selectAll("#hover_metrics").remove();
 
 				svg1.append("text")
 						.attr("pointer-events", "none")
@@ -644,6 +643,7 @@
 						textWidthOut = getTextWidth(svg5, textInput, 12);
 						addStdText(svg5, "hover_metrics", null, (margin.left/2-5.5)+(((width+margin.left)/5)*2) - textWidthOut, 50, "12px", 0, "normal", null, textInput);
 				}};
+
 				updateMetrics();
 		    // Update the Y Axis
 		    svg1.select(".y")

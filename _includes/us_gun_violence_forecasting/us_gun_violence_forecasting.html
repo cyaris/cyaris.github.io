@@ -117,54 +117,13 @@
 								"width": width + margin.left + margin.right, "height": margin.bottom},
 							},
 					marginRectDicKeys = Object.keys(marginRectDic);
-			// append the svg object to the body of the page
-			var svg1 = d3.select("#line_graph")
-					.append("svg")
-					  .attr("width", width + margin.left + margin.right)
-					  .attr("height", height + margin.top + margin.bottom)
-					.append("g")
-					  .attr("transform",
-					        "translate(" + margin.left + "," + margin.top + ")");
 
-			svg1.append("rect")
-						.attr("pointer-events", "none")
-						.attr("x", ((margin.left/2) * -1)-5.5)
-						.attr("y", (margin.top * -1)+.5)
-						.attr("width", width + (margin.left/2) + margin.right + 5)
-						.attr("height", height + margin.top + (margin.bottom/2))
-						.style("fill", "transparent")
-						.style("stroke", "black");
-			// Add label for x axis
-		  svg1.append("text")
-					.attr("pointer-events", "none")
-		      .attr("transform", "translate(" +
-					(width/2) + " ," +
-					(height + margin.top + 37.5) + ")")
-					.attr("x", -32.5)
-		      .text("Date")
-						.style("font-size", "18px")
-						.style("stroke-width", 1.5);
-		  // Add label for y axis
-		  svg1.append("text")
-					.attr("pointer-events", "none")
-		      .attr("transform", "rotate(-90)")
-		      .attr("x", 0-(height/2))
-		      .attr("y", 15-margin.left)
-		      .text("Total Killed or Injured")
-						.style("font-size", "18px")
-						.style("stroke-width", 1.5)
-						.style("text-anchor", "middle")
-			// parse the date / time
-			var parseTime = d3.timeParse("%Y-%m-%d"),
-					// set the ranges
-					x = d3.scaleTime().range([0, width]),
-					y = d3.scaleLinear().range([height, 0]);
-
-			var addStdText = function(svgInput, idInput, textX, textY, fontSize, strokeWidth, fontStyle, textInput) {
+			function addStdText(svgInput, idInput, textTransform, textX, textY, fontSize, strokeWidth, fontStyle, textAnchor, textInput) {
 
 			 svgInput.append("text")
 					.attr("pointer-events", "none")
 					.attr("id", idInput)
+					.attr("transform", textTransform)
 					.attr("x", textX)
 					.attr("y", textY)
 					.text(textInput)
@@ -177,17 +136,51 @@
 							{ return "transparent" }
 							else
 							 { return "black" }
-						 });
+						 })
+						.style("text-anchor", textAnchor);
 			};
+
+			function addStdRect(svgInput, rextX, rextY, rectWidth, rectHeight, rectFill, rectStroke, rMouseover, rMouseleave, rClick) {
+
+				svgInput.append("rect")
+							.attr("x", rextX)
+							.attr("y", rextY)
+							.attr("width", rectWidth)
+							.attr("height", rectHeight)
+							.style("fill", rectFill)
+							.style("stroke", rectStroke)
+							.on("mouseover", rMouseover)
+							.on("mouseleave", rMouseleave)
+							.on("click", rClick);
+			};
+			// append the svg object to the body of the page
+			var svg1 = d3.select("#line_graph")
+					.append("svg")
+					  .attr("width", width + margin.left + margin.right)
+					  .attr("height", height + margin.top + margin.bottom)
+					.append("g")
+					  .attr("transform",
+					        "translate(" + margin.left + "," + margin.top + ")");
+
+			addStdRect(svg1, ((margin.left/2) * -1)-5.5, (margin.top * -1)+.5, width + (margin.left/2) + margin.right + 5, height + margin.top + (margin.bottom/2), "transparent", "black", null, null, null);
+			// Add label for x axis
+			addStdText(svg1, null, "translate(" + (width/2) + " ," + (height + margin.top + 37.5) + ")", -32.5, null, "18px", 0.5, "normal", null, "Date");
+		  // Add label for y axis
+			addStdText(svg1, null, "rotate(-90)", 0-(height/2), 15-margin.left, "18px", 0.5, "normal", "middle", "Total Killed or Injured");
+			// parse the date / time
+			var parseTime = d3.timeParse("%Y-%m-%d"),
+					// set the ranges
+					x = d3.scaleTime().range([0, width]),
+					y = d3.scaleLinear().range([height, 0]);
 			// adding svg2 here so it becomes a global variable that can be accessed by svg1
 			var svg2 = d3.select("#line_graph_instructions")
 					.append("svg")
 						.attr("width", 263.5)
 						.attr("height", 25);
 
-			addStdText(svg2, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
+			addStdText(svg2, "hover_instruction", null, 0, 17.5, "13.5px", 0.5, "normal", null, "Hover to Compare Historical Forecasts");
 
-			var addTooltipSymbol = function(svgInput, circX, circY, textX, textY, textRotate) {
+			function addTooltipSymbol(svgInput, circX, circY, textX, textY, textRotate) {
 
 				svgInput.append("circle")
 							.attr("pointer-events", "none")
@@ -225,6 +218,7 @@
 							        textWidthArray.push(thisWidth);
 							        this.remove();
 				    });
+
 				{ var textWidth = textWidthArray.reduce((a, b) => a + b, 0);
 					return textWidth; }
 				};
@@ -246,7 +240,8 @@
 						obsCumDic = {},
 						numObsCumCount = 0,
 						incidentCumDic = {},
-						showObs = 'yes';
+						showObs = 'yes',
+						showTS = 'yes';
 				// format the data
 				data.forEach(function(d) {
 						d.date = parseTime(d.date);
@@ -315,7 +310,7 @@
 						//   .attr("transform",
 						//         "translate(" + margin.left + "," + margin.top + ")");
 
-				addStdText(svg5, null, (margin.left/2-5.5)+(((width+margin.left)/5)*3)+22.5, 10, "12px", 0, "normal", "Model Smoothing");
+				addStdText(svg5, null, null, (margin.left/2-5.5)+(((width+margin.left)/5)*3)+22.5, 15, "12px", 0, "normal", null, "Model Smoothing");
 
 				var smoothStepData = [0, 5, 10, 15, 20],
 						sliderStep = d3.sliderBottom()
@@ -326,69 +321,79 @@
 							    .step(5)
 									.default(10)
 									.on('onchange', function(d) {
-										updateGraph(yMax, obsMaxYear, "no", showObs, sliderStep.value());
+										updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
 									});
 
 				svg5.append('g')
-							.attr('transform', 'translate(488,30)')
+							.attr('transform', 'translate(488,35)')
 							.style("font-size", "12px")
 							.call(sliderStep);
 
-				addStdText(svg5, null, (margin.left/2-5.5) + 2.5, 15, "15px", 0, "normal", "Overall Model");
-				addStdText(svg5, null, (margin.left/2-5.5)+((width+margin.left)/5), 15, "15px", 0, "normal", "Comparative Model");
-				addStdText(svg5, "obsCheckMark", width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 1.5+20, "20px", 0, "normal", "✓");
+				addStdText(svg5, null, null, (margin.left/2-5.5) + 2.5, 15, "15px", 0, "normal", null, "Overall Model");
+				addStdText(svg5, null, null, (margin.left/2-5.5)+((width+margin.left)/5), 15, "15px", 0, "normal", null, "Comparative Model");
+				addStdText(svg5, "obsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 26, "20px", 0, "normal", null, "✓");
+				addStdText(svg5, "tsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 70, "20px", 0, "normal", null, "✓");
 
-				svg5.append("rect")
-						.attr("x", width + margin.left + margin.right - (checkFilterWidth/7.75) - 1)
-						.attr("y", 1.5)
-						.attr("width", checkFilterWidth/7.75)
-						.attr("height", checkFilterHeight/1.65)
-						.style("cursor", "pointer")
-						.style("fill", "transparent")
-						.style("stroke", "black")
-						.style("stroke-width", 1)
-					.on("mouseover", checkMarkHover)
-					.on("mouseleave", checkMarkLeave)
-					.on("click", function() {
-						if (showObs=="yes")
+				var obsClick = function() {
+						if ( showObs=="yes" )
 						{ showObs = "no";
-							createRect(yMax);
-							updateGraph(yMax, obsMaxYear, "no", showObs, sliderStep.value());
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
 							d3.select("#obsCheckMark").remove();
 					}
 						else
 						{ showObs = "yes";
-							updateGraph(yMax, obsMaxYear, "no", showObs, sliderStep.value());
-							addStdText(svg5, "obsCheckMark", width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 1.5+20, "20px", 0, "normal", "✓");
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
+							addStdText(svg5, "obsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 26, "20px", 0, "normal", null, "✓");
 						}
-					});
+					},
+					tsClick = function() {
+						if ( showTS=="yes" )
+						{ showTS = "no";
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
+							d3.select("#tsCheckMark").remove();
+					}
+						else
+						{ showTS = "yes";
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
+							addStdText(svg5, "tsCheckMark", null, width + margin.left + margin.right - (checkFilterWidth/7.75) + 4, 70, "20px", 0, "normal", null, "✓");
+						}
+					};
+
+				addStdRect(svg5, width + margin.left + margin.right - (checkFilterWidth/7.75) - 1,  6.5, checkFilterWidth/7.75, checkFilterHeight/1.65, "transparent", "black", checkMarkHover, checkMarkLeave, obsClick);
+				addStdRect(svg5, width + margin.left + margin.right - (checkFilterWidth/7.75) - 1,  51.5, checkFilterWidth/7.75, checkFilterHeight/1.65, "transparent", "black", checkMarkHover, checkMarkLeave, tsClick);
 				// Add observation timeframe label
 				var textInput =  "Displaying",
 						textWidthOut = getTextWidth(svg5, textInput, 12);
-
-				addStdText(svg5, null, width + margin.left - textWidthOut - 15, 10, "12px", 0, "normal", textInput);
+				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 15, "12px", 0, "normal", null, textInput);
 				// Add observation timeframe label
 				var textInput =  "Observations",
 						textWidthOut = getTextWidth(svg5, textInput, 12);
-
-				addStdText(svg5, null, width + margin.left - textWidthOut - 15, 25, "12px", 0, "normal", "Observations");
+				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 30, "12px", 0, "normal", null, textInput);
+				// Add observation timeframe label
+				var textInput =  "Displaying",
+						textWidthOut = getTextWidth(svg5, textInput, 12);
+				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 60, "12px", 0, "normal", null, textInput);
+				// Add observation timeframe label
+				var textInput =  "Time Series",
+						textWidthOut = getTextWidth(svg5, textInput, 12);
+				addStdText(svg5, null, null, width + margin.left - textWidthOut - 15, 75, "12px", 0, "normal", null, textInput);
 		    // // Add the overall Pred line path.
 		    svg5.append("line")
+		        .attr("pointer-events", "none")
+		        .attr("class", "line")
 						.attr("x1", (margin.left/2-5.5))
 						.attr("x2", (margin.left/2-5.5)+((width+margin.left)/5))
 						.attr("y1", 25)
 						.attr("y2", 25)
-		        .attr("pointer-events", "none")
-		        .attr("class", "line")
 		        .style("stroke", "rgb(250,98,95)");
 		    // // Add the overall Pred line path.
 		    svg5.append("line")
+		        .attr("pointer-events", "none")
+		        .attr("class", "line")
 						.attr("x1", (margin.left/2-5.5)+((width+margin.left)/5))
 						.attr("x2", (margin.left/2-5.5)+(((width+margin.left)/5)*2))
 						.attr("y1", 25)
 						.attr("y2", 25)
-		        .attr("pointer-events", "none")
-		        .attr("class", "line")
 		        .style("stroke", "rgb(0,192,127)");
 
 				var lvTooltip = d3.select("#las_vegas_button")
@@ -402,12 +407,12 @@
 				var lvMouseover = function(d) {
 							lvTooltip
 								.style("opacity", 1);
-							updateGraph(yMax, obsMaxYear, "yes", showObs, sliderStep.value());
+							updateGraph(yMax, obsMaxYear, "yes", showObs, showTS, sliderStep.value());
 				},
 						lvMouseleave = function(d) {
 							lvTooltip
 								.style("opacity", 0);
-							updateGraph(yMax, obsMaxYear, "no", showObs, sliderStep.value());
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
 				};
 				// append the svg object to the body of the page
 				var svg3 = d3.select("#las_vegas_button")
@@ -417,39 +422,26 @@
 							.on("mouseover", lvMouseover)
 							.on("mouseleave", lvMouseleave);
 
-				svg3.append("rect")
-						.attr("x", 27)
-						.attr("y", 9)
-						.attr("width", checkFilterWidth/7.75)
-						.attr("height", checkFilterHeight/1.65)
-						.style("cursor", "pointer")
-						.style("fill", "transparent")
-						.style("stroke", "black")
-						.style("stroke-width", 1)
-					.on("mouseover", checkMarkHover)
-					.on("mouseleave", checkMarkLeave)
-					.on("click", function() {
-						if (yMax==maxOb)
+				var lvClick = function() {
+						if ( yMax==maxOb )
 						{ yMax = allObs[1];
-							createRect(yMax);
-							updateGraph(yMax, obsMaxYear, "no", showObs, sliderStep.value());
+							createYearRects(yMax);
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
 							d3.select("#lvCheckMark").remove();
 					}
 						else
 						{ yMax = maxOb;
-							createRect(yMax);
-							updateGraph(yMax, obsMaxYear, "yes", showObs, sliderStep.value());
-							addStdText(svg3, "lvCcheckMark", 32, 28, "20px", 0, "normal", "✓");
+							createYearRects(yMax);
+							updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
+							addStdText(svg3, "lvCheckMark", null, 32, 28, "20px", 0, "normal", null, "✓");
 						}
-					});
+					};
 
-				addStdText(svg3, null, 60, 17.5, "12px", 0, "normal",  "Scaled with");
-
-				addStdText(svg3, null, 60, 32.5, "12px", 0, "normal", "Las Vegas Shooting");
-
+				addStdRect(svg3, 27,  9, checkFilterWidth/7.75, checkFilterHeight/1.65, "transparent", "black", checkMarkHover, checkMarkLeave, lvClick);
+				addStdText(svg3, null, null, 60, 17.5, "12px", 0, "normal", null, "Scaled with");
+				addStdText(svg3, null, null, 60, 32.5, "12px", 0, "normal", null, "Las Vegas Shooting");
 				addTooltipSymbol(svg3, checkFilterWidth-16.5, 28.5, checkFilterWidth-18, 32, "rotate(0)");
-
-				addStdText(svg3, "lvCheckMark", 32, 28, "20px", 0, "normal", "✓");
+				addStdText(svg3, "lvCheckMark", null, 32, 28, "20px", 0, "normal", null, "✓");
 
 		var createGraph = function() {
 
@@ -503,16 +495,15 @@
 				// Add observation timeframe label
 				var textInput =  String(allYears[0]) + "–Present",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
+				addStdText(svg1, "obs_text", null, width-textWidthOut, 0, "12px", 0, "normal", null, textInput);
 
-				addStdText(svg1, "obs_text", width-textWidthOut, 0, "12px", 0, "normal", textInput);
 				var textInput = daysCumDic[obsMaxYear].toLocaleString() + " Total Days",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
+				addStdText(svg1, "obs_text", null, width - textWidthOut, 15, "12px", 0, "normal", null, textInput);
 
-				addStdText(svg1, "obs_text", width - textWidthOut, 15, "12px", 0, "normal", textInput);
 				var textInput = incidentCumDic[obsMaxYear].toLocaleString() + " Total Incidents",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
-
-				addStdText(svg1, "obs_text", width - textWidthOut, 30, "12px", 0, "normal", textInput);
+				addStdText(svg1, "obs_text", null, width - textWidthOut, 30, "12px", 0, "normal", null, textInput);
 		    // Add the X Axis
 		    svg1.append("g")
 		        .attr("pointer-events", "none")
@@ -529,7 +520,7 @@
 		  });
 		};
 
-		var updateGraph = function(maximumY, hoverYear, highlightMax, showObservations, smoothStep) {
+		var updateGraph = function(maximumY, hoverYear, highlightMax, showObservations, showTimeSeries, smoothStep) {
 		  d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 		    var hoverYearPred = "pred_" + String(hoverYear) + "_smooth_" + String(smoothStep),
 		        obsMaxYearPred = "pred_" + String(obsMaxYear) + "_smooth_" + String(smoothStep);
@@ -550,7 +541,12 @@
 		        .y(function(d) { return y(d[obsMaxYearPred]); });
 
 		    svg1.select("path")
-		        .attr("d", obsMaxYearLine);
+		        .attr("d", obsMaxYearLine)
+		        .style("stroke", function(d) {
+		          if ( showTimeSeries == 'no' )
+		          { return "transparent" }
+		          else
+		          { return "rgb(250,98,95)" };});
 
 		    d3.select("#hover_line").remove();
 		    // add the hover_line
@@ -565,7 +561,7 @@
 		        .attr("id", "hover_line")
 		        .attr("d", hoverYearLine)
 		        .style("stroke", function(d) {
-		          if ( hoverYear==obsMaxYear )
+		          if ( hoverYear==obsMaxYear || showTimeSeries == 'no' )
 		          { return "transparent" }
 		          else
 		          { return "rgb(0,192,127)" }
@@ -617,20 +613,18 @@
 
 				var textInput = daysCumDic[hoverYear].toLocaleString() + " Total Days",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
-
-				addStdText(svg1, "obs_text", width - textWidthOut, 15, "12px", 0, "normal", textInput);
+				addStdText(svg1, "obs_text", null, width - textWidthOut, 15, "12px", 0, "normal", null, textInput);
 
 				var textInput = incidentCumDic[hoverYear].toLocaleString() + " Total Incidents",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
-
-				addStdText(svg1, "obs_text", width - textWidthOut, 30, "12px", 0, "normal", textInput);
+				addStdText(svg1, "obs_text", null, width - textWidthOut, 30, "12px", 0, "normal", null, textInput);
 		    // Update the Y Axis
 		    svg1.select(".y")
 		        .call(d3.axisLeft(y));
 		  });
 		};
 
-			var createRect = function(maximumY) {
+			var createYearRects = function(maximumY) {
 
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 					// Format the data
@@ -662,20 +656,20 @@
 
 							if (allYears[Number(d)] < obsMaxYear)
 							{ d3.select("#hover_instruction").remove();
-								addStdText(svg2, "hover_instruction", 41, 17.5, "13.5px", 0.5, "italic", "Comparing Historical Forecasts...");
-								updateGraph(yMax, allYears[Number(d)], "no", showObs, sliderStep.value()); }
+								addStdText(svg2, "hover_instruction", null, 41, 17.5, "13.5px", 0.5, "italic", null, "Comparing Historical Forecasts...");
+								updateGraph(yMax, allYears[Number(d)], "no", showObs, showTS, sliderStep.value()); }
 							else
 							{ d3.select("#hover_instruction").remove();
-								addStdText(svg2, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
-								updateGraph(yMax, obsMaxYear, "no", showObs, sliderStep.value()); };
+								addStdText(svg2, "hover_instruction", null, 0, 17.5, "13.5px", 0.5, "normal", null, "Hover to Compare Historical Forecasts");
+								updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value()); };
 					},
 							yearMouseleave = function(d) {
 								d3.select("#highlight_rect").remove();
 								d3.select("#hover_instruction").remove();
-								addStdText(svg2, "hover_instruction", 0, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
+								addStdText(svg2, "hover_instruction", null, 0, 17.5, "13.5px", 0.5, "normal", null, "Hover to Compare Historical Forecasts");
 					},
 							marginMouseover = function(d) {
-								updateGraph(yMax, obsMaxYear, "no", showObs, sliderStep.value());
+								updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
 					};
 					// Add the year rect boundaries
 					var yearRect = svg1.selectAll()
@@ -716,23 +710,14 @@
 							xAxMouseover = function(d) {
 								xAxisTooltip
 									.style("opacity", 1);
-									updateGraph(yMax, obsMaxYear, "no", showObs, sliderStep.value());
+									updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
 					},
 							xAxMouseleave = function(d) {
 								xAxisTooltip
 									.style("opacity", 0);
 					};
 
-					svg1.append("rect")
-								.attr("x", (width/2)-40)
-								.attr("y", height + margin.top + 21)
-								.attr("width", 70)
-								.attr("height", 20)
-								.style("fill", "transparent")
-								.style("stroke", "transparent")
-								.on("mouseover", xAxMouseover)
-								.on("mouseleave", xAxMouseleave);
-
+					addStdRect(svg1, (width/2)-40, height + margin.top + 21, 70, 20, "transparent", "transparent", xAxMouseover, xAxMouseleave, null);
 					addTooltipSymbol(svg1, (width/2) + 21, height + margin.top + 32,
 					(width/2) + 19.5, height + margin.top + 35.5, "rotate(0)");
 
@@ -747,29 +732,20 @@
 							yAxMouseover = function(d) {
 								yAxisTooltip
 									.style("opacity", 1);
-									updateGraph(yMax, obsMaxYear, "no", showObs, sliderStep.value());
+									updateGraph(yMax, obsMaxYear, "no", showObs, showTS, sliderStep.value());
 					},
 							yAxMouseleave = function(d) {
 								yAxisTooltip
 									.style("opacity", 0);
 					};
 
-					svg1.append("rect")
-								.attr("x", -65)
-								.attr("y", (height/2)-115)
-								.attr("width", 22.5)
-								.attr("height", 210)
-								.style("fill", "transparent")
-								.style("stroke", "transparent")
-								.on("mouseover", yAxMouseover)
-								.on("mouseleave", yAxMouseleave);
-
+					addStdRect(svg1, -65, (height/2)-115, 22.5, 210, "transparent", "transparent", xAxMouseover, xAxMouseleave, null);
 					addTooltipSymbol(svg1, -54, (height/2)-106.5, -77.5, -50, "rotate(-90)");
 				});
 			};
 
 			createGraph();
-			createRect(yMax);
+			createYearRects(yMax);
 
 		});
 

@@ -442,15 +442,24 @@
 		var createGraph = function() {
 
 		  d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
-		    var obsMaxYearPred = "pred_" + String(obsMaxYear) + "_smooth_" + String(sliderStep.value());
+		    var obsMaxYearPred = "pred_" + String(obsMaxYear) + "_smooth_" + String(sliderStep.value()),
+						obsMaxYearPredRaw = "pred_" + String(obsMaxYear) + "_smooth_" + String(d3.min(smoothStepData));
+						overallRMSE = 0;
 		    // format the data
 		    data.forEach(function(d) {
 		        d.date = parseTime(d.date);
 		        d.num_harmed = +d.num_harmed;
 		        d[obsMaxYearPred] = +d[obsMaxYearPred];
+						d[obsMaxYearPredRaw] = +d[obsMaxYearPredRaw];
 		        d.year = +d.year;
 		        d.non_observation = +d.non_observation;
+						if ( d.non_observation!=1 )
+						{
+						difference = d[obsMaxYearPredRaw] - d.num_harmed;
+						overallRMSE += Math.sqrt(Math.pow(difference, 2));
+					};
 		    });
+				var overallRMSERounded = Number(parseFloat(overallRMSE).toFixed(2)).toLocaleString();
 		    // Scale the range of the data
 		    x.domain(d3.extent(data, function(d) { return d.date; }));
 		    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
@@ -500,6 +509,10 @@
 				var textInput = incidentCumDic[obsMaxYear].toLocaleString() + " Total Incidents",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 				addStdText(svg1, "obs_text", null, width - textWidthOut, 30, "12px", 0, "normal", null, textInput);
+
+				var textInput =  "RMSE: " + String(overallRMSERounded),
+						textWidthOut = getTextWidth(svg5, textInput, 12);
+				addStdText(svg5, null, null, (margin.left/2-5.5)+((width+margin.left)/5) - textWidthOut, 50, "12px", 0, "normal", null, textInput);
 		    // Add the X Axis
 		    svg1.append("g")
 		        .attr("pointer-events", "none")
@@ -519,16 +532,25 @@
 		var updateGraph = function(maximumY, hoverYear, highlightMax, showObservations, showTimeSeries, smoothStep) {
 		  d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 		    var hoverYearPred = "pred_" + String(hoverYear) + "_smooth_" + String(smoothStep),
-		        obsMaxYearPred = "pred_" + String(obsMaxYear) + "_smooth_" + String(smoothStep);
+		        obsMaxYearPred = "pred_" + String(obsMaxYear) + "_smooth_" + String(smoothStep),
+						hoverYearPredRaw = "pred_" + String(hoverYear) + "_smooth_" + String(d3.min(smoothStepData)),
+						hoverRMSE = 0;
 		    // format the data
 		    data.forEach(function(d) {
 		        d.date = parseTime(d.date);
 		        d.num_harmed = +d.num_harmed;
 		        d[hoverYearPred] = +d[hoverYearPred];
 		        d[obsMaxYearPred] = +d[obsMaxYearPred];
+						d[hoverYearPredRaw] = +d[hoverYearPredRaw];
 		        d.year = +d.year;
 		        d.non_observation = +d.non_observation;
+						if ( d.non_observation!=1 )
+						{
+						difference = d[hoverYearPredRaw] - d.num_harmed;
+						hoverRMSE += Math.sqrt(Math.pow(difference, 2));
+					};
 		    });
+				var hoverRMSERounded = Number(parseFloat(hoverRMSE).toFixed(2)).toLocaleString();
 		    // Rescale the range of the data vertically
 		    y.domain([0, maximumY + 25]);
 		    // Redefine the overall Pred line path.
@@ -583,6 +605,7 @@
 		        });
 		    // Remove observation year label and replace with new one
 		    d3.selectAll("#obs_text").remove();
+				d3.selectAll("#hover_metrics").remove();
 
 				svg1.append("text")
 						.attr("pointer-events", "none")
@@ -614,6 +637,14 @@
 				var textInput = incidentCumDic[hoverYear].toLocaleString() + " Total Incidents",
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 				addStdText(svg1, "obs_text", null, width - textWidthOut, 30, "12px", 0, "normal", null, textInput);
+
+				var updateMetrics = function() {
+					if ( hoverYear!=obsMaxYear )
+					{ textInput =  "RMSE: " + String(hoverRMSERounded),
+						textWidthOut = getTextWidth(svg5, textInput, 12);
+						addStdText(svg5, "hover_metrics", null, (margin.left/2-5.5)+(((width+margin.left)/5)*2) - textWidthOut, 50, "12px", 0, "normal", null, textInput);
+				}};
+				updateMetrics();
 		    // Update the Y Axis
 		    svg1.select(".y")
 		        .call(d3.axisLeft(y));

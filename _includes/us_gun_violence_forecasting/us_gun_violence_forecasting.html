@@ -279,7 +279,7 @@
 						data.forEach(function(d) {
 							numDaysCumCount+=1;
 							numIncidentCumCount+=d.num_incidents;
-							numHarmedCumCount+=d.num_harmed
+							numHarmedCumCount+=d.num_harmed;
 							if ( d.year==i )
 							{ numDaysYearCount+=1;
 								daysCumDic[i] = numDaysCumCount;
@@ -573,7 +573,7 @@
 
 				// Add observation timeframe label
 				addStdText(svg5, null, null, leftMarginAdj, 40, "12px", 0, "normal", null, "Timeframe:");
-				addStdText(svg5, null, null, leftMarginAdj, 55, "12px", 0, "normal", null, "Total Days:");
+				addStdText(svg5, null, null, leftMarginAdj, 55, "12px", 0, "normal", null, "Total Victims:");
 				addStdText(svg5, null, null, leftMarginAdj, 70, "12px", 0, "normal", null, "Victims per Day:");
 				addStdText(svg5, null, null, leftMarginAdj, 85, "12px", 0, "normal", null, "RMSE:");
 
@@ -581,11 +581,11 @@
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 				addStdText(svg5, null, null, leftMarginAdj + leftBodyFifth - textWidthOut, 40, "12px", 0, "normal", null, textInput);
 
-				var textInput = daysCumDic[obsMaxYear].toLocaleString()
+				var textInput = numHarmedCumDic[obsMaxYear].toLocaleString()
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 				addStdText(svg5, null, null, leftMarginAdj + leftBodyFifth - textWidthOut, 55, "12px", 0, "normal", null, textInput);
 
-				var textInput = Math.round((numHarmedCumDic[obsMaxYear]/daysCumDic[obsMaxYear])).toLocaleString()
+				var textInput = Math.round((numHarmedCumDic[obsMaxYear]/obsCumDic[obsMaxYear])).toLocaleString()
 						textWidthOut = getTextWidth(svg1, textInput, 12);
 				addStdText(svg5, null, null, leftMarginAdj + leftBodyFifth - textWidthOut, 70, "12px", 0, "normal", null, textInput);
 
@@ -701,11 +701,11 @@
 						var textWidthOut = getTextWidth(svg1, textInput, 12);
 						addStdText(svg5, "obs_text", null, leftMarginAdj+ (leftBodyFifth*2) - textWidthOut, 40, "12px", 0, "normal", null, textInput);
 
-						var textInput = daysCumDic[hoverYear].toLocaleString(),
+						var textInput = numHarmedCumDic[hoverYear].toLocaleString(),
 								textWidthOut = getTextWidth(svg1, textInput, 12);
 						addStdText(svg5, "obs_text", null, leftMarginAdj+ (leftBodyFifth*2) - textWidthOut, 55, "12px", 0, "normal", null, textInput);
 
-						var textInput = Math.round((numHarmedCumDic[hoverYear]/daysCumDic[hoverYear])).toLocaleString()
+						var textInput = Math.round((numHarmedCumDic[hoverYear]/obsCumDic[hoverYear])).toLocaleString()
 								textWidthOut = getTextWidth(svg1, textInput, 12);
 						addStdText(svg5, "obs_text", null, leftMarginAdj + (leftBodyFifth*2) - textWidthOut, 70, "12px", 0, "normal", null, textInput);
 

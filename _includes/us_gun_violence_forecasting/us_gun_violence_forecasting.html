@@ -93,7 +93,7 @@
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
 		<div id="check_filters" align="right"></div>
-		<div id="line_graph_instructions" align="center" style="margin-bottom:7.5px;"></div>
+		<div id="line_graph_instructions" align="center" style="margin-bottom:5px;"></div>
 		<!-- Create a div where the graph will take place -->
 		<div id="line_graph" align="center"></div>
 		<div id="metrics_and_statistics" align="center"></div>
@@ -185,7 +185,7 @@
 			var margin = {top: 20, right: 20, bottom: 65, left: 65},
 			    width = 750 - margin.left - margin.right,
 			    height = 450 - margin.top - margin.bottom,
-					// and for the las vegas svg
+					// and for the filter checkboxes
 					checkFilterWidth = 200/7.75,
 					checkFilterHeight = 40/1.65,
 					leftMarginAdj = (margin.left/2)-5.5,
@@ -249,9 +249,9 @@
 						allYears = [],
 						nydDic = {},
 						obsPerYearDic = {},
-						// daysCumDic = {},
 						obsCumDic = {},
 						numHarmedCumDic = {};
+						// daysCumDic = {},
 						// incidentCumDic = {},
 
 				var numObsCumCount = 0,
@@ -265,15 +265,15 @@
 				data.forEach(function(d) {
 						d.date = parseTime(d.date);
 						d.index = +d.index;
-						if ( d.nyd!=null && d.nyd!='' ) {
-							nydDic[d.nyd] = d.index
-						};
 						d.num_harmed = +d.num_harmed;
 						allObs.push(d.num_harmed);
 						allDates.push(d.date);
 						d.year = +d.year;
 						d.non_observation = +d.non_observation;
 						// d.num_incidents = +d.num_incidents;
+						if ( d.nyd!=null && d.nyd!='' ) {
+							nydDic[d.nyd] = d.index
+						};
 				});
 
 				for (var i = 1; i <= numYears; i++) {
@@ -282,23 +282,23 @@
 
 				for ( var i = minYear; i <= maxYear; i++ ) {
 						allYears.push(Number(i));
-						numDaysYearCount = 0;
+						daysPerYearCount = 0;
 						numDaysCumCount = 0;
-						// numIncidentCumCount = 0;
 						numHarmedCumCount = 0;
+						// numIncidentCumCount = 0;
 						data.forEach(function(d) {
 							numDaysCumCount+=1;
-							// numIncidentCumCount+=d.num_incidents;
 							numHarmedCumCount+=d.num_harmed;
-							numDaysYearCount+=1;
-							// daysCumDic[i] = numDaysCumCount;
-							// incidentCumDic[i] = numIncidentCumCount;
+							daysPerYearCount+=1;
 							numHarmedCumDic[i] = numHarmedCumCount;
+							// daysCumDic[i] = numDaysCumCount;
+							// numIncidentCumCount+=d.num_incidents;
+							// incidentCumDic[i] = numIncidentCumCount;
 							if ( d.year==i && d.non_observation!=1 )
 							{ obsMaxYear.push(Number(i));
 								numObsCumCount+=1; }
 						});
-						obsPerYearDic[i] = numDaysYearCount;
+						obsPerYearDic[i] = daysPerYearCount;
 						obsCumDic[i] = numObsCumCount;
 				};
 
@@ -307,9 +307,7 @@
 						allObs = allObs.sort(function(a,b){return b-a}),
 						maxOb = d3.max(allObs),
 						// set initial yMax which will be changed as scale is adjusted
-						yMax = maxOb,
-						maxDiff = allObs[0]-allObs[1],
-						minDate = d3.min(allDates);
+						yMax = maxOb;
 
 				var changePointStepData = [0, .25, .5, .75, 1],
 						smoothStepData = [0, 5, 10, 15, 20],
@@ -320,10 +318,10 @@
 									.step(.25)
 									.tickFormat(d3.format('.2'))
 									.tickValues(changePointStepData)
-									.default(.5),
-									// .on('onchange', function(d) {
-									// 	updateGraph(obsMaxYear, "no");
-									// }),
+									.default(.5)
+									.on('onchange', function(d) {
+										updateGraph(obsMaxYear, "no");
+									}),
 						smoothSliderStep = d3.sliderBottom()
 									.min(d3.min(smoothStepData))
 		    					.max(d3.max(smoothStepData))
@@ -346,7 +344,7 @@
 						{
 							overallPredPast+=d[obsMaxYearPredRaw]
 							difference = d[obsMaxYearPredRaw] - d.num_harmed;
-							overallRMSE += Math.pow(difference, 2);
+							overallRMSE+=Math.pow(difference, 2);
 						}
 						else
 						{ overallPredFuture+=d[obsMaxYearPredRaw] };
@@ -467,7 +465,7 @@
 				addStdText(svg1, null, null, width - textWidthOut - 17.5, 10, "12px", 0, "normal", null, "Overall Model");
 				var textWidthOut = getTextWidth(svg1, "Comparative Model", 12);
 				addStdText(svg1, null, null, width - textWidthOut - 17.5 , 25, "12px", 0, "normal", null, "Comparative Model");
-				var textInput = "Observations from " + String(allYears[0]) + "–Present"
+				var textInput = "Data from " + String(allYears[0]) + "–Present"
 				addStdText(svg1, null, null, 12.5, 10, "12px", 0, "normal", null, textInput);
 				var textInput = "Total Victims: " + numHarmedCumDic[obsMaxYear].toLocaleString();
 				addStdText(svg1, null, null, 12.5, 25, "12px", 0, "normal", null, textInput);
@@ -529,13 +527,13 @@
 					lvClick = function() {
 						if ( yMax==maxOb )
 						{ yMax = allObs[1];
-							createYearRects();
+							createRectBoundaries();
 							updateGraph(obsMaxYear, "no");
 							d3.select("#lvCheckMark").remove();
 					}
 						else
 						{ yMax = maxOb;
-							createYearRects();
+							createRectBoundaries();
 							updateGraph(obsMaxYear, "no");
 							addStdText(svg3, "lvCheckMark", null, 6, 22.5, "20px", 0, "normal", null, "✓");
 						}
@@ -567,15 +565,6 @@
 
 				addStdText(svg4, null, null, leftMarginAdj + (leftBodyFifth*2) + 151, 22.5, "12px", 0, "normal", null, "Model Changepoint");
 				addStdText(svg4, null, null, leftMarginAdj + (leftBodyFifth*3) + 170.5, 22.5, "12px", 0, "normal", null, "Model Smoothing");
-				// // Add the overall Pred line path.
-				// svg4.append("line")
-				//     .attr("pointer-events", "none")
-				//     .attr("class", "line")
-				// 		.attr("x1", leftMarginAdj)
-				// 		.attr("x2", 225.25)
-				// 		.attr("y1", 40)
-				// 		.attr("y2", 40)
-				//     .style("stroke", "black");
 
 				svg4.append("line")
 						.attr("pointer-events", "none")
@@ -585,10 +574,7 @@
 						.attr("y1", 40)
 						.attr("y2", 40)
 						.style("stroke", "rgb(250,98,95)");
-				// console.log(((423.5-leftMarginAdj)/4)+leftMarginAdj);
-				// console.log((((423.5-leftMarginAdj)/4)*2)+leftMarginAdj);
-				// console.log((((423.5-leftMarginAdj)/4)*3)+leftMarginAdj);
-				// console.log((((423.5-leftMarginAdj)/4)*4)+leftMarginAdj);
+
 				svg4.append("line")
 						.attr("pointer-events", "none")
 						.attr("class", "line")
@@ -629,26 +615,24 @@
 
 		  d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 
-		    var hoverYearPred = "pred_" + String(hoverYear) + "_smooth_" + String(smoothSliderStep.value()),
-		        obsMaxYearPred = "pred_" + String(obsMaxYear) + "_smooth_" + String(smoothSliderStep.value()),
-						hoverYearPredRaw = "pred_" + String(hoverYear) + "_smooth_" + String(d3.min(smoothStepData)),
-						hoverPredPast = 0,
+		    var obsMaxYearPred = "pred_" + String(obsMaxYear) + "_smooth_" + String(smoothSliderStep.value()),
+						hoverYearPred = "pred_" + String(hoverYear) + "_smooth_" + String(smoothSliderStep.value()),
+						hoverYearPredRaw = "pred_" + String(hoverYear) + "_smooth_" + String(d3.min(smoothStepData));
+
+				var hoverPredPast = 0,
 						hoverPredFuture = 0,
 						hoverRMSE = 0;
 		    // format the data
 		    data.forEach(function(d) {
 		        d.date = parseTime(d.date);
-		        d.num_harmed = +d.num_harmed;
-		        d[hoverYearPred] = +d[hoverYearPred];
 		        d[obsMaxYearPred] = +d[obsMaxYearPred];
+		        d[hoverYearPred] = +d[hoverYearPred];
 						d[hoverYearPredRaw] = +d[hoverYearPredRaw];
-		        d.year = +d.year;
-		        d.non_observation = +d.non_observation;
 						if ( d.non_observation!=1 )
 						{
 							hoverPredPast+=d[hoverYearPredRaw]
 							difference = d[hoverYearPredRaw] - d.num_harmed;
-							hoverRMSE += Math.pow(difference, 2);
+							hoverRMSE+=Math.pow(difference, 2);
 						}
 						else
 						{ hoverPredFuture+=d[hoverYearPredRaw] };
@@ -685,7 +669,7 @@
 		        })
 						.style("opacity", function(d) {
 		          if ( d.year > hoverYear )
-		          { return 0.3 }
+		          { return 0.4 }
 							else
 		          { return null }
 		        });
@@ -720,6 +704,7 @@
 		        });
 
 				var updateMetrics = function() {
+
 					if ( hoverYear!=obsMaxYear )
 					{ if ( hoverYear==allYears[0] )
 						{ var textInput =  String(allYears[0]); }
@@ -745,7 +730,7 @@
 		  });
 		};
 
-			var createYearRects = function() {
+			var createRectBoundaries = function() {
 
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 					// Format the data
@@ -763,14 +748,14 @@
 								.attr("pointer-events", "none")
 								.attr("id", "highlight_rect")
 								.attr("x", 0)
-								.attr("y", 0)
+								.attr("y", -7.5)
 								.attr("width", function() {
 									if ( allYears[Number(d)] < obsMaxYear )
 									{ return (width/numRows)*obsCumDic[allYears[Number(d)]]; }
 									else
 									{ return 0; }
 								})
-								.attr("height", height)
+								.attr("height", height + 7.5)
 								.style("fill", "transparent")
 								.style("stroke-width", 1)
 								.style("stroke", "black");
@@ -783,6 +768,7 @@
 						else
 						{ addStdText(svg2, "hover_instruction", null, ((fullWidth - leftMarginAdj)/2)-122.5, 17.5, "13.5px", 0.5, "normal", null, "Hover to Compare Historical Forecasts");
 							updateGraph(obsMaxYear, "no"); };
+
 					},
 						yearMouseleave = function(d) {
 							d3.select("#highlight_rect").remove();
@@ -826,7 +812,7 @@
 				});
 			};
 
-			createYearRects();
+			createRectBoundaries();
 
 		});
 

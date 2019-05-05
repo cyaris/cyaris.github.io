@@ -739,9 +739,13 @@
 		        });
 
 				var updateHoverMetrics = function(d) {
-					if ( dropDownSelected==String(allYears[0]) + "–Present" )
-					{ updatePastHoverMetrics(hoverYear); }
-					else { updateFutureHoverMetrics(hoverYear);}
+					if ( hoverYear!=obsMaxYear ) {
+						if ( dropDownSelected==String(allYears[0]) + "–Present" )
+						{ updatePastHoverMetrics(hoverYear); }
+						else { updateFutureHoverMetrics(hoverYear);}
+					}
+					else
+					{ d3.selectAll("#hover_metrics").remove(); }
 				};
 
 				updateHoverMetrics();
@@ -752,94 +756,89 @@
 
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 
+					var hoverYearPredRaw = "pred_" + String(hoverYear) +  "_smooth_" + String(d3.min(smoothStepData)),
+							hoverYearlyTrendCol = "yearly_trend_calc_" + String(hoverYear),
+							hoverPredPast = 0,
+							hoverYearlyTrendPast = 0,
+							hoverRMSE = 0;
+			    // format the data
+			    data.forEach(function(d) {
+							d[hoverYearPredRaw] = +d[hoverYearPredRaw];
+							d[hoverYearlyTrendCol] = +d[hoverYearlyTrendCol]
+							if ( d.non_observation!=1 )
+							{
+								hoverPredPast+=d[hoverYearPredRaw]
+								difference = d[hoverYearPredRaw] - d.num_harmed;
+								hoverRMSE+=Math.pow(difference, 2)/obsCumDic[obsMaxYear];
+								hoverYearlyTrendPast+=d[hoverYearlyTrendCol]
+							}
+			    });
+
+					hoverYearlyTrendPast = Math.round(hoverYearlyTrendPast/(obsCumDic[obsMaxYear]-365));
+					hoverRMSE = Math.round(Math.sqrt(hoverRMSE)).toLocaleString();
+
+					{ if ( hoverYear==allYears[0] )
+						{ var textInput =  String(allYears[0]); }
+						else if ( hoverYear!=allYears[0] )
+							{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
+
 					d3.selectAll("#hover_metrics").remove();
 
-					if ( hoverYear!=obsMaxYear ) {
+					var textWidthOut = getTextWidth(svg1, textInput, 12);
+					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 55, "12px", 0, "normal", null, textInput);
+					var textInput = Math.round(hoverPredPast).toLocaleString()
+							textWidthOut = getTextWidth(svg1, textInput, 12);
+					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 70, "12px", 0, "normal", null, textInput);
+					var textInput = Math.round(hoverPredPast/obsCumDic[obsMaxYear]).toLocaleString(),
+							textWidthOut = getTextWidth(svg1, textInput, 12);
+					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 85, "12px", 0, "normal", null, textInput);
+					var textInput = hoverYearlyTrendPast.toLocaleString(),
+							textWidthOut = getTextWidth(svg1, textInput, 12);
+					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 100, "12px", 0, "normal", null, textInput);
+					var textInput =  String(hoverRMSE),
+							textWidthOut = getTextWidth(svg4, textInput, 12);
+					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 115, "12px", 0, "normal", null, textInput);
 
-						var hoverYearPredRaw = "pred_" + String(hoverYear) +  "_smooth_" + String(d3.min(smoothStepData)),
-								hoverYearlyTrendCol = "yearly_trend_calc_" + String(hoverYear),
-								hoverPredPast = 0,
-								hoverYearlyTrendPast = 0,
-								hoverRMSE = 0;
-				    // format the data
-				    data.forEach(function(d) {
-								d[hoverYearPredRaw] = +d[hoverYearPredRaw];
-								d[hoverYearlyTrendCol] = +d[hoverYearlyTrendCol]
-								if ( d.non_observation!=1 )
-								{
-									hoverPredPast+=d[hoverYearPredRaw]
-									difference = d[hoverYearPredRaw] - d.num_harmed;
-									hoverRMSE+=Math.pow(difference, 2)/obsCumDic[obsMaxYear];
-									hoverYearlyTrendPast+=d[hoverYearlyTrendCol]
-								}
-				    });
-
-						hoverYearlyTrendPast = Math.round(hoverYearlyTrendPast/(obsCumDic[obsMaxYear]-365));
-						hoverRMSE = Math.round(Math.sqrt(hoverRMSE)).toLocaleString();
-
-						{ if ( hoverYear==allYears[0] )
-							{ var textInput =  String(allYears[0]); }
-							else if ( hoverYear!=allYears[0] )
-								{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
-
-						var textWidthOut = getTextWidth(svg1, textInput, 12);
-						addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 55, "12px", 0, "normal", null, textInput);
-						var textInput = Math.round(hoverPredPast).toLocaleString()
-								textWidthOut = getTextWidth(svg1, textInput, 12);
-						addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 70, "12px", 0, "normal", null, textInput);
-						var textInput = Math.round(hoverPredPast/obsCumDic[obsMaxYear]).toLocaleString(),
-								textWidthOut = getTextWidth(svg1, textInput, 12);
-						addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 85, "12px", 0, "normal", null, textInput);
-						var textInput = hoverYearlyTrendPast.toLocaleString(),
-								textWidthOut = getTextWidth(svg1, textInput, 12);
-						addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 100, "12px", 0, "normal", null, textInput);
-						var textInput =  String(hoverRMSE),
-								textWidthOut = getTextWidth(svg4, textInput, 12);
-						addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 115, "12px", 0, "normal", null, textInput);
-
-					}
 			}})}
 
 			var updateFutureHoverMetrics = function(hoverYear) {
 
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 
+					var hoverYearPredRaw = "pred_" + String(hoverYear) +  "_smooth_" + String(d3.min(smoothStepData)),
+							hoverYearlyTrendCol = "yearly_trend_calc_" + String(hoverYear),
+							hoverYearlyTrendFuture = 0,
+							hoverPredFuture = 0;
+			    // format the data
+			    data.forEach(function(d) {
+							d[hoverYearPredRaw] = +d[hoverYearPredRaw];
+							d[hoverYearlyTrendCol] = +d[hoverYearlyTrendCol]
+							if ( d.non_observation==1 )
+							{ hoverPredFuture+=d[hoverYearPredRaw]
+								hoverYearlyTrendFuture+=d[hoverYearlyTrendCol] };
+			    });
+
+					hoverYearlyTrendFuture = Math.round(hoverYearlyTrendFuture/365);
+
+					{ if ( hoverYear==allYears[0] )
+						{ var textInput =  String(allYears[0]); }
+						else if ( hoverYear!=allYears[0] )
+							{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
+
 					d3.selectAll("#hover_metrics").remove();
+					
+					var textWidthOut = getTextWidth(svg1, textInput, 12);
+					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 55, "12px", 0, "normal", null, textInput);
+					var textInput = Math.round(hoverPredFuture).toLocaleString()
+							textWidthOut = getTextWidth(svg1, textInput, 12);
+					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 70, "12px", 0, "normal", null, textInput);
+					var textInput = Math.round(hoverPredFuture/365).toLocaleString(),
+							textWidthOut = getTextWidth(svg1, textInput, 12);
+					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 85, "12px", 0, "normal", null, textInput);
+					var textInput = hoverYearlyTrendFuture.toLocaleString(),
+							textWidthOut = getTextWidth(svg1, textInput, 12);
+					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 100, "12px", 0, "normal", null, textInput);
 
-					if ( hoverYear!=obsMaxYear ) {
-						var hoverYearPredRaw = "pred_" + String(hoverYear) +  "_smooth_" + String(d3.min(smoothStepData)),
-								hoverYearlyTrendCol = "yearly_trend_calc_" + String(hoverYear),
-								hoverYearlyTrendFuture = 0,
-								hoverPredFuture = 0;
-				    // format the data
-				    data.forEach(function(d) {
-								d[hoverYearPredRaw] = +d[hoverYearPredRaw];
-								d[hoverYearlyTrendCol] = +d[hoverYearlyTrendCol]
-								if ( d.non_observation==1 )
-								{ hoverPredFuture+=d[hoverYearPredRaw]
-									hoverYearlyTrendFuture+=d[hoverYearlyTrendCol] };
-				    });
-
-						hoverYearlyTrendFuture = Math.round(hoverYearlyTrendFuture/365);
-
-						{ if ( hoverYear==allYears[0] )
-							{ var textInput =  String(allYears[0]); }
-							else if ( hoverYear!=allYears[0] )
-								{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
-
-						var textWidthOut = getTextWidth(svg1, textInput, 12);
-						addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 55, "12px", 0, "normal", null, textInput);
-						var textInput = Math.round(hoverPredFuture).toLocaleString()
-								textWidthOut = getTextWidth(svg1, textInput, 12);
-						addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 70, "12px", 0, "normal", null, textInput);
-						var textInput = Math.round(hoverPredFuture/365).toLocaleString(),
-								textWidthOut = getTextWidth(svg1, textInput, 12);
-						addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 85, "12px", 0, "normal", null, textInput);
-						var textInput = hoverYearlyTrendFuture.toLocaleString(),
-								textWidthOut = getTextWidth(svg1, textInput, 12);
-						addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 100, "12px", 0, "normal", null, textInput);
-
-					}
 			}})
 		};}
 

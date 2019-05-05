@@ -579,6 +579,7 @@
 				},
 						removeDropDownOption = function(d) {
 							d3.selectAll("#dropdown_option").remove();
+							d3.selectAll("#hover_metrics").remove();
 				};
 
 				addStdRect(svg4, null, 0, 0, fullWidth, 125, "transparent", "transparent", removeDropDownOption, removeDropDownOption, null);
@@ -884,6 +885,7 @@
 						marginMouseover = function(d) {
 							updateGraph(obsMaxYear, "no");
 							d3.selectAll("#dropdown_option").remove();
+							d3.selectAll("#hover_metrics").remove();
 					};
 					// Add the year rect boundaries
 					var yearRect = svg1.selectAll()

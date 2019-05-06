@@ -356,11 +356,6 @@
 
 				var nextYearXLoc = (width/numRows)*obsCumDic[allYears[allYears.length-1]];
 				addStdRect(svg1, null, nextYearXLoc, -7.5, width - nextYearXLoc, height + 7.5, "black", "transparent", 0.1, null, null, null);
-				addStdLine(svg1, nextYearXLoc, nextYearXLoc, function(d) { return y(y.domain()[0])}, -7.5, "black", ("3, 3"));
-				addStdLine(svg1, nextYearXLoc, width, -7.5, -7.5, "black", ("3, 3"));
-				var textInput =  "Next 365 Days...",
-						textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
-				addStdText(svg1, null, null, nextYearXLoc + ((width - nextYearXLoc - textWidthOut)/2), 10, "12px", 0, "italic", null, textInput);
 
 				addStdLine(svg1, (margin.right/2), (.5 * margin.right) + 12.5, 6, 6, "rgb(250,98,95)", null);
 				addStdLine(svg1, (margin.right/2), (.5 * margin.right) + 12.5, 21, 21, "rgb(0,192,127)", null);
@@ -915,6 +910,12 @@
 
 					addStdRect(svg1, null, (width/2)-40, topBody + 21, 70, 20, "transparent", "transparent", null, xAxMouseover, xAxMouseleave, null);
 					addStdRect(svg1, null, -65, (height/2)-87.5, 22.5, 145, "transparent", "transparent", null, yAxMouseover, yAxMouseleave, null);
+
+					addStdLine(svg1, nextYearXLoc, nextYearXLoc, function(d) { return y(y.domain()[0])}, -7.5, "black", ("3, 3"));
+					addStdLine(svg1, nextYearXLoc, width, -7.5, -7.5, "black", ("3, 3"));
+					var textInput =  "Next 365 Days...",
+							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+					addStdText(svg1, null, null, nextYearXLoc + ((width - nextYearXLoc - textWidthOut)/2), 10, "12px", 0, "italic", null, textInput);
 
 				});
 			};

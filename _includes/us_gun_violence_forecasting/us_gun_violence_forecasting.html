@@ -34,7 +34,7 @@
 	    }
 	  }
 
-		.line {
+		.path {
 		  fill: none;
 		  stroke-width: 3.5px;
 		}
@@ -142,16 +142,17 @@
 							.on("click", rClick);
 			};
 
-			function addStdLine(svgInput, lineX1, lineX2, lineY1, lineY2, strokeColor, strokeDashArray) {
+			function addStdLine(svgInput, lineX1, lineX2, lineY1, lineY2, strokeColor, strokeWidth, strokeDashArray) {
 
 				svgInput.append("line")
 						.attr("pointer-events", "none")
-						.attr("class", "line")
 						.attr("x1", lineX1)
 						.attr("x2", lineX2)
 						.attr("y1", lineY1)
 						.attr("y2", lineY2)
+						.style("fill", "none")
 						.style("stroke", strokeColor)
+						.style("stroke-width", strokeWidth)
 						.style("stroke-dasharray", strokeDashArray);
 			};
 
@@ -357,8 +358,8 @@
 				var nextYearXLoc = (width/numRows)*obsCumDic[allYears[allYears.length-1]];
 				addStdRect(svg1, null, nextYearXLoc, -7.5, width - nextYearXLoc, height + 7.5, "black", "transparent", 0.1, null, null, null);
 
-				addStdLine(svg1, (margin.right/2), (.5 * margin.right) + 12.5, 6, 6, "rgb(250,98,95)", null);
-				addStdLine(svg1, (margin.right/2), (.5 * margin.right) + 12.5, 21, 21, "rgb(0,192,127)", null);
+				addStdLine(svg1, (margin.right/2), (.5 * margin.right) + 12.5, 6, 6, "rgb(250,98,95)", 3.5, null);
+				addStdLine(svg1, (margin.right/2), (.5 * margin.right) + 12.5, 21, 21, "rgb(0,192,127)", 3.5, null);
 				addStdText(svg1, null, null, (.5 * margin.right) + 17.5, 10, "12px", 0, "normal", null, "Overall Model");
 				addStdText(svg1, null, null, (.5 * margin.right) + 17.5, 25, "12px", 0, "normal", null, "Comparative Model");
 		    // Add the circles.
@@ -388,26 +389,26 @@
 		    var obsMaxYearLine = d3.line()
 		        .x(function(d) { return x(d.date); })
 		        .y(function(d) { return y(d[obsMaxYearPredCol]); });
-				// adding incorrect hoverline to define variable early so that it's placement will be correct
-				var hoverYearLine = d3.line()
-		        .x(function(d) { return x(d.date); })
-		        .y(function(d) { return y(d[obsMaxYearPredCol]); });
 		    // Add the overall Pred line path.
 		    svg1.append("path")
 		        .data([data])
 		        .attr("pointer-events", "none")
-		        .attr("class", "line")
+		        .attr("class", "path")
 						.attr("id", "obs_max_year_line")
 		        .attr("d", obsMaxYearLine)
 		        .style("stroke", "rgb(250,98,95)");
+				// adding incorrect hoverline to define variable early so that it's placement will be correct
+				var hoverYearLine = d3.line()
+		        .x(function(d) { return null; })
+		        .y(function(d) { return null; });
 
 				svg1.append("path")
 		        .data([data])
 		        .attr("pointer-events", "none")
-		        .attr("class", "line")
+		        .attr("class", "path")
 						.attr("id", "hover_year_line")
 		        .attr("d", hoverYearLine)
-		        .style("stroke", "transparent" );
+		        .style("stroke", "transparent");
 				// Add the X Axis
 		    svg1.append("g")
 		        .attr("pointer-events", "none")
@@ -594,9 +595,9 @@
 				addStdText(svg4, "dropdown_selected_text", null, leftMarginAdj + 6, 27.5, "12px", 0, "normal", null, dropDownSelected);
 				addTooltipSymbol(svg4, 133.5, 24, 132, 27.5, "rotate(0)");
 
-				addStdLine(svg4, leftMarginAdj, 225.25 - 27.5, 40, 40, "black", null);
-				addStdLine(svg4, 225.25 - 27.5, 324.375 - 27.5, 40, 40, "rgb(250,98,95)", null);
-				addStdLine(svg4, 324.375 - 27.5, 423.5 - 27.5, 40, 40, "rgb(0,192,127)", null);
+				addStdLine(svg4, leftMarginAdj, 225.25 - 27.5, 40, 40, "black", 3.5, null);
+				addStdLine(svg4, 225.25 - 27.5, 324.375 - 27.5, 40, 40, "rgb(250,98,95)", 3.5, null);
+				addStdLine(svg4, 324.375 - 27.5, 423.5 - 27.5, 40, 40, "rgb(0,192,127)", 3.5, null);
 				addStdText(svg4, null, null, leftMarginAdj, 9.25, "12px", 0, "normal", null, "Prediction Timeframe");
 				var textWidthOut = getTextWidth(svg4, "Overall", 12, "normal");
 				addStdText(svg4, null, null, 324.375 - 27.5 - textWidthOut, 15, "12px", 0, "normal", null, "Overall");
@@ -716,10 +717,6 @@
 		    var obsMaxYearLine = d3.line()
 		        .x(function(d) { return x(d.date); })
 		        .y(function(d) { return y(d[obsMaxYearPredCol]); });
-		    // Redefine the hover_line
-		    var hoverYearLine = d3.line()
-		        .x(function(d) { return x(d.date); })
-		        .y(function(d) { return y(d[hoverYearPred]); });
 
 		    svg1.select("#obs_max_year_line")
 		        .attr("d", obsMaxYearLine)
@@ -728,6 +725,10 @@
 		          { return "transparent" }
 		          else
 		          { return "rgb(250,98,95)" };});
+				// Redefine the hover_line
+		    var hoverYearLine = d3.line()
+		        .x(function(d) { return x(d.date); })
+		        .y(function(d) { return y(d[hoverYearPred]); });
 
 				svg1.select("#hover_year_line")
 		        .attr("d", hoverYearLine)
@@ -917,8 +918,8 @@
 					addStdRect(svg1, null, (width/2)-40, topBody + 21, 70, 20, "transparent", "transparent", null, xAxMouseover, xAxMouseleave, null);
 					addStdRect(svg1, null, -65, (height/2)-87.5, 22.5, 145, "transparent", "transparent", null, yAxMouseover, yAxMouseleave, null);
 
-					addStdLine(svg1, nextYearXLoc, nextYearXLoc, function(d) { return y(y.domain()[0])}, -7.5, "black", ("3, 3"));
-					addStdLine(svg1, nextYearXLoc, width, -7.5, -7.5, "black", ("3, 3"));
+					addStdLine(svg1, nextYearXLoc, nextYearXLoc, function(d) { return y(y.domain()[0])}, -7.5, "black", 2, ("4, 4"));
+					addStdLine(svg1, nextYearXLoc, width, -7.5, -7.5, "black", 2, ("4, 4"));
 					var textInput =  "Next 365 Days...",
 							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
 					addStdText(svg1, null, null, nextYearXLoc + ((width - nextYearXLoc - textWidthOut)/2), 10, "12px", 0, "italic", null, textInput);

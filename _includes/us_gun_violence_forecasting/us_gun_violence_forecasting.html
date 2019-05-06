@@ -10,8 +10,8 @@
  			border: 1px solid #000;
  		} */
 
-		@media (max-width:750px){
-	      #check_filters {
+		@media (max-width:990px){
+	      #check_mark_filters {
 						display: none;
 	      }
 				#line_graph_instructions {
@@ -28,8 +28,8 @@
 	      }
 	  }
 
-	  @media (min-width:750px){
-			#hidden_line_graph_explained {
+	  @media (min-width:990px){
+			#hidden_project_explained {
 				display: none;
 	    }
 	  }
@@ -89,16 +89,18 @@
 		<!-- Load d3.js -->
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 		<script src="https://unpkg.com/d3-simple-slider"></script>
-		<div id="hidden_line_graph_explained" align="left" style="margin-bottom:20px;">
+		<div id="hidden_project_explained" align="left" style="margin-bottom:150px;">
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
-		<div id="check_filters" align="right"></div>
-		<div id="line_graph_instructions" align="center" style="margin-bottom:5px;"></div>
-		<!-- Create a div where the graph will take place -->
-		<div id="line_graph" align="center"></div>
-		<div id="metrics_and_statistics" align="center"></div>
-		<div id="data_credit" align="left"  style="margin-bottom:40px;">
-			<p>All data provided by <a href="https://gunviolencearchive.org" target="_blank">Gun Violence Archive (GVA)</a>, a not for profit corporation formed in 2013 to provide online public access to accurate information about gun-related violence in the United States.</p>
+		<div style="margin-top:-115px; margin-bottom:40px;">
+			<div id="check_mark_filters" align="right"></div>
+			<div id="line_graph_instructions" align="center" style="margin-bottom:5px;"></div>
+			<!-- Create a div where the graph will take place -->
+			<div id="line_graph" align="center"></div>
+			<div id="metrics_and_statistics" align="center"></div>
+			<div id="data_credit" align="left">
+				<p>All data provided by <a href="https://gunviolencearchive.org" target="_blank">Gun Violence Archive (GVA)</a>, a not for profit corporation formed in 2013 to provide online public access to accurate information about gun-related violence in the United States.</p>
+			</div>
 		</div>
 		<script>
 
@@ -238,7 +240,7 @@
 						.attr("height", 25)
 						.attr('transform', 'translate(12.5,2.5)');
 			// append the svg object to the body of the page
-			var svg3 = d3.select("#check_filters")
+			var svg3 = d3.select("#check_mark_filters")
 					.append("svg")
 					  .attr("width", 175)
 					  .attr("height", 102.5)
@@ -273,12 +275,9 @@
 				// format the data
 				data.forEach(function(d) {
 						d.date = parseTime(d.date);
-						d.index = +d.index;
+						allDates.push(d.date);
 						d.num_harmed = +d.num_harmed;
 						allObs.push(d.num_harmed);
-						allDates.push(d.date);
-						d.year = +d.year;
-						d.non_observation = +d.non_observation;
 						// d.num_incidents = +d.num_incidents;
 						if ( d.nyd!=null && d.nyd!='' ) {
 							nydDic[d.nyd] = d.index
@@ -346,8 +345,10 @@
 		    });
 
 				overallRMSE = Math.round(Math.sqrt(overallRMSE)).toLocaleString();
-				overallYearlyTrendPast = Math.round(overallYearlyTrendPast/(obsCumDic[obsMaxYear]-365));
-				overallYearlyTrendFuture = Math.round(overallYearlyTrendFuture/365);
+				overallYearlyTrendPast = Math.round(overallYearlyTrendPast/(obsCumDic[obsMaxYear]-365)).toLocaleString();
+				overallYearlyTrendFuture = Math.round(overallYearlyTrendFuture/365).toLocaleString();
+
+				addStdRect(svg1, null, (width/numRows)*obsCumDic[allYears[allYears.length-1]]+0.7, -7.5, width - ((width/numRows)*obsCumDic[allYears[allYears.length-1]]), height + 7.5, "transparent", "black", null, null, null);
 		    // Scale the range of the data
 		    x.domain(d3.extent(data, function(d) { return d.date; }));
 		    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
@@ -464,7 +465,7 @@
 							d3.select(this)
 								.style("cursor", "pointer");
 				},
-						lvTooltip = d3.select("#check_filters")
+						lvTooltip = d3.select("#check_mark_filters")
 											 .append("div")
 												 .attr("class", "tooltip")
 												 .attr("id", "lvTooltip")
@@ -558,6 +559,7 @@
 						dropDownOptionClick = function(d) {
 							d3.selectAll("#dropdown_option").remove();
 							d3.select("#dropdown_selected_text").remove();
+
 							if ( dropDownSelected==String(allYears[0]) + "–Present" )
 							{ d3.selectAll("#past_prediction_specific").remove();
 								futurePredictionSpecific();
@@ -568,6 +570,7 @@
 								pastPredictionSpecific();
 								dropDownSelected = String(allYears[0]) + "–Present"
 								dropDownOption = "Next 365 Days" }
+
 							addStdText(svg4, "dropdown_selected_text", null, leftMarginAdj + 6, 27.5, "12px", 0, "normal", null, dropDownSelected);
 				},
 						removeDropDownOption = function(d) {
@@ -734,7 +737,8 @@
 					if ( hoverYear!=obsMaxYear ) {
 						if ( dropDownSelected==String(allYears[0]) + "–Present" )
 						{ updatePastHoverMetrics(hoverYear); }
-						else { updateFutureHoverMetrics(hoverYear);}
+						else
+						{ updateFutureHoverMetrics(hoverYear); }
 					}
 					else
 					{ d3.selectAll("#hover_metrics").remove(); }
@@ -766,13 +770,13 @@
 							}
 			    });
 
-					hoverYearlyTrendPast = Math.round(hoverYearlyTrendPast/(obsCumDic[obsMaxYear]-365));
+					hoverYearlyTrendPast = Math.round(hoverYearlyTrendPast/(obsCumDic[obsMaxYear]-365)).toLocaleString();;
 					hoverRMSE = Math.round(Math.sqrt(hoverRMSE)).toLocaleString();
 
-					{ if ( hoverYear==allYears[0] )
+					if ( hoverYear==allYears[0] )
 						{ var textInput =  String(allYears[0]); }
-						else if ( hoverYear!=allYears[0] )
-							{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
+					else if ( hoverYear!=allYears[0] )
+						{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
 
 					d3.selectAll("#hover_metrics").remove();
 
@@ -791,7 +795,7 @@
 							textWidthOut = getTextWidth(svg4, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 115, "12px", 0, "normal", null, textInput);
 
-			}})}
+			})}
 
 			var updateFutureHoverMetrics = function(hoverYear) {
 
@@ -810,12 +814,12 @@
 								hoverYearlyTrendFuture+=d[hoverYearlyTrendCol] };
 			    });
 
-					hoverYearlyTrendFuture = Math.round(hoverYearlyTrendFuture/365);
+					hoverYearlyTrendFuture = Math.round(hoverYearlyTrendFuture/365).toLocaleString();
 
-					{ if ( hoverYear==allYears[0] )
+					if ( hoverYear==allYears[0] )
 						{ var textInput =  String(allYears[0]); }
-						else if ( hoverYear!=allYears[0] )
-							{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
+					else if ( hoverYear!=allYears[0] )
+					{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
 
 					d3.selectAll("#hover_metrics").remove();
 
@@ -831,7 +835,7 @@
 							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 100, "12px", 0, "normal", null, textInput);
 
-			}})
+			})
 		};}
 
 			var createRectBoundaries = function() {
@@ -858,7 +862,7 @@
 										.attr("id", "hover_region_rect")
 										.attr("x", 0.7)
 										.attr("y", -7.5)
-										.attr("width", (width/numRows)*obsCumDic[allYears[Number(d)]] )
+										.attr("width", (width/numRows)*obsCumDic[allYears[Number(d)]])
 										.attr("height", height + 7.5)
 										.style("fill", "transparent")
 										.style("stroke-width", 1)

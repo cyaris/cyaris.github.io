@@ -348,7 +348,7 @@
 				overallYearlyTrendPast = Math.round(overallYearlyTrendPast/(obsCumDic[obsMaxYear]-365)).toLocaleString();
 				overallYearlyTrendFuture = Math.round(overallYearlyTrendFuture/365).toLocaleString();
 
-				addStdRect(svg1, null, (width/numRows)*obsCumDic[allYears[allYears.length-1]]+0.7, -7.5, width - ((width/numRows)*obsCumDic[allYears[allYears.length-1]]), height + 7.5, "transparent", "black", null, null, null);
+				// addStdRect(svg1, null, (width/numRows)*obsCumDic[allYears[allYears.length-1]]+0.7, -7.5, width - ((width/numRows)*obsCumDic[allYears[allYears.length-1]]), height + 7.5, "transparent", "black", null, null, null);
 		    // Scale the range of the data
 		    x.domain(d3.extent(data, function(d) { return d.date; }));
 		    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);

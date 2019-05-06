@@ -388,13 +388,26 @@
 		    var obsMaxYearLine = d3.line()
 		        .x(function(d) { return x(d.date); })
 		        .y(function(d) { return y(d[obsMaxYearPredCol]); });
+				// adding incorrect hoverline to define variable early so that it's placement will be correct
+				var hoverYearLine = d3.line()
+		        .x(function(d) { return x(d.date); })
+		        .y(function(d) { return y(d[obsMaxYearPredCol]); });
 		    // Add the overall Pred line path.
 		    svg1.append("path")
 		        .data([data])
 		        .attr("pointer-events", "none")
 		        .attr("class", "line")
+						.attr("id", "obs_max_year_line")
 		        .attr("d", obsMaxYearLine)
 		        .style("stroke", "rgb(250,98,95)");
+
+				svg1.append("path")
+		        .data([data])
+		        .attr("pointer-events", "none")
+		        .attr("class", "line")
+						.attr("id", "hover_year_line")
+		        .attr("d", hoverYearLine)
+		        .style("stroke", "transparent" );
 				// Add the X Axis
 		    svg1.append("g")
 		        .attr("pointer-events", "none")
@@ -703,8 +716,12 @@
 		    var obsMaxYearLine = d3.line()
 		        .x(function(d) { return x(d.date); })
 		        .y(function(d) { return y(d[obsMaxYearPredCol]); });
+		    // Redefine the hover_line
+		    var hoverYearLine = d3.line()
+		        .x(function(d) { return x(d.date); })
+		        .y(function(d) { return y(d[hoverYearPred]); });
 
-		    svg1.select("path")
+		    svg1.select("#obs_max_year_line")
 		        .attr("d", obsMaxYearLine)
 		        .style("stroke", function(d) {
 		          if ( showTS=='no' )
@@ -712,24 +729,13 @@
 		          else
 		          { return "rgb(250,98,95)" };});
 
-		    d3.select("#hover_line").remove();
-		    // add the hover_line
-		    var hoverYearLine = d3.line()
-		        .x(function(d) { return x(d.date); })
-		        .y(function(d) { return y(d[hoverYearPred]); });
-
-		    svg1.append("path")
-		        .data([data])
-		        .attr("pointer-events", "none")
-		        .attr("class", "line")
-		        .attr("id", "hover_line")
+				svg1.select("#hover_year_line")
 		        .attr("d", hoverYearLine)
 		        .style("stroke", function(d) {
 		          if ( hoverYear==obsMaxYear || showTS=='no' )
 		          { return "transparent" }
 		          else
-		          { return "rgb(0,192,127)" }
-		        });
+		          { return "rgb(0,192,127)" };});
 
 				var updateHoverMetrics = function(d) {
 					if ( hoverYear!=obsMaxYear ) {

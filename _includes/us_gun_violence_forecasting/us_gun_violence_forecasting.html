@@ -178,7 +178,7 @@
 								.style('font-weight', 500);
 			};
 
-			function getTextWidth(svgInput, textInput, fontSize, fontStyle) {
+			function getTextWidth(svgInput, textInput, fontSize) {
 
 				var textWidthArray = [];
 
@@ -188,7 +188,6 @@
 						    .enter()
 						    .append("text")
 							    .attr("font-size", String(fontSize) + "px")
-									.style("font-style", fontStyle)
 							    .text(function(d) { return d; })
 							    .each(function(d,i) {
 							        var thisWidth = this.getComputedTextLength();
@@ -356,8 +355,7 @@
 		    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
 
 				var nextYearXLoc = (width/numRows)*obsCumDic[allYears[allYears.length-1]];
-				addStdRect(svg1, null, nextYearXLoc, -7.5, width - nextYearXLoc, height + 7.5, "black", "transparent", 0.1, null, null, null);
-
+				addStdRect(svg1, null, nextYearXLoc, -7.5, width - nextYearXLoc, height + 7.5, "black", "transparent", 0.075, null, null, null);
 				addStdLine(svg1, (margin.right/2), (.5 * margin.right) + 12.5, 6, 6, "rgb(250,98,95)", 3.5, null);
 				addStdLine(svg1, (margin.right/2), (.5 * margin.right) + 12.5, 21, 21, "rgb(0,192,127)", 3.5, null);
 				addStdText(svg1, null, null, (.5 * margin.right) + 17.5, 10, "12px", 0, "normal", null, "Overall Model");
@@ -599,13 +597,13 @@
 				addStdLine(svg4, 225.25 - 27.5, 324.375 - 27.5, 40, 40, "rgb(250,98,95)", 3.5, null);
 				addStdLine(svg4, 324.375 - 27.5, 423.5 - 27.5, 40, 40, "rgb(0,192,127)", 3.5, null);
 				addStdText(svg4, null, null, leftMarginAdj, 9.25, "12px", 0, "normal", null, "Prediction Timeframe");
-				var textWidthOut = getTextWidth(svg4, "Overall", 12, "normal");
+				var textWidthOut = getTextWidth(svg4, "Overall", 12);
 				addStdText(svg4, null, null, 324.375 - 27.5 - textWidthOut, 15, "12px", 0, "normal", null, "Overall");
-				var textWidthOut = getTextWidth(svg4, "Predictions", 12, "normal");
+				var textWidthOut = getTextWidth(svg4, "Predictions", 12);
 				addStdText(svg4, null, null, 324.375 - 27.5 - textWidthOut, 30, "12px", 0, "normal", null, "Predictions");
-				var textWidthOut = getTextWidth(svg4, "Comparative", 12, "normal");
+				var textWidthOut = getTextWidth(svg4, "Comparative", 12);
 				addStdText(svg4, null, null, 423.5 - 27.5 - textWidthOut, 15, "12px", 0, "normal", null, "Comparative");
-				var textWidthOut = getTextWidth(svg4, "Predictions", 12, "normal");
+				var textWidthOut = getTextWidth(svg4, "Predictions", 12);
 				addStdText(svg4, null, null, 423.5 - 27.5 - textWidthOut, 30, "12px", 0, "normal", null, "Predictions");
 
 				addStdText(svg4, null, null, leftMarginAdj, 55, "12px", 0, "normal", null, "Model Input:");
@@ -613,37 +611,37 @@
 				addStdText(svg4, null, null, leftMarginAdj, 85, "12px", 0, "normal", null, "Avg Victims per Day:");
 				addStdText(svg4, null, null, leftMarginAdj, 100, "12px", 0, "normal", null, "Avg Yearly Trend");
 				var textInput =  "Avg Yearly Trend",
-						textWidthOut = getTextWidth(svg4, textInput, 12, "normal");
+						textWidthOut = getTextWidth(svg4, textInput, 12);
 				addStdText(svg4, null, null, leftMarginAdj + textWidthOut + 4, 100, "12px", 0, "italic", null, "(Rounded)");
 				var textInput =  "Avg Yearly Trend (Rounded)",
-						textWidthOut = getTextWidth(svg4, textInput, 12, "normal");
+						textWidthOut = getTextWidth(svg4, textInput, 12);
 				addStdText(svg4, null, null, leftMarginAdj + textWidthOut - 2, 100, "12px", 0, "normal", null, ":");
 
 				var textInput =  String(allYears[0]) + "–Present",
-						textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+						textWidthOut = getTextWidth(svg1, textInput, 12);
 				addStdText(svg4, null, null, 324.375 - 27.5 - textWidthOut, 55, "12px", 0, "normal", null, textInput);
 
 				var pastPredictionSpecific = function() {
 
 					addStdText(svg4, "past_prediction_specific", null, leftMarginAdj, 115, "12px", 0, "normal", null, "RMSE");
 					var textInput =  "RMSE",
-							textWidthOut = getTextWidth(svg4, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg4, textInput, 12);
 					addStdText(svg4, "past_prediction_specific", null, leftMarginAdj + textWidthOut + 4, 115, "12px", 0, "italic", null, "(Rounded)");
 					var textInput =  "RMSE (Rounded)",
-							textWidthOut = getTextWidth(svg4, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg4, textInput, 12);
 					addStdText(svg4, "past_prediction_specific", null, leftMarginAdj + textWidthOut - 2, 115, "12px", 0, "normal", null, ":");
 
-					var textInput = Math.round(overallPredPast).toLocaleString()
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+					var textInput = Math.round(overallPredPast).toLocaleString(),
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "past_prediction_specific", null, 324.375 - 27.5 - textWidthOut, 70, "12px", 0, "normal", null, textInput);
 					var textInput = Math.round(overallPredPast/obsCumDic[obsMaxYear]).toLocaleString(),
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "past_prediction_specific", null, 324.375 - 27.5 - textWidthOut, 85, "12px", 0, "normal", null, textInput);
 					var textInput = overallYearlyTrendPast.toLocaleString(),
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "past_prediction_specific", null, 324.375 - 27.5 - textWidthOut, 100, "12px", 0, "normal", null, textInput);
 					var textInput =  String(overallRMSE),
-							textWidthOut = getTextWidth(svg4, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg4, textInput, 12);
 					addStdText(svg4, "past_prediction_specific", null, 324.375 - 27.5 - textWidthOut, 115, "12px", 0, "normal", null, textInput);
 
 				};
@@ -652,14 +650,14 @@
 
 				var futurePredictionSpecific = function() {
 
-					var textInput = Math.round(overallPredFuture).toLocaleString()
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+					var textInput = Math.round(overallPredFuture).toLocaleString(),
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "future_prediction_specific", null, 324.375 - 27.5 - textWidthOut, 70, "12px", 0, "normal", null, textInput);
 					var textInput = Math.round(overallPredFuture/365).toLocaleString(),
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "future_prediction_specific", null, 324.375 - 27.5 - textWidthOut, 85, "12px", 0, "normal", null, textInput);
 					var textInput =  overallYearlyTrendFuture.toLocaleString(),
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "future_prediction_specific", null, 324.375 - 27.5 - textWidthOut, 100, "12px", 0, "normal", null, textInput);
 
 				};
@@ -775,7 +773,7 @@
 							}
 			    });
 
-					hoverYearlyTrendPast = Math.round(hoverYearlyTrendPast/(obsCumDic[obsMaxYear]-365)).toLocaleString();;
+					hoverYearlyTrendPast = Math.round(hoverYearlyTrendPast/(obsCumDic[obsMaxYear]-365)).toLocaleString();
 					hoverRMSE = Math.round(Math.sqrt(hoverRMSE)).toLocaleString();
 
 					if ( hoverYear==allYears[0] )
@@ -785,19 +783,19 @@
 
 					d3.selectAll("#hover_metrics").remove();
 
-					var textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+					var textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 55, "12px", 0, "normal", null, textInput);
-					var textInput = Math.round(hoverPredPast).toLocaleString()
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+					var textInput = Math.round(hoverPredPast).toLocaleString(),
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 70, "12px", 0, "normal", null, textInput);
 					var textInput = Math.round(hoverPredPast/obsCumDic[obsMaxYear]).toLocaleString(),
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 85, "12px", 0, "normal", null, textInput);
 					var textInput = hoverYearlyTrendPast.toLocaleString(),
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 100, "12px", 0, "normal", null, textInput);
 					var textInput =  String(hoverRMSE),
-							textWidthOut = getTextWidth(svg4, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg4, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 115, "12px", 0, "normal", null, textInput);
 
 			})}
@@ -828,16 +826,16 @@
 
 					d3.selectAll("#hover_metrics").remove();
 
-					var textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+					var textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 55, "12px", 0, "normal", null, textInput);
-					var textInput = Math.round(hoverPredFuture).toLocaleString()
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+					var textInput = Math.round(hoverPredFuture).toLocaleString(),
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 70, "12px", 0, "normal", null, textInput);
 					var textInput = Math.round(hoverPredFuture/365).toLocaleString(),
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 85, "12px", 0, "normal", null, textInput);
 					var textInput = hoverYearlyTrendFuture.toLocaleString(),
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, "hover_metrics", null, 423.5 - 27.5 - textWidthOut, 100, "12px", 0, "normal", null, textInput);
 
 			})
@@ -921,7 +919,7 @@
 					addStdLine(svg1, nextYearXLoc, nextYearXLoc, function(d) { return y(y.domain()[0])}, -7.5, "black", 2, ("4, 4"));
 					addStdLine(svg1, nextYearXLoc, width, -7.5, -7.5, "black", 2, ("4, 4"));
 					var textInput =  "Next 365 Days...",
-							textWidthOut = getTextWidth(svg1, textInput, 12, "normal");
+							textWidthOut = getTextWidth(svg1, textInput, 12);
 					addStdText(svg1, null, null, nextYearXLoc + ((width - nextYearXLoc - textWidthOut)/2), 10, "12px", 0, "italic", null, textInput);
 
 				});

@@ -320,7 +320,7 @@
 									.tickValues(smoothStepData)
 									.default(10)
 									.on('onchange', function(d) {
-										updateGraph(obsMaxYear, "no");
+										updateGraph(obsMaxYear, "no", "yes");
 									}),
 						obsMaxYearPredCol = "pred_" + String(obsMaxYear) + "_smooth_" + String(smoothSliderStep.value()),
 						obsMaxYearPredColRaw = "pred_" + String(obsMaxYear) + "_smooth_" + String(d3.min(smoothStepData)),
@@ -443,12 +443,12 @@
 					 	xAxMouseover = function(d) {
 							xAxisTooltip
 								.style("opacity", 1);
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "no");
 				},
 						yAxMouseover = function(d) {
 							yAxisTooltip
 								.style("opacity", 1);
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "no");
 				},
 						xAxMouseleave = function(d) {
 							xAxisTooltip
@@ -495,49 +495,49 @@
 						lvMouseover = function(d) {
 							lvTooltip
 								.style("opacity", 1);
-							updateGraph(obsMaxYear, "yes");
+							updateGraph(obsMaxYear, "yes", "no");
 				},
 						lvMouseleave = function(d) {
 							lvTooltip
 								.style("opacity", 0);
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "no");
 				},
 						lvClick = function() {
 						if ( yMax==maxOb )
 						{ yMax = allObs[1];
-							createRectBoundaries();
 							d3.select("#lvCheckMark").remove();
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "yes");
+							createRectBoundaries();
 					}
 						else
 						{ yMax = maxOb;
-							createRectBoundaries();
 							addStdText(svg3, "lvCheckMark", null, 6, 22.5, "20px", 0, "normal", "✓");
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "yes");
+							createRectBoundaries();
 						}
 				},
 						obsClick = function() {
 						if ( showObs=="yes" )
 						{ showObs = "no";
 							d3.select("#obsCheckMark").remove();
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "no");
 					}
 						else
 						{ showObs = "yes";
 							addStdText(svg3, "obsCheckMark", null, 6, 57.5, "20px", 0, "normal", "✓");
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "no");
 						}
 				},
 						tsClick = function() {
 						if ( showTS=="yes" )
 						{ showTS = "no";
 							d3.select("#tsCheckMark").remove();
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "yes");
 					}
 						else
 						{ showTS = "yes";
 							addStdText(svg3, "tsCheckMark", null, 6, 92.5, "20px", 0, "normal", "✓");
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "yes");
 						}
 				};
 
@@ -592,7 +592,7 @@
 				},
 						removeDropDownOption = function(d) {
 							d3.selectAll("#dropdown_option").remove();
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "no");
 				};
 
 				addStdRect(svg4, null, 0, 0, fullWidth, 125, "transparent", removeDropDownOption, null, null);
@@ -690,23 +690,45 @@
 
 				addStdText(svg4, null, null, leftMarginAdj + (leftBodyFifth*3) + 170.5, 22.5, "12px", 0, "normal", "Model Smoothing");
 
-		var updateGraph = function(hoverYear, highlightMax) {
+		var updateGraph = function(hoverYear, highlightMax, fullGraphUpdate) {
 
 		  d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 
-		    var obsMaxYearPredCol = "pred_" + String(obsMaxYear) +  "_smooth_" + String(smoothSliderStep.value()),
-						hoverYearPred = "pred_" + String(hoverYear) +  "_smooth_" + String(smoothSliderStep.value());
-		    // format the data
-		    data.forEach(function(d) {
-		        d.date = parseTime(d.date);
-		        d[obsMaxYearPredCol] = +d[obsMaxYearPredCol];
-		        d[hoverYearPred] = +d[hoverYearPred];
-		    });
-		    // Rescale the range of the data vertically
-		    y.domain([0, yMax + 25]);
-		    // Update the Y Axis
-		    svg1.select(".y")
-		        .call(d3.axisLeft(y));
+		    if ( fullGraphUpdate=='yes' ) {
+			    // Rescale the range of the data vertically
+			    y.domain([0, yMax + 25]);
+			    // Update the Y Axis
+			    svg1.select(".y")
+			        .call(d3.axisLeft(y));
+
+					var obsMaxYearPredCol = "pred_" + String(obsMaxYear) +  "_smooth_" + String(smoothSliderStep.value());
+			    // Redefine the overall Pred line path.
+			    var obsMaxYearLine = d3.line()
+			        .x(function(d) { return x(d.date); })
+			        .y(function(d) { return y(d[obsMaxYearPredCol]); });
+
+			    svg1.select("#obs_max_year_line")
+			        .attr("d", obsMaxYearLine)
+			        .style("stroke", function(d) {
+			          if ( showTS=='no' )
+			          { return "transparent" }
+			          else
+			          { return "rgb(250,98,95)" };});
+				};
+
+				var hoverYearPred = "pred_" + String(hoverYear) +  "_smooth_" + String(smoothSliderStep.value());
+				// Redefine the hover_line
+		    var hoverYearLine = d3.line()
+		        .x(function(d) { return x(d.date); })
+		        .y(function(d) { return y(d[hoverYearPred]); });
+
+				svg1.select("#hover_year_line")
+		        .attr("d", hoverYearLine)
+		        .style("stroke", function(d) {
+		          if ( hoverYear==obsMaxYear || showTS=='no' )
+		          { return "transparent" }
+		          else
+		          { return "rgb(0,192,127)" };});
 				// Update the circles.
 		    svg1.selectAll("#circle_obs")
 		        .attr("cy", function(d) { return y(d.num_harmed); })
@@ -733,30 +755,6 @@
 							else
 		          { return null }
 		        });
-		    // Redefine the overall Pred line path.
-		    var obsMaxYearLine = d3.line()
-		        .x(function(d) { return x(d.date); })
-		        .y(function(d) { return y(d[obsMaxYearPredCol]); });
-
-		    svg1.select("#obs_max_year_line")
-		        .attr("d", obsMaxYearLine)
-		        .style("stroke", function(d) {
-		          if ( showTS=='no' )
-		          { return "transparent" }
-		          else
-		          { return "rgb(250,98,95)" };});
-				// Redefine the hover_line
-		    var hoverYearLine = d3.line()
-		        .x(function(d) { return x(d.date); })
-		        .y(function(d) { return y(d[hoverYearPred]); });
-
-				svg1.select("#hover_year_line")
-		        .attr("d", hoverYearLine)
-		        .style("stroke", function(d) {
-		          if ( hoverYear==obsMaxYear || showTS=='no' )
-		          { return "transparent" }
-		          else
-		          { return "rgb(0,192,127)" };});
 
 				var updateHoverMetrics = function(d) {
 					if ( hoverYear!=obsMaxYear ) {
@@ -785,13 +783,13 @@
 			    // format the data
 			    data.forEach(function(d) {
 							d[hoverYearPredRaw] = +d[hoverYearPredRaw];
-							d[hoverYearlyTrendCol] = +d[hoverYearlyTrendCol]
+							d[hoverYearlyTrendCol] = +d[hoverYearlyTrendCol];
 							if ( d.non_observation!=1 )
 							{
-								hoverPredPast+=d[hoverYearPredRaw]
+								hoverPredPast+=d[hoverYearPredRaw];
 								difference = d[hoverYearPredRaw] - d.num_harmed;
 								hoverRMSE+=Math.pow(difference, 2)/obsCumDic[obsMaxYear];
-								hoverYearlyTrendPast+=d[hoverYearlyTrendCol]
+								hoverYearlyTrendPast+=d[hoverYearlyTrendCol];
 							}
 			    });
 
@@ -833,9 +831,9 @@
 			    // format the data
 			    data.forEach(function(d) {
 							d[hoverYearPredRaw] = +d[hoverYearPredRaw];
-							d[hoverYearlyTrendCol] = +d[hoverYearlyTrendCol]
+							d[hoverYearlyTrendCol] = +d[hoverYearlyTrendCol];
 							if ( d.non_observation==1 )
-							{ hoverPredFuture+=d[hoverYearPredRaw]
+							{ hoverPredFuture+=d[hoverYearPredRaw];
 								hoverYearlyTrendFuture+=d[hoverYearlyTrendCol] };
 			    });
 
@@ -866,13 +864,6 @@
 			var createRectBoundaries = function() {
 
 				d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
-					// Format the data
-					data.forEach(function(d) {
-							d.date = parseTime(d.date);
-					});
-					// Scale the range of the data
-					x.domain(d3.extent(data, function(d) { return d.date; }));
-					y.domain([0, yMax + 25]);
 
 					var yearMouseover = function(d) {
 
@@ -882,11 +873,11 @@
 							{ addStdText(svg2, "hover_instruction", null, ((fullWidth - leftMarginAdj)/2)-95, 17.5, "13.5px", 0.5, "italic", "Comparing Historical Forecasts...");
 								addStdRect(svg1, "hover_region_rect", 0.7, -7.5, (width/numRows)*obsCumDic[allYears[Number(d)]], height + 7.5, "black", null, null, null);
 								d3.select("#hover_region_rect").attr("pointer-events", "none");
-								updateGraph(allYears[Number(d)], "no");
+								updateGraph(allYears[Number(d)], "no", "no");
 							 }
 							else
 							{ addStdText(svg2, "hover_instruction", null, ((fullWidth - leftMarginAdj)/2)-120, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
-								updateGraph(obsMaxYear, "no"); };
+								updateGraph(obsMaxYear, "no", "no"); };
 					},
 						yearMouseleave = function(d) {
 							d3.select("#hover_instruction").remove();
@@ -894,7 +885,7 @@
 							d3.select("#hover_region_rect").remove();
 					};
 						marginMouseover = function(d) {
-							updateGraph(obsMaxYear, "no");
+							updateGraph(obsMaxYear, "no", "no");
 					};
 					// Add the year rect boundaries
 					var yearRect = svg1.selectAll()

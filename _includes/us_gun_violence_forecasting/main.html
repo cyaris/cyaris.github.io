@@ -110,26 +110,6 @@
 					 });
 		};
 
-		// function addDicText(svgInput, idInput, locDic, objNum, fontSize, strokeWidth, fontStyle, textInput) {
-		//
-		// 	svgInput.append("text")
-		// 		.attr("pointer-events", "none")
-		// 		.attr("id", idInput)
-		// 		.attr("x", locDic['x'] + locDic['len'] + locDic['x_diff'])
-		// 		.attr("y", locDic['x_text'] + (objNum * locDic['y_diff']))
-		// 		.text(textInput)
-		// 			.style("fill", "black")
-		// 			.style("font-size", fontSize)
-		// 			.style("font-style", fontStyle)
-		// 			.style('stroke-width', strokeWidth)
-		// 			.style('stroke', function(d) {
-		// 				if ( strokeWidth==0 )
-		// 				{ return "transparent" }
-		// 				else
-		// 				 { return "black" }
-		// 			 });
-		// };
-
 		function addStdRect(svgInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rMO, rML, rClick) {
 
 			svgInput.append("rect")
@@ -145,7 +125,7 @@
 						.on("click", rClick);
 		};
 
-		function addStdCircles(svgInput, dataInput, idInput, yVariable, fillColor, strokeColor) {
+		function addStdCircles(svgInput, dataInput, idInput, trueObservation, yVariable, fillColor, strokeColor) {
 
 			svgInput.selectAll("#" + idInput)
 					.data(dataInput)
@@ -157,13 +137,13 @@
 						.attr("cx", function(d) { return x(d.date); })
 						.attr("cy", function(d) { return y(d[yVariable]); })
 						.style("fill", function(d) {
-							if ( d.non_observation==1 )
+							if ( d.non_observation==1 && trueObservation=="yes" )
 							{ return 'transparent' }
 							else
 							{ return fillColor }
 						})
 						.style("stroke", function(d) {
-							if ( d.non_observation==1 )
+							if ( d.non_observation==1 && trueObservation=="yes" )
 							{ return 'transparent' }
 							else
 							{ return strokeColor }
@@ -184,20 +164,6 @@
 					.style("stroke-width", strokeWidth)
 					.style("stroke-dasharray", strokeDashArray);
 		};
-
-		// function addDicLine(svgInput, locDic, objNum, strokeColor, strokeWidth, strokeDashArray) {
-		//
-		// 	svgInput.append("line")
-		// 			.attr("pointer-events", "none")
-		// 			.attr("x1", locDic['x'])
-		// 			.attr("x2", locDic['x'] + locDic['len'])
-		// 			.attr("y1", locDic['y'] + (objNum * locDic['y_diff']))
-		// 			.attr("y2", locDic['y'] + (objNum * locDic['y_diff']))
-		// 			.style("fill", "none")
-		// 			.style("stroke", strokeColor)
-		// 			.style("stroke-width", strokeWidth)
-		// 			.style("stroke-dasharray", strokeDashArray);
-		// };
 
 		function addStdPath(svgInput, dataInput, pathID, pathName, strokeColor) {
 
@@ -252,7 +218,7 @@
 
 			var textWidthArray = [];
 
-			svg1.append('g')
+			svg1.append("g")
 					    .selectAll('.dummyText')
 					    .data([textInput])
 					    .enter()
@@ -281,7 +247,7 @@
 
 		function selectHide(svgInput, idInput) {
 
-			svgInput.selectAll("#" + String(idInput))
+			svgInput.select("#" + String(idInput))
 							.style("stroke", "transparent");
 		};
 
@@ -353,9 +319,26 @@
 
 		d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 
-			var numRows = data.length,
-					minYear = d3.min(data, function(d) { return d.year }),
-					maxYear = d3.max(data, function(d) { return d.year });
+			var tooltipMO = function(d) {
+						d3.select(this).style("cursor", "help");
+						rectID = d3.select(this)["_groups"][0][0]["id"];
+						toolTip = rectID.substring(0, rectID.length - 4);
+						d3.select("#" + toolTip).style("opacity", 1);
+						if ( toolTip=="lvTooltip" ) {
+								updateGraph(maxYearObserved, "yes", "no", "no");
+						}
+						else {
+								updateGraph(maxYearObserved, "no", "no", "no");
+						};
+			},
+					tooltipML = function(d) {
+						rectID = d3.select(this)["_groups"][0][0]["id"];
+						toolTip = rectID.substring(0, rectID.length - 4);
+						d3.select("#" + toolTip).style("opacity", 0);
+						if ( toolTip=="lvTooltip" ) {
+							updateGraph(maxYearObserved, "no", "no", "no");
+						}
+			};
 
 			var	maxYearObserved = [],
 					allDates = [],
@@ -374,6 +357,10 @@
 			var obsColor = "rgb(112,128,144)",
 					overallModelColor = "rgb(250,98,95)",
 					hoverModelColor = "rgb(0,192,127)";
+
+			var numRows = data.length,
+					minYear = d3.min(data, function(d) { return d.year }),
+					maxYear = d3.max(data, function(d) { return d.year });
 			// format the data
 			data.forEach(function(d) {
 					d.date = parseTime(d.date);
@@ -392,7 +379,7 @@
 					daysPerYearCount = 0;
 					pred_year_array = [];
 					data.forEach(function(d) {
-						if ( d.year==i  )
+						if ( d.year==i )
 						{ daysPerYearCount+=1; }
 						if ( d.year==i && d.non_observation!=1 )
 						{ maxYearObserved.push(i);
@@ -413,15 +400,6 @@
 					nydKeys = Object.keys(newYearsDayDic),
 					maxYearObserved = d3.max(maxYearObserved);
 
-			var sliderData = [0, 5, 10, 15, 20, 25, 30];
-
-			for ( var i = 1; i <= sliderData.length-1; i++ ) {
-				obsMADic[sliderData[i]] = sma(allObs, sliderData[i]).map(Number);
-				for ( var z = minYear; z <= maxYear; z++ ) {
-					tsMADic[String(z) + "_" + String(sliderData[i])] = sma(tsPredDic[z], sliderData[i]).map(Number);
-				};
-			};
-
 			var sliderData = [0, 5, 10, 15, 20, 25, 30],
 					sliderDefault = 10,
 					tsSlider = d3.sliderBottom()
@@ -432,9 +410,17 @@
 								.tickValues(sliderData)
 								.default(sliderDefault)
 								.on('onchange', function(d) {
-									updateGraph(maxYearObserved, "no", "yes");
-								}),
-					overallCol = "pred_" + String(maxYearObserved),
+									updateGraph(maxYearObserved, "no", "yes", "no");
+								});
+
+			for ( var i = 1; i <= sliderData.length-1; i++ ) {
+				obsMADic[sliderData[i]] = sma(allObs, sliderData[i]).map(Number);
+				for ( var z = minYear; z <= maxYear; z++ ) {
+					tsMADic[String(z) + "_" + String(sliderData[i])] = sma(tsPredDic[z], sliderData[i]).map(Number);
+				};
+			};
+
+			var overallCol = "pred_" + String(maxYearObserved),
 					overallYearlyTrendCol = "yearly_trend_calc_" + String(maxYearObserved),
 					overallPredPast = 0,
 					overallPredFuture = 0,
@@ -462,27 +448,9 @@
 	    // Scale the range of the data
 	    x.domain(d3.extent(data, function(d) { return d.date; }));
 	    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
-			addStdRect(svg1, "graph_rect_outline", -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), "black", null, null, null);
-			d3.select("#graph_rect_outline").attr("pointer-events", "none");
-
-			// locDic = {
-			// 	'line_graph_legend': {
-			// 		'x': margin.right/2,
-			// 		'y': 6,
-			// 		'len': 12.5,
-			// 		'x_diff': 5,
-			// 		'y_diff': 15,
-			// 		'x_text': 10
-			// 	}
-			// };
-			//
-			// var object = locDic['line_graph_legend'];
-			// addDicText(svg1, null, object, 0, "12px", 0, "normal", "Observations");
-			// addDicLine(svg1, object, 1,  overallModelColor, 3.5, null);
-			// addDicText(svg1, null, object, 1, "12px", 0, "normal", "Overall Model");
-			// addDicLine(svg1, object, 2, hoverModelColor, 3.5, null);
-			// addDicText(svg1, null, object, 2, "12px", 0, "normal", "Comparative Model");
 
 			addStdLine(svg1, (margin.right/2), (margin.right/2) + 12.5, 21, 21, "rgb(250,98,95)", 3.5, null);
 			addStdLine(svg1, (margin.right/2), (margin.right/2) + 12.5, 36, 36, "rgb(0,192,127)", 3.5, null);
@@ -493,7 +461,7 @@
 			var futureTimeFrameXLoc = (width/numRows)*obsCumDic[allYears[allYears.length-1]];
 			addStdRect(svg1, "next_365_days_rect", futureTimeFrameXLoc + 0.7, -7.5, width - futureTimeFrameXLoc, height + 7.5, "transparent", null, null, null);
 			d3.select("#next_365_days_rect").attr("pointer-events", "none").style("fill", "black").style("opacity", 0.075);
-			var textInput =  "Next 365 Days...",
+			var textInput = "Next 365 Days...",
 					textWidth = getTextWidth(textInput, 12);
 			addStdText(svg1, null, futureTimeFrameXLoc + 0.7 + ((width - futureTimeFrameXLoc - textWidth)/2), 10, "12px", 0, "italic", textInput);
 			// defining obsMALine early as null so that it's placement will be correct when slider is used
@@ -502,7 +470,7 @@
 	        .y(function(d) { return null; });
 			addStdPath(svg1, [data], "obs_ma_line", obsMALine, "transparent");
 	    // Add the circles.
-			addStdCircles(svg1, data, "circle_obs", "num_harmed", obsColor, "black");
+			addStdCircles(svg1, data, "circle_obs", "yes", "num_harmed", obsColor, "black");
 	    // define the overall line and add path
 			var overallMALine = d3.line()
 					.defined(function(d) { return d.index>tsSlider.value()-2; })
@@ -510,116 +478,89 @@
 					.y(function(d) { return y(tsMADic[String(maxYearObserved) + "_" + String(sliderDefault)][d.index-(tsSlider.value()-1)]); });
 			addStdPath(svg1, [data], "overall_ma_line", overallMALine, overallModelColor);
 	    // Add the circles.
-			addStdCircles(svg1, data, "circle_overall_pred", overallCol, 'transparent', 'transparent');
-			// defining hover/comparison early as null  so that it's placement will be correct
+			addStdCircles(svg1, data, "circle_overall_pred", "no", overallCol, 'transparent', 'transparent');
+			// svg1.selectAll("#circle_overall_pred").style("opacity", 0.7);
+			// defining hover/comparison early as null so that it's placement will be correct
 			var hoverMALine = d3.line()
 	        .x(function(d) { return null; })
 	        .y(function(d) { return null; });
 			addStdPath(svg1, [data], "hover_ma_line", hoverMALine, "transparent");
-	    // Add the circles.
-			addStdCircles(svg1, data, "circle_hover_pred", overallCol, 'transparent', 'transparent');
-			// Add the X Axis
-	    svg1.append("g")
-	        .attr("pointer-events", "none")
-	        .attr("transform", "translate(0," + height + ")")
-	        .style("font-size", "12px")
-	        .call(d3.axisBottom(x));
-	    // Add the Y Axis
-	    svg1.append("g")
-	        .attr("pointer-events", "none")
-					.attr("class", "y axis")
-	        .style("font-size", "12px")
-	        .call(d3.axisLeft(y));
+	    // Add the circles. Using overallCol as filler
+			addStdCircles(svg1, data, "circle_hover_pred", "no", overallCol, 'transparent', 'transparent');
+			// svg1.selectAll("#circle_hover_pred").style("opacity", 0.7);
 
-			var tooltipMO = function(d) {
-						d3.select(this).style("cursor", "help");
-						rectID = d3.select(this)["_groups"][0][0]["id"];
-						toolTip = rectID.substring(0, rectID.length - 4);
-						d3.select("#" + toolTip).style("opacity", 1);
-						if ( toolTip=="lvTooltip" ) {
-								updateGraph(maxYearObserved, "yes", "no");
-						}
-						else {
-								updateGraph(maxYearObserved, "no", "no");
-						};
-			},
-					tooltipML = function(d) {
-						rectID = d3.select(this)["_groups"][0][0]["id"];
-						toolTip = rectID.substring(0, rectID.length - 4);
-						d3.select("#" + toolTip).style("opacity", 0);
-						if ( toolTip=="lvTooltip" ) {
-							updateGraph(maxYearObserved, "no", "no");
-						}
-			};
+			addStdRect(svg1, "graph_rect_outline", -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), "black", null, null, null);
+			d3.select("#graph_rect_outline").attr("pointer-events", "none");
+			addStdLine(svg1, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0])}, -7.5, "black", 2, ("4, 4"));
+			addStdLine(svg1, futureTimeFrameXLoc + 0.7, width, -7.5, -7.5, "black", 2, ("4, 4"));
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
-			defineTooltip("graph", "xAxisTooltip", "457.5px", "422.5px",  "147.5px", "52.5px", "Incidents are grouped by date across the US.");
-			defineTooltip("graph", "yAxisTooltip", "50px", "50px", "185px", "85px", "Includes all victims reported as injured or killed. Victims with unreported injuries are not included.");
-			// Add label and tooltip symbol for x axis
-			addStdText(svg1, "x_axis_text", -32.5, null, "18px", 0.5, "normal", "Year");
-			d3.select("#x_axis_text").attr("transform", "translate(" + (width/2) + " ," + (topBody + 37.5) + ")");
-			addTooltipSymbol(svg1, (width/2) + 21, topBody + 31.5, (width/2) + 19.5, topBody + 35, null);
-			// Add label and tooltip symbol for y axis
-			addStdText(svg1, "y_axis_text", -(height/2), 15-margin.left, "18px", 0.5, "normal", "Total Victims");
-			d3.select("#y_axis_text").attr("transform", "rotate(-90)").style("text-anchor", "middle");
-			addTooltipSymbol(svg1, -55, (height/2)-71.5, -112.5, -51, "rotate(-90)");
-			// Add  header text for svg2
-			var addHoverGraphHeader = function() {
+			// Add header text for svg2
+			var addGraphHoverHeader = function() {
 				addStdText(svg2, "graph_header", ((fullWidth - leftMarginAdj)/2)-120, 17.5, "13.5px", 0.5, "normal", "Hover to Compare Historical Forecasts");
 			},
 					addComparingGraphHeader = function() {
 				addStdText(svg2, "graph_header", ((fullWidth - leftMarginAdj)/2)-95, 17.5, "13.5px", 0.5, "italic", "Comparing Historical Forecasts...");
 			};
 
-			addHoverGraphHeader();
+			addGraphHoverHeader();
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
-
-			var	cursorPointer = function() {
-						d3.select(this).style("cursor", "pointer");
-						// updating graph here in case of failure with marginmouseover/marginmouseleave in svg1
-						updateGraph(maxYearObserved, "no", "no");
-			};
-
-			addStdRect(svg3, null, 1,  0, checkFilterWidth, 108.5 + checkFilterHeight + 1, "transparent", cursorPointer, null, null);
-
-			var filtDic = {
-						"lvCheck": {"fullGraphUpdate": "yes"},
-						"obsCheck": {"fullGraphUpdate": "no"},
-						"tsCheck": {"fullGraphUpdate": "yes"},
-					},
-					filterClick = function() {
+			var filterClick = function() {
 						rectID = d3.select(this)["_groups"][0][0]["id"];
 						checkMarkID = "#" + String(rectID) + "Mark";
 						if ( d3.select(checkMarkID).style("fill")=="black" ) {
 							d3.select(checkMarkID).style("fill", "transparent");
-							updateGraph(maxYearObserved, "no", filtDic[rectID]["fullGraphUpdate"]);
 							if ( rectID=='lvCheck' )
-							{ yMax = allObsSrtd[1]; }
+							{ yMax = allObsSrtd[1];
+							 	updateGraph(maxYearObserved, "no", "yes", "yes");
+							}
+							else {
+								updateGraph(maxYearObserved, "no", "yes", "no");
+							};
 						}
 						else {
 							d3.select(checkMarkID).style("fill", "black");
-							updateGraph(maxYearObserved, "no", filtDic[rectID]["fullGraphUpdate"]);
 							if ( rectID=='lvCheck' )
-							{ yMax = maxOb; }
+							{ yMax = maxOb;
+							 	updateGraph(maxYearObserved, "no", "yes", "yes");
+							}
+							else {
+								updateGraph(maxYearObserved, "no", "yes", "no");
+							};
 						};
-				};
+				},
+				cursorPointer = function() {
+						d3.select(this).style("cursor", "pointer");
+						// updating graph here in case of failure with marginmouseover/marginmouseleave in svg1
+						updateGraph(maxYearObserved, "no", "no", "no");
+			};
 
-			defineTooltip("check_mark_filters", "lvTooltip", "90px", "49px", "265px", "120px", "The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation affects the scaling of the entire graph.");
-			addStdRect(svg3, "lvCheck", 1,  3.5, checkFilterWidth, checkFilterHeight, "black", generalRectMO, generalRectML, filterClick);
+			addStdRect(svg3, null, 1, 0, checkFilterWidth, 108.5 + checkFilterHeight + 1, "transparent", cursorPointer, null, null);
+
+			addStdRect(svg3, "lvCheck", 1, 3.5, checkFilterWidth, checkFilterHeight, "black", generalRectMO, generalRectML, filterClick);
 			addStdText(svg3, "lvCheckMark", 6, 22.5, "20px", 0, "normal", "✓");
 			addStdText(svg3, null, 34, 12, "12px", 0, "normal", "Scaled with");
 			addStdText(svg3, null, 34, 26.5, "12px", 0, "normal", "Las Vegas Shooting");
+
+			var textInput = "The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. See how removing this observation affects the scaling of the entire graph.";
+			defineTooltip("check_mark_filters", "lvTooltip", "90px", "49px", "265px", "120px", textInput);
 			addStdRect(svg3, "lvTooltipRect", 146, 11.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg3, 156, 21.5, 154.5, 25, null);
 
-			addStdRect(svg3, "obsCheck", 1,  38.5, checkFilterWidth, checkFilterHeight, "black", generalRectMO, generalRectML, filterClick);
+			addStdRect(svg3, "obsCheck", 1, 38.5, checkFilterWidth, checkFilterHeight, "black", generalRectMO, generalRectML, filterClick);
 			addStdText(svg3, "obsCheckMark", 6, 57.5, "20px", 0, "normal", "✓");
 			addStdText(svg3, null, 34, 47, "12px", 0, "normal", "Displaying");
 			addStdText(svg3, null, 34, 61.5, "12px", 0, "normal", "Observations");
 
-			addStdRect(svg3, "tsCheck", 1,  73.5, checkFilterWidth, checkFilterHeight, "black", generalRectMO, generalRectML, filterClick);
+			addStdRect(svg3, "tsCheck", 1, 73.5, checkFilterWidth, checkFilterHeight, "black", generalRectMO, generalRectML, filterClick);
 			addStdText(svg3, "tsCheckMark", 6, 92.5, "20px", 0, "normal", "✓");
 			addStdText(svg3, null, 34, 82, "12px", 0, "normal", "Displaying");
 			addStdText(svg3, null, 34, 96.5, "12px", 0, "normal", "Time Series Predictions");
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
 			var dropDownSelected = overallTimeFrame,
 					dropDownOption = "Next 365 Days",
@@ -657,19 +598,19 @@
 					svg4BodyMO = function(d) {
 						d3.selectAll("#dropdown_option").remove();
 						// updating graph here in case of failure with marginmouseover/marginmouseleave in svg1
-						updateGraph(maxYearObserved, "no", "no");
+						updateGraph(maxYearObserved, "no", "no", "no");
 			};
-
-			defineTooltip("metrics_and_sliders", "metricsTooltip", "430px", "485px", "195px", "100px", "Dropdown compares metrics beetween time series model predictions for dates that took place in the past or take place in the next year.");
 
 			addStdRect(svg4, null, 0, 0, fullWidth, 125, "transparent", svg4BodyMO, null, null);
 
 			addStdText(svg4, null, leftMarginAdj, 9.25, "12px", 0, "normal", "Prediction Timeframe");
-			addStdRect(svg4, "metricsTooltipRect", 123.5, 13.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
-			addTooltipSymbol(svg4, 133.5, 23.5, 132, 27, null);
-
 			addStdRect(svg4, null, leftMarginAdj + 1, 15, 91, 17.5, "black", dropDownSelectedMO, generalRectML, dropDownSelectedClick);
 			addStdText(svg4, "dropdown_selected_text", leftMarginAdj + 6, 27.5, "12px", 0, "normal", dropDownSelected);
+
+			var textInput = "Dropdown compares metrics beetween time series model predictions for dates that took place in the past or take place in the next year.";
+			defineTooltip("metrics_and_sliders", "metricsTooltip", "420px", "485px", "195px", "100px", textInput);
+			addStdRect(svg4, "metricsTooltipRect", 123.5, 13.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
+			addTooltipSymbol(svg4, 133.5, 23.5, 132, 27, null);
 
 			addStdLine(svg4, leftMarginAdj, 197.75, 40, 40, "black", 3.5, null);
 			addStdLine(svg4, 197.75, 296.875, 40, 40, overallModelColor, 3.5, null);
@@ -687,24 +628,24 @@
 			addStdText(svg4, null, leftMarginAdj, 70, "12px", 0, "normal", "Total Victims:");
 			addStdText(svg4, null, leftMarginAdj, 85, "12px", 0, "normal", "Avg Victims per Day:");
 			addStdText(svg4, null, leftMarginAdj, 100, "12px", 0, "normal", "Avg Yearly Trend");
-			var textInput =  "Avg Yearly Trend",
+			var textInput = "Avg Yearly Trend",
 					textWidth = getTextWidth(textInput, 12);
 			addStdText(svg4, null, leftMarginAdj + textWidth + 4, 100, "12px", 0, "italic", "(Rounded)");
-			var textInput =  "Avg Yearly Trend (Rounded)",
+			var textInput = "Avg Yearly Trend (Rounded)",
 					textWidth = getTextWidth(textInput, 12);
 			addStdText(svg4, null, leftMarginAdj + textWidth - 2, 100, "12px", 0, "normal", ":");
 
-			var textInput =  overallTimeFrame,
+			var textInput = overallTimeFrame,
 					textWidth = getTextWidth(textInput, 12);
 			addStdText(svg4, null, 296.875 - textWidth, 55, "12px", 0, "normal", textInput);
 
 			var pastPredictionSpecific = function() {
 
 				addStdText(svg4, "past_prediction_specific", leftMarginAdj, 115, "12px", 0, "normal", "RMSE");
-				var textInput =  "RMSE",
+				var textInput = "RMSE",
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "past_prediction_specific", leftMarginAdj + textWidth + 4, 115, "12px", 0, "italic", "(Rounded)");
-				var textInput =  "RMSE (Rounded)",
+				var textInput = "RMSE (Rounded)",
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "past_prediction_specific", leftMarginAdj + textWidth - 2, 115, "12px", 0, "normal", ":");
 
@@ -717,10 +658,9 @@
 				var textInput = overallYearlyTrendPast.toLocaleString(),
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "past_prediction_specific", 296.875 - textWidth, 100, "12px", 0, "normal", textInput);
-				var textInput =  String(overallRMSE),
+				var textInput = String(overallRMSE),
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "past_prediction_specific", 296.875 - textWidth, 115, "12px", 0, "normal", textInput);
-
 			};
 
 			pastPredictionSpecific();
@@ -733,7 +673,7 @@
 				var textInput = Math.round(overallPredFuture/365).toLocaleString(),
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "future_prediction_specific", 296.875 - textWidth, 85, "12px", 0, "normal", textInput);
-				var textInput =  overallYearlyTrendFuture.toLocaleString(),
+				var textInput = overallYearlyTrendFuture.toLocaleString(),
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "future_prediction_specific", 296.875 - textWidth, 100, "12px", 0, "normal", textInput);
 
@@ -749,69 +689,88 @@
 					var textInput = "Compare",
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 70, "12px", 0, "normal", textInput);
-
 			};
 
 			addHoverInstruction();
 
-			svg4.append('g')
+			svg4.append("g")
 					.attr('transform', 'translate(616,40)')
 					.call(tsSlider);
 
-			defineTooltip("metrics_and_sliders", "tsMATooltip", "420px", "485px", "240px", "140px", "Add tooltip.");
-
 			addStdText(svg4, null, leftMarginAdj + (leftBodyFifth*3) + 161, 15, "12px", 0, "normal", "Time Series");
 			addStdText(svg4, null, leftMarginAdj + (leftBodyFifth*3) + 161, 30, "12px", 0, "normal", "Moving Average");
+
+			var textInput = "Add tooltip.";
+			defineTooltip("metrics_and_sliders", "tsMATooltip", "420px", "485px", "240px", "140px", textInput);
 			addStdRect(svg4, "tsMATooltipRect", leftMarginAdj + (leftBodyFifth*3) + 263, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg4, leftMarginAdj + (leftBodyFifth*3) + 273, 24.5, leftMarginAdj + (leftBodyFifth*3) + 271.5, 28, null);
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
-			var updateGraph = function(hoverYear, highlightMaxOb, fullGraphUpdate) {
-
+			var updateGraph = function(hoverYear, highlightMaxOb, fullGraphUpdate, axisUpdate) {
 			  d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
 
-			    if ( fullGraphUpdate=='yes' ) {
-				    // Rescale the range of the data vertically
-				    y.domain([0, yMax + 25]);
-				    // Update the Y Axis
-				    svg1.select(".y")
-				        .call(d3.axisLeft(y));
-						// Update the circles.
-				    svg1.selectAll("#circle_obs")
-				        .attr("cy", function(d) { return y(d.num_harmed); })
+					if ( highlightMaxOb=='yes' ) {
 
-						svg1.selectAll("#circle_overall_pred")
-				        .attr("cy", function(d) { return y(d[overallCol]); })
-
-						if ( tsSlider.value()>0 && d3.select("#tsCheckMark").style("fill")!="transparent" ) {
-
-							selectAllHide(svg1, "circle_overall_pred");
-							// define the observation line and add path
-					    var overallMALine = d3.line()
-									.defined(function(d) { return d.index>tsSlider.value()-2; })
-					        .x(function(d) { return x(d.date); })
-					        .y(function(d) { return y(tsMADic[String(maxYearObserved) + "_" + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
-							// Redefine the overall Pred line path.
-					    svg1.select("#overall_ma_line")
-					        .attr("d", overallMALine)
-					        .style("stroke", overallModelColor);
-						}
-						else if ( tsSlider.value()==0 && d3.select("#tsCheckMark").style("fill")!="transparent" ) {
-
-							selectHide(svg1, "overall_ma_line");
-
-							svg1.selectAll("#circle_overall_pred")
-									.style("fill", overallModelColor)
-									.style("stroke", "black");
-						}
-						else {
-
-							selectAllHide(svg1, "circle_overall_pred");
-							selectHide(svg1, "overall_ma_line");
-						};
-
-	 					addHoverInstruction();
+						svg1.selectAll("#circle_obs")
+								.style("stroke-width", function(d) {
+									if ( d.num_harmed==maxOb )
+									{ return 7.5; }
+									else
+									{ return 0.5; }
+								});
 					}
 					else {
+
+						svg1.selectAll("#circle_obs")
+								.style("stroke-width",  0.5);
+					};
+
+					if ( axisUpdate=='yes' ) {
+						// Rescale the range of the data vertically
+						y.domain([0, yMax + 25]);
+						// Update the Y Axis
+						svg1.select(".y")
+								.call(d3.axisLeft(y));
+						// Update the circles.
+						svg1.selectAll("#circle_obs")
+								.attr("cy", function(d) { return y(d.num_harmed); })
+
+						svg1.selectAll("#circle_overall_pred")
+								.attr("cy", function(d) { return y(d[overallCol]); })
+					};
+
+			    if ( fullGraphUpdate=='yes' ) {
+
+						if ( d3.select("#tsCheckMark").style("fill")=="black" ) {
+								if ( tsSlider.value()>0 ) {
+
+									selectAllHide(svg1, "circle_overall_pred");
+									// Redefine the overall Pred line path.
+							    var overallMALine = d3.line()
+											.defined(function(d) { return d.index>tsSlider.value()-2; })
+							        .x(function(d) { return x(d.date); })
+							        .y(function(d) { return y(tsMADic[String(maxYearObserved) + "_" + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
+
+							    svg1.select("#overall_ma_line")
+							        .attr("d", overallMALine)
+							        .style("stroke", overallModelColor);
+								}
+								else {
+
+									selectHide(svg1, "overall_ma_line");
+
+									svg1.selectAll("#circle_overall_pred")
+												.style("fill", overallModelColor)
+												.style("stroke", "black");
+								};
+							}
+						else {
+
+							selectHide(svg1, "overall_ma_line");
+							selectAllHide(svg1, "circle_overall_pred");
+						};
+
 						if ( d3.select("#obsCheckMark").style("fill")=="black" ) {
 							// Update the circles.
 							svg1.selectAll("#circle_obs")
@@ -826,47 +785,51 @@
 										{ return 'transparent' }
 										else
 										{ return 'black' };})
-									.style("stroke-width", function(d) {
-										if ( highlightMaxOb=="yes" && d.num_harmed==maxOb )
-										{ return 7.5; }
-										else
-										{ return 0.5; }
-									})
+						}
+						else {
+
+							selectAllHide(svg1, "circle_obs");
+						};
+					}
+					else {
+
+						if ( d3.select("#obsCheckMark").style("fill")=="black" ) {
+							// Update the circles.
+							svg1.selectAll("#circle_obs")
 									.style("opacity", function(d) {
 										if ( d.year > hoverYear )
 										{ return 0.4 }
 										else
 										{ return null }
 									});
-						}
-						else {
-
-							selectAllHide(svg1, "circle_obs");
 						};
 
-						if ( tsSlider.value()>0 && hoverYear!=maxYearObserved && d3.select("#tsCheckMark").style("fill")!="transparent" ) {
-							// Redefine the hover line and add path
-					    var hoverMALine = d3.line()
-									.defined(function(d) { return d.index>tsSlider.value()-2; })
-					        .x(function(d) { return x(d.date); })
-					        .y(function(d) { return y(tsMADic[String(hoverYear) + "_" + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
+						if ( hoverYear!=maxYearObserved && d3.select("#tsCheckMark").style("fill")!="transparent" ) {
 
-							svg1.select("#hover_ma_line")
-									.attr("d", hoverMALine)
-									.style("stroke", hoverModelColor);
-						}
-						else if ( tsSlider.value()==0 && hoverYear!=maxYearObserved && d3.select("#tsCheckMark").style("fill")!="transparent" ) {
+							if ( tsSlider.value()>0 ) {
+								// Redefine the hover line and add path
+						    var hoverMALine = d3.line()
+										.defined(function(d) { return d.index>tsSlider.value()-2; })
+						        .x(function(d) { return x(d.date); })
+						        .y(function(d) { return y(tsMADic[String(hoverYear) + "_" + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
 
-							svg1.selectAll("#circle_hover_pred")
-									.attr("cy", function(d) { return y(d["pred_" + String(hoverYear)]); })
-									.style("fill", hoverModelColor)
-									.style("stroke", "black");
-						}
-						else {
+								svg1.select("#hover_ma_line")
+										.attr("d", hoverMALine)
+										.style("stroke", hoverModelColor);
+							}
+							else {
 
-							selectAllHide(svg1, "circle_hover_pred");
-							selectHide(svg1, "hover_ma_line");
-						};
+								svg1.selectAll("#circle_hover_pred")
+											.attr("cy", function(d) { return y(d["pred_" + String(hoverYear)]); })
+											.style("fill", hoverModelColor)
+											.style("stroke", "black");
+							};
+					}
+					else {
+
+						selectHide(svg1, "hover_ma_line");
+						selectAllHide(svg1, "circle_hover_pred");
+					};
 
 						var updateHoverMetrics = function(d) {
 							if ( hoverYear!=maxYearObserved ) {
@@ -880,7 +843,6 @@
 						};
 
 						updateHoverMetrics();
-
 					};
 			  });
 
@@ -908,9 +870,9 @@
 					hoverRMSE = Math.round(Math.sqrt(hoverRMSE)).toLocaleString();
 
 					if ( hoverYear==allYears[0] )
-						{ var textInput =  String(allYears[0]); }
+						{ var textInput = String(allYears[0]); }
 					else if ( hoverYear!=allYears[0] )
-						{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
+						{ var textInput = String(allYears[0]) + "–" + String(hoverYear); }
 
 					d3.selectAll("#hover_metrics").remove();
 
@@ -925,7 +887,7 @@
 					var textInput = hoverYearlyTrendPast.toLocaleString(),
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 100, "12px", 0, "normal", textInput);
-					var textInput =  String(hoverRMSE),
+					var textInput = String(hoverRMSE),
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 115, "12px", 0, "normal", textInput);
 
@@ -949,9 +911,9 @@
 					hoverYearlyTrendFuture = Math.round(hoverYearlyTrendFuture/365).toLocaleString();
 
 					if ( hoverYear==allYears[0] )
-						{ var textInput =  String(allYears[0]); }
+						{ var textInput = String(allYears[0]); }
 					else if ( hoverYear!=allYears[0] )
-					{ var textInput =  String(allYears[0]) + "–" + String(hoverYear); }
+					{ var textInput = String(allYears[0]) + "–" + String(hoverYear); }
 
 					d3.selectAll("#hover_metrics").remove();
 
@@ -966,10 +928,10 @@
 					var textInput = hoverYearlyTrendFuture.toLocaleString(),
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 100, "12px", 0, "normal", textInput);
-
 				};
-
 			}
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
 			var addRectBoundaries = function() {
 
@@ -982,21 +944,21 @@
 						{	addComparingGraphHeader();
 							addStdRect(svg1, "hover_region_rect", 0.7, -7.5, (width/numRows)*obsCumDic[allYears[Number(d)]], height + 7.5, "black", null, null, null);
 							d3.select("#hover_region_rect").attr("pointer-events", "none");
-							updateGraph(allYears[Number(d)], "no", "no");
+							updateGraph(allYears[Number(d)], "no", "no", "no");
 						 }
 						else
-						{ addHoverGraphHeader();
-							updateGraph(maxYearObserved, "no", "no"); };
+						{ addGraphHoverHeader();
+							updateGraph(maxYearObserved, "no", "no", "no"); };
 				},
 						yearRectML = function(d) {
 							d3.select("#hover_region_rect").remove();
 							d3.select("#graph_header").remove();
-							addHoverGraphHeader();
+							addGraphHoverHeader();
 				},
 						marginMO = function(d) {
 							// dropdown option remove doubled in case of failure with removal in svg4
 							d3.selectAll("#dropdown_option").remove();
-							updateGraph(maxYearObserved, "no", "no");
+							updateGraph(maxYearObserved, "no", "no", "no");
 				};
 				// Add the year rect boundaries
 				var yearRect = svg1.selectAll()
@@ -1026,18 +988,88 @@
 						.style("fill", 'transparent')
 						.style("stroke", "transparent")
 						.on("mouseover", marginMO);
-
-				addStdLine(svg1, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0])}, -7.5, "black", 2, ("4, 4"));
-				addStdLine(svg1, futureTimeFrameXLoc + 0.7, width, -7.5, -7.5, "black", 2, ("4, 4"));
-
+				// Add the X Axis
+		    svg1.append("g")
+		        .attr("pointer-events", "none")
+		        .attr("transform", "translate(0," + height + ")")
+		        .style("font-size", "12px")
+		        .call(d3.axisBottom(x));
+		    // Add the Y Axis
+		    svg1.append("g")
+		        .attr("pointer-events", "none")
+						.attr("class", "y axis")
+		        .style("font-size", "12px")
+		        .call(d3.axisLeft(y));
+				// Add label and tooltip for x axis
+				var textInput = "Incidents are grouped by date across the US.";
+				defineTooltip("graph", "xAxisTooltip", "457.5px", "422.5px",  "147.5px", "52.5px", textInput);
 				addStdRect(svg1, "xAxisTooltipRect", (width/2) + 11, topBody + 21.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
+				addStdText(svg1, "x_axis_text", -32.5, null, "18px", 0.5, "normal", "Year");
+				d3.select("#x_axis_text").attr("transform", "translate(" + (width/2) + " ," + (topBody + 37.5) + ")");
+				addTooltipSymbol(svg1, (width/2) + 21, topBody + 31.5, (width/2) + 19.5, topBody + 35, null);
+				// Add label and tooltip for y axis
+				var textInput = "Includes all victims reported as injured or killed. Victims with unreported injuries are not included.";
+				defineTooltip("graph", "yAxisTooltip", "50px", "50px", "185px", "85px", textInput);
 				addStdRect(svg1, "yAxisTooltipRect", -65, (height/2) - 81.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
-
+				addStdText(svg1, "y_axis_text", -(height/2), 15-margin.left, "18px", 0.5, "normal", "Total Victims");
+				d3.select("#y_axis_text").attr("transform", "rotate(-90)").style("text-anchor", "middle");
+				addTooltipSymbol(svg1, -55, (height/2)-71.5, -112.5, -51, "rotate(-90)");
 			};
 
 			addRectBoundaries();
-
 	});
+
+	// function addDicText(svgInput, idInput, locDic, objNum, fontSize, strokeWidth, fontStyle, textInput) {
+	//
+	// 	svgInput.append("text")
+	// 		.attr("pointer-events", "none")
+	// 		.attr("id", idInput)
+	// 		.attr("x", locDic['x'] + locDic['len'] + locDic['x_diff'])
+	// 		.attr("y", locDic['x_text'] + (objNum * locDic['y_diff']))
+	// 		.text(textInput)
+	// 			.style("fill", "black")
+	// 			.style("font-size", fontSize)
+	// 			.style("font-style", fontStyle)
+	// 			.style('stroke-width', strokeWidth)
+	// 			.style('stroke', function(d) {
+	// 				if ( strokeWidth==0 )
+	// 				{ return "transparent" }
+	// 				else
+	// 				 { return "black" }
+	// 			 });
+	// };
+
+	// function addDicLine(svgInput, locDic, objNum, strokeColor, strokeWidth, strokeDashArray) {
+	//
+	// 	svgInput.append("line")
+	// 			.attr("pointer-events", "none")
+	// 			.attr("x1", locDic['x'])
+	// 			.attr("x2", locDic['x'] + locDic['len'])
+	// 			.attr("y1", locDic['y'] + (objNum * locDic['y_diff']))
+	// 			.attr("y2", locDic['y'] + (objNum * locDic['y_diff']))
+	// 			.style("fill", "none")
+	// 			.style("stroke", strokeColor)
+	// 			.style("stroke-width", strokeWidth)
+	// 			.style("stroke-dasharray", strokeDashArray);
+	// };
+
+	// locDic = {
+	// 	'line_graph_legend': {
+	// 		'x': margin.right/2,
+	// 		'y': 6,
+	// 		'len': 12.5,
+	// 		'x_diff': 5,
+	// 		'y_diff': 15,
+	// 		'x_text': 10
+	// 	}
+	// };
+	//
+	// var object = locDic['line_graph_legend'];
+	// addDicText(svg1, null, object, 0, "12px", 0, "normal", "Observations");
+	// addDicLine(svg1, object, 1,  overallModelColor, 3.5, null);
+	// addDicText(svg1, null, object, 1, "12px", 0, "normal", "Overall Model");
+	// addDicLine(svg1, object, 2, hoverModelColor, 3.5, null);
+	// addDicText(svg1, null, object, 2, "12px", 0, "normal", "Comparative Model");
 
 		</script>
 	</body>

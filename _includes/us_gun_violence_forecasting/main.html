@@ -843,8 +843,8 @@
 						}
 						else {
 
-							svg1.selectAll("#circle_overall_pred").style("opacity", 0.8);
-							svg1.selectAll("#circle_hover_pred").style("opacity", 0.8);
+							svg1.selectAll("#circle_overall_pred").style("opacity", 1);
+							svg1.selectAll("#circle_hover_pred").style("opacity", 1);
 
 							selectHide(svg1, "obs_ma_line");
 							selectAllHide(svg1, "circle_obs");
@@ -892,7 +892,7 @@
 					else {
 
 						d3.select("#overall_ma_line").style("stroke-opacity", 1);
-						
+
 						selectHide(svg1, "hover_ma_line");
 						selectAllHide(svg1, "circle_hover_pred");
 					};

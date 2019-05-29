@@ -852,7 +852,7 @@
 					}
 					else {
 
-						if ( d3.select("#obsCheckMark").style("fill")=="black" ) {
+						if ( obsSlider.value()==0 && d3.select("#obsCheckMark").style("fill")=="black" ) {
 							// Update the circles.
 							svg1.selectAll("#circle_obs")
 									.style("opacity", function(d) {
@@ -863,7 +863,7 @@
 									});
 						};
 
-						if ( hoverYear!=maxYearObserved && d3.select("#tsCheckMark").style("fill")!="transparent" ) {
+						if ( hoverYear!=maxYearObserved && d3.select("#tsCheckMark").style("fill")=="black" ) {
 
 							if ( tsSlider.value()>0 ) {
 								// Redefine the hover line and add path

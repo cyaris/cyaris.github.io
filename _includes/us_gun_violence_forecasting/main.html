@@ -503,7 +503,7 @@
 			addStdPath(svg1, [data], "overall_ma_line", overallMALine, overallModelColor);
 	    // Add the circles.
 			addStdCircles(svg1, data, "circle_overall_pred", "no", overallCol, 'transparent', 'transparent');
-			// svg1.selectAll("#circle_overall_pred").style("opacity", 0.7);
+			svg1.selectAll("#circle_overall_pred").style("opacity", 0.5);
 			// defining hover/comparison early as null so that it's placement will be correct
 			var hoverMALine = d3.line()
 	        .x(function(d) { return null; })
@@ -511,7 +511,7 @@
 			addStdPath(svg1, [data], "hover_ma_line", hoverMALine, "transparent");
 	    // Add the circles. Using overallCol as filler
 			addStdCircles(svg1, data, "circle_hover_pred", "no", overallCol, 'transparent', 'transparent');
-			// svg1.selectAll("#circle_hover_pred").style("opacity", 0.7);
+			svg1.selectAll("#circle_hover_pred").style("opacity", 0.5);
 
 			addStdRect(svg1, "graph_rect_outline", -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), "black", null, null, null);
 			d3.select("#graph_rect_outline").attr("pointer-events", "none");
@@ -730,10 +730,10 @@
 			addStdText(svg4, null, 605, 15, "12px", 0, "normal", "Time Series");
 			addStdText(svg4, null, 605, 30, "12px", 0, "normal", "Moving Average");
 
-			var textInput = "Add tooltip.";
+			var textInput = "Add tooltip text.";
 			defineTooltip("metrics_and_sliders", "obsMATooltip", "600px", "485px", "195px", "100px", textInput);
 			addStdRect(svg4, "obsMATooltipRect", 517, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
-			var textInput = "Add tooltip.";
+			var textInput = "Add tooltip text.";
 			defineTooltip("metrics_and_sliders", "tsMATooltip", "420px", "485px", "195px", "100px", textInput);
 			addStdRect(svg4, "tsMATooltipRect", 697, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 
@@ -807,6 +807,10 @@
 						};
 
 						if ( d3.select("#obsCheckMark").style("fill")=="black" ) {
+
+							svg1.selectAll("#circle_overall_pred").style("opacity", 0.5);
+							svg1.selectAll("#circle_hover_pred").style("opacity", 0.5);
+
 							if ( obsSlider.value()>0 ) {
 
 								selectAllHide(svg1, "circle_obs");
@@ -835,10 +839,13 @@
 											if ( d.non_observation==1 )
 											{ return 'transparent' }
 											else
-											{ return 'black' };})
+											{ return 'black' };});
 							};
 						}
 						else {
+
+							svg1.selectAll("#circle_overall_pred").style("opacity", 0.8);
+							svg1.selectAll("#circle_hover_pred").style("opacity", 0.8);
 
 							selectHide(svg1, "obs_ma_line");
 							selectAllHide(svg1, "circle_obs");

@@ -787,7 +787,8 @@
 
 							    svg1.select("#overall_ma_line")
 							        .attr("d", overallMALine)
-							        .style("stroke", overallModelColor);
+							        .style("stroke", overallModelColor)
+											.style("stroke-opacity", 1);
 								}
 								else {
 
@@ -873,7 +874,10 @@
 
 								svg1.select("#hover_ma_line")
 										.attr("d", hoverMALine)
-										.style("stroke", hoverModelColor);
+										.style("stroke", hoverModelColor)
+										.style("stroke-opacity", 0.85);
+
+								d3.select("#overall_ma_line").style("stroke-opacity", 0.85);
 							}
 							else {
 
@@ -887,6 +891,8 @@
 					}
 					else {
 
+						d3.select("#overall_ma_line").style("stroke-opacity", 1);
+						
 						selectHide(svg1, "hover_ma_line");
 						selectAllHide(svg1, "circle_hover_pred");
 					};

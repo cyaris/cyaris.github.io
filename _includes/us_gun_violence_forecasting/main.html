@@ -669,12 +669,12 @@
 			addStdLine(svg4, null, 296.875, 396, 40, 40, hoverModelColor, 3.5, null);
 			var textWidth = getTextWidth("Overall", 12);
 			addStdText(svg4, null, 296.875 - textWidth, 15, "12px", 0, "normal", "Overall");
-			var textWidth = getTextWidth("Predictions", 12);
-			addStdText(svg4, null, 296.875 - textWidth, 30, "12px", 0, "normal", "Predictions");
+			var textWidth = getTextWidth("Model", 12);
+			addStdText(svg4, null, 296.875 - textWidth, 30, "12px", 0, "normal", "Model");
 			var textWidth = getTextWidth("Comparative", 12);
 			addStdText(svg4, null, 396 - textWidth, 15, "12px", 0, "normal", "Comparative");
-			var textWidth = getTextWidth("Predictions", 12);
-			addStdText(svg4, null, 396 - textWidth, 30, "12px", 0, "normal", "Predictions");
+			var textWidth = getTextWidth("Model", 12);
+			addStdText(svg4, null, 396 - textWidth, 30, "12px", 0, "normal", "Model");
 
 			addStdText(svg4, null, leftMarginAdj, 55, "12px", 0, "normal", "Model Input:");
 			addStdText(svg4, null, leftMarginAdj, 70, "12px", 0, "normal", "Total Victims:");
@@ -758,11 +758,11 @@
 			addStdText(svg4, null, 605, 15, "12px", 0, "normal", "Moving Average for");
 			addStdText(svg4, null, 605, 30, "12px", 0, "normal", "Time Series Models");
 
-			var textInput = "Adjust the slider to change the observations visual along a moving average. Units are in days, with 0 days corresponding to the actual recorded observation."
-			defineTooltip("metrics_and_sliders", "obsMATooltip", "600px", "485px", "195px", "120px", textInput);
+			var textInput = "Adjust the slider to specify a moving average for displaying daily observations. Units are in days, with 0 days displaying the recorded observation."
+			defineTooltip("metrics_and_sliders", "obsMATooltip", "600px", "485px", "195px", "105px", textInput);
 			addStdRect(svg4, "obsMATooltipRect", 539.5, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
-			var textInput = "Adjust the slider to change the time series visual along a moving average. Units are in days, with 0 days corresponding to the raw prediction for each day."
-			defineTooltip("metrics_and_sliders", "tsMATooltip", "420px", "485px", "195px", "120px", textInput);
+			var textInput = "Adjust the slider to specify a moving average for displaying time series models. Units are in days, with 0 days displaying the exact prediction."
+			defineTooltip("metrics_and_sliders", "tsMATooltip", "420px", "485px", "195px", "105px", textInput);
 			addStdRect(svg4, "tsMATooltipRect", 722, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 
 			addTooltipSymbol(svg4, 549.5, 24.5, 548, 28, null);

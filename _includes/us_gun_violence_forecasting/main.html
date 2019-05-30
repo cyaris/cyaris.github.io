@@ -485,7 +485,7 @@
 			overallYearlyTrendFuture = Math.round(overallYearlyTrendFuture/365).toLocaleString();
 	    // Scale the range of the data
 	    x.domain(d3.extent(data, function(d) { return d.date; }));
-	    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 25; })]);
+	    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 15; })]);
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
@@ -508,7 +508,7 @@
 			svg1.select("#overall_legend_null").style("opacity", 0);
 			addStdText(svg1, "hover_legend_null", (margin.right/2) + 0.75, 40.5, "15px", 0.5, "normal", "∅");
 
-			addStdText(svg1, null, (margin.right/2) + 17.5, 10, "12px", 0, "normal", "Observations");
+			addStdText(svg1, null, (margin.right/2) + 17.5, 10, "12px", 0, "normal", "Daily Observations");
 			addStdText(svg1, null, (margin.right/2) + 17.5, 25, "12px", 0, "normal", "Overall Model");
 			addStdText(svg1, null, (margin.right/2) + 17.5, 40, "12px", 0, "normal", "Comparative Model");
 
@@ -605,12 +605,12 @@
 			addStdRect(svg3, "obsCheck", 1, 38.5, checkFilterWidth, checkFilterHeight, "black", generalRectMO, generalRectML, filterClick);
 			addStdText(svg3, "obsCheckMark", 6, 57.5, "20px", 0, "normal", "✓");
 			addStdText(svg3, null, 34, 47, "12px", 0, "normal", "Displaying");
-			addStdText(svg3, null, 34, 61.5, "12px", 0, "normal", "Observations");
+			addStdText(svg3, null, 34, 61.5, "12px", 0, "normal", "Daily Observations");
 
 			addStdRect(svg3, "tsCheck", 1, 73.5, checkFilterWidth, checkFilterHeight, "black", generalRectMO, generalRectML, filterClick);
 			addStdText(svg3, "tsCheckMark", 6, 92.5, "20px", 0, "normal", "✓");
 			addStdText(svg3, null, 34, 82, "12px", 0, "normal", "Displaying");
-			addStdText(svg3, null, 34, 96.5, "12px", 0, "normal", "Time Series Predictions");
+			addStdText(svg3, null, 34, 96.5, "12px", 0, "normal", "Time Series Models");
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
@@ -753,20 +753,20 @@
 					.attr('transform', 'translate(616,45)')
 					.call(tsSlider);
 
-			addStdText(svg4, null, 425, 15, "12px", 0, "normal", "Observations");
-			addStdText(svg4, null, 425, 30, "12px", 0, "normal", "Moving Average");
-			addStdText(svg4, null, 605, 15, "12px", 0, "normal", "Time Series");
-			addStdText(svg4, null, 605, 30, "12px", 0, "normal", "Moving Average");
+			addStdText(svg4, null, 425, 15, "12px", 0, "normal", "Moving Average for");
+			addStdText(svg4, null, 425, 30, "12px", 0, "normal", "Daily Observations");
+			addStdText(svg4, null, 605, 15, "12px", 0, "normal", "Moving Average for");
+			addStdText(svg4, null, 605, 30, "12px", 0, "normal", "Time Series Models");
 
 			var textInput = "Adjust the slider to change the observations visual along a moving average. Units are in days, with 0 days corresponding to the actual recorded observation."
 			defineTooltip("metrics_and_sliders", "obsMATooltip", "600px", "485px", "195px", "120px", textInput);
-			addStdRect(svg4, "obsMATooltipRect", 517, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
+			addStdRect(svg4, "obsMATooltipRect", 539.5, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			var textInput = "Adjust the slider to change the time series visual along a moving average. Units are in days, with 0 days corresponding to the raw prediction for each day."
 			defineTooltip("metrics_and_sliders", "tsMATooltip", "420px", "485px", "195px", "120px", textInput);
-			addStdRect(svg4, "tsMATooltipRect", 697, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
+			addStdRect(svg4, "tsMATooltipRect", 722, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 
-			addTooltipSymbol(svg4, 527, 24.5, 525.5, 28, null);
-			addTooltipSymbol(svg4, 707, 24.5, 705.5, 28, null);
+			addTooltipSymbol(svg4, 549.5, 24.5, 548, 28, null);
+			addTooltipSymbol(svg4, 732, 24.5, 730.5, 28, null);
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
@@ -835,7 +835,7 @@
 
 						if ( axisUpdate=='yes' ) {
 							// Rescale the range of the data vertically
-							y.domain([0, yMax + 25]);
+							y.domain([0, yMax + 15]);
 							// Update the Y Axis
 							svg1.select(".y")
 									.call(d3.axisLeft(y));
@@ -988,9 +988,9 @@
 					else {
 
 						svg1.select("#overall_ma_line").style("stroke-opacity", 1);
+						svg1.select("#hover_legend_null").style("opacity", 1);
 						svg1.select("#hover_legend_line").style("stroke-opacity", 0);
 						svg1.select("#hover_legend_circle").style("opacity", 0);
-						svg1.select("#hover_legend_null").style("opacity", 1);
 
 						selectHide(svg1, "hover_ma_line");
 						selectAllHide(svg1, "circle_hover_pred");

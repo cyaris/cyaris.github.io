@@ -87,7 +87,7 @@
 				<p>All data compiled by <a href="https://gunviolencearchive.org" target="_blank">Gun Violence Archive (GVA)</a>, a not for profit corporation formed in 2013 to provide online public access to accurate information about gun-related violence in the United States.</p>
 			</div>
 		</div>
-		<script src="../../../js/sma/index.js"></script>
+		<script src="/js/sma/index.js"></script>
 		<script>
 
 		function addStdText(svgInput, idInput, textX, textY, fontSize, strokeWidth, fontStyle, textInput) {
@@ -345,7 +345,7 @@
 					.attr("width", fullWidth)
 					.attr("height", 125);
 
-		d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
+		d3.csv("/assets/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv", function(data) {
 
 			var tooltipMO = function(d) {
 						d3.select(this).style("cursor", "help");
@@ -659,7 +659,7 @@
 			addStdRect(svg4, null, leftMarginAdj + 1, 15, 91, 17.5, "black", dropDownSelectedMO, generalRectML, dropDownSelectedClick);
 			addStdText(svg4, "dropdown_selected_text", leftMarginAdj + 6, 27.5, "12px", 0, "normal", dropDownSelected);
 
-			var textInput = "Adjust dropdown to compare time series model predictions for dates that took place in the past or take place in the next year (365 days).";
+			var textInput = "Use dropdown to compare time series model predictions for dates that took place in the past or take place in the next year (365 days).";
 			defineTooltip("metrics_and_sliders", "metricsTooltip", "420px", "485px", "195px", "100px", textInput);
 			addStdRect(svg4, "metricsTooltipRect", 123.5, 13.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg4, 133.5, 23.5, 132, 27, null);
@@ -759,7 +759,7 @@
 			addStdText(svg4, null, 605, 30, "12px", 0, "normal", "Time Series Models");
 
 			var textInput = "Adjust slider to specify a moving average for displaying daily observations. Units are in days, with 0 days displaying the actual/recorded observation."
-			defineTooltip("metrics_and_sliders", "obsMATooltip", "600px", "485px", "195px", "115px", textInput);
+			defineTooltip("metrics_and_sliders", "obsMATooltip", "600px", "485px", "205px", "105px", textInput);
 			addStdRect(svg4, "obsMATooltipRect", 539.5, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg4, 549.5, 24.5, 548, 28, null);
 
@@ -771,7 +771,7 @@
 /////////////////////////////////////////////
 
 			var updateGraph = function(hoverYear, highlightMaxOb, hoverUpdate, axisUpdate) {
-			  d3.csv("../assets/us_harmed_victim_forecast_data.csv", function(data) {
+			  d3.csv("/assets/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv", function(data) {
 
 					if ( highlightMaxOb=='yes' ) {
 						if ( obsSlider.value()>0 || (obsSlider.value()==0 && svg3.select("#obsCheckMark").style("fill")=="transparent") ) {

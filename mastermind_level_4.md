@@ -5,4 +5,4 @@ subtitle: Level 4
 social-share: true
 ---
 
-{% include /mastermind/play.html %}
+{% include /mastermind/main.html %}

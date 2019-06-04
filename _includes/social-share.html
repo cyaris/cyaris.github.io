@@ -17,6 +17,11 @@
         <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
         <span class="sr-only">Twitter</span>
       </a>
+    {% else if page.url contains "us_gun_violence_forecasting" %}
+      <a href="https://twitter.com/intent/tweet?text={{ page.title }}+https://cyaris.github.io/us_gun_violence_forecasting/" target="_blank" class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+        <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+        <span class="sr-only">Twitter</span>
+      </a>
     {% else %}
       <a href="https://twitter.com/intent/tweet?text={{ page.title | url_encode }}+{{ site.url }}{{ page.url }}" target="_blank" class="btn btn-social-icon btn-twitter" title="Share on Twitter">
         <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
@@ -29,6 +34,12 @@
   <!--- Share on Facebook -->
     {% if page.url contains "mastermind" %}
       <a href="https://www.facebook.com/sharer/sharer.php?u=https://cyaris.github.io/mastermind/"
+      target="_blank" class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+        <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+        <span class="sr-only">Facebook</span>
+      </a>
+    {% else if page.url contains "us_gun_violence_forecasting" %}
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://cyaris.github.io/us_gun_violence_forecasting/"
       target="_blank" class="btn btn-social-icon btn-facebook" title="Share on Facebook">
         <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
         <span class="sr-only">Facebook</span>
@@ -55,6 +66,11 @@
   <!--- Share on LinkedIn -->
     {% if page.url contains "mastermind" %}
       <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://cyaris.github.io/mastermind/" target="_blank" class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+        <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+        <span class="sr-only">LinkedIn</span>
+      </a>
+    {% else if page.url contains "us_gun_violence_forecasting" %}
+      <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://cyaris.github.io/us_gun_violence_forecasting/" target="_blank" class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
         <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
         <span class="sr-only">LinkedIn</span>
       </a>

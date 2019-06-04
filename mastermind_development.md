@@ -5,4 +5,4 @@ subtitle: Development Story
 social-share: true
 ---
 
-{% include /mastermind/mastermind_development.html %}
+{% include /mastermind/development.html %}

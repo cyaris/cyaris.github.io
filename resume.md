@@ -4,7 +4,7 @@ title: Resume
 subtitle: Feel free to reach out!
 ---
 
-{% include charlie_yaris_resume.html %}
+{% include resume/resume.html %}
 
 ### Contact
 

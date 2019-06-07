@@ -76,6 +76,9 @@
         #color_buttons {
             margin-left:22.5%;
         }
+	      #game_board_tooltip_div {
+						display: none;
+	      }
     }
 
     @media (min-width:602px){
@@ -179,6 +182,7 @@
 		<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 		<!-- Create a div where the graph will take place -->
 		<div id="game_board" align="center"></div>
+		<div id="game_board_tooltip_div" align="center"></div>
 		<div id="end_game" align="center"></div>
 		<div id="hidden-button-win">
 			<div id="hidden-button-win-text">
@@ -288,6 +292,15 @@
 				  .attr("transform",
 				        "translate(" + margin.left + "," + margin.top + ")");
 
+		// append the svg object to the body of the page
+		d3.select("#game_board_tooltip")
+				.append("svg")
+				  .attr("width", width + margin.left + margin.right)
+				  .attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				  .attr("transform",
+				        "translate(" + margin.left + "," + margin.top + ")");
+
 		var svg2 = d3.select('#color_buttons')
 		    .append('svg')
 			    .attr('width', button_section_width)
@@ -295,7 +308,7 @@
 		    .append('g')
 		    	.attr('transform', 'translate(' + circ_radius + ',' + circ_radius + ')');
 
-		d3.select("#game_board")
+		d3.select("#game_board_tooltip_div")
 			.attr("pointer-events", "none")
 			.append("div")
 				.attr("class", "tooltip")

@@ -426,7 +426,8 @@
 					yMax = maxOb,
 					allObsSrtd = allObs.slice(0).sort(function(a,b){return b-a}),
 					nydKeys = Object.keys(newYearsDayDic),
-					maxYearObserved = d3.max(maxYearObserved);
+					maxYearObserved = d3.max(maxYearObserved),
+					numFuturePredDays = numRows - allObs.length;
 
 			var sliderData = [0, 5, 10, 15, 20, 25, 30],
 					sliderDefault = 10,
@@ -481,8 +482,8 @@
 	    });
 
 			overallRMSE = Math.round(Math.sqrt(overallRMSE)).toLocaleString();
-			overallYearlyTrendPast = Math.round(overallYearlyTrendPast/(obsCumDic[maxYearObserved]-365)).toLocaleString();
-			overallYearlyTrendFuture = Math.round(overallYearlyTrendFuture/365).toLocaleString();
+			overallYearlyTrendPast = Math.round(overallYearlyTrendPast/(obsCumDic[maxYearObserved]-numFuturePredDays)).toLocaleString();
+			overallYearlyTrendFuture = Math.round(overallYearlyTrendFuture/numFuturePredDays).toLocaleString();
 	    // Scale the range of the data
 	    x.domain(d3.extent(data, function(d) { return d.date; }));
 	    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 15; })]);
@@ -513,9 +514,9 @@
 			addStdText(svg1, null, (margin.right/2) + 17.5, 40, "12px", 0, "normal", "Comparative Model");
 
 			var futureTimeFrameXLoc = (width/numRows)*obsCumDic[allYears[allYears.length-1]];
-			addStdRect(svg1, "next_365_days_rect", futureTimeFrameXLoc + 0.7, -7.5, width - futureTimeFrameXLoc, height + 7.5, "transparent", null, null, null);
-			svg1.select("#next_365_days_rect").attr("pointer-events", "none").style("fill", "black").style("opacity", 0.075);
-			var textInput = "Next 365 Days...",
+			addStdRect(svg1, "future_pred_days_rect", futureTimeFrameXLoc + 0.7, -7.5, width - futureTimeFrameXLoc, height + 7.5, "transparent", null, null, null);
+			svg1.select("#future_pred_days_rect").attr("pointer-events", "none").style("fill", "black").style("opacity", 0.075);
+			var textInput = "Next " + String(numFuturePredDays) + " Days...",
 					textWidth = getTextWidth(textInput, 12);
 			addStdText(svg1, null, futureTimeFrameXLoc + 0.7 + ((width - futureTimeFrameXLoc - textWidth)/2), 10, "12px", 0, "italic", textInput);
 			// defining obsMALine early as null so that it's placement will be correct when slider is used
@@ -594,7 +595,7 @@
 
 			addStdRect(svg3, "lvCheck", 1, 3.5, checkFilterWidth, checkFilterHeight, "black", generalRectMO, generalRectML, filterClick);
 			addStdText(svg3, "lvCheckMark", 6, 22.5, "20px", 0, "normal", "✓");
-			addStdText(svg3, null, 34, 12, "12px", 0, "normal", "Scaled with");
+			addStdText(svg3, null, 34, 12, "12px", 0, "normal", "Scaling with");
 			addStdText(svg3, null, 34, 26.5, "12px", 0, "normal", "Las Vegas Shooting");
 
 			var textInput = "The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. Filter to see how this observation affects the scaling of the entire graph.";
@@ -615,7 +616,7 @@
 /////////////////////////////////////////////
 
 			var dropDownSelected = overallTimeFrame,
-					dropDownOption = "Next 365 Days",
+					dropDownOption = "Next " + String(numFuturePredDays) + " Days",
 					dropDownSelectedMO = function(d) {
 						d3.select(this)
 							.style("stroke", "black")
@@ -636,14 +637,14 @@
 						if ( dropDownSelected==overallTimeFrame )
 						{ svg4.selectAll("#past_prediction_specific").remove();
 							futurePredictionSpecific();
-							dropDownSelected = "Next 365 Days";
+							dropDownSelected = "Next " + String(numFuturePredDays) + " Days";
 							dropDownOption = overallTimeFrame;
 						 }
 						else
 						{ svg4.selectAll("#future_prediction_specific").remove();
 							pastPredictionSpecific();
 							dropDownSelected = overallTimeFrame;
-							dropDownOption = "Next 365 Days"; }
+							dropDownOption = "Next " + String(numFuturePredDays) + " Days"; }
 
 						addStdText(svg4, "dropdown_selected_text", leftMarginAdj + 6, 27.5, "12px", 0, "normal", dropDownSelected);
 			},
@@ -659,8 +660,8 @@
 			addStdRect(svg4, null, leftMarginAdj + 1, 15, 91, 17.5, "black", dropDownSelectedMO, generalRectML, dropDownSelectedClick);
 			addStdText(svg4, "dropdown_selected_text", leftMarginAdj + 6, 27.5, "12px", 0, "normal", dropDownSelected);
 
-			var textInput = "Use dropdown to compare time series model predictions for dates that took place in the past or take place in the next year (365 days).";
-			defineTooltip("metrics_and_sliders", "metricsTooltip", "420px", "485px", "195px", "100px", textInput);
+			var textInput = "Use dropdown to compare time series model predictions for dates that took place in the past or take place in the next year (" + String(numFuturePredDays) + " days).";
+			defineTooltip("metrics_and_sliders", "metricsTooltip", "420px", "485px", "195px", "105px", textInput);
 			addStdRect(svg4, "metricsTooltipRect", 123.5, 13.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg4, 133.5, 23.5, 132, 27, null);
 
@@ -722,7 +723,7 @@
 				var textInput = Math.round(overallPredFuture).toLocaleString(),
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "future_prediction_specific", 296.875 - textWidth, 70, "12px", 0, "normal", textInput);
-				var textInput = Math.round(overallPredFuture/365).toLocaleString(),
+				var textInput = Math.round(overallPredFuture/numFuturePredDays).toLocaleString(),
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "future_prediction_specific", 296.875 - textWidth, 85, "12px", 0, "normal", textInput);
 				var textInput = overallYearlyTrendFuture.toLocaleString(),
@@ -1031,7 +1032,7 @@
 							}
 			    });
 
-					hoverYearlyTrendPast = Math.round(hoverYearlyTrendPast/(obsCumDic[maxYearObserved]-365)).toLocaleString();
+					hoverYearlyTrendPast = Math.round(hoverYearlyTrendPast/(obsCumDic[maxYearObserved]-numFuturePredDays)).toLocaleString();
 					hoverRMSE = Math.round(Math.sqrt(hoverRMSE)).toLocaleString();
 
 					if ( hoverYear==allYears[0] )
@@ -1073,7 +1074,7 @@
 								hoverYearlyTrendFuture+=d[hoverYearlyTrendCol] };
 			    });
 
-					hoverYearlyTrendFuture = Math.round(hoverYearlyTrendFuture/365).toLocaleString();
+					hoverYearlyTrendFuture = Math.round(hoverYearlyTrendFuture/numFuturePredDays).toLocaleString();
 
 					if ( hoverYear==allYears[0] )
 						{ var textInput = String(allYears[0]); }
@@ -1087,7 +1088,7 @@
 					var textInput = Math.round(hoverPredFuture).toLocaleString(),
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 70, "12px", 0, "normal", textInput);
-					var textInput = Math.round(hoverPredFuture/365).toLocaleString(),
+					var textInput = Math.round(hoverPredFuture/numFuturePredDays).toLocaleString(),
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 85, "12px", 0, "normal", textInput);
 					var textInput = hoverYearlyTrendFuture.toLocaleString(),
@@ -1183,58 +1184,6 @@
 
 			addRectBoundaries();
 	});
-
-	// function addDicText(svgInput, idInput, locDic, objNum, fontSize, strokeWidth, fontStyle, textInput) {
-	//
-	// 	svgInput.append("text")
-	// 		.attr("pointer-events", "none")
-	// 		.attr("id", idInput)
-	// 		.attr("x", locDic['x'] + locDic['len'] + locDic['x_diff'])
-	// 		.attr("y", locDic['x_text'] + (objNum * locDic['y_diff']))
-	// 		.text(textInput)
-	// 			.style("fill", "black")
-	// 			.style("font-size", fontSize)
-	// 			.style("font-style", fontStyle)
-	// 			.style('stroke-width', strokeWidth)
-	// 			.style('stroke', function(d) {
-	// 				if ( strokeWidth==0 )
-	// 				{ return "transparent" }
-	// 				else
-	// 				 { return "black" }
-	// 			 });
-	// };
-
-	// function addDicLine(svgInput, locDic, objNum, strokeColor, strokeWidth, strokeDashArray) {
-	//
-	// 	svgInput.append("line")
-	// 			.attr("pointer-events", "none")
-	// 			.attr("x1", locDic['x'])
-	// 			.attr("x2", locDic['x'] + locDic['len'])
-	// 			.attr("y1", locDic['y'] + (objNum * locDic['y_diff']))
-	// 			.attr("y2", locDic['y'] + (objNum * locDic['y_diff']))
-	// 			.style("fill", "none")
-	// 			.style("stroke", strokeColor)
-	// 			.style("stroke-width", strokeWidth)
-	// 			.style("stroke-dasharray", strokeDashArray);
-	// };
-
-	// locDic = {
-	// 	'line_graph_legend': {
-	// 		'x': margin.right/2,
-	// 		'y': 6,
-	// 		'len': 12.5,
-	// 		'x_diff': 5,
-	// 		'y_diff': 15,
-	// 		'x_text': 10
-	// 	}
-	// };
-	//
-	// var object = locDic['line_graph_legend'];
-	// addDicText(svg1, null, object, 0, "12px", 0, "normal", "Observations");
-	// addDicLine(svg1, object, 1,  overallModelColor, 3.5, null);
-	// addDicText(svg1, null, object, 1, "12px", 0, "normal", "Overall Model");
-	// addDicLine(svg1, object, 2, hoverModelColor, 3.5, null);
-	// addDicText(svg1, null, object, 2, "12px", 0, "normal", "Comparative Model");
 
 		</script>
 	</body>

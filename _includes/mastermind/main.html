@@ -292,15 +292,6 @@
 				  .attr("transform",
 				        "translate(" + margin.left + "," + margin.top + ")");
 
-		// append the svg object to the body of the page
-		d3.select("#game_board_tooltip")
-				.append("svg")
-				  .attr("width", width + margin.left + margin.right)
-				  .attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				  .attr("transform",
-				        "translate(" + margin.left + "," + margin.top + ")");
-
 		var svg2 = d3.select('#color_buttons')
 		    .append('svg')
 			    .attr('width', button_section_width)

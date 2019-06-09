@@ -362,6 +362,8 @@
 						d3.select("#" + toolTip + "Text").attr("y", yTextLoc).style("fill", tooltipSymbolColor).style("stroke", tooltipSymbolColor).style('font-size', "13px");
 						if ( toolTip=="lvTooltip" ) {
 								updateGraph(maxYearObserved, "yes", "yes", "no");
+								addStdRect(svg3, "tooltip_region_hide_rect", 0, 35, 100, 25, null, null, null, null);
+								svg3.select("#tooltip_region_hide_rect").attr("pointer-events", "none").style("fill", "white");
 						}
 						else if ( toolTip =="metricsTooltip" ) {
 							updateGraph(maxYearObserved, "no", "yes", "no");
@@ -382,8 +384,8 @@
 						if ( toolTip=="lvTooltip" ) {
 							updateGraph(maxYearObserved, "no", "yes", "no");
 						}
-						else if ( toolTip=="metricsTooltip" ) {
-							svg4.select("#tooltip_region_hide_rect").remove();
+						if ( toolTip=="lvTooltip" || toolTip=="metricsTooltip" ) {
+							d3.select("#tooltip_region_hide_rect").remove();
 						}
 			};
 
@@ -622,7 +624,7 @@
 			addStdText(svg3, null, 34, 26.5, "12px", 0, "normal", "Las Vegas Shooting");
 
 			var textInput = "The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. Filter to see how this observation affects the scaling of the entire graph.";
-			defineTooltip("check_mark_filters", "lvTooltip", "770px", "65px", "210px", "150px", textInput);
+			defineTooltip("check_mark_filters", "lvTooltip", "772.5px", "67.5px", "210px", "150px", textInput);
 			addStdRect(svg3, "lvTooltipRect", 146, 11.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg3, "lvTooltip", 156, 21.5, 154.5, 25, null);
 

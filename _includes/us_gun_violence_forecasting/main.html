@@ -216,7 +216,7 @@
 	 			    .attr('r', 7.5)
 	 			    .style('fill', "rgb(0,122,255)")
 						.style('opacity', 0.9)
-						.style("stroke-width", 1.5)
+						.style("stroke-width", 2)
 						.style("stroke", "transparent");
 
 			svgInput.append("text")
@@ -352,27 +352,38 @@
 		d3.csv("/assets/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv", function(data) {
 
 			var tooltipMO = function(d) {
-						d3.select(this).style("cursor", "help");
+						d3.select(this)
+							.style("cursor", "help");
 						rectID = d3.select(this)["_groups"][0][0]["id"];
 						toolTip = rectID.substring(0, rectID.length - 4);
 						d3.select("#" + toolTip).style("opacity", 1);
-						d3.select("#" + toolTip + "Circle").style("fill", "white").style("stroke", "rgb(0,122,255)");
-						d3.select("#" + toolTip + "Text").style("fill", "rgb(0,122,255)").style("stroke", "rgb(0,122,255)");
+						d3.select("#" + toolTip + "Circle").style("fill", "white").style("stroke", tooltipSymbolColor).attr('r', 9);
+						yTextLoc = Number(d3.select("#" + toolTip + "Text").attr("y")) + 0.5
+						d3.select("#" + toolTip + "Text").attr("y", yTextLoc).style("fill", tooltipSymbolColor).style("stroke", tooltipSymbolColor).style('font-size', "13px");
 						if ( toolTip=="lvTooltip" ) {
 								updateGraph(maxYearObserved, "yes", "yes", "no");
 						}
+						else if ( toolTip =="metricsTooltip" ) {
+							updateGraph(maxYearObserved, "no", "yes", "no");
+							addStdRect(svg4, "tooltip_region_hide_rect", 200, 0, 215, 130, null, null, null, null);
+							svg4.select("#tooltip_region_hide_rect").attr("pointer-events", "none").style("fill", "white");
+						}
 						else {
-								updateGraph(maxYearObserved, "no", "yes", "no");
+							updateGraph(maxYearObserved, "no", "yes", "no");
 						};
 			},
 					tooltipML = function(d) {
 						rectID = d3.select(this)["_groups"][0][0]["id"];
 						toolTip = rectID.substring(0, rectID.length - 4);
 						d3.select("#" + toolTip).style("opacity", 0);
-						d3.select("#" + toolTip + "Circle").style("fill", "rgb(0,122,255)").style("sroke", "transparent");
-						d3.select("#" + toolTip + "Text").style("fill", "white").style("stroke", "white");
+						d3.select("#" + toolTip + "Circle").style("fill", tooltipSymbolColor).style("sroke", "transparent").attr('r', 7.5);
+						yTextLoc = Number(d3.select("#" + toolTip + "Text").attr("y")) - 0.5
+						d3.select("#" + toolTip + "Text").attr("y", yTextLoc).style("fill", "white").style("stroke", "white").style('font-size', "11.5px");
 						if ( toolTip=="lvTooltip" ) {
 							updateGraph(maxYearObserved, "no", "yes", "no");
+						}
+						else if ( toolTip=="metricsTooltip" ) {
+							svg4.select("#tooltip_region_hide_rect").remove();
 						}
 			};
 
@@ -392,7 +403,8 @@
 
 			var obsColor = "rgb(112,128,144)",
 					overallModelColor = "rgb(250,98,95)",
-					hoverModelColor = "rgb(0,192,127)";
+					hoverModelColor = "rgb(0,192,127)",
+					tooltipSymbolColor = "rgb(0,122,255)";
 
 			var numRows = data.length,
 					minYear = d3.min(data, function(d) { return d.year }),
@@ -435,7 +447,10 @@
 					allObsSrtd = allObs.slice(0).sort(function(a,b){return b-a}),
 					nydKeys = Object.keys(newYearsDayDic),
 					maxYearObserved = d3.max(maxYearObserved),
-					numFuturePredDays = numRows - allObs.length;
+					numFuturePredDays = numRows - allObs.length,
+					mostRecentObsDate = allDates[allObs.length].toLocaleDateString('en-US');
+
+			console.log("The most recent recorded date is " + mostRecentObsDate + ".");
 
 			var sliderData = [0, 5, 10, 15, 20, 25, 30],
 					sliderDefault = 10,
@@ -607,7 +622,7 @@
 			addStdText(svg3, null, 34, 26.5, "12px", 0, "normal", "Las Vegas Shooting");
 
 			var textInput = "The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. Filter to see how this observation affects the scaling of the entire graph.";
-			defineTooltip("check_mark_filters", "lvTooltip", "90px", "49px", "265px", "120px", textInput);
+			defineTooltip("check_mark_filters", "lvTooltip", "770px", "65px", "210px", "150px", textInput);
 			addStdRect(svg3, "lvTooltipRect", 146, 11.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg3, "lvTooltip", 156, 21.5, 154.5, 25, null);
 
@@ -668,8 +683,8 @@
 			addStdRect(svg4, null, leftMarginAdj + 1, 15, 91, 17.5, "black", dropDownSelectedMO, generalRectML, dropDownSelectedClick);
 			addStdText(svg4, "dropdown_selected_text", leftMarginAdj + 6, 27.5, "12px", 0, "normal", dropDownSelected);
 
-			var textInput = "Use dropdown to compare time series model predictions for dates that took place in the past or take place in the next year (" + String(numFuturePredDays) + " days).";
-			defineTooltip("metrics_and_sliders", "metricsTooltip", "420px", "485px", "195px", "105px", textInput);
+			var textInput = "Use dropdown to compare time series model predictions for dates that took place in the past, or, take place in the next year (" + String(numFuturePredDays) + " days).";
+			defineTooltip("metrics_and_sliders", "metricsTooltip", "205px", "485px", "220px", "87.5px", textInput);
 			addStdRect(svg4, "metricsTooltipRect", 123.5, 13.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg4, "metricsTooltip", 133.5, 23.5, 132, 27, null);
 
@@ -767,15 +782,15 @@
 			addStdText(svg4, null, 605, 15, "12px", 0, "normal", "Moving Average for");
 			addStdText(svg4, null, 605, 30, "12px", 0, "normal", "Time Series Models");
 
-			var textInput = "Adjust slider to specify a moving average for displaying daily observations. Units are in days, with 0 days displaying the actual/recorded observation."
+			var textInput = "Adjust the slider to specify a moving average for displaying daily observations. Units are in days, with 0 days displaying the actual/recorded observation."
 			defineTooltip("metrics_and_sliders", "obsMATooltip", "600px", "485px", "205px", "105px", textInput);
 			addStdRect(svg4, "obsMATooltipRect", 539.5, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
-			addTooltipSymbol(svg4, "obsMATooltip", 549.5, 24.5, 548, 28, null);
+			addTooltipSymbol(svg4, "obsMATooltip", 549.5, 23.5, 548, 27, null);
 
-			var textInput = "Adjust slider to specify a moving average for displaying time series models. Units are in days, with 0 days displaying the exact prediction."
+			var textInput = "Adjust the slider to specify a moving average for displaying time series models. Units are in days, with 0 days displaying the exact prediction."
 			defineTooltip("metrics_and_sliders", "tsMATooltip", "420px", "485px", "195px", "105px", textInput);
 			addStdRect(svg4, "tsMATooltipRect", 722, 14.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
-			addTooltipSymbol(svg4, "tsMATooltip", 732, 24.5, 730.5, 28, null);
+			addTooltipSymbol(svg4, "tsMATooltip", 732, 23.5, 730.5, 27, null);
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
@@ -1175,7 +1190,7 @@
 		        .style("font-size", "12px")
 		        .call(d3.axisLeft(y));
 				// Add label and tooltip for x axis
-				var textInput = "Incidents are grouped by date across the US.";
+				var textInput = "Incidents are grouped by date across the US."
 				defineTooltip("graph", "xAxisTooltip", "457.5px", "422.5px",  "147.5px", "52.5px", textInput);
 				addStdRect(svg1, "xAxisTooltipRect", (width/2) + 11, topBody + 21.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 				addStdText(svg1, "x_axis_text", -32.5, null, "18px", 0.5, "normal", "Year");
@@ -1183,7 +1198,7 @@
 				addTooltipSymbol(svg1, "xAxisTooltip", (width/2) + 21, topBody + 31.5, (width/2) + 19.5, topBody + 35, null);
 				// Add label and tooltip for y axis
 				var textInput = "Includes all victims reported as injured or killed. Victims with unreported injuries are not included.";
-				defineTooltip("graph", "yAxisTooltip", "50px", "50px", "185px", "85px", textInput);
+				defineTooltip("graph", "yAxisTooltip", "50px", "105px", "185px", "85px", textInput);
 				addStdRect(svg1, "yAxisTooltipRect", -65, (height/2) - 81.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 				addStdText(svg1, "y_axis_text", -(height/2), 15-margin.left, "18px", 0.5, "normal", "Total Victims");
 				svg1.select("#y_axis_text").attr("transform", "rotate(-90)").style("text-anchor", "middle");

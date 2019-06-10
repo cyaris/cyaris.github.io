@@ -450,9 +450,13 @@
 					nydKeys = Object.keys(newYearsDayDic),
 					maxYearObserved = d3.max(maxYearObserved),
 					numFuturePredDays = numRows - allObs.length,
-					mostRecentObsDate = allDates[allObs.length].toLocaleDateString('en-US');
+					mostRecObsDate = allDates[allObs.length].toLocaleDateString('en-US');
 
-			console.log("The most recent recorded date is " + mostRecentObsDate + ".");
+			var today = new Date(),
+					daysSinceMostRecObs = Math.floor((Math.abs(today - allDates[allObs.length])/1000)/86400);
+
+			console.log("Today's date is " + today.toLocaleDateString('en-US') + ".");
+			console.log("The most recent date recorded is " + mostRecObsDate + ", " + daysSinceMostRecObs + " days ago.");
 
 			var sliderData = [0, 5, 10, 15, 20, 25, 30],
 					sliderDefault = 10,
@@ -541,7 +545,7 @@
 			var futureTimeFrameXLoc = (width/numRows)*obsCumDic[allYears[allYears.length-1]];
 			addStdRect(svg1, "future_pred_days_rect", futureTimeFrameXLoc + 0.7, -7.5, width - futureTimeFrameXLoc, height + 7.5, "transparent", null, null, null);
 			svg1.select("#future_pred_days_rect").attr("pointer-events", "none").style("fill", "black").style("opacity", 0.075);
-			var textInput = "Next " + String(numFuturePredDays) + " Days...",
+			var textInput = "Next " + String(numFuturePredDays) + " days...",
 					textWidth = getTextWidth(textInput, 12);
 			addStdText(svg1, null, futureTimeFrameXLoc + 0.7 + ((width - futureTimeFrameXLoc - textWidth)/2), 10, "12px", 0, "italic", textInput);
 			// defining obsMALine early as null so that it's placement will be correct when slider is used
@@ -571,6 +575,7 @@
 			svg1.select("#graph_rect_outline").attr("pointer-events", "none");
 			addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0]) + 5}, -5.5, "black", 2, ("4, 4"));
 			addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, width, -7.5, -7.5, "black", 2, ("4, 4"));
+
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
@@ -623,8 +628,8 @@
 			addStdText(svg3, null, 34, 12, "12px", 0, "normal", "Scaling with");
 			addStdText(svg3, null, 34, 26.5, "12px", 0, "normal", "Las Vegas Shooting");
 
-			var textInput = "The Las Vegas shooting is the deadliest mass shooting committed by an individual in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. Filter to see how this observation affects the scaling of the entire graph.";
-			defineTooltip("check_mark_filters", "lvTooltip", "772.5px", "67.5px", "210px", "150px", textInput);
+			var textInput = "The Las Vegas shooting is the deadliest mass shooting in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. Filter to see how this observation affects the scaling of the entire graph.";
+			defineTooltip("check_mark_filters", "lvTooltip", "772.5px", "67.5px", "210px", "135px", textInput);
 			addStdRect(svg3, "lvTooltipRect", 146, 11.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg3, "lvTooltip", 156, 21.5, 154.5, 25, null);
 

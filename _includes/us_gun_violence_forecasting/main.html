@@ -691,7 +691,7 @@
 			addStdText(svg4, "dropdown_selected_text", leftMarginAdj + 6, 27.5, "12px", 0, "normal", dropDownSelected);
 
 			var textInput = "Use dropdown to compare time series model predictions for dates that took place in the past, or, take place in the next year (" + String(numFuturePredDays) + " days).";
-			defineTooltip("metrics_and_sliders", "metricsTooltip", "205px", "485px", "220px", "87.5px", textInput);
+			defineTooltip("metrics_and_sliders", "metricsTooltip", "210px", "485px", "220px", "87.5px", textInput);
 			addStdRect(svg4, "metricsTooltipRect", 123.5, 13.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg4, "metricsTooltip", 133.5, 23.5, 132, 27, null);
 
@@ -1205,8 +1205,8 @@
 				svg1.select("#x_axis_text").attr("transform", "translate(" + (width/2) + " ," + (topBody + 37.5) + ")");
 				addTooltipSymbol(svg1, "xAxisTooltip", (width/2) + 21, topBody + 31.5, (width/2) + 19.5, topBody + 35, null);
 				// Add label and tooltip for y axis
-				var textInput = "Includes all victims reported as injured or killed. Victims with unreported injuries are not included.";
-				defineTooltip("graph", "yAxisTooltip", "50px", "105px", "180px", "85px", textInput);
+				var textInput = "Includes all victims reported as injured or killed. Victims with unreported health statuses are not included.";
+				defineTooltip("graph", "yAxisTooltip", "50px", "105px", "185px", "85px", textInput);
 				addStdRect(svg1, "yAxisTooltipRect", -65, (height/2) - 81.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 				addStdText(svg1, "y_axis_text", -(height/2), 15-margin.left, "18px", 0.5, "normal", "Total Victims");
 				svg1.select("#y_axis_text").attr("transform", "rotate(-90)").style("text-anchor", "middle");

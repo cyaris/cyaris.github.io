@@ -453,7 +453,7 @@
 					mostRecObsDate = allDates[allObs.length].toLocaleDateString('en-US');
 
 			var today = new Date(),
-					daysSinceMostRecObs = Math.floor((Math.abs(today - allDates[allObs.length])/1000)/86400);
+					daysSinceMostRecObs = parseInt(Math.round((Math.abs(today - allDates[allObs.length])/1000)/86400)).toLocaleString();
 
 			console.log("Today's date is " + today.toLocaleDateString('en-US') + ".");
 			console.log("The most recent date recorded is " + mostRecObsDate + ", " + daysSinceMostRecObs + " days ago.");
@@ -510,9 +510,13 @@
 						overallYearlyTrendFuture+=d[overallYearlyTrendCol] };
 	    });
 
-			overallRMSE = Math.round(Math.sqrt(overallRMSE)).toLocaleString();
-			overallYearlyTrendPast = Math.round(overallYearlyTrendPast/(obsCumDic[maxYearObserved]-numFuturePredDays)).toLocaleString();
-			overallYearlyTrendFuture = Math.round(overallYearlyTrendFuture/numFuturePredDays).toLocaleString();
+			overallTotalVictims = parseInt(Math.round(overallPredPast/obsCumDic[maxYearObserved])).toLocaleString();
+			overallPredFuturePerDay = parseInt(Math.round(overallPredFuture/numFuturePredDays)).toLocaleString();
+			overallPredPast = parseInt(Math.round(overallPredPast)).toLocaleString();
+			overallPredFuture = parseInt(Math.round(overallPredFuture)).toLocaleString();
+			overallYearlyTrendPast = parseInt(Math.round(overallYearlyTrendPast/(obsCumDic[maxYearObserved]-numFuturePredDays))).toLocaleString();
+			overallYearlyTrendFuture = parseInt(Math.round(overallYearlyTrendFuture/numFuturePredDays)).toLocaleString();
+			overallRMSE = parseInt(Math.round(Math.sqrt(overallRMSE))).toLocaleString();
 	    // Scale the range of the data
 	    x.domain(d3.extent(data, function(d) { return d.date; }));
 	    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 15; })]);
@@ -732,13 +736,13 @@
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "past_prediction_specific", leftMarginAdj + textWidth - 2, 115, "12px", 0, "normal", ":");
 
-				var textInput = Math.round(overallPredPast).toLocaleString(),
+				var textInput = overallPredPast,
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "past_prediction_specific", 296.875 - textWidth, 70, "12px", 0, "normal", textInput);
-				var textInput = Math.round(overallPredPast/obsCumDic[maxYearObserved]).toLocaleString(),
+				var textInput = overallTotalVictims,
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "past_prediction_specific", 296.875 - textWidth, 85, "12px", 0, "normal", textInput);
-				var textInput = overallYearlyTrendPast.toLocaleString(),
+				var textInput = overallYearlyTrendPast,
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "past_prediction_specific", 296.875 - textWidth, 100, "12px", 0, "normal", textInput);
 				var textInput = String(overallRMSE),
@@ -750,13 +754,13 @@
 
 			var futurePredictionSpecific = function() {
 
-				var textInput = Math.round(overallPredFuture).toLocaleString(),
+				var textInput = overallPredFuture,
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "future_prediction_specific", 296.875 - textWidth, 70, "12px", 0, "normal", textInput);
-				var textInput = Math.round(overallPredFuture/numFuturePredDays).toLocaleString(),
+				var textInput = overallPredFuturePerDay,
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "future_prediction_specific", 296.875 - textWidth, 85, "12px", 0, "normal", textInput);
-				var textInput = overallYearlyTrendFuture.toLocaleString(),
+				var textInput = overallYearlyTrendFuture,
 						textWidth = getTextWidth(textInput, 12);
 				addStdText(svg4, "future_prediction_specific", 296.875 - textWidth, 100, "12px", 0, "normal", textInput);
 
@@ -1062,8 +1066,10 @@
 							}
 			    });
 
-					hoverYearlyTrendPast = Math.round(hoverYearlyTrendPast/(obsCumDic[maxYearObserved]-numFuturePredDays)).toLocaleString();
-					hoverRMSE = Math.round(Math.sqrt(hoverRMSE)).toLocaleString();
+					hoverPredPastPerDay = parseInt(Math.round(hoverPredPast/obsCumDic[maxYearObserved])).toLocaleString();
+					hoverPredPast = parseInt(Math.round(hoverPredPast)).toLocaleString();
+					hoverYearlyTrendPast = parseInt(Math.round(hoverYearlyTrendPast/(obsCumDic[maxYearObserved]-numFuturePredDays))).toLocaleString();
+					hoverRMSE = parseInt(Math.round(Math.sqrt(hoverRMSE))).toLocaleString();
 
 					if ( hoverYear==allYears[0] )
 						{ var textInput = String(allYears[0]); }
@@ -1074,16 +1080,16 @@
 
 					var textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 55, "12px", 0, "normal", textInput);
-					var textInput = Math.round(hoverPredPast).toLocaleString(),
+					var textInput = hoverPredPast,
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 70, "12px", 0, "normal", textInput);
-					var textInput = Math.round(hoverPredPast/obsCumDic[maxYearObserved]).toLocaleString(),
+					var textInput = hoverPredPastPerDay,
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 85, "12px", 0, "normal", textInput);
-					var textInput = hoverYearlyTrendPast.toLocaleString(),
+					var textInput = hoverYearlyTrendPast,
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 100, "12px", 0, "normal", textInput);
-					var textInput = String(hoverRMSE),
+					var textInput = hoverRMSE,
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 115, "12px", 0, "normal", textInput);
 
@@ -1104,7 +1110,9 @@
 								hoverYearlyTrendFuture+=d[hoverYearlyTrendCol] };
 			    });
 
-					hoverYearlyTrendFuture = Math.round(hoverYearlyTrendFuture/numFuturePredDays).toLocaleString();
+					hoverPredFuturePerDay = parseInt(Math.round(hoverPredFuture/numFuturePredDays)).toLocaleString();
+					hoverPredFuture = parseInt(Math.round(hoverPredFuture)).toLocaleString();
+					hoverYearlyTrendFuture = parseInt(Math.round(hoverYearlyTrendFuture/numFuturePredDays)).toLocaleString();
 
 					if ( hoverYear==allYears[0] )
 						{ var textInput = String(allYears[0]); }
@@ -1115,13 +1123,13 @@
 
 					var textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 55, "12px", 0, "normal", textInput);
-					var textInput = Math.round(hoverPredFuture).toLocaleString(),
+					var textInput = hoverPredFuture,
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 70, "12px", 0, "normal", textInput);
-					var textInput = Math.round(hoverPredFuture/numFuturePredDays).toLocaleString(),
+					var textInput = hoverPredFuturePerDay,
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 85, "12px", 0, "normal", textInput);
-					var textInput = hoverYearlyTrendFuture.toLocaleString(),
+					var textInput = hoverYearlyTrendFuture,
 							textWidth = getTextWidth(textInput, 12);
 					addStdText(svg4, "hover_metrics", 396 - textWidth, 100, "12px", 0, "normal", textInput);
 				};

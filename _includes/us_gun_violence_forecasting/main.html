@@ -378,7 +378,7 @@
 						rectID = d3.select(this)["_groups"][0][0]["id"];
 						toolTip = rectID.substring(0, rectID.length - 4);
 						d3.select("#" + toolTip).style("opacity", 0);
-						d3.select("#" + toolTip + "Circle").style("fill", tooltipSymbolColor).style("sroke", "transparent").attr('r', 7.5);
+						d3.select("#" + toolTip + "Circle").style("fill", tooltipSymbolColor).style("stroke", "transparent").attr('r', 7.5);
 						yTextLoc = Number(d3.select("#" + toolTip + "Text").attr("y")) - 0.5
 						d3.select("#" + toolTip + "Text").attr("y", yTextLoc).style("fill", "white").style("stroke", "white").style('font-size', "11.5px");
 						if ( toolTip=="lvTooltip" ) {

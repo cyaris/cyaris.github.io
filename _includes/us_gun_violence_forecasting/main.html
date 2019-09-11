@@ -672,14 +672,14 @@
 							futurePredictionSpecific();
 							dropDownSelected = "Next " + String(numFuturePredDays) + " Days";
 							dropDownOption = overallTimeFrame;
-							d3.select("#metricsMethodologyTooltip").style("height", "85px").html(futureDivTextInput);
+							d3.select("#metricsMethodologyTooltip").style("height", "85px").html(futurePredText);
 						 }
 						else
 						{ svg4.selectAll("#future_prediction_specific").remove();
 							pastPredictionSpecific();
 							dropDownSelected = overallTimeFrame;
 							dropDownOption = "Next " + String(numFuturePredDays) + " Days";
-							d3.select("#metricsMethodologyTooltip").style("height", "100px").html(pastDivTextInput);
+							d3.select("#metricsMethodologyTooltip").style("height", "100px").html(pastPredText);
 						}
 
 						addStdText(svg4, "dropdown_selected_text", leftMarginAdj + 6, 27.5, "12px", 0, "normal", dropDownSelected);
@@ -701,9 +701,9 @@
 			addStdRect(svg4, "metricsTooltipRect", 123.5, 13.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg4, "metricsTooltip", 133.5, 23.5, 132, 27, null);
 
-			var pastDivTextInput = "Model Input: What years of data were used to generate these predictions?<br>Total Victims: How many total victims does the model think there been since 2014?<br>Avg Victims per Day: How many victims does the model think there have been daily since 2014?<br>Avg Yearly Trend: What is the average change between these predictions annually?<br>RMSE: How do these predictions compare to the actual number of victims recorded daily since 2014?",
-					futureDivTextInput = "Model Input: What years of data were used to generate these predictions?<br>Total Victims: How many total victims does the model think there will be in the next 365 days?<br>Avg Victims per Day: How many victims does the model think there will be daily for the next 365 days?<br>Avg Yearly Trend: What is the average change between these predictions annually?";
-			defineTooltip("metrics_and_sliders", "metricsMethodologyTooltip", "37.5px", "524px", "600px", "100px", pastDivTextInput);
+			var pastPredText = "Model Input: What years of data were used to generate these predictions?<br>Total Victims: How many total victims does the model think there been since 2014?<br>Avg Victims per Day: How many victims does the model think there have been daily since 2014?<br>Avg Yearly Trend: What is the average change between these predictions annually?<br>RMSE: How do these predictions compare to the actual number of victims recorded daily since 2014?",
+					futurePredText = "Model Input: What years of data were used to generate these predictions?<br>Total Victims: How many total victims does the model think there will be in the next 365 days?<br>Avg Victims per Day: How many victims does the model think there will be daily for the next 365 days?<br>Avg Yearly Trend: What is the average change between these predictions annually?";
+			defineTooltip("metrics_and_sliders", "metricsMethodologyTooltip", "37.5px", "524px", "600px", "100px", pastPredText);
 			addStdRect(svg4, "metricsMethodologyTooltipRect", leftMarginAdj-27.5, (height/2)-139, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg4, "metricsMethodologyTooltip", leftMarginAdj-17.5, (height/2)-129, -55, 13.5, "rotate(-90)");
 			addStdText(svg4, "metrics_text", -95, leftMarginAdj-12.5, "15px", 0.5, "normal", "Metrics");

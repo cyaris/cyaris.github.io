@@ -203,7 +203,6 @@
 				.style("top", rightLoc)
 				.style("bottom", "0px")
 				.html(textInput);
-
 		};
 
 		function addTooltipSymbol(svgInput, idInput, circX, circY, textX, textY, textRotate) {
@@ -673,12 +672,15 @@
 							futurePredictionSpecific();
 							dropDownSelected = "Next " + String(numFuturePredDays) + " Days";
 							dropDownOption = overallTimeFrame;
+							d3.select("#metricsMethodologyTooltip").style("height", "85px").html(futureDivTextInput);
 						 }
 						else
 						{ svg4.selectAll("#future_prediction_specific").remove();
 							pastPredictionSpecific();
 							dropDownSelected = overallTimeFrame;
-							dropDownOption = "Next " + String(numFuturePredDays) + " Days"; }
+							dropDownOption = "Next " + String(numFuturePredDays) + " Days";
+							d3.select("#metricsMethodologyTooltip").style("height", "100px").html(pastDivTextInput);
+						}
 
 						addStdText(svg4, "dropdown_selected_text", leftMarginAdj + 6, 27.5, "12px", 0, "normal", dropDownSelected);
 			},
@@ -698,6 +700,14 @@
 			defineTooltip("metrics_and_sliders", "metricsTooltip", "210px", "485px", "220px", "87.5px", textInput);
 			addStdRect(svg4, "metricsTooltipRect", 123.5, 13.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
 			addTooltipSymbol(svg4, "metricsTooltip", 133.5, 23.5, 132, 27, null);
+
+			var pastDivTextInput = "Model Input: What years of data were used to generate these predictions?<br>Total Victims: How many total victims does the model think there been since 2014?<br>Avg Victims per Day: How many victims does the model think there have been daily since 2014?<br>Avg Yearly Trend: What is the average change between these predictions annually?<br>RMSE: How do these predictions compare to the actual number of victims recorded daily since 2014?",
+					futureDivTextInput = "Model Input: What years of data were used to generate these predictions?<br>Total Victims: How many total victims does the model think there will be in the next 365 days?<br>Avg Victims per Day: How many victims does the model think there will be daily for the next 365 days?<br>Avg Yearly Trend: What is the average change between these predictions annually?";
+			defineTooltip("metrics_and_sliders", "metricsMethodologyTooltip", "37.5px", "524px", "600px", "100px", pastDivTextInput);
+			addStdRect(svg4, "metricsMethodologyTooltipRect", leftMarginAdj-27.5, (height/2)-139, 20, 20, "transparent", tooltipMO, tooltipML, null);
+			addTooltipSymbol(svg4, "metricsMethodologyTooltip", leftMarginAdj-17.5, (height/2)-129, -55, 13.5, "rotate(-90)");
+			addStdText(svg4, "metrics_text", -95, leftMarginAdj-12.5, "15px", 0.5, "normal", "Metrics");
+			svg4.select("#metrics_text").attr("transform", "rotate(-90)").style("text-anchor", "middle");
 
 			addStdLine(svg4, null, leftMarginAdj, 197.75, 40, 40, "black", 3.5, null);
 			addStdLine(svg4, null, 197.75, 296.875, 40, 40, overallModelColor, 3.5, null);
@@ -1209,16 +1219,16 @@
 				var textInput = "Individual incidents are summed together and grouped by date."
 				defineTooltip("graph", "xAxisTooltip", "457.5px", "407.5px",  "142.5px", "67.5px", textInput);
 				addStdRect(svg1, "xAxisTooltipRect", (width/2) + 11, topBody + 21.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
+				addTooltipSymbol(svg1, "xAxisTooltip", (width/2) + 21, topBody + 31.5, (width/2) + 19.5, topBody + 35, null);
 				addStdText(svg1, "x_axis_text", -32.5, null, "18px", 0.5, "normal", "Date");
 				svg1.select("#x_axis_text").attr("transform", "translate(" + (width/2) + " ," + (topBody + 37.5) + ")");
-				addTooltipSymbol(svg1, "xAxisTooltip", (width/2) + 21, topBody + 31.5, (width/2) + 19.5, topBody + 35, null);
 				// Add label and tooltip for y axis
 				var textInput = "Includes all victims reported as injured or killed. Victims with unreported health statuses are not included.";
 				defineTooltip("graph", "yAxisTooltip", "50px", "105px", "185px", "85px", textInput);
 				addStdRect(svg1, "yAxisTooltipRect", -65, (height/2) - 81.5, 20, 20, "transparent", tooltipMO, tooltipML, null);
+				addTooltipSymbol(svg1, "yAxisTooltip", -55, (height/2)-71.5, -112.5, -51, "rotate(-90)");
 				addStdText(svg1, "y_axis_text", -(height/2), 15-margin.left, "18px", 0.5, "normal", "Total Victims");
 				svg1.select("#y_axis_text").attr("transform", "rotate(-90)").style("text-anchor", "middle");
-				addTooltipSymbol(svg1, "yAxisTooltip", -55, (height/2)-71.5, -112.5, -51, "rotate(-90)");
 			};
 
 			addRectBoundaries();

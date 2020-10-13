@@ -1,0 +1,54 @@
+<!-- <!DOCTYPE html> -->
+<html>
+	<head>
+		<title>Flying Pizza</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+
+		@media (min-width:990px){
+			#hidden_project_explained {
+				display: none;
+	    }
+	  }
+
+
+		</style>
+	</head>
+	<body>
+		<!-- Load d3.js -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<div id="hidden_project_explained" align="left" style="margin-bottom:150px;">
+			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
+		</div>
+		<div class="message" style="margin-bottom:150px;">
+		  <p>Hey there! This project is currently in progress. Stay tuned for updates on my falling pizza adventures!</p>
+		</div>
+		<!-- Create a div where the graph will take place -->
+		<div id="falling_pizza"></div>
+		<script>
+
+		 var svg = d3.select("#falling_pizza")
+         .append("svg")
+         .attr("width", 750)
+         .attr("height", 400);
+
+     var pizza1 = svg.append("image")
+          .attr("xlink:href", "https://www.clipartkey.com/mpngs/m/58-588307_cheese-pizza-png-cheese-pizza-transparent-background.png")
+         .attr("x", 0)
+         .attr("y", -1000)
+         .attr("height", 50)
+         .attr("width", 50);
+
+     update();
+
+		 function update() {
+		     pizza1.transition()
+		         .ease(d3.easeLinear)
+		         .duration(6000)
+		         .attr("y", 400)
+		 };
+
+		</script>
+	</body>
+</html>

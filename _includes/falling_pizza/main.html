@@ -31,18 +31,19 @@
 		 var svg = d3.select("#falling_pizza")
          .append("svg")
          .attr("width", 750)
-         .attr("height", 400);
+         .attr("height", 400),
+				 pizzaImage = "https://www.clipartkey.com/mpngs/m/58-588307_cheese-pizza-png-cheese-pizza-transparent-background.png";
 
      var pizza1 = svg.append("image")
-          .attr("xlink:href", "https://www.clipartkey.com/mpngs/m/58-588307_cheese-pizza-png-cheese-pizza-transparent-background.png")
+          .attr("xlink:href", pizzaImage)
          .attr("x", 0)
          .attr("y", -1000)
          .attr("height", 50)
          .attr("width", 50);
 
-     update();
+     fall();
 
-		 function update() {
+		 function fall() {
 		     pizza1.transition()
 		         .ease(d3.easeLinear)
 		         .duration(6000)

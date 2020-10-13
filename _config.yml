@@ -25,8 +25,9 @@ description: Exploring Data | Learning Tools
 navbar-links:
   About Me: "aboutme"
   Projects:
-    - Mastermind: "mastermind"
+    # - Falling Pizza: "falling_pizza"
     - Gun Violence Forecasting: "us_gun_violence_forecasting"
+    - Mastermind: "mastermind"
   Posts: "https://cyaris.github.io/"
   Resume: "resume"
 

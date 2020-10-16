@@ -23,11 +23,24 @@ row = 0
 for x in np.arange(0, xMax):
     for y in np.arange(0, yMax):
         pixel_rgb = deepcopy(imgSmall.getpixel((int(x),int(y))))
-        print(row)
-        print('\n')
-        print(pixel_df)
+        pixel_df.loc[row, 'x_coordinate'] = x + 1
+        pixel_df.loc[row, 'y_coordinate'] = y + 1
         pixel_df.loc[row, 'r'] = pixel_rgb[0]
         pixel_df.loc[row, 'g'] = pixel_rgb[1]
         pixel_df.loc[row, 'b'] = pixel_rgb[2]
-        pixel_df.to_csv('../_includes/profile_photo/proile_photo_pixel_rgb_codes.csv', sep = ',', index=None)
         row+=1
+
+pixel_df.to_csv('../assets/profile_photo/proile_photo_pixel_rgb_codes.csv', sep = ',', index=None)
+
+
+xMax = 12
+yMax = 12
+hover_df = pd.DataFrame()
+row = 0
+for x in np.arange(0, xMax):
+    for y in np.arange(0, yMax):
+        hover_df.loc[row, 'x_coordinate'] = x + 1
+        hover_df.loc[row, 'y_coordinate'] = y + 1
+        row+=1
+
+hover_df.to_csv('../assets/profile_photo/proile_photo_hover_sections.csv', sep = ',', index=None)

@@ -24,7 +24,7 @@
 		<div id="profile_photo" align="center"></div>
 		<script>
 
-		function addStdRect(svgInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rMO, rML, rClick) {
+		function addStdRect(svgInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, moInput, mlInput, rClick) {
 
 			svgInput.append("rect")
 						.attr("id", idInput)
@@ -32,62 +32,123 @@
 						.attr("y", rectY)
 						.attr("width", rectWidth)
 						.attr("height", rectHeight)
-						.style("fill", "transparent")
 						.style("stroke", rectStroke)
-						.on("mouseover", rMO)
-						.on("mouseleave", rML)
+						.on("mouseover", moInput)
+						.on("mouseleave", mlInput)
 						.on("click", rClick);
 		};
 
-
-
 		// set the dimensions and margins of the graph
 		var margin = {top: 1, bottom: 15, left: 0, right: 0},
-		    width = 450,
-		    height = 450;
+		    width = 350,
+		    height = 350;
 
 		// append the svg object to the body of the page
 		var svg = d3.select("#profile_photo")
 				.append("svg")
-				  .attr("width", width + margin.left + 1)
+				  .attr("width", width + margin.left)
 				  .attr("height", height + margin.top + margin.bottom)
 				.append("g")
 				  .attr("transform",
 				        "translate(" + margin.left + "," + margin.top + ")");
+		// creating an outline within the svg g element for where all version of the photo will be displayed.
+		// addStdRect(svg, "photo_outline", 0, 0, width, height, "black", null, null, null);
+		// x,y coordinates are relative to the transform translate above.
 
-		addStdRect(svg, "photo_outline", 0, 0, width, height, null, null, null, null);
-
+		// addStdRect(svg, "photo_outline", 0, 0, width, height, "black", null, null, null);
 		//Read the data
 		d3.csv("/assets/profile_photo/proile_photo_pixel_rgb_codes.csv", function(data) {
 			// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
-			var xCoordinate = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
-					yCoordinate = d3.map(data, function(d){ return d.y_coordinate; }).keys(),
+			var pixelX = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
+					pixelY = d3.map(data, function(d){ return d.y_coordinate; }).keys();
+
 			// Build X and Y scales and axis:
-					x = d3.scaleBand()
+			// Scaling the pixels within the space of the svg.
+			var	x = d3.scaleBand()
 								.range([0, width])
-								.domain(xCoordinate)
+								.domain(pixelX)
 								.padding(0.025),
 					y = d3.scaleBand()
 								.range([0, height])
-								.domain(yCoordinate)
+								.domain(pixelY)
 								.padding(0.025);
 
-			// add the squares
+			// adding the 48x48 pixels that will make up the profile photo
 		  var rect = svg.selectAll()
 			    .data(data, function(d) { return d.x_coordinate+':'+d.y_coordinate; })
 			    .enter();
 
 			rect.append("rect")
-						.attr("id", "rect_colors")
+						.attr("class", "pixelated_photo")
+						.attr("id", function(d) { return "(" + String(parseInt(d.x_coordinate)) + "," + String(parseInt(d.y_coordinate)) + ")"})
 						.attr("x", function(d) { return x(d.x_coordinate) })
 			      .attr("y", function(d) { return y(d.y_coordinate) })
 			      .attr("rx", 0)
 			      .attr("ry", 0)
 			      .attr("width", x.bandwidth())
 			      .attr("height", y.bandwidth())
-			      .style("fill", function(d) { return "rgb(" + String(parseInt(d.r)) + "," + String(parseInt(d.g)) + "," + String(parseInt(d.b)) + ")"});
-
+						// .attr("opacity", 1)
+			      .style("fill", function(d) { return "rgb(" + String(parseInt(d.r)) + "," + String(parseInt(d.g)) + "," + String(parseInt(d.b)) + ")"})
+						.attr("pointer-events", "none");
 			});
+
+			//Read the data
+			d3.csv("/assets/profile_photo/proile_photo_hover_sections.csv", function(data) {
+
+				var pMO = function(d) {
+					d3.select(this).style("opacity", 1);
+				},
+						pML = function(d) {
+					// delaying mouseleave effect so that the pixels gradually return to their original state.
+					d3.select(this)
+						.transition()
+						.delay(550)
+						.style("opacity", 0);
+				};
+
+				// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
+				var clearX = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
+						clearY = d3.map(data, function(d){ return d.y_coordinate; }).keys();
+
+				// Build X and Y scales and axis:
+				// Scaling the pixels within the space of the svg.
+				var		x = d3.scaleBand()
+									.range([0, width])
+									.domain(clearX)
+									.padding(0.025),
+						y = d3.scaleBand()
+									.range([0, height])
+									.domain(clearY)
+									.padding(0.025);
+
+				// adding the 12x12 rects that will make up the clear photo
+			  var clearImage = svg.selectAll()
+				    .data(data, function(d) { return d.x_coordinate+':'+d.y_coordinate; })
+				    .enter();
+
+						// svg.append("svg:image")
+						// 	.attr("id", "full_resolution_photo")
+						// 	.attr("x", 0)
+						// 	.attr("y", 0)
+						// 	.attr("width", width)
+						// 	.attr("height", height)
+						// 	.attr("xlink:href", "../img/profile_photo.png");
+
+				// appending the original version of the photo, invisible upon page load.
+				clearImage.append("svg:image")
+							.attr("class", "clear_photo")
+							.attr("x", function(d) { return x(d.x_coordinate) })
+				      .attr("y", function(d) { return y(d.y_coordinate) })
+				      .attr("rx", 0)
+				      .attr("ry", 0)
+							.attr("width", x.bandwidth())
+				      .attr("height", y.bandwidth())
+							.attr("opacity", 0)
+							.attr("xlink:href", "../img/profile_photo.png")
+							.on("mouseover", pMO)
+							.on("mouseleave", pML);
+
+				});
 
 		</script>
 	</body>

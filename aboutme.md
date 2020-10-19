@@ -3,7 +3,7 @@ layout: page
 title: About Me
 ---
 
-<!-- {% include profile_photo/main.html %} -->
+{% include profile_photo/main.html %}
 
 ### Friendly Bio
 

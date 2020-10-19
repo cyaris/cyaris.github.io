@@ -15,6 +15,10 @@
 	      }
 			}
 
+		/* #profile_photo {
+		  cursor: move;
+		} */
+
 		</style>
 	</head>
 	<body>
@@ -40,8 +44,8 @@
 
 		// set the dimensions and margins of the graph
 		var margin = {top: 0, bottom: 15, left: 0, right: 0},
-		    width = 364,
-		    height = 364;
+		    width = 400,
+		    height = 400;
 
 		var pixelSize = 48;
 
@@ -72,23 +76,39 @@
 
 			var pMO = function(d) {
 				d3.select(this)
-				.transition()
-				.duration(150)
-				.attr("transform", "rotate(360)")
-				.style("stroke-width", 0)
-				.style("fill-opacity", 0);
+					.style("stroke-width", 0.15)
+					.transition()
+					.duration(1000)
+					.attr("x", function(d) { return x(d.x_coordinate) + 1.5})
+					.attr("y", function(d) { return y(d.y_coordinate) - 1})
+					.attr("width", x.bandwidth()/1.5)
+					.attr("height", y.bandwidth()/1.5)
+					.attr("transform", function(d) { return "rotate(45," + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + "," + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ")"})
+					.style("stroke-width", 0.3)
+					.transition()
+					.delay(100)
+					.duration(750)
+					.style("opacity", 0);
 
 			},
 					pML = function(d) {
 				// delaying mouseleave effect so that the pixels gradually return to their original state.
 				d3.select(this)
 					.transition()
-					.delay(500)
-					.duration(1500)
-					.style("stroke-width", 0.075)
-					.style("fill-opacity", 1)
-					.attr("transform", "rotate(360)");
-
+					.delay(2500)
+					.duration(500)
+					.attr("x", function(d) { return x(d.x_coordinate) })
+					.attr("y", function(d) { return y(d.y_coordinate) })
+					.attr("width", x.bandwidth())
+					.attr("height", y.bandwidth())
+					.attr("transform", function(d) { return "rotate(0,"  + ( (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2))) + "," + ( (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5))/2))) + ")"})
+					.style("stroke-width", 0.3)
+					.style("opacity", 1)
+					.transition()
+					.delay(50)
+					.duration(750)
+					.style("stroke-width", 0.075);
+			//
 			};
 			// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
 			var pixelX = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
@@ -121,11 +141,9 @@
 			      .attr("height", y.bandwidth())
 						.style("stroke", "white")
 						.style("stroke-width", 0.075)
-						// .attr("opacity", 0)
 			      .style("fill", function(d) { return "rgb(" + String(parseInt(d.r)) + "," + String(parseInt(d.g)) + "," + String(parseInt(d.b)) + ")"})
 						.on("mouseover", pMO)
 						.on("mouseleave", pML);
-						// .attr("pointer-events", "none");
 			});
 
 		</script>

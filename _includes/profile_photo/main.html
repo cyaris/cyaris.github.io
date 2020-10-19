@@ -9,7 +9,7 @@
 			border: 1px solid #000;
 		} */
 
-		@media (max-width:600px){
+		@media (max-width:400px){
 	      #profile_photo {
 						display: none;
 	      }
@@ -72,47 +72,28 @@
 
 			var pMO = function(d) {
 				d3.select(this)
+				.transition()
+				.duration(150)
+				.attr("transform", "rotate(360)")
 				.style("stroke-width", 0)
 				.style("fill-opacity", 0);
-				// var xCoordinate = parseInt(String(d3.select(this).attr("id")).replace("(", "").split(",", 1)),
-				// 		yCoordinate = parseInt(String(d3.select(this).attr("id")).replace(")", "").split(",", 0));
-				// console.log(parseInt(String(d3.select(this).attr("id"))));
-				// console.log(xCoordinate);
-				// console.log(yCoordinate);
-				// d3.selectAll('.pixelated_photo').style('fill-opacity', function (n) {
-	 			//       if (neighboring(xCoordinate, yCoordinate)==(xCoordinate+","+yCoordinate))
-				// 			{return  0;}
-				// 		else {
-				// 			return 0.025
-				// 		};
-				// 	});
+
 			},
 					pML = function(d) {
 				// delaying mouseleave effect so that the pixels gradually return to their original state.
 				d3.select(this)
 					.transition()
-					.delay(1500)
-					.style("stroke-width", 0.05)
-					.style("fill-opacity", 1);
-			};
+					.delay(500)
+					.duration(1500)
+					.style("stroke-width", 0.075)
+					.style("fill-opacity", 1)
+					.attr("transform", "rotate(360)");
 
+			};
 			// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
 			var pixelX = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
 					pixelY = d3.map(data, function(d){ return d.y_coordinate; }).keys();
 
-			// 		// Make object of all neighboring pixels.
-		  // var neighborIndex = {};
-			//
-			// data.forEach(function(d) {
-			// 		  neighborIndex[d.x_coordinate + ',' + d.y_coordinate] = 1;
-			// 			neighborIndex[d.x_coordinate + 1 + ',' + d.y_coordinate] = 1;
-			// 			neighborIndex[d.x_coordinate + ',' + d.y_coordinate + 1] = 1;
-			// 	  });
-
-		  // // A function to test if two pixels are neighboring.
-		  // function neighboring(a, b) {
-			//   return neighborIndex[a.index + ',' + b.index];
-		  // };
 			// Build X and Y scales and axis:
 			// Scaling the pixels within the space of the svg.
 			var	x = d3.scaleBand()
@@ -130,7 +111,7 @@
 			    .enter();
 
 			rect.append("rect")
-						.attr("class", "pixelated_photo")
+						.attr("class", "#photo_pixels")
 						.attr("id", function(d) { return "(" + String(parseInt(d.x_coordinate)) + "," + String(parseInt(d.y_coordinate) + ")")})
 						.attr("x", function(d) { return x(d.x_coordinate) })
 			      .attr("y", function(d) { return y(d.y_coordinate) })
@@ -139,7 +120,7 @@
 			      .attr("width", x.bandwidth())
 			      .attr("height", y.bandwidth())
 						.style("stroke", "white")
-						.style("stroke-width", 0.05)
+						.style("stroke-width", 0.075)
 						// .attr("opacity", 0)
 			      .style("fill", function(d) { return "rgb(" + String(parseInt(d.r)) + "," + String(parseInt(d.g)) + "," + String(parseInt(d.b)) + ")"})
 						.on("mouseover", pMO)

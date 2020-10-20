@@ -32,19 +32,19 @@
 		<div id="profile_photo_hover_instructions" align="center" style="margin-top:-15px;"><p style="font-style: italic;">Hover on me!</p></div>
 		<script>
 
-		function addStdRect(svgInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, moInput, mlInput, rClick) {
-
-			svgInput.append("rect")
-						.attr("id", idInput)
-						.attr("x", rectX)
-						.attr("y", rectY)
-						.attr("width", rectWidth)
-						.attr("height", rectHeight)
-						.style("stroke", rectStroke)
-						.on("mouseover", moInput)
-						.on("mouseleave", mlInput)
-						.on("click", rClick);
-		};
+		// function addStdRect(svgInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, moInput, mlInput, rClick) {
+		//
+		// 	svgInput.append("rect")
+		// 				.attr("id", idInput)
+		// 				.attr("x", rectX)
+		// 				.attr("y", rectY)
+		// 				.attr("width", rectWidth)
+		// 				.attr("height", rectHeight)
+		// 				.style("stroke", rectStroke)
+		// 				.on("mouseover", moInput)
+		// 				.on("mouseleave", mlInput)
+		// 				.on("click", rClick);
+		// };
 
 		// set the dimensions and margins of the graph
 		var margin = {top: 0, bottom: 15, left: 0, right: 0},
@@ -88,7 +88,59 @@
 					.attr("width", x.bandwidth()/1.5)
 					.attr("height", y.bandwidth()/1.5)
 					.attr("transform", function(d) { return "rotate(45," + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + "," + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ")"})
-					.style("stroke-width", 0.3)
+					.style("stroke-width", 0.35)
+					.transition()
+					.delay(100)
+					.duration(750)
+					.style("opacity", 0);
+
+				var currentID = d3.select(this).attr("id"),
+					xInput = parseInt(currentID.replace("x", "").split("y", 2)[0]),
+					yInput = parseInt(currentID.replace("x", "").split("y", 2)[1]),
+					neighborID1 = "#x" + String(xInput+1) + "y" + String(yInput),
+					neighborID2 = "#x" + String(xInput) + "y" + String(yInput+1),
+					neighborID3 = "#x" + String(xInput+1) + "y" + String(yInput+1);
+
+				d3.select(neighborID1)
+					.style("stroke-width", 0.15)
+					.transition()
+					.duration(1000)
+					.attr("x", function(d) { return x(d.x_coordinate) + 1.5})
+					.attr("y", function(d) { return y(d.y_coordinate) - 1})
+					.attr("width", x.bandwidth()/1.5)
+					.attr("height", y.bandwidth()/1.5)
+					.attr("transform", function(d) { return "rotate(45," + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + "," + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ")"})
+					.style("stroke-width", 0.35)
+					.transition()
+					.delay(100)
+					.duration(750)
+					.style("opacity", 0);
+
+				d3.select(neighborID2)
+					.style("stroke-width", 0.15)
+					.transition()
+					.duration(1000)
+					.attr("x", function(d) { return x(d.x_coordinate) + 1.5})
+					.attr("y", function(d) { return y(d.y_coordinate) - 1})
+					.attr("width", x.bandwidth()/1.5)
+					.attr("height", y.bandwidth()/1.5)
+					.attr("transform", function(d) { return "rotate(45," + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + "," + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ")"})
+					.style("stroke-width", 0.35)
+					.transition()
+					.delay(100)
+					.duration(750)
+					.style("opacity", 0);
+
+				d3.select(neighborID3)
+					.style("stroke-width", 0.15)
+					.transition()
+					.duration(1000)
+					.attr("x", function(d) { return x(d.x_coordinate) + 1.5})
+					.attr("y", function(d) { return y(d.y_coordinate) - 1})
+					.attr("width", x.bandwidth()/1.5)
+					.attr("height", y.bandwidth()/1.5)
+					.attr("transform", function(d) { return "rotate(45," + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + "," + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ")"})
+					.style("stroke-width", 0.35)
 					.transition()
 					.delay(100)
 					.duration(750)
@@ -99,20 +151,75 @@
 				// delaying mouseleave effect so that the pixels gradually return to their original state.
 				d3.select(this)
 					.transition()
-					.delay(2500)
+					.delay(3000)
 					.duration(500)
 					.attr("x", function(d) { return x(d.x_coordinate) })
 					.attr("y", function(d) { return y(d.y_coordinate) })
 					.attr("width", x.bandwidth())
 					.attr("height", y.bandwidth())
 					.attr("transform", function(d) { return "rotate(0,"  + ( (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2))) + "," + ( (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5))/2))) + ")"})
-					.style("stroke-width", 0.3)
+					.style("stroke-width", 0.35)
 					.style("opacity", 1)
 					.transition()
 					.delay(50)
 					.duration(750)
 					.style("stroke-width", 0.075);
-			//
+
+				var currentID = d3.select(this).attr("id"),
+					xInput = parseInt(currentID.replace("x", "").split("y", 2)[0]),
+					yInput = parseInt(currentID.replace("x", "").split("y", 2)[1]),
+					neighborID1 = "#x" + String(xInput+1) + "y" + String(yInput),
+					neighborID2 = "#x" + String(xInput) + "y" + String(yInput+1),
+					neighborID3 = "#x" + String(xInput+1) + "y" + String(yInput+1);
+
+				d3.select(neighborID1)
+					.transition()
+					.delay(3000)
+					.duration(500)
+					.attr("x", function(d) { return x(d.x_coordinate) })
+					.attr("y", function(d) { return y(d.y_coordinate) })
+					.attr("width", x.bandwidth())
+					.attr("height", y.bandwidth())
+					.attr("transform", function(d) { return "rotate(0,"  + ( (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2))) + "," + ( (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5))/2))) + ")"})
+					.style("stroke-width", 0.35)
+					.style("opacity", 1)
+					.transition()
+					.delay(50)
+					.duration(750)
+					.style("stroke-width", 0.075);
+
+				d3.select(neighborID2)
+					.transition()
+					.delay(3000)
+					.duration(500)
+					.attr("x", function(d) { return x(d.x_coordinate) })
+					.attr("y", function(d) { return y(d.y_coordinate) })
+					.attr("width", x.bandwidth())
+					.attr("height", y.bandwidth())
+					.attr("transform", function(d) { return "rotate(0,"  + ( (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2))) + "," + ( (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5))/2))) + ")"})
+					.style("stroke-width", 0.35)
+					.style("opacity", 1)
+					.transition()
+					.delay(50)
+					.duration(750)
+					.style("stroke-width", 0.075);
+
+				d3.select(neighborID3)
+					.transition()
+					.delay(3000)
+					.duration(500)
+					.attr("x", function(d) { return x(d.x_coordinate) })
+					.attr("y", function(d) { return y(d.y_coordinate) })
+					.attr("width", x.bandwidth())
+					.attr("height", y.bandwidth())
+					.attr("transform", function(d) { return "rotate(0,"  + ( (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2))) + "," + ( (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5))/2))) + ")"})
+					.style("stroke-width", 0.35)
+					.style("opacity", 1)
+					.transition()
+					.delay(50)
+					.duration(750)
+					.style("stroke-width", 0.075);
+
 			};
 			// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
 			var pixelX = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
@@ -136,7 +243,7 @@
 
 			rect.append("rect")
 						.attr("class", "#photo_pixels")
-						.attr("id", function(d) { return "(" + String(parseInt(d.x_coordinate)) + "," + String(parseInt(d.y_coordinate) + ")")})
+						.attr("id", function(d) { return "x" + String(parseInt(d.x_coordinate)) + "y" + String(parseInt(d.y_coordinate))})
 						.attr("x", function(d) { return x(d.x_coordinate) })
 			      .attr("y", function(d) { return y(d.y_coordinate) })
 			      .attr("rx", 0)

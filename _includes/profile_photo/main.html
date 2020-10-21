@@ -33,8 +33,6 @@
 		    width = 405,
 		    height = 405;
 
-		var pixelSize = 48;
-
 		// append the svg object to the body of the page
 		var svg = d3.select("#profile_photo")
 				.append("svg")
@@ -44,11 +42,8 @@
 				  .attr("transform",
 				        "translate(" + margin.left + "," + margin.top + ")");
 
-		// creating an outline within the svg g element for where all version of the photo will be displayed.
-		// addStdRect(svg, "photo_outline", 0, 0, width, height, "black", null, null, null);
-		// x,y coordinates are relative to the transform translate above.
-
 		// appending the original version of the photo, invisible upon page load.
+		// x,y coordinates are relative to the transform translate above.
 		svg.append("svg:image")
 			.attr("id", "full_resolution_photo")
 			.attr("x", 0)

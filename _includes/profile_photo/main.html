@@ -25,7 +25,7 @@
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 		<!-- Create a div where the graph will take place -->
 		<div id="profile_photo" align="center"></div>
-		<div id="profile_photo_hover_instructions" align="center" style="margin-top:-15px;"><p style="font-style: italic;">Hover on me!</p></div>
+		<div id="profile_photo_hover_instructions" align="center" style="margin-top:-15px;"><p style="font-style: italic;">Hover on my face!</p></div>
 		<script>
 
 		// set the dimensions and margins of the graph
@@ -63,13 +63,16 @@
 			var pMO = function(d) {
 
 				var thisID = d3.select(this).attr("id"),
-					currentID = "#" + String(thisID),
+					currentPixel = "#" + String(thisID),
 					xInput = parseInt(thisID.replace("x", "").split("y", 2)[0]),
 					yInput = parseInt(thisID.replace("x", "").split("y", 2)[1]),
-					neighborID1 = "#x" + String(xInput-1) + "y" + String(yInput-1),
-					neighborID2 = "#x" + String(xInput+1) + "y" + String(yInput+1);
+					// defining neighbors so they'll activate a 3x3 box area of pixels in all directions
+					neighborPixel1 = "#x" + String(xInput-1) + "y" + String(yInput-1),
+					neighborPixel2 = "#x" + String(xInput-1) + "y" + String(yInput+1),
+					neighborPixel3 = "#x" + String(xInput+1) + "y" + String(yInput-1),
+					neighborPixel4 = "#x" + String(xInput+1) + "y" + String(yInput+1);
 
-				d3.selectAll(currentID + ", " + neighborID1 + ", " + neighborID2)
+				d3.selectAll(currentPixel + ", " + neighborPixel1 + ", " + neighborPixel2 + ", " + neighborPixel3 + ", " + neighborPixel4)
 					.style("stroke-width", 0.3)
 					.transition()
 					.delay(100)
@@ -88,13 +91,16 @@
 					pML = function(d) {
 
 				var thisID = d3.select(this).attr("id"),
-					currentID = "#" + thisID,
+					currentPixel = "#" + thisID,
 					xInput = parseInt(thisID.replace("x", "").split("y", 2)[0]),
 					yInput = parseInt(thisID.replace("x", "").split("y", 2)[1]),
-					neighborID1 = "#x" + String(xInput-1) + "y" + String(yInput-1),
-					neighborID2 = "#x" + String(xInput+1) + "y" + String(yInput+1);
+					// defining neighbors so they'll activate a 3x3 box area of pixels in all directions
+					neighborPixel1 = "#x" + String(xInput-1) + "y" + String(yInput-1),
+					neighborPixel2 = "#x" + String(xInput-1) + "y" + String(yInput+1),
+					neighborPixel3 = "#x" + String(xInput+1) + "y" + String(yInput-1),
+					neighborPixel4 = "#x" + String(xInput+1) + "y" + String(yInput+1);
 
-				d3.selectAll(currentID + ", " + neighborID1 + ", " + neighborID2)
+				d3.selectAll(currentPixel + ", " + neighborPixel1 + ", " + neighborPixel2 + ", " + neighborPixel3 + ", " + neighborPixel4)
 					.transition()
 					.delay(2500)
 					.duration(1000)

@@ -1,7 +1,7 @@
 <!-- <!DOCTYPE html> -->
 <html>
 	<head>
-		<title>The Network of Wars</title>
+		<title>The Networks of Wars</title>
 	 <!-- subtitle: Network Analysis Between Countries at War  -->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,8 +50,6 @@
 			user-select: none;
 		}
 
-
-
 		</style>
 	</head>
 	<body>
@@ -70,13 +68,24 @@
 		<script>
 
 		d3.json("../assets/the_network_of_wars/the_network_of_wars.json", function(error, graph) {
+
 		  if (error) throw error;
 
+
+			var totalCasualties = 0;
+			// format the data
+			graph.nodes.forEach(function(d) {
+					// determining totalCasualties across all countries as maxRadius.
+					// this will make larger numbers proportional to the total across all countries.
+					totalCasualties+=d.size;
+			});
+
 			var color = d3.scale.linear().domain([1,2]).range(["lightgreen", "violet"])
-					maxRadius = 40,
+					maxRadius = 150,
 					radius = d3.scale.linear()
-														.domain([0, d3.max(graph.nodes, function(d) { return d.size ; })])
+														.domain([0, totalCasualties])
 														.range([2.5, maxRadius]);
+
 			// set the dimensions and margins of the graph
 			var margin = {top: 0, bottom: 15, left: 0, right: 0},
 			    width = 800,
@@ -96,7 +105,7 @@
 			    .charge(-500)
 					// .friction(0.75)
 					.gravity(0.075)
-					.linkStrength(0.1)
+					.linkStrength(0.05)
 			    .linkDistance(function(d) { return radius(d.source.size) + radius(d.target.size) + 30; });
 					// .linkDistance(height/3);
 		  force
@@ -139,6 +148,8 @@
 		  function tick() {
 
 		    svg.selectAll(".node")
+						// transform statement below prevents nodes from going beyond the dimensions of the svg.
+						// boundaries are then limited even further since when they get close to the edge of the svg, items like text begin to be cut off.
 						.attr("transform", function(d) { return "translate(" + Math.max(radius(d.size) + 5, Math.min(width - radius(d.size) - 5, d.x)) + "," + Math.max(radius(d.size) + 5, Math.min(height - radius(d.size) - 5, d.y)) + ")"; })
 
 		    link.selectAll("line")

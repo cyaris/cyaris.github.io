@@ -8,7 +8,10 @@
 		<style>
 
 		@media (max-width:660px){
-	      #profile_photo {
+	      #war_network_analysis {
+						display: none;
+	      }
+				#message {
 						display: none;
 	      }
 			}
@@ -56,17 +59,17 @@
 		<!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
 
 		<script src="//d3js.org/d3.v3.min.js"></script>
-		<div id="hidden_project_explained" align="left" style="margin-bottom:150px;">
+		<div id="hidden_project_explained" align="left" style="margin-bottom:15px;">
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
-		<div class="message">
-		  <p>Hey there! This project is currently in progress. Stay tuned soon for more updates.</p>
+		<div id="message">
+		  <p>Hey there! I'm developing a tool to analyze the networks between countries at war, using data provided by <a href="https://correlatesofwar.org/" target="_blank">The Correlates of War Project</a>. This project is currently in progress. Stay tuned soon for more updates.</p>
 		</div>
 		<!-- Create a div where the graph will take place -->
-		<div id="war_network_analysis" align="center"></div>
+		<div id="war_network_analysis" align="center" style="margin-bottom:15px;"></div>
 		<script>
 
-		d3.json("../assets/network_of_wars/network_of_wars.json", function(error, graph) {
+		d3.json("../assets/the_network_of_wars/the_network_of_wars.json", function(error, graph) {
 		  if (error) throw error;
 
 			var color = d3.scale.linear().domain([1,2]).range(["lightgreen", "violet"])

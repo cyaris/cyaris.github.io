@@ -40,7 +40,14 @@
 		.node text {
 		  font: 10px sans-serif;
 		  pointer-events: none;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
 		}
+
+
 
 		</style>
 	</head>
@@ -85,9 +92,9 @@
 			    .size([width, height])
 			    .charge(-500)
 					// .friction(0.75)
-					// .gravity(0.05)
+					.gravity(0.075)
 					.linkStrength(0.1)
-			    .linkDistance(function(d) { return radius(d.source.size) + radius(d.target.size) + 40; });
+			    .linkDistance(function(d) { return radius(d.source.size) + radius(d.target.size) + 50; });
 					// .linkDistance(height/3);
 		  force
 		      .nodes(graph.nodes)
@@ -220,4 +227,4 @@
 
 		</script>
 	</body>
-</html
+</html>

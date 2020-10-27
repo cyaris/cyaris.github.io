@@ -63,7 +63,7 @@
 		  if (error) throw error;
 
 			var color = d3.scale.category20(),
-					maxRadius = 50,
+					maxRadius = 40,
 					radius = d3.scale.linear()
 														.domain([0, d3.max(graph.nodes, function(d) { return d.size ; })])
 														.range([2.5, maxRadius]);
@@ -86,9 +86,9 @@
 			    .charge(-500)
 					// .friction(0.75)
 					// .gravity(0.05)
-					// .linkStrength(0.5)
-			    .linkDistance(function(d) { return radius(d.source.size) + radius(d.target.size) + 30; });
-
+					.linkStrength(0.1)
+			    .linkDistance(function(d) { return radius(d.source.size) + radius(d.target.size) + 40; });
+					// .linkDistance(height/3);
 		  force
 		      .nodes(graph.nodes)
 		      .links(graph.links)
@@ -122,7 +122,8 @@
 		      .attr("dy", "0.35em")
 		      .attr("text-anchor", "middle")
 					// .attr("alignment-baseline", "hanging")
-		      .text(function(d) { return d.country; });
+		      .text(function(d) { return d.country; })
+					.attr("pointer-events", "none");
 
 		  function tick() {
 
@@ -137,6 +138,86 @@
 		  }
 		});
 
+		//
+		// d3.json("../assets/network_of_wars/network_of_wars.json", function(error, graph) {
+		//
+		//
+		// var margin = {top: 0, bottom: 15, left: 0, right: 0},
+		//     width = 800,
+		//     height = 450;
+		//
+		// // append the svg object to the body of the page
+		// var svg = d3.select("#war_network_analysis")
+		// 		.append("svg")
+		// 		  .attr("width", width)
+		// 		  .attr("height", height)
+		// 			// .append("g")
+		// 		  .attr("transform",
+		// 		        "translate(" + margin.left + "," + margin.top + ")");
+		//
+		// var color = d3.scale.category20(),
+		// 		maxRadius = 50,
+		// 		radius = d3.scale.linear()
+		// 												.domain([0, d3.max(graph.nodes, function(d) { return d.size ; })])
+		// 												.range([2.5, maxRadius]);
+		//
+		// 	var force = d3.layout.force()
+		// 	    .charge(-500)
+		// 	    .linkDistance(function(d) { return radius(d.source.size) + radius(d.target.size) + 30; })
+		// 	    .size([width, height]);
+		//
+		//   var linkNodes = [];
+		//
+		//   graph.links.forEach(function(link) {
+		//     linkNodes.push({
+		//       source: graph.nodes[link.source],
+		//       target: graph.nodes[link.target]
+		//     });
+		//   });
+		//
+		//   force
+		//       .nodes(graph.nodes.concat(linkNodes))
+		//       .links(graph.links)
+		//       .start();
+		//
+		//   var link = svg.selectAll(".link")
+		//       .data(graph.links)
+		//     .enter().append("line")
+		//       .attr("class", "link")
+		//       .style("stroke-width", function(d) { return Math.sqrt(d.bond); });
+		//
+		//   var node = svg.selectAll(".node")
+		//       .data(graph.nodes)
+		//     .enter().append("circle")
+		//       .attr("class", "node")
+    //       .attr("r", function(d) { return radius(d.size); })
+		//       .style("fill", "red")
+		//       .call(force.drag);
+		//
+		//   node.append("title")
+		//       .text(function(d) { return d.country; });
+		//
+		//   var linkNode = svg.selectAll(".link-node")
+		//       .data(linkNodes)
+		//     .enter().append("circle")
+		//       .attr("class", "link-node")
+		//       .attr("r", function(d) { return radius(d.size); })
+		//       .style("fill", "#ccc");
+		//
+		//   force.on("tick", function() {
+		//     link.attr("x1", function(d) { return d.source.x; })
+		//         .attr("y1", function(d) { return d.source.y; })
+		//         .attr("x2", function(d) { return d.target.x; })
+		//         .attr("y2", function(d) { return d.target.y; });
+		//
+		//     node.attr("cx", function(d) { return d.x; })
+		//         .attr("cy", function(d) { return d.y; });
+		//
+		//     linkNode.attr("cx", function(d) { return d.x = (d.source.x + d.target.x) * 0.5; })
+		//         .attr("cy", function(d) { return d.y = (d.source.y + d.target.y) * 0.5; });
+		//   });
+		// });
+
 		</script>
 	</body>
-</html>
+</html

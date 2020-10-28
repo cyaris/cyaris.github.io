@@ -67,7 +67,7 @@
 		<div id="war_network_analysis" align="center" style="margin-bottom:15px;"></div>
 		<script>
 
-		d3.json("../assets/the_network_of_wars/the_network_of_wars.json", function(error, graph) {
+		d3.json("../assets/the_networks_of_wars/the_networks_of_wars.json", function(error, graph) {
 
 		  if (error) throw error;
 
@@ -147,7 +147,7 @@
 
 		  function tick() {
 
-				var nodeMarginSize = 5;
+				var nodeMarginSize = 7.5;
 
 		    svg.selectAll(".node")
 						// transform statement below prevents nodes from going beyond the dimensions of the svg.
@@ -163,7 +163,7 @@
 		});
 
 		//
-		// d3.json("../assets/network_of_wars/network_of_wars.json", function(error, graph) {
+		// d3.json("../assets/networks_of_wars/networks_of_wars.json", function(error, graph) {
 		//
 		//
 		// var margin = {top: 0, bottom: 15, left: 0, right: 0},

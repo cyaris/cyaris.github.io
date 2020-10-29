@@ -99,18 +99,59 @@
 
 		  if (error) throw error;
 
-			var totalCasualties = 0;
+			var totalCasualtiesForWar = 0,
+					startDateDic = {},
+					endDateDic = {},
+					startYearDic = {},
+					endYearDic = {},
+					totalDaysDic = {},
+					militaryExpenditureDic = {},
+					militaryPersonnelDic = {},
+					primEnergyConsumptionDic = {},
+					ironSteelProductionDic = {},
+					populationDic = {},
+					urbanPopulationDic = {},
+					cincScoreDic = {};
+
+			var formatDate = d3.time.format("%Y-%m-%d %S:%M:%S");
 			// format the data
 			graph.nodes.forEach(function(d) {
 					// determining totalCasualties across all countries as maxRadius.
 					// this will make larger numbers proportional to the total across all countries.
-					totalCasualties+=d.size;
+					totalCasualtiesForWar += parseInt(d.battle_deaths),
+					startDateDic[d.country] = formatDate.parse(d.start_date),
+					endDateDic[d.country] = formatDate.parse(d.end_date),
+					startYearDic[d.country] =+ parseInt(d.start_year),
+					endYearDic[d.country] =+ parseInt(d.end_year),
+					totalDaysDic[d.country] =+ d.days_at_war,
+					// obtaining greatest value for descriptive statistics between the year the country entered the conflict and the year the country exited the conflict.
+					militaryExpenditureDic[d.country] = d3.greatest(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
+					militaryPersonnelDic[d.country] = d3.greatest(parseFloat(d.military_personnel_start) + parseFloat(d.military_personnel_end)),
+					primEnergyConsumptionDic[d.country] = d3.greatest(parseFloat(d.prim_energy_consumption_start) + parseFloat(d.prim_energy_consumption_end)),
+					ironSteelProductionDic[d.country] = d3.greatest(parseFloat(d.iron_steel_production_start) + parseFloat(d.iron_steel_production_end)),
+					populationDic[d.country] = d3.greatest(parseFloat(d.total_population_start) + parseFloat(d.total_population_end)),
+					urbanPopulationDic[d.country] = d3.greatest(parseFloat(d.urban_population_start) + parseFloat(d.urban_population_end)),
+					cincScoreDic[d.country] = d3.greatest(parseFloat(d.cinc_score_start) + parseFloat(d.cinc_score_end));
+
 			});
+
+			console.log(startDateDic);
+			console.log(endDateDic);
+			console.log(startYearDic);
+			console.log(endYearDic);
+			console.log(totalDaysDic);
+			console.log(militaryExpenditureDic);
+			console.log(militaryPersonnelDic);
+			console.log(primEnergyConsumptionDic);
+			console.log(ironSteelProductionDic);
+			console.log(populationDic);
+			console.log(urbanPopulationDic);
+			console.log(cincScoreDic);
 
 			var color = d3.scale.linear().domain([1,2]).range(["lightgreen", "violet"])
 					maxRadius = 150,
 					radius = d3.scale.linear()
-														.domain([0, totalCasualties])
+														.domain([0, totalCasualtiesForWar])
 														.range([1, maxRadius]);
 
 			// set the dimensions and margins of the graph
@@ -144,14 +185,13 @@
 					addedMarginSize = 7.5;
 
 			graph.nodes.forEach(function(d) {
-					nodeRadiusSize = radius(d.size),
-					nodeRadiusDic[d.country] = nodeRadiusSize,
+					nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
 					nameLengthDic[d.country] = getTextWidth(d.country),
-					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusSize, d.country),
-					nameHorizontalShiftDic[d.country] = nameHorizontalShift(nodeRadiusSize, d.country),
+					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusDic[d.country], d.country),
+					nameHorizontalShiftDic[d.country] = nameHorizontalShift(nodeRadiusDic[d.country], d.country),
 					addedTopMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize,
 					// the node, plus the added space for the name shift, plus a little extra
-					addedBottomMargin[d.country]	= nodeRadiusDic[d.country] + addedMarginSize + nameVerticalShiftDic[d.country];
+					addedBottomMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize + nameVerticalShiftDic[d.country];
 					// the node, plus half the length of the name on the screen, plus a little extra
 					// need to improve nameLengthDic[d.country]/2 part of left/right because this shouldn't include the part of overlap with the radius
 					// same comment for nameHorizontalShiftDic[d.country]
@@ -178,7 +218,6 @@
 		  var link = svg.selectAll()
 		      .data(graph.links)
 		    	.enter().append("g")
-		      	.attr("class", "link");
 
 		  link.append("line")
 					.attr("stroke", "#696969")
@@ -187,8 +226,7 @@
 		  link.filter(function(d) { return d.lines > 1; })
 					.append("line")
 					.attr("stroke", "#fff")
-					.attr("stroke-width", "2px")
-		      .attr("class", "separator");
+					.attr("stroke-width", "2px");
 
 		  var node = svg.selectAll()
 		      .data(graph.nodes)

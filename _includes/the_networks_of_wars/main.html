@@ -27,7 +27,6 @@
 		}
 
 		.node text {
-		  font: 10px sans-serif;
 		  pointer-events: none;
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;
@@ -117,7 +116,7 @@
 
 			// set the dimensions and margins of the graph
 			var margin = {top: 0, bottom: 15, left: 0, right: 0},
-			    width = 800,
+			    width = 750,
 			    height = 550;
 
 			// append the svg object to the body of the page
@@ -211,6 +210,8 @@
 					.attr("class", "country_text")
 					// .attr("dx", function(d) { return nameHorizontalShiftDic[d.country]; })
 		      .attr("dy", function(d) { return nameVerticalShiftDic[d.country]; })
+					.attr("font-family", "sans-serif")
+					.attr("font-size", "10px")
 		      .attr("text-anchor", "middle")
 					// .attr("alignment-baseline", "hanging")
 		      .text(function(d) { return d.country; })

@@ -216,20 +216,30 @@
 					addedMarginSize = 7.5;
 
 			graph.nodes.forEach(function(d) {
+				
 					nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
 					nameLengthDic[d.country] = getTextWidth(d.country),
 					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusDic[d.country], d.country),
 					nameHorizontalShiftDic[d.country] = nameHorizontalShift(nodeRadiusDic[d.country], d.country),
+					// the node, plus a little extra
+					// text is not a factor since it is always below or inside the node
 					addedTopMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize,
 					// the node, plus the added space for the name shift, plus a little extra
 					addedBottomMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize + nameVerticalShiftDic[d.country];
+					if ( nameHorizontalShiftDic[d.country] > 0  && ((nameLengthDic[d.country])/2 - nameHorizontalShiftDic[d.country]) > nodeRadiusDic[d.country] )
+					// the distance from the middle of the node to the left, minus the radius because that's overlap
+					{ addedLeftMargin[d.country] = ((nameLengthDic[d.country]/2) - nameHorizontalShiftDic[d.country]) - nodeRadiusDic[d.country] + addedMarginSize; }
+					else
 					// the node, plus half the length of the name on the screen, plus a little extra
-					// need to improve nameLengthDic[d.country]/2 part of left/right because this shouldn't include the part of overlap with the radius
-					// same comment for nameHorizontalShiftDic[d.country]
-					addedLeftMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize + (nameLengthDic[d.country]/2),
-					// the node, plus half the length of the name on the screen, plus the amount shifted to the right, plus a little extra
-					// commenting out version below with nameHorizontalShiftDic
-					addedRightMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize + (nameLengthDic[d.country]/2) + nameHorizontalShiftDic[d.country];
+					// text is not a factor on the left if the above does not apply
+					{ addedLeftMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize; }
+					if ( nameHorizontalShiftDic[d.country] > 0 )
+					// half the length of the name on the screen, plus the amount shifted to the right, plus a little extra
+					 { addedRightMargin[d.country] = addedMarginSize + (nameLengthDic[d.country]/2) + nameHorizontalShiftDic[d.country]; }
+					else
+					// the node plus a little extra
+					// don't need to adjust for the name if it is inside the node
+					{ addedRightMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize; }
 			});
 
 			var force = d3.layout.force()

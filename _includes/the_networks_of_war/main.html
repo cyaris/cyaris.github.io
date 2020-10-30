@@ -22,7 +22,7 @@
 	    }
 	  }
 
-		svg {
+		svg1 {
 			border: 1px solid #000;
 		}
 
@@ -49,6 +49,7 @@
 		</div>
 		<!-- Create a div where the graph will take place -->
 		<div id="war_network_analysis" align="center" style="margin-bottom:15px;"></div>
+		<div id="hover_statistics" align="center" style="margin-bottom:15px;"></div>
 		<script>
 
 		d3.json("../assets/the_networks_of_war/the_networks_of_war.json", function(error, graph) {
@@ -58,7 +59,7 @@
 				// obtaining length of any textinput (based on default font size and font family)
 				var textWidthArray = [];
 
-				svg.append("g")
+				svg1.append("g")
 						    .selectAll('.dummyText')
 						    .data([textInput])
 						    .enter()
@@ -124,13 +125,13 @@
 			graph.nodes.forEach(function(d) {
 					// determining totalCasualties across all countries as maxRadius.
 					// this will make larger numbers proportional to the total across all countries.
-					sumOfAllRadiusInputs += d.battle_deaths/d.days_at_war
+					sumOfAllRadiusInputs += parseFloat(d.battle_deaths)
 					startDateDic[d.country] = formatDate.parse(d.start_date),
 					endDateDic[d.country] = formatDate.parse(d.end_date),
 					startYearDic[d.country] =+ parseInt(d.start_year),
 					endYearDic[d.country] =+ parseInt(d.end_year),
 					totalDaysDic[d.country] =+ d.days_at_war,
-					totalExpenditureForWarTest += Math.max(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
+					// totalExpenditureForWarTest += Math.max(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
 					// obtaining greatest value for descriptive statistics between the year the country entered the conflict and the year the country exited the conflict.
 					moneyFlowOutDic[d.country] = Math.max(parseFloat(d.money_flow_out_start), parseFloat(d.money_flow_out_end)),
 					moneyFlowInDic[d.country] = Math.max(parseFloat(d.money_flow_in_start), parseFloat(d.money_flow_in_end)),
@@ -176,13 +177,21 @@
 			    width = 750,
 			    height = 550;
 
-			// append the svg object to the body of the page
-			var svg = d3.select("#war_network_analysis")
+			// append the svg1 object to the body of the page
+			var svg1 = d3.select("#war_network_analysis")
 					.append("svg")
 					  .attr("width", width)
 					  .attr("height", height)
-						// .append("g")
 					  .attr("transform",
+					        "translate(" + margin.left + "," + margin.top + ")");
+
+			// adding area for descriptive statistics to be activated upon hovering nodes.
+			var svg2 = d3.select("#hover_statistics")
+					.append("svg")
+						.attr("pointer-events", "none")
+						.attr("width", width)
+						.attr("height", 25)
+						.attr("transform",
 					        "translate(" + margin.left + "," + margin.top + ")");
 
 					// dic for size of all the country nodes
@@ -193,7 +202,7 @@
 					nameHorizontalShiftDic = {},
 					// dict for the lengths of the names of all the country names on the screen
 					nameLengthDic = {},
-					// creating four dictionaries to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg.
+					// creating four dictionaries to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg1.
 					addedTopMargin = {},
 					addedBottomMargin = {},
 					addedLeftMargin = {},
@@ -204,7 +213,7 @@
 			graph.nodes.forEach(function(d) {
 					// nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
 					// nodeRadiusDic[d.country] = radius(militaryExpenditureDic[d.country]),
-					nodeRadiusDic[d.country] = radius(d.battle_deaths/d.days_at_war),
+					nodeRadiusDic[d.country] = radius(parseFloat(d.battle_deaths)),
 					nameLengthDic[d.country] = getTextWidth(d.country),
 					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusDic[d.country], d.country),
 					nameHorizontalShiftDic[d.country] = nameHorizontalShift(nodeRadiusDic[d.country], d.country),
@@ -219,7 +228,7 @@
 					// commenting out version below with nameHorizontalShiftDic
 					addedRightMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize + (nameLengthDic[d.country]/2) + nameHorizontalShiftDic[d.country];
 			});
-			console.log(nodeRadiusDic);
+
 			var force = d3.layout.force()
 			    .size([width, height])
 			    .charge(-500)
@@ -234,7 +243,7 @@
 		      .on("tick", tick)
 		      .start();
 
-		  var link = svg.selectAll()
+		  var link = svg1.selectAll()
 		      .data(graph.links)
 		    	.enter().append("g")
 
@@ -247,7 +256,7 @@
 					.attr("stroke", "#fff")
 					.attr("stroke-width", "2px");
 
-		  var node = svg.selectAll()
+		  var node = svg1.selectAll()
 		      .data(graph.nodes)
 		    .enter().append("g")
 		      .attr("class", "node")
@@ -258,7 +267,14 @@
 					.attr("stroke-width", 1)
 					// .attr("opacity", 0.5)
 		      .attr("r", function(d) { return nodeRadiusDic[d.country]; })
-		      .style("fill", function(d) { return color(d.side); });
+		      .style("fill", function(d) {
+						if ( d.side==3 )
+						// returning a color in the middle of the spectrum if the side is 3
+						// this would mean they were on side 1 and side 2 (1+2)
+						{ return color(1.5); }
+						else
+						{ return color(d.side); }
+						});
 
 		  node.append("text")
 					.attr("class", "text_labels")
@@ -270,9 +286,9 @@
 		      .text(function(d) { return d.country; });
 
 		  function tick() {
-		    svg.selectAll(".node")
-						// transform statement below prevents nodes from going beyond the dimensions of the svg.
-						// boundaries are then limited even further since when they get close to the edge of the svg, items like text begin to be cut off.
+		    svg1.selectAll(".node")
+						// transform statement below prevents nodes from going beyond the dimensions of the svg1.
+						// boundaries are then limited even further since when they get close to the edge of the svg1, items like text begin to be cut off.
 						// needs to also be adjusted for the country name label since this could be positioned below the node
 						// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
 						.attr("transform", function(d) { return "translate(" + Math.max(addedLeftMargin[d.country], Math.min(width - addedRightMargin[d.country], d.x)) + "," + Math.max(addedTopMargin[d.country], Math.min(height - addedBottomMargin[d.country], d.y)) + ")"; })
@@ -293,9 +309,9 @@
 		//     width = 800,
 		//     height = 450;
 		//
-		// // append the svg object to the body of the page
-		// var svg = d3.select("#war_network_analysis")
-		// 		.append("svg")
+		// // append the svg1 object to the body of the page
+		// var svg1 = d3.select("#war_network_analysis")
+		// 		.append("svg1")
 		// 		  .attr("width", width)
 		// 		  .attr("height", height)
 		// 			// .append("g")
@@ -327,13 +343,13 @@
 		//       .links(graph.links)
 		//       .start();
 		//
-		//   var link = svg.selectAll(".link")
+		//   var link = svg1.selectAll(".link")
 		//       .data(graph.links)
 		//     .enter().append("line")
 		//       .attr("class", "link")
 		//       .style("stroke-width", function(d) { return Math.sqrt(d.bond); });
 		//
-		//   var node = svg.selectAll(".node")
+		//   var node = svg1.selectAll(".node")
 		//       .data(graph.nodes)
 		//     .enter().append("circle")
 		//       .attr("class", "node")
@@ -344,7 +360,7 @@
 		//   node.append("title")
 		//       .text(function(d) { return d.country; });
 		//
-		//   var linkNode = svg.selectAll(".link-node")
+		//   var linkNode = svg1.selectAll(".link-node")
 		//       .data(linkNodes)
 		//     .enter().append("circle")
 		//       .attr("class", "link-node")

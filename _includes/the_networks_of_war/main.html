@@ -22,7 +22,7 @@
 	    }
 	  }
 
-		svg1 {
+		svg {
 			border: 1px solid #000;
 		}
 
@@ -120,6 +120,14 @@
 					cincScoreDic = {};
 
 			var formatDate = d3.time.format("%Y-%m-%d %S:%M:%S");
+			// format the data
+			graph.war.forEach(function(d) {
+
+				console.log("war_name: ", d.war_name);
+				console.log("war_num: ", d.war_num);
+				console.log("war_type: ", d.war_type);
+
+			});
 			// format the data
 			graph.nodes.forEach(function(d) {
 					// determining totalCasualties across all countries as maxRadius.

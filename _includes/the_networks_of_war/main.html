@@ -82,7 +82,7 @@
 
 			function nameVerticalShift(nodeRadius, countryName) {
 				// adjusting text position when it does not fit inside the node
-				if ( nodeRadius * 2 < getTextWidth(countryName) + 5 )
+				if ( nodeRadius * 2 < getTextWidth(countryName) + 7.5 )
 				{ return nodeRadius + 20 }
 				else
 				{ return 6.25 };
@@ -100,8 +100,7 @@
 
 		  if (error) throw error;
 
-			var sumOfAllRadiusInputs = 0,
-					totalExpenditureForWarTest = 0;
+			var sumOfAllRadiusInputs = 0;
 
 			var startDateDic = {},
 					endDateDic = {},
@@ -163,13 +162,11 @@
 			console.log("population: ", populationDic);
 			console.log("urgan population: ", urbanPopulationDic);
 			console.log("cinc score: ", cincScoreDic);
-			// console.log(totalExpenditureForWarTest);
 
 			var color = d3.scale.linear().domain([1,2]).range(["lightgreen", "violet"])
 					maxRadius = 150,
 					radius = d3.scale.linear()
 														.domain([0, sumOfAllRadiusInputs])
-														// .domain([0, d3.max(graph.nodes, function(d) { return d.battle_deaths/Math.max(parseFloat(d.military_personnel_start) + parseFloat(d.military_personnel_end)) })])
 														.range([1, maxRadius]);
 
 			// set the dimensions and margins of the graph
@@ -211,9 +208,7 @@
 					addedMarginSize = 7.5;
 
 			graph.nodes.forEach(function(d) {
-					// nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
-					// nodeRadiusDic[d.country] = radius(militaryExpenditureDic[d.country]),
-					nodeRadiusDic[d.country] = radius(parseFloat(d.battle_deaths)),
+					nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
 					nameLengthDic[d.country] = getTextWidth(d.country),
 					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusDic[d.country], d.country),
 					nameHorizontalShiftDic[d.country] = nameHorizontalShift(nodeRadiusDic[d.country], d.country),

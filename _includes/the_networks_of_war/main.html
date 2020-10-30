@@ -99,7 +99,7 @@
 
 		  if (error) throw error;
 
-			var totalCasualtiesForWar = 0,
+			var sumOfAllRadiusInputs = 0,
 					totalExpenditureForWarTest = 0;
 
 			var startDateDic = {},
@@ -107,6 +107,10 @@
 					startYearDic = {},
 					endYearDic = {},
 					totalDaysDic = {},
+					moneyFlowOutDic = {},
+					moneyFlowInDic = {},
+					importsDic = {},
+					exportsDic = {},
 					militaryExpenditureDic = {},
 					militaryPersonnelDic = {},
 					primEnergyConsumptionDic = {},
@@ -120,15 +124,19 @@
 			graph.nodes.forEach(function(d) {
 					// determining totalCasualties across all countries as maxRadius.
 					// this will make larger numbers proportional to the total across all countries.
-					totalCasualtiesForWar += parseInt(d.battle_deaths),
+					sumOfAllRadiusInputs += d.battle_deaths/d.days_at_war
 					startDateDic[d.country] = formatDate.parse(d.start_date),
 					endDateDic[d.country] = formatDate.parse(d.end_date),
 					startYearDic[d.country] =+ parseInt(d.start_year),
 					endYearDic[d.country] =+ parseInt(d.end_year),
 					totalDaysDic[d.country] =+ d.days_at_war,
-					// obtaining greatest value for descriptive statistics between the year the country entered the conflict and the year the country exited the conflict.
-					militaryExpenditureDic[d.country] = Math.max(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
 					totalExpenditureForWarTest += Math.max(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
+					// obtaining greatest value for descriptive statistics between the year the country entered the conflict and the year the country exited the conflict.
+					moneyFlowOutDic[d.country] = Math.max(parseFloat(d.money_flow_out_start), parseFloat(d.money_flow_out_end)),
+					moneyFlowInDic[d.country] = Math.max(parseFloat(d.money_flow_in_start), parseFloat(d.money_flow_in_end)),
+					importsDic[d.country] = Math.max(parseFloat(d.imports_start), parseFloat(d.imports_end)),
+					exportsDic[d.country] = Math.max(parseFloat(d.exports_start), parseFloat(d.exports_end)),
+					militaryExpenditureDic[d.country] = Math.max(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
 					militaryPersonnelDic[d.country] = Math.max(parseFloat(d.military_personnel_start) + parseFloat(d.military_personnel_end)),
 					primEnergyConsumptionDic[d.country] = Math.max(parseFloat(d.prim_energy_consumption_start) + parseFloat(d.prim_energy_consumption_end)),
 					ironSteelProductionDic[d.country] = Math.max(parseFloat(d.iron_steel_production_start) + parseFloat(d.iron_steel_production_end)),
@@ -138,24 +146,29 @@
 
 			});
 
-			// console.log(startDateDic);
-			// console.log(endDateDic);
-			// console.log(startYearDic);
-			// console.log(endYearDic);
-			// console.log(totalDaysDic);
-			// console.log(militaryExpenditureDic);
-			// console.log(militaryPersonnelDic);
-			// console.log(primEnergyConsumptionDic);
-			// console.log(ironSteelProductionDic);
-			// console.log(populationDic);
-			// console.log(urbanPopulationDic);
-			// console.log(cincScoreDic);
-			console.log(totalExpenditureForWarTest);
+			console.log("start dates: ", startDateDic);
+			console.log("end dates: ", endDateDic);
+			console.log("start years: ", startYearDic);
+			console.log("end years: ", endYearDic);
+			console.log("total days: ", totalDaysDic);
+			console.log("money out: ", moneyFlowOutDic);
+			console.log("money in: ", moneyFlowInDic);
+			console.log("imports: ", importsDic);
+			console.log("exports: ", exportsDic);
+			console.log("military expenditure: ", militaryExpenditureDic);
+			console.log("military personnel: ", militaryPersonnelDic);
+			console.log("prim energey consumption: ", primEnergyConsumptionDic);
+			console.log("iron steel production: ", ironSteelProductionDic);
+			console.log("population: ", populationDic);
+			console.log("urgan population: ", urbanPopulationDic);
+			console.log("cinc score: ", cincScoreDic);
+			// console.log(totalExpenditureForWarTest);
 
 			var color = d3.scale.linear().domain([1,2]).range(["lightgreen", "violet"])
 					maxRadius = 150,
 					radius = d3.scale.linear()
-														.domain([0, totalExpenditureForWarTest])
+														.domain([0, sumOfAllRadiusInputs])
+														// .domain([0, d3.max(graph.nodes, function(d) { return d.battle_deaths/Math.max(parseFloat(d.military_personnel_start) + parseFloat(d.military_personnel_end)) })])
 														.range([1, maxRadius]);
 
 			// set the dimensions and margins of the graph
@@ -190,7 +203,8 @@
 
 			graph.nodes.forEach(function(d) {
 					// nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
-					nodeRadiusDic[d.country] = radius(militaryExpenditureDic[d.country]),
+					// nodeRadiusDic[d.country] = radius(militaryExpenditureDic[d.country]),
+					nodeRadiusDic[d.country] = radius(d.battle_deaths/d.days_at_war),
 					nameLengthDic[d.country] = getTextWidth(d.country),
 					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusDic[d.country], d.country),
 					nameHorizontalShiftDic[d.country] = nameHorizontalShift(nodeRadiusDic[d.country], d.country),

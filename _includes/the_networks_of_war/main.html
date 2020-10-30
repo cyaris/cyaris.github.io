@@ -81,7 +81,7 @@
 
 			function nameVerticalShift(nodeRadius, countryName) {
 				// adjusting text position when it does not fit inside the node
-				if ( nodeRadius * 2 < getTextWidth(countryName) + 2.5 )
+				if ( nodeRadius * 2 < getTextWidth(countryName) + 5 )
 				{ return nodeRadius + 20 }
 				else
 				{ return 6.25 };
@@ -100,7 +100,9 @@
 		  if (error) throw error;
 
 			var totalCasualtiesForWar = 0,
-					startDateDic = {},
+					totalExpenditureForWarTest = 0;
+
+			var startDateDic = {},
 					endDateDic = {},
 					startYearDic = {},
 					endYearDic = {},
@@ -125,33 +127,35 @@
 					endYearDic[d.country] =+ parseInt(d.end_year),
 					totalDaysDic[d.country] =+ d.days_at_war,
 					// obtaining greatest value for descriptive statistics between the year the country entered the conflict and the year the country exited the conflict.
-					militaryExpenditureDic[d.country] = d3.greatest(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
-					militaryPersonnelDic[d.country] = d3.greatest(parseFloat(d.military_personnel_start) + parseFloat(d.military_personnel_end)),
-					primEnergyConsumptionDic[d.country] = d3.greatest(parseFloat(d.prim_energy_consumption_start) + parseFloat(d.prim_energy_consumption_end)),
-					ironSteelProductionDic[d.country] = d3.greatest(parseFloat(d.iron_steel_production_start) + parseFloat(d.iron_steel_production_end)),
-					populationDic[d.country] = d3.greatest(parseFloat(d.total_population_start) + parseFloat(d.total_population_end)),
-					urbanPopulationDic[d.country] = d3.greatest(parseFloat(d.urban_population_start) + parseFloat(d.urban_population_end)),
-					cincScoreDic[d.country] = d3.greatest(parseFloat(d.cinc_score_start) + parseFloat(d.cinc_score_end));
+					militaryExpenditureDic[d.country] = Math.max(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
+					totalExpenditureForWarTest += Math.max(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
+					militaryPersonnelDic[d.country] = Math.max(parseFloat(d.military_personnel_start) + parseFloat(d.military_personnel_end)),
+					primEnergyConsumptionDic[d.country] = Math.max(parseFloat(d.prim_energy_consumption_start) + parseFloat(d.prim_energy_consumption_end)),
+					ironSteelProductionDic[d.country] = Math.max(parseFloat(d.iron_steel_production_start) + parseFloat(d.iron_steel_production_end)),
+					populationDic[d.country] = Math.max(parseFloat(d.total_population_start) + parseFloat(d.total_population_end)),
+					urbanPopulationDic[d.country] = Math.max(parseFloat(d.urban_population_start) + parseFloat(d.urban_population_end)),
+					cincScoreDic[d.country] = Math.max(parseFloat(d.cinc_score_start) + parseFloat(d.cinc_score_end));
 
 			});
 
-			console.log(startDateDic);
-			console.log(endDateDic);
-			console.log(startYearDic);
-			console.log(endYearDic);
-			console.log(totalDaysDic);
-			console.log(militaryExpenditureDic);
-			console.log(militaryPersonnelDic);
-			console.log(primEnergyConsumptionDic);
-			console.log(ironSteelProductionDic);
-			console.log(populationDic);
-			console.log(urbanPopulationDic);
-			console.log(cincScoreDic);
+			// console.log(startDateDic);
+			// console.log(endDateDic);
+			// console.log(startYearDic);
+			// console.log(endYearDic);
+			// console.log(totalDaysDic);
+			// console.log(militaryExpenditureDic);
+			// console.log(militaryPersonnelDic);
+			// console.log(primEnergyConsumptionDic);
+			// console.log(ironSteelProductionDic);
+			// console.log(populationDic);
+			// console.log(urbanPopulationDic);
+			// console.log(cincScoreDic);
+			console.log(totalExpenditureForWarTest);
 
 			var color = d3.scale.linear().domain([1,2]).range(["lightgreen", "violet"])
 					maxRadius = 150,
 					radius = d3.scale.linear()
-														.domain([0, totalCasualtiesForWar])
+														.domain([0, totalExpenditureForWarTest])
 														.range([1, maxRadius]);
 
 			// set the dimensions and margins of the graph
@@ -185,7 +189,8 @@
 					addedMarginSize = 7.5;
 
 			graph.nodes.forEach(function(d) {
-					nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
+					// nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
+					nodeRadiusDic[d.country] = radius(militaryExpenditureDic[d.country]),
 					nameLengthDic[d.country] = getTextWidth(d.country),
 					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusDic[d.country], d.country),
 					nameHorizontalShiftDic[d.country] = nameHorizontalShift(nodeRadiusDic[d.country], d.country),
@@ -200,7 +205,7 @@
 					// commenting out version below with nameHorizontalShiftDic
 					addedRightMargin[d.country] = nodeRadiusDic[d.country] + addedMarginSize + (nameLengthDic[d.country]/2) + nameHorizontalShiftDic[d.country];
 			});
-
+			console.log(nodeRadiusDic);
 			var force = d3.layout.force()
 			    .size([width, height])
 			    .charge(-500)

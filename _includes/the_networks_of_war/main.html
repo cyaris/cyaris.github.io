@@ -85,13 +85,13 @@
 				if ( nodeRadius * 2 < getTextWidth(countryName) + 7.5 )
 				{ return nodeRadius + 20 }
 				else
-				{ return 6.25 };
+				{ return 3.5 };
 
 			}
 
 			function nameHorizontalShift(nodeRadius, countryName) {
 				// adjusting text position when it does not fit inside the node
-				if ( nameVerticalShift(nodeRadius, countryName) > 6.25 )
+				if ( nameVerticalShift(nodeRadius, countryName) > 3.5 )
 				{ return 22.5 }
 				else
 				{ return 0 };
@@ -107,6 +107,7 @@
 					startYearDic = {},
 					endYearDic = {},
 					totalDaysDic = {},
+					battleDeathDic = {},
 					moneyFlowOutDic = {},
 					moneyFlowInDic = {},
 					importsDic = {},
@@ -138,8 +139,10 @@
 					startYearDic[d.country] =+ parseInt(d.start_year),
 					endYearDic[d.country] =+ parseInt(d.end_year),
 					totalDaysDic[d.country] =+ d.days_at_war,
+					battleDeathDic[d.country] =+ d.battle_deaths,
 					// totalExpenditureForWarTest += Math.max(parseFloat(d.military_expenditure_start), parseFloat(d.military_expenditure_end)),
 					// obtaining greatest value for descriptive statistics between the year the country entered the conflict and the year the country exited the conflict.
+					moneyFlowOutDic[d.country] = Math.max(parseFloat(d.money_flow_out_start), parseFloat(d.money_flow_out_end)),
 					moneyFlowOutDic[d.country] = Math.max(parseFloat(d.money_flow_out_start), parseFloat(d.money_flow_out_end)),
 					moneyFlowInDic[d.country] = Math.max(parseFloat(d.money_flow_in_start), parseFloat(d.money_flow_in_end)),
 					importsDic[d.country] = Math.max(parseFloat(d.imports_start), parseFloat(d.imports_end)),
@@ -154,6 +157,7 @@
 
 			});
 
+			console.log("battle deaths: ", battleDeathDic)
 			console.log("start dates: ", startDateDic);
 			console.log("end dates: ", endDateDic);
 			console.log("start years: ", startYearDic);
@@ -216,7 +220,7 @@
 					addedMarginSize = 7.5;
 
 			graph.nodes.forEach(function(d) {
-				
+
 					nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
 					nameLengthDic[d.country] = getTextWidth(d.country),
 					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusDic[d.country], d.country),

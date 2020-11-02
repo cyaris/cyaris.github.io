@@ -1,6 +1,6 @@
 ---
 layout: page
-title: The Networks of Wars
+title: The Networks of War
 subtitle: Project Currently in Progress
 social-share: true
 ---

@@ -10,10 +10,10 @@
     {"country": "Turkey", "country_code": "640.0", "side": "1.0", "battle_deaths": "20000.0", "start_year": "1913.0", "start_date": "1913-07-15 00:00:00", "end_year": "1913.0", "end_date": "1913-07-30 00:00:00", "days_at_war": "15", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "165520001.01100004", "money_flow_out_y": "165520001.01100004", "money_flow_in_x": "110059997.08999997", "money_flow_in_y": "110059997.08999997", "imports_x": "190.9090881347656", "imports_y": "190.9090881347656", "exports_x": "100.0", "exports_y": "100.0", "military_expenditure_x": "25134000.0", "military_expenditure_y": "25134000.0", "military_personnel_x": "241000.0", "military_personnel_y": "241000.0", "prim_energy_consumption_x": "1682000000.0", "prim_energy_consumption_y": "1682000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "21331000.0", "total_population_y": "21331000.0", "urban_population_x": "986000.0", "urban_population_y": "986000.0", "cinc_score_x": "0.0175777", "cinc_score_y": "0.0175777"}
   ],
   "links": [
-    {"source": 4, "target": 2, "first_year": 1913.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 0, "target": 2, "first_year": 1913.0, "defense_alliance": 1.0, "neutrality_alliance": 1.0, "entente_alliance": 1.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 1, "target": 2, "first_year": 1913.0, "defense_alliance": 1.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 2, "target": 3, "first_year": 1913.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 1, "target": 2, "first_year": 1913.0, "defense_alliance": 1.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 4, "target": 2, "first_year": 1913.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

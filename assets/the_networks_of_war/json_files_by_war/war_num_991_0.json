@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "South Sudan War of 2013 to present", "war_num": "991.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "South Sudan War of 2013 to present", "war_num": "991.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Uganda", "country_code": "500.0", "side": "1.0", "battle_deaths": "21.0", "start_year": "2014.0", "start_date": "2014-01-16 00:00:00", "end_year": "nan", "end_date": "None", "days_at_war": "706", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "4730588581.64072", "money_flow_out_y": "nan", "money_flow_in_x": "2071896568.3998406", "money_flow_in_y": "nan", "imports_x": "4738.45580082433", "imports_y": "nan", "exports_x": "1940.218395391", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"},
@@ -8,7 +8,7 @@
     {"country": "SPLM-IO", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "2013.0", "start_date": "2013-12-15 00:00:00", "end_year": "nan", "end_date": "None", "days_at_war": "737", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 1, "target": 2, "first_year": 2013.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 2, "target": 1, "first_year": 2013.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 0, "target": 2, "first_year": 2014.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]

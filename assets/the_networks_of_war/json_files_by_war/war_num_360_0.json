@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "British-Bhutanese", "war_num": "360.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+    {"war_name": "British-Bhutanese", "war_num": "360.0", "war_type_code": "3.0", "war_type": "Extra-State War", "lagging_war": "nan", "leading_war": "nan"}
   ],
   "nodes": [
     {"country": "United Kingdom", "country_code": "200.0", "side": "1.0", "battle_deaths": "100.0", "start_year": "1865.0", "start_date": "NaT", "end_year": "1865.0", "end_date": "1865-11-11 00:00:00", "days_at_war": "None", "alliances_x": "3.0", "alliances_y": "3.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "20976000.0", "military_expenditure_y": "20976000.0", "military_personnel_x": "296000.0", "military_personnel_y": "296000.0", "prim_energy_consumption_x": "186028000000.0", "prim_energy_consumption_y": "186028000000.0", "iron_steel_production_x": "9764000000.0", "iron_steel_production_y": "9764000000.0", "total_population_x": "29925000.0", "total_population_y": "29925000.0", "urban_population_x": "6327000.0", "urban_population_y": "6327000.0", "cinc_score_x": "0.25641210000000003", "cinc_score_y": "0.25641210000000003"},

@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Sanaa Revolt of 1948", "war_num": "728.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Sanaa Revolt of 1948", "war_num": "728.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Yemen", "country_code": "678.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1948.0", "start_date": "1948-02-25 00:00:00", "end_year": "1948.0", "end_date": "1948-03-20 00:00:00", "days_at_war": "26", "alliances_x": "3.0", "alliances_y": "3.0", "non_aggression_alliances_x": "2.0", "non_aggression_alliances_y": "2.0", "entente_alliances_x": "3.0", "entente_alliances_y": "3.0", "money_flow_out_x": "0.0", "money_flow_out_y": "0.0", "money_flow_in_x": "0.0", "money_flow_in_y": "0.0", "imports_x": "113.8333358764648", "imports_y": "113.8333358764648", "exports_x": "54.04166793823242", "exports_y": "54.04166793823242", "military_expenditure_x": "0.0", "military_expenditure_y": "0.0", "military_personnel_x": "18000.0", "military_personnel_y": "18000.0", "prim_energy_consumption_x": "2000000.0", "prim_energy_consumption_y": "2000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "3231000.0", "total_population_y": "3231000.0", "urban_population_x": "0.0", "urban_population_y": "0.0", "cinc_score_x": "0.0005736000000000001", "cinc_score_y": "0.0005736000000000001"},

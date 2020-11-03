@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Chad - FAP War of 1977-1978", "war_num": "806.8", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Chad - FAP War of 1977-1978", "war_num": "806.8", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "France", "country_code": "220.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1977.0", "start_date": "1977-06-22 00:00:00", "end_year": "1978.0", "end_date": "None", "days_at_war": "354", "alliances_x": "6.0", "alliances_y": "6.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "5.0", "entente_alliances_y": "5.0", "money_flow_out_x": "56721554309.57799", "money_flow_out_y": "65361458473.461006", "money_flow_in_x": "50284494166.30999", "money_flow_in_y": "61041931878.0", "imports_x": "70416.6", "imports_y": "81690.2", "exports_x": "64729.4", "exports_y": "79058.7", "military_expenditure_x": "15015875000.0", "military_expenditure_y": "18874092000.0", "military_personnel_x": "584000.0", "military_personnel_y": "581000.0", "prim_energy_consumption_x": "542732000000.0", "prim_energy_consumption_y": "556058000000.0", "iron_steel_production_x": "44188000000.0", "iron_steel_production_y": "45682000000.0", "total_population_x": "53145000.0", "total_population_y": "53376000.0", "urban_population_x": "9901000.0", "urban_population_y": "10008000.0", "cinc_score_x": "0.0233325", "cinc_score_y": "0.023703799999999997"},
@@ -9,7 +9,7 @@
     {"country": "FAP", "country_code": "nan", "side": "2.0", "battle_deaths": "2000.0", "start_year": "1977.0", "start_date": "1977-06-22 00:00:00", "end_year": "1978.0", "end_date": "None", "days_at_war": "354", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 3, "target": 1, "first_year": 1977.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 3, "first_year": 1977.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

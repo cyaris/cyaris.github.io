@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Fifth Colombian War of 1884-1885", "war_num": "612.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Fifth Colombian War of 1884-1885", "war_num": "612.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Colombia", "country_code": "100.0", "side": "1.0", "battle_deaths": "330.0", "start_year": "1884.0", "start_date": "1884-09-24 00:00:00", "end_year": "1885.0", "end_date": "1885-08-26 00:00:00", "days_at_war": "333", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "10910000.3", "money_flow_out_y": "7399999.8", "money_flow_in_x": "3389999.8", "money_flow_in_y": "3000000.02", "imports_x": "24.56310653686523", "imports_y": "15.48076915740967", "exports_x": "10.291261672973631", "exports_y": "7.019230842590332", "military_expenditure_x": "0.0", "military_expenditure_y": "0.0", "military_personnel_x": "3000.0", "military_personnel_y": "3000.0", "prim_energy_consumption_x": "0.0", "prim_energy_consumption_y": "0.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "3340000.0", "total_population_y": "3372000.0", "urban_population_x": "0.0", "urban_population_y": "0.0", "cinc_score_x": "0.0008823", "cinc_score_y": "0.0008802999999999999"},

@@ -7,7 +7,7 @@
     {"country": "Israel", "country_code": "666.0", "side": "1.0", "battle_deaths": "455.0", "start_year": "1982.0", "start_date": "1982-04-21 00:00:00", "end_year": "1982.0", "end_date": "1982-09-15 00:00:00", "days_at_war": "147", "alliances_x": "2.0", "alliances_y": "2.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "5298527201.7068", "money_flow_out_y": "5298527201.7068", "money_flow_in_x": "4054237749.0323997", "money_flow_in_y": "4054237749.0323997", "imports_x": "9025.3", "imports_y": "9025.3", "exports_x": "5286.9", "exports_y": "5286.9", "military_expenditure_x": "8241308000.0", "military_expenditure_y": "8241308000.0", "military_personnel_x": "205000.0", "military_personnel_y": "205000.0", "prim_energy_consumption_x": "28618000000.0", "prim_energy_consumption_y": "28618000000.0", "iron_steel_production_x": "240000000.0", "iron_steel_production_y": "240000000.0", "total_population_x": "4027000.0", "total_population_y": "4027000.0", "urban_population_x": "1798000.0", "urban_population_y": "1798000.0", "cinc_score_x": "0.0037562", "cinc_score_y": "0.0037562"}
   ],
   "links": [
-    {"source": 0, "target": 1, "first_year": 1982.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 0, "first_year": 1982.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

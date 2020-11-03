@@ -1,13 +1,13 @@
 {
   "war": [
-    {"war_name": "Brazil Federalists War of 1893-1894", "war_num": "620.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Brazil Federalists War of 1893-1894", "war_num": "620.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Brazil", "country_code": "140.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1893.0", "start_date": "1893-02-02 00:00:00", "end_year": "1894.0", "end_date": "1894-08-31 00:00:00", "days_at_war": "570", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "78080000.1", "money_flow_out_y": "57860002.09900001", "money_flow_in_x": "108530001.02", "money_flow_in_y": "107130001.401", "imports_x": "158.6374664306641", "imports_y": "166.0297241210938", "exports_x": "171.7761535644531", "exports_y": "162.8450164794922", "military_expenditure_x": "2312000.0", "military_expenditure_y": "2092000.0", "military_personnel_x": "38000.0", "military_personnel_y": "40000.0", "prim_energy_consumption_x": "1092000000.0", "prim_energy_consumption_y": "1178000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "15216000.0", "total_population_y": "15583000.0", "urban_population_x": "1051000.0", "urban_population_y": "1190000.0", "cinc_score_x": "0.0088964", "cinc_score_y": "0.0090676"},
     {"country": "Rio Grande do Sul", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1893.0", "start_date": "1893-02-02 00:00:00", "end_year": "1894.0", "end_date": "1894-08-31 00:00:00", "days_at_war": "570", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 0, "target": 1, "first_year": 1893.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 0, "first_year": 1893.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

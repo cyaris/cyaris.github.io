@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Third Burundi War of 2001-2003", "war_num": "918.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Third Burundi War of 2001-2003", "war_num": "918.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Burundi", "country_code": "516.0", "side": "1.0", "battle_deaths": "150.0", "start_year": "2001.0", "start_date": "2001-02-08 00:00:00", "end_year": "2003.0", "end_date": "2003-10-08 00:00:00", "days_at_war": "961", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "127473619.49260001", "money_flow_out_y": "150624473.0222", "money_flow_in_x": "37321758.146419", "money_flow_in_y": "42255025.342089996", "imports_x": "138.80151460021003", "imports_y": "156.788900999427", "exports_x": "38.5114366285838", "exports_y": "37.528126034989185", "military_expenditure_x": "35000000.0", "military_expenditure_y": "42000000.0", "military_personnel_x": "46000.0", "military_personnel_y": "50000.0", "prim_energy_consumption_x": "5028000000.0", "prim_energy_consumption_y": "5210000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "6847000.0", "total_population_y": "7264000.0", "urban_population_x": "396000.0", "urban_population_y": "365000.0", "cinc_score_x": "0.0006309999999999999", "cinc_score_y": "0.0006714"},
@@ -9,7 +9,7 @@
   ],
   "links": [
     {"source": 1, "target": 2, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 0, "target": 2, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 2, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

@@ -11,11 +11,11 @@
     {"country": "Australia", "country_code": "900.0", "side": "1.0", "battle_deaths": "0.0", "start_year": "2001.0", "start_date": "2001-10-17 00:00:00", "end_year": "2001.0", "end_date": "2001-12-22 00:00:00", "days_at_war": "66", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "66786839430.000656", "money_flow_out_y": "66786839430.000656", "money_flow_in_x": "67615070790.9183", "money_flow_in_y": "67615070790.9183", "imports_x": "66856.8151526047", "imports_y": "66856.8151526047", "exports_x": "63411.5592141492", "exports_y": "63411.5592141492", "military_expenditure_x": "6752000000.0", "military_expenditure_y": "6752000000.0", "military_personnel_x": "51000.0", "military_personnel_y": "51000.0", "prim_energy_consumption_x": "367884000000.0", "prim_energy_consumption_y": "367884000000.0", "iron_steel_production_x": "14066000000.0", "iron_steel_production_y": "14066000000.0", "total_population_x": "19413000.0", "total_population_y": "19413000.0", "urban_population_x": "14414000.0", "urban_population_y": "14414000.0", "cinc_score_x": "0.0069085", "cinc_score_y": "0.0069085"}
   ],
   "links": [
-    {"source": 4, "target": 2, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 3, "target": 4, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 4, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 1, "target": 4, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 5, "target": 4, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 4, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 3, "target": 4, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 2, "target": 4, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 5, "target": 4, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

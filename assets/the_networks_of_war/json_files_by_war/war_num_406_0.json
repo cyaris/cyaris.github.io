@@ -1,13 +1,13 @@
 {
   "war": [
-    {"war_name": "Mazrui Rebellion", "war_num": "406.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+    {"war_name": "Mazrui Rebellion", "war_num": "406.0", "war_type_code": "3.0", "war_type": "Extra-State War", "lagging_war": "nan", "leading_war": "nan"}
   ],
   "nodes": [
     {"country": "United Kingdom", "country_code": "200.0", "side": "1.0", "battle_deaths": "200.0", "start_year": "1895.0", "start_date": "1895-07-03 00:00:00", "end_year": "1896.0", "end_date": "1896-04-21 00:00:00", "days_at_war": "293", "alliances_x": "4.0", "alliances_y": "4.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "3.0", "entente_alliances_y": "3.0", "money_flow_out_x": "1497659984.88", "money_flow_out_y": "1630620015.44", "money_flow_in_x": "740290014.7100002", "money_flow_in_y": "970030005.1499999", "imports_x": "1605.0", "imports_y": "2210.0", "exports_x": "780.0", "exports_y": "1200.0", "military_expenditure_x": "35743000.0", "military_expenditure_y": "35253000.0", "military_personnel_x": "309000.0", "military_personnel_y": "315000.0", "prim_energy_consumption_x": "323530000000.0", "prim_energy_consumption_y": "331192000000.0", "iron_steel_production_x": "15654000000.0", "iron_steel_production_y": "17598000000.0", "total_population_x": "39221000.0", "total_population_y": "39599000.0", "urban_population_x": "12306000.0", "urban_population_y": "12538000.0", "cinc_score_x": "0.1719241", "cinc_score_y": "0.1736574"},
     {"country": "Mazrui clan of Kenya", "country_code": "nan", "side": "2.0", "battle_deaths": "800.0", "start_year": "1895.0", "start_date": "1895-07-03 00:00:00", "end_year": "1896.0", "end_date": "1896-04-21 00:00:00", "days_at_war": "293", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 0, "target": 1, "first_year": 1895.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 0, "first_year": 1895.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

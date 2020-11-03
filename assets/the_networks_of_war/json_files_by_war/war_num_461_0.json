@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Indo-Hyderabad", "war_num": "461.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+    {"war_name": "Indo-Hyderabad", "war_num": "461.0", "war_type_code": "3.0", "war_type": "Extra-State War", "lagging_war": "nan", "leading_war": "nan"}
   ],
   "nodes": [
     {"country": "India", "country_code": "750.0", "side": "1.0", "battle_deaths": "10.0", "start_year": "1948.0", "start_date": "1948-09-13 00:00:00", "end_year": "1948.0", "end_date": "1948-09-17 00:00:00", "days_at_war": "4", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "1668793524.5288", "money_flow_out_y": "1668793524.5288", "money_flow_in_x": "1479389993.32", "money_flow_in_y": "1479389993.32", "imports_x": "1987.0", "imports_y": "1987.0", "exports_x": "1334.699951171875", "exports_y": "1334.699951171875", "military_expenditure_x": "275196000.0", "military_expenditure_y": "275196000.0", "military_personnel_x": "321000.0", "military_personnel_y": "321000.0", "prim_energy_consumption_x": "68142000000.0", "prim_energy_consumption_y": "68142000000.0", "iron_steel_production_x": "2554000000.0", "iron_steel_production_y": "2554000000.0", "total_population_x": "349430000.0", "total_population_y": "349430000.0", "urban_population_x": "20631000.0", "urban_population_y": "20631000.0", "cinc_score_x": "0.0524505", "cinc_score_y": "0.0524505"},

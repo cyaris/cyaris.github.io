@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Mahdist Rebellion  phase 1 of 1881-1882", "war_num": "610.5", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "384.0"}
+    {"war_name": "Mahdist Rebellion  phase 1 of 1881-1882", "war_num": "610.5", "war_type_code": "5.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "384.0"}
   ],
   "nodes": [
     {"country": "Egypt", "country_code": "651.0", "side": "1.0", "battle_deaths": "3500.0", "start_year": "1881.0", "start_date": "1881-08-12 00:00:00", "end_year": "1882.0", "end_date": "1882-09-14 00:00:00", "days_at_war": "393", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "0.0", "money_flow_out_y": "0.0", "money_flow_in_x": "0.0", "money_flow_in_y": "0.0", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "429000.0", "military_expenditure_y": "104000.0", "military_personnel_x": "15000.0", "military_personnel_y": "15000.0", "prim_energy_consumption_x": "0.0", "prim_energy_consumption_y": "0.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "7708000.0", "total_population_y": "5669000.0", "urban_population_x": "575000.0", "urban_population_y": "577000.0", "cinc_score_x": "0.0048452", "cinc_score_y": "0.0040787"},

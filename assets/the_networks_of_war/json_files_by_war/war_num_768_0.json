@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "First Uganda War of 1966", "war_num": "768.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "First Uganda War of 1966", "war_num": "768.0", "war_type_code": "5.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Uganda", "country_code": "500.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1966.0", "start_date": "1966-05-23 00:00:00", "end_year": "1966.0", "end_date": "1966-06-01 00:00:00", "days_at_war": "9", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "98000002.25700001", "money_flow_out_y": "98000002.25700001", "money_flow_in_x": "171399999.98299998", "money_flow_in_y": "171399999.98299998", "imports_x": "120.0", "imports_y": "120.0", "exports_x": "187.7", "exports_y": "187.7", "military_expenditure_x": "14282000.0", "military_expenditure_y": "14282000.0", "military_personnel_x": "11000.0", "military_personnel_y": "11000.0", "prim_energy_consumption_x": "166000000.0", "prim_energy_consumption_y": "166000000.0", "iron_steel_production_x": "38000000.0", "iron_steel_production_y": "38000000.0", "total_population_x": "8397000.0", "total_population_y": "8397000.0", "urban_population_x": "127000.0", "urban_population_y": "127000.0", "cinc_score_x": "0.0005569", "cinc_score_y": "0.0005569"},

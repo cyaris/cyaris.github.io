@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Cote d'Ivoire Military War of 2002-2003", "war_num": "925.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Cote d'Ivoire Military War of 2002-2003", "war_num": "925.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "France", "country_code": "220.0", "side": "1.0", "battle_deaths": "nan", "start_year": "2002.0", "start_date": "2002-12-21 00:00:00", "end_year": "2002.0", "end_date": "2002-10-17 00:00:00", "days_at_war": "94", "alliances_x": "6.0", "alliances_y": "6.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "5.0", "entente_alliances_y": "5.0", "money_flow_out_x": "324146114329.381", "money_flow_out_y": "324146114329.381", "money_flow_in_x": "301996408581.22095", "money_flow_in_y": "301996408581.22095", "imports_x": "328309.4889", "imports_y": "328309.4889", "exports_x": "331121.5389", "exports_y": "331121.5389", "military_expenditure_x": "36492000000.0", "military_expenditure_y": "36492000000.0", "military_personnel_x": "260000.0", "military_personnel_y": "260000.0", "prim_energy_consumption_x": "529406000000.0", "prim_energy_consumption_y": "529406000000.0", "iron_steel_production_x": "40516000000.0", "iron_steel_production_y": "40516000000.0", "total_population_x": "60048000.0", "total_population_y": "60048000.0", "urban_population_x": "21473000.0", "urban_population_y": "21473000.0", "cinc_score_x": "0.0194958", "cinc_score_y": "0.0194958"},
@@ -8,7 +8,7 @@
     {"country": "New Forces", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "2002.0", "start_date": "2002-09-19 00:00:00", "end_year": "2002.0", "end_date": "2002-10-17 00:00:00", "days_at_war": "186", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 2, "target": 1, "first_year": 2002.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 1, "target": 2, "first_year": 2002.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 0, "target": 2, "first_year": 2002.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]

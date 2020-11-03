@@ -7,7 +7,7 @@
     {"country": "China", "country_code": "710.0", "side": "2.0", "battle_deaths": "3000.0", "start_year": "1929.0", "start_date": "1929-08-17 00:00:00", "end_year": "1929.0", "end_date": "1929-12-03 00:00:00", "days_at_war": "108", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "572027227.78239", "money_flow_out_y": "572027227.78239", "money_flow_in_x": "515393279.7820001", "money_flow_in_y": "515393279.7820001", "imports_x": "810.0900268554688", "imports_y": "810.0900268554688", "exports_x": "650.0399780273438", "exports_y": "650.0399780273438", "military_expenditure_x": "111605000.0", "military_expenditure_y": "111605000.0", "military_personnel_x": "1700000.0", "military_personnel_y": "1700000.0", "prim_energy_consumption_x": "51240000000.0", "prim_energy_consumption_y": "51240000000.0", "iron_steel_production_x": "40000000.0", "iron_steel_production_y": "40000000.0", "total_population_x": "478830000.0", "total_population_y": "478830000.0", "urban_population_x": "15444000.0", "urban_population_y": "15444000.0", "cinc_score_x": "0.1266302", "cinc_score_y": "0.1266302"}
   ],
   "links": [
-    {"source": 1, "target": 0, "first_year": 1929.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 0, "target": 1, "first_year": 1929.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

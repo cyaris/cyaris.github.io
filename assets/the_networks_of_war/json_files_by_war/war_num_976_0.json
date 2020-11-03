@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Libyan Civil War of 2011", "war_num": "976.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Libyan Civil War of 2011", "war_num": "976.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Libya", "country_code": "620.0", "side": "1.0", "battle_deaths": "4500.0", "start_year": "2011.0", "start_date": "2011-02-18 00:00:00", "end_year": "2011.0", "end_date": "2011-10-20 00:00:00", "days_at_war": "245", "alliances_x": "4.0", "alliances_y": "4.0", "non_aggression_alliances_x": "2.0", "non_aggression_alliances_y": "2.0", "entente_alliances_x": "4.0", "entente_alliances_y": "4.0", "money_flow_out_x": "8229052126.484109", "money_flow_out_y": "8229052126.484109", "money_flow_in_x": "18343280213.04885", "money_flow_in_y": "18343280213.04885", "imports_x": "8257.92608550465", "imports_y": "8257.92608550465", "exports_x": "16679.4604631739", "exports_y": "16679.4604631739", "military_expenditure_x": "0.0", "military_expenditure_y": "0.0", "military_personnel_x": "76000.0", "military_personnel_y": "76000.0", "prim_energy_consumption_x": "39268000000.0", "prim_energy_consumption_y": "39268000000.0", "iron_steel_production_x": "200000000.0", "iron_steel_production_y": "200000000.0", "total_population_x": "6103000.0", "total_population_y": "6103000.0", "urban_population_x": "2338000.0", "urban_population_y": "2338000.0", "cinc_score_x": "0.0013629000000000002", "cinc_score_y": "0.0013629000000000002"},
@@ -16,10 +16,10 @@
     {"source": 4, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 3, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 5, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 1, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 6, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 2, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 0, "target": 7, "first_year": 2011.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 0, "first_year": 2001.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 7, "target": 0, "first_year": 2011.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

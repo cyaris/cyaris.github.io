@@ -1,13 +1,13 @@
 {
   "war": [
-    {"war_name": "Third Guatemala War of 1978-1983", "war_num": "811.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Third Guatemala War of 1978-1983", "war_num": "811.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Guatemala", "country_code": "90.0", "side": "1.0", "battle_deaths": "4200.0", "start_year": "1978.0", "start_date": "1978-05-29 00:00:00", "end_year": "1983.0", "end_date": "1983-08-08 00:00:00", "days_at_war": "1870", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "1138271019.4208", "money_flow_out_y": "1002636995.7286001", "money_flow_in_x": "1179851538.6363", "money_flow_in_y": "1166321599.8537998", "imports_x": "1284.542", "imports_y": "1132.221", "exports_x": "1084.2269999999999", "exports_y": "1139.995", "military_expenditure_x": "73200000.0", "military_expenditure_y": "170009000.0", "military_personnel_x": "14000.0", "military_personnel_y": "40000.0", "prim_energy_consumption_x": "6964000000.0", "prim_energy_consumption_y": "9034000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "6543000.0", "total_population_y": "7524000.0", "urban_population_x": "745000.0", "urban_population_y": "816000.0", "cinc_score_x": "0.0005639999999999999", "cinc_score_y": "0.0007525"},
     {"country": "Leftists", "country_code": "nan", "side": "2.0", "battle_deaths": "17500.0", "start_year": "1978.0", "start_date": "1978-05-29 00:00:00", "end_year": "1983.0", "end_date": "1983-08-08 00:00:00", "days_at_war": "1870", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 1, "target": 0, "first_year": 1978.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 0, "target": 1, "first_year": 1978.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

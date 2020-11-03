@@ -8,8 +8,8 @@
     {"country": "Romania", "country_code": "360.0", "side": "1.0", "battle_deaths": "3000.0", "start_year": "1919.0", "start_date": "1919-04-16 00:00:00", "end_year": "1919.0", "end_date": "1919-08-04 00:00:00", "days_at_war": "110", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "0.0", "money_flow_out_y": "0.0", "money_flow_in_x": "130000.0", "money_flow_in_y": "130000.0", "imports_x": "80.0", "imports_y": "80.0", "exports_x": "60.0", "exports_y": "60.0", "military_expenditure_x": "24568000.0", "military_expenditure_y": "24568000.0", "military_personnel_x": "292000.0", "military_personnel_y": "292000.0", "prim_energy_consumption_x": "5036000000.0", "prim_energy_consumption_y": "5036000000.0", "iron_steel_production_x": "50000000.0", "iron_steel_production_y": "50000000.0", "total_population_x": "9722000.0", "total_population_y": "9722000.0", "urban_population_x": "868000.0", "urban_population_y": "868000.0", "cinc_score_x": "0.0072124", "cinc_score_y": "0.0072124"}
   ],
   "links": [
-    {"source": 0, "target": 1, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 2, "target": 0, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 0, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 0, "target": 2, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

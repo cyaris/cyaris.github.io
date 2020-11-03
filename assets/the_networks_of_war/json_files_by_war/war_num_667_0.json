@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Ecuadorian Civil War of 1913-1916", "war_num": "667.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Ecuadorian Civil War of 1913-1916", "war_num": "667.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Ecuador", "country_code": "130.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1913.0", "start_date": "1913-09-24 00:00:00", "end_year": "1916.0", "end_date": "1916-09-14 00:00:00", "days_at_war": "1071", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "8666999.9772", "money_flow_out_y": "0.0", "money_flow_in_x": "15579999.996", "money_flow_in_y": "0.0", "imports_x": "9.003960609436035", "imports_y": "9.142857551574707", "exports_x": "16.08316802978516", "exports_y": "17.23809432983398", "military_expenditure_x": "347000.0", "military_expenditure_y": "0.0", "military_personnel_x": "7000.0", "military_personnel_y": "8000.0", "prim_energy_consumption_x": "22000000.0", "prim_energy_consumption_y": "50000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "1460000.0", "total_population_y": "1490000.0", "urban_population_x": "0.0", "urban_population_y": "0.0", "cinc_score_x": "0.0004705", "cinc_score_y": "0.00030030000000000004"},

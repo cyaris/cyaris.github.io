@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Tungan Rebellion of 1862-1873", "war_num": "576.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Tungan Rebellion of 1862-1873", "war_num": "576.0", "war_type_code": "5.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "China", "country_code": "710.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1862.0", "start_date": "1862-06-09 00:00:00", "end_year": "1873.0", "end_date": "1873-12-12 00:00:00", "days_at_war": "4144", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "33509999.698000003", "money_flow_in_x": "nan", "money_flow_in_y": "86159999.9", "imports_x": "nan", "imports_y": "105.12000274658199", "exports_x": "nan", "exports_y": "105.55999755859379", "military_expenditure_x": "0.0", "military_expenditure_y": "0.0", "military_personnel_x": "1000000.0", "military_personnel_y": "1000000.0", "prim_energy_consumption_x": "0.0", "prim_energy_consumption_y": "0.0", "iron_steel_production_x": "20000000.0", "iron_steel_production_y": "20000000.0", "total_population_x": "370015000.0", "total_population_y": "352674000.0", "urban_population_x": "0.0", "urban_population_y": "0.0", "cinc_score_x": "0.170761", "cinc_score_y": "0.16670510000000002"},

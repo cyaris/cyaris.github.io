@@ -1,13 +1,13 @@
 {
   "war": [
-    {"war_name": "Fourth Buenos Aires War of 1880", "war_num": "610.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Fourth Buenos Aires War of 1880", "war_num": "610.0", "war_type_code": "5.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Argentina", "country_code": "160.0", "side": "1.0", "battle_deaths": "550.0", "start_year": "1880.0", "start_date": "1880-06-12 00:00:00", "end_year": "1880.0", "end_date": "1880-06-22 00:00:00", "days_at_war": "11", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "41280000.399000004", "money_flow_out_y": "41280000.399000004", "money_flow_in_x": "23850000.3", "money_flow_in_y": "23850000.3", "imports_x": "45.86000061035156", "imports_y": "45.86000061035156", "exports_x": "57.81999969482422", "exports_y": "57.81999969482422", "military_expenditure_x": "784000.0", "military_expenditure_y": "784000.0", "military_personnel_x": "9000.0", "military_personnel_y": "9000.0", "prim_energy_consumption_x": "784000000.0", "prim_energy_consumption_y": "784000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "2457000.0", "total_population_y": "2457000.0", "urban_population_x": "272000.0", "urban_population_y": "272000.0", "cinc_score_x": "0.0029934000000000002", "cinc_score_y": "0.0029934000000000002"},
     {"country": "Buenos Aires", "country_code": "nan", "side": "2.0", "battle_deaths": "825.0", "start_year": "1880.0", "start_date": "1880-06-12 00:00:00", "end_year": "1880.0", "end_date": "1880-06-22 00:00:00", "days_at_war": "11", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 0, "target": 1, "first_year": 1880.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 0, "first_year": 1880.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

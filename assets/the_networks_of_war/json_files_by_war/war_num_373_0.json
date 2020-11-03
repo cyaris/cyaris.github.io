@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Serbian-Turkish", "war_num": "373.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+    {"war_name": "Serbian-Turkish", "war_num": "373.0", "war_type_code": "3.0", "war_type": "Extra-State War", "lagging_war": "nan", "leading_war": "nan"}
   ],
   "nodes": [
     {"country": "Ottoman Empire", "country_code": "640.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1876.0", "start_date": "1876-06-30 00:00:00", "end_year": "1877.0", "end_date": "1877-04-23 00:00:00", "days_at_war": "297", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "31710000.400000006", "money_flow_out_y": "25979999.900000002", "money_flow_in_x": "87079999.0", "money_flow_in_y": "61809998.9998", "imports_x": "92.5", "imports_y": "92.5", "exports_x": "50.0", "exports_y": "50.0", "military_expenditure_x": "19710000.0", "military_expenditure_y": "0.0", "military_personnel_x": "411000.0", "military_personnel_y": "461000.0", "prim_energy_consumption_x": "174000000.0", "prim_energy_consumption_y": "172000000.0", "iron_steel_production_x": "20000000.0", "iron_steel_production_y": "20000000.0", "total_population_x": "34237000.0", "total_population_y": "34323000.0", "urban_population_x": "852000.0", "urban_population_y": "863000.0", "cinc_score_x": "0.044463", "cinc_score_y": "0.0335974"},

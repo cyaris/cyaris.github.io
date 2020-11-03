@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "British-Sind", "war_num": "326.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+    {"war_name": "British-Sind", "war_num": "326.0", "war_type_code": "3.0", "war_type": "Extra-State War", "lagging_war": "nan", "leading_war": "nan"}
   ],
   "nodes": [
     {"country": "United Kingdom", "country_code": "200.0", "side": "1.0", "battle_deaths": "200.0", "start_year": "1843.0", "start_date": "1843-01-06 00:00:00", "end_year": "1843.0", "end_date": "1843-06-14 00:00:00", "days_at_war": "159", "alliances_x": "2.0", "alliances_y": "2.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "10581000.0", "military_expenditure_y": "10581000.0", "military_personnel_x": "158000.0", "military_personnel_y": "158000.0", "prim_energy_consumption_x": "88302000000.0", "prim_energy_consumption_y": "88302000000.0", "iron_steel_production_x": "2440000000.0", "iron_steel_production_y": "2440000000.0", "total_population_x": "27256000.0", "total_population_y": "27256000.0", "urban_population_x": "3891000.0", "urban_population_y": "3891000.0", "cinc_score_x": "0.29859709999999995", "cinc_score_y": "0.29859709999999995"},

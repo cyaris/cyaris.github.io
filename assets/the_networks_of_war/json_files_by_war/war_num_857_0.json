@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "First Liberian War of 1989-1990", "war_num": "857.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "First Liberian War of 1989-1990", "war_num": "857.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Guinea", "country_code": "438.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1990.0", "start_date": "1990-08-24 00:00:00", "end_year": "1990.0", "end_date": "1990-11-28 00:00:00", "days_at_war": "95", "alliances_x": "4.0", "alliances_y": "4.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "563940252.3285501", "money_flow_out_y": "563940252.3285501", "money_flow_in_x": "668734938.0479602", "money_flow_in_y": "668734938.0479602", "imports_x": "583.1287549691809", "imports_y": "583.1287549691809", "exports_x": "606.0605447529621", "exports_y": "606.0605447529621", "military_expenditure_x": "33000000.0", "military_expenditure_y": "33000000.0", "military_personnel_x": "15000.0", "military_personnel_y": "15000.0", "prim_energy_consumption_x": "6324000000.0", "prim_energy_consumption_y": "6324000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "5755000.0", "total_population_y": "5755000.0", "urban_population_x": "600000.0", "urban_population_y": "600000.0", "cinc_score_x": "0.0003946", "cinc_score_y": "0.0003946"},
@@ -11,8 +11,8 @@
   ],
   "links": [
     {"source": 4, "target": 1, "first_year": 1989.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 2, "target": 4, "first_year": 1990.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 0, "target": 4, "first_year": 1990.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 2, "target": 4, "first_year": 1990.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 3, "target": 4, "first_year": 1990.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]

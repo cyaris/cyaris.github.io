@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "First Murid War of 1830-1832", "war_num": "511.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "First Murid War of 1830-1832", "war_num": "511.0", "war_type_code": "5.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Russia", "country_code": "365.0", "side": "1.0", "battle_deaths": "3000.0", "start_year": "1830.0", "start_date": "1830-02-24 00:00:00", "end_year": "1832.0", "end_date": "1832-10-17 00:00:00", "days_at_war": "954", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "7780000.0", "military_expenditure_y": "8662000.0", "military_personnel_x": "826000.0", "military_personnel_y": "875000.0", "prim_energy_consumption_x": "52000000.0", "prim_energy_consumption_y": "50000000.0", "iron_steel_production_x": "374000000.0", "iron_steel_production_y": "348000000.0", "total_population_x": "56100000.0", "total_population_y": "57700000.0", "urban_population_x": "861000.0", "urban_population_y": "890000.0", "cinc_score_x": "0.15725250000000002", "cinc_score_y": "0.1570197"},

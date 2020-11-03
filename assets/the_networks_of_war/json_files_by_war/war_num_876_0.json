@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Tajikistan War of 1992-1997", "war_num": "876.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Tajikistan War of 1992-1997", "war_num": "876.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Russia", "country_code": "365.0", "side": "1.0", "battle_deaths": "60.0", "start_year": "1993.0", "start_date": "NaT", "end_year": "1997.0", "end_date": "1997-06-27 00:00:00", "days_at_war": "1543", "alliances_x": "14.0", "alliances_y": "16.0", "non_aggression_alliances_x": "11.0", "non_aggression_alliances_y": "11.0", "entente_alliances_x": "9.0", "entente_alliances_y": "11.0", "money_flow_out_x": "27849455788.47", "money_flow_out_y": "52219160927.11412", "money_flow_in_x": "49963855765.72899", "money_flow_in_y": "84962675288.89389", "imports_x": "26751.9", "imports_y": "52400.371", "exports_x": "44047.2", "exports_y": "85076.577", "military_expenditure_x": "29120000000.0", "military_expenditure_y": "64000000000.0", "military_personnel_x": "1500000.0", "military_personnel_y": "1300000.0", "prim_energy_consumption_x": "2499352000000.0", "prim_energy_consumption_y": "2082152000000.0", "iron_steel_production_x": "108000000000.0", "iron_steel_production_y": "97004000000.0", "total_population_x": "148146000.0", "total_population_y": "147105000.0", "urban_population_x": "67957000.0", "urban_population_y": "67365000.0", "cinc_score_x": "0.05802430000000001", "cinc_score_y": "0.0559937"},
@@ -8,7 +8,7 @@
     {"country": "United Tajik Opposition", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1992.0", "start_date": "1992-05-06 00:00:00", "end_year": "1997.0", "end_date": "1997-06-27 00:00:00", "days_at_war": "1852", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 1, "target": 2, "first_year": 1992.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 2, "target": 1, "first_year": 1992.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 0, "target": 2, "first_year": 1993.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]

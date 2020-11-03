@@ -1,13 +1,13 @@
 {
   "war": [
-    {"war_name": "Second Sri Lanka Tamil War of 1990-2001", "war_num": "859.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Second Sri Lanka Tamil War of 1990-2001", "war_num": "859.0", "war_type_code": "5.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Sri Lanka", "country_code": "780.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1990.0", "start_date": "1990-06-11 00:00:00", "end_year": "1994.0", "end_date": "1994-10-13 00:00:00", "days_at_war": "3970", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "2511263161.196539", "money_flow_out_y": "3912010126.4758997", "money_flow_in_x": "2289419709.7895985", "money_flow_in_y": "3295516664.7187304", "imports_x": "2636.41031509439", "imports_y": "4232.0", "exports_x": "1895.2397413632", "exports_y": "3199.0", "military_expenditure_x": "439310000.0", "military_expenditure_y": "526000000.0", "military_personnel_x": "22000.0", "military_personnel_y": "110000.0", "prim_energy_consumption_x": "14150000000.0", "prim_energy_consumption_y": "15468000000.0", "iron_steel_production_x": "60000000.0", "iron_steel_production_y": "60000000.0", "total_population_x": "16993000.0", "total_population_y": "17865000.0", "urban_population_x": "1432000.0", "urban_population_y": "1525000.0", "cinc_score_x": "0.0010345", "cinc_score_y": "0.0017059999999999998"},
     {"country": "LTTE", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1990.0", "start_date": "1990-06-11 00:00:00", "end_year": "1994.0", "end_date": "1994-10-13 00:00:00", "days_at_war": "3970", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 0, "target": 1, "first_year": 1990.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 0, "first_year": 1990.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

@@ -1,13 +1,13 @@
 {
   "war": [
-    {"war_name": "First Aceh War of 1990-1991", "war_num": "858.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "First Aceh War of 1990-1991", "war_num": "858.0", "war_type_code": "5.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Indonesia", "country_code": "850.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1990.0", "start_date": "NaT", "end_year": "1991.0", "end_date": "None", "days_at_war": "451", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "21633372967.061092", "money_flow_out_y": "25611775241.71345", "money_flow_in_x": "28313551070.673904", "money_flow_in_y": "31500983463.299805", "imports_x": "22005.034207", "imports_y": "25928.475956000002", "exports_x": "25682.74667", "exports_y": "29188.946945", "military_expenditure_x": "1450000000.0", "military_expenditure_y": "1500000000.0", "military_personnel_x": "283000.0", "military_personnel_y": "278000.0", "prim_energy_consumption_x": "261034000000.0", "prim_energy_consumption_y": "279256000000.0", "iron_steel_production_x": "5784000000.0", "iron_steel_production_y": "6500000000.0", "total_population_x": "179483000.0", "total_population_y": "181385000.0", "urban_population_x": "23309000.0", "urban_population_y": "24409000.0", "cinc_score_x": "0.0129196", "cinc_score_y": "0.0135507"},
     {"country": "GAM", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1990.0", "start_date": "NaT", "end_year": "1991.0", "end_date": "None", "days_at_war": "451", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 0, "target": 1, "first_year": 1990.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 0, "first_year": 1990.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Second Laotian War of 1976-1979", "war_num": "803.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "Second Laotian War of 1976-1979", "war_num": "803.0", "war_type_code": "5.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Laos", "country_code": "812.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1976.0", "start_date": "NaT", "end_year": "1979.0", "end_date": "None", "days_at_war": "1111", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "33750000.3082", "money_flow_out_y": "65080000.322", "money_flow_in_x": "12092273.0261", "money_flow_in_y": "17182999.923600003", "imports_x": "20.0", "imports_y": "102.1500015258789", "exports_x": "3.0", "exports_y": "20.13999938964844", "military_expenditure_x": "28000000.0", "military_expenditure_y": "37875000.0", "military_personnel_x": "46000.0", "military_personnel_y": "46000.0", "prim_energy_consumption_x": "3450000000.0", "prim_energy_consumption_y": "3426000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "3065000.0", "total_population_y": "3161000.0", "urban_population_x": "202000.0", "urban_population_y": "230000.0", "cinc_score_x": "0.0004983", "cinc_score_y": "0.0004885"},

@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "North Yemen War of 1962-1970", "war_num": "755.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+    {"war_name": "North Yemen War of 1962-1970", "war_num": "755.0", "war_type_code": "4.0", "war_type": "Intra-State War", "lagging_war": "-8.0", "leading_war": "-8.0"}
   ],
   "nodes": [
     {"country": "Egypt/United Arab Republic", "country_code": "651.0", "side": "1.0", "battle_deaths": "26000.0", "start_year": "1962.0", "start_date": "1962-10-06 00:00:00", "end_year": "1967.0", "end_date": "1967-12-16 00:00:00", "days_at_war": "1871", "alliances_x": "4.0", "alliances_y": "5.0", "non_aggression_alliances_x": "2.0", "non_aggression_alliances_y": "2.0", "entente_alliances_x": "3.0", "entente_alliances_y": "3.0", "money_flow_out_x": "667399997.01", "money_flow_out_y": "731572001.6039999", "money_flow_in_x": "410239995.48", "money_flow_in_y": "590182008.5401", "imports_x": "759.1", "imports_y": "791.3", "exports_x": "414.0", "exports_y": "566.6", "military_expenditure_x": "283768000.0", "military_expenditure_y": "570377000.0", "military_personnel_x": "220000.0", "military_personnel_y": "220000.0", "prim_energy_consumption_x": "16130000000.0", "prim_energy_consumption_y": "20302000000.0", "iron_steel_production_x": "376000000.0", "iron_steel_production_y": "406000000.0", "total_population_x": "27257000.0", "total_population_y": "30892000.0", "urban_population_x": "7379000.0", "urban_population_y": "9287000.0", "cinc_score_x": "0.0064367999999999995", "cinc_score_y": "0.0064842"},
@@ -8,8 +8,8 @@
     {"country": "Royalists", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1962.0", "start_date": "1962-10-06 00:00:00", "end_year": "1970.0", "end_date": "1970-03-28 00:00:00", "days_at_war": "2693", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 0, "target": 2, "first_year": 1962.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 1, "target": 2, "first_year": 1962.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 1, "target": 2, "first_year": 1962.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 0, "target": 2, "first_year": 1962.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

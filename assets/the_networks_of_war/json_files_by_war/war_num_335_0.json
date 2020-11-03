@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Second British-Sikh", "war_num": "335.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+    {"war_name": "Second British-Sikh", "war_num": "335.0", "war_type_code": "3.0", "war_type": "Extra-State War", "lagging_war": "nan", "leading_war": "nan"}
   ],
   "nodes": [
     {"country": "United Kingdom", "country_code": "200.0", "side": "1.0", "battle_deaths": "1500.0", "start_year": "1848.0", "start_date": "1848-05-18 00:00:00", "end_year": "1849.0", "end_date": "1849-03-10 00:00:00", "days_at_war": "296", "alliances_x": "2.0", "alliances_y": "2.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "14883000.0", "military_expenditure_y": "12008000.0", "military_personnel_x": "208000.0", "military_personnel_y": "203000.0", "prim_energy_consumption_x": "107716000000.0", "prim_energy_consumption_y": "113050000000.0", "iron_steel_production_x": "4180000000.0", "iron_steel_production_y": "4340000000.0", "total_population_x": "27820000.0", "total_population_y": "27714000.0", "urban_population_x": "4339000.0", "urban_population_y": "4435000.0", "cinc_score_x": "0.30416079999999995", "cinc_score_y": "0.304769"},

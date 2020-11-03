@@ -5,4 +5,4 @@ subtitle: Project Currently in Progress
 social-share: true
 ---
 
-{% include /the_networks_of_war/main.html %}
+{% include /the_networks_of_war/home.html %}

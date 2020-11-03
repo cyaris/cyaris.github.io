@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "First Dutch-Achinese", "war_num": "370.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+  ],
+  "nodes": [
+    {"country": "Netherlands", "country_code": "210.0", "side": "1.0", "battle_deaths": "12000.0", "start_year": "1873.0", "start_date": "1873-03-26 00:00:00", "end_year": "1878.0", "end_date": "1878-10-13 00:00:00", "days_at_war": "2027", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "219410002.81", "money_flow_out_y": "275280001.0898", "money_flow_in_x": "219189994.12899995", "money_flow_in_y": "258814422.6999", "imports_x": "274.1900024414063", "imports_y": "325.5199890136719", "exports_x": "206.8800048828125", "exports_y": "226.67999267578134", "military_expenditure_x": "2199000.0", "military_expenditure_y": "2991000.0", "military_personnel_x": "39000.0", "military_personnel_y": "40000.0", "prim_energy_consumption_x": "3800000000.0", "prim_energy_consumption_y": "5000000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "3690000.0", "total_population_y": "3950000.0", "urban_population_x": "448000.0", "urban_population_y": "533000.0", "cinc_score_x": "0.008362200000000002", "cinc_score_y": "0.008649200000000001"},
+    {"country": "Aceh", "country_code": "nan", "side": "2.0", "battle_deaths": "11000.0", "start_year": "1873.0", "start_date": "1873-03-26 00:00:00", "end_year": "1878.0", "end_date": "1878-10-13 00:00:00", "days_at_war": "2027", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1873.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

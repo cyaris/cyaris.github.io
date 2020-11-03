@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Thai Communist Insurgency of 1972-1973", "war_num": "787.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Thailand", "country_code": "800.0", "side": "1.0", "battle_deaths": "1300.0", "start_year": "1972.0", "start_date": "NaT", "end_year": "1973.0", "end_date": "1973-10-15 00:00:00", "days_at_war": "631", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "1350612973.9118998", "money_flow_out_y": "1838695014.1703", "money_flow_in_x": "954011100.738", "money_flow_in_y": "1341778919.8533998", "imports_x": "1484.26", "imports_y": "2032.2", "exports_x": "1078.13", "exports_y": "1562.3", "military_expenditure_x": "275865000.0", "military_expenditure_y": "302522000.0", "military_personnel_x": "205000.0", "military_personnel_y": "233000.0", "prim_energy_consumption_x": "39958000000.0", "prim_energy_consumption_y": "42936000000.0", "iron_steel_production_x": "364000000.0", "iron_steel_production_y": "380000000.0", "total_population_x": "38592000.0", "total_population_y": "39693000.0", "urban_population_x": "2495000.0", "urban_population_y": "2612000.0", "cinc_score_x": "0.0042301000000000005", "cinc_score_y": "0.0044210000000000005"},
+    {"country": "People's Liberation Army", "country_code": "nan", "side": "2.0", "battle_deaths": "700.0", "start_year": "1972.0", "start_date": "NaT", "end_year": "1973.0", "end_date": "1973-10-15 00:00:00", "days_at_war": "631", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1972.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

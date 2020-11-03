@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Franco-Mexican", "war_num": "40.0", "war_type_code": "1.0", "war_type": "Inter-State War", "lagging_war": "nan", "leading_war": "nan"}
+  ],
+  "nodes": [
+    {"country": "Mexico", "country_code": "70.0", "side": "1.0", "battle_deaths": "12000.0", "start_year": "1862.0", "start_date": "1862-04-16 00:00:00", "end_year": "1867.0", "end_date": "1867-02-05 00:00:00", "days_at_war": "1756", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "0.0", "military_expenditure_y": "0.0", "military_personnel_x": "27000.0", "military_personnel_y": "33000.0", "prim_energy_consumption_x": "128000000.0", "prim_energy_consumption_y": "138000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "8611000.0", "total_population_y": "9022000.0", "urban_population_x": "205000.0", "urban_population_y": "221000.0", "cinc_score_x": "0.0052148", "cinc_score_y": "0.0055965"},
+    {"country": "France", "country_code": "220.0", "side": "2.0", "battle_deaths": "8000.0", "start_year": "1862.0", "start_date": "1862-04-16 00:00:00", "end_year": "1867.0", "end_date": "1867-02-05 00:00:00", "days_at_war": "1756", "alliances_x": "2.0", "alliances_y": "2.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "1.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "26762000.0", "military_expenditure_y": "29169000.0", "military_personnel_x": "520000.0", "military_personnel_y": "461000.0", "prim_energy_consumption_x": "32516000000.0", "prim_energy_consumption_y": "40654000000.0", "iron_steel_production_x": "2182000000.0", "iron_steel_production_y": "2458000000.0", "total_population_x": "37520000.0", "total_population_y": "38230000.0", "urban_population_x": "2946000.0", "urban_population_y": "3187000.0", "cinc_score_x": "0.10611960000000001", "cinc_score_y": "0.11666480000000001"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1862.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

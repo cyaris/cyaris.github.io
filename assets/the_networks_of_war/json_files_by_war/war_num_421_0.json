@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Kuanhama Rebellion", "war_num": "421.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+  ],
+  "nodes": [
+    {"country": "Portugal", "country_code": "235.0", "side": "1.0", "battle_deaths": "2000.0", "start_year": "1902.0", "start_date": "1902-09-09 00:00:00", "end_year": "1904.0", "end_date": "1904-09-09 00:00:00", "days_at_war": "731", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "22059999.9", "money_flow_out_y": "25530000.2", "money_flow_in_x": "30119999.900000002", "money_flow_in_y": "34400000.1", "imports_x": "47.86324691772461", "imports_y": "55.85585403442383", "exports_x": "23.93162345886231", "exports_y": "27.92792701721191", "military_expenditure_x": "1732000.0", "military_expenditure_y": "1836000.0", "military_personnel_x": "36000.0", "military_personnel_y": "36000.0", "prim_energy_consumption_x": "1952000000.0", "prim_energy_consumption_y": "1930000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "5500000.0", "total_population_y": "5600000.0", "urban_population_x": "558000.0", "urban_population_y": "582000.0", "cinc_score_x": "0.0041309", "cinc_score_y": "0.0040653"},
+    {"country": "Kuanhama of Angola", "country_code": "nan", "side": "2.0", "battle_deaths": "2000.0", "start_year": "1902.0", "start_date": "1902-09-09 00:00:00", "end_year": "1904.0", "end_date": "1904-09-09 00:00:00", "days_at_war": "731", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1902.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

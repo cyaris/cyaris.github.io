@@ -11,6 +11,9 @@
 	      #war_network_analysis {
 						display: none;
 	      }
+				#hover_statistics {
+						display: none;
+	      }
 				#message {
 						display: none;
 	      }
@@ -52,7 +55,15 @@
 		<div id="hover_statistics" align="center" style="margin-bottom:15px;"></div>
 		<script>
 
-		d3.json("../assets/the_networks_of_war/the_networks_of_war.json", function(error, graph) {
+
+		//Read the data
+		d3.csv("../assets/the_networks_of_war/war_file_list.csv", function(data) {
+			file_list = [];
+			data.forEach(function(d) {
+					file_list.push(d.file_name);
+				});
+		
+		d3.json("../assets/the_networks_of_war/json_files_by_war/" + file_list[Math.floor(Math.random() * file_list.length)], function(error, graph) {
 
 			function getTextWidth(textInput) {
 
@@ -397,7 +408,7 @@
 		//         .attr("cy", function(d) { return d.y = (d.source.y + d.target.y) * 0.5; });
 		//   });
 		// });
-
+	})
 		</script>
 	</body>
 </html>

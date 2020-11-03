@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "First West Papua War of 1967-1968", "war_num": "771.5", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Indonesia", "country_code": "850.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1967.0", "start_date": "1967-01-01 00:00:00", "end_year": "1968.0", "end_date": "1968-11-30 00:00:00", "days_at_war": "690", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "475699986.62", "money_flow_out_y": "590667000.6980001", "money_flow_in_x": "813550998.2104001", "money_flow_in_y": "906844986.2390001", "imports_x": "637.5", "imports_y": "707.8", "exports_x": "654.1", "exports_y": "747.0", "military_expenditure_x": "254118000.0", "military_expenditure_y": "268511000.0", "military_personnel_x": "347000.0", "military_personnel_y": "348000.0", "prim_energy_consumption_x": "37504000000.0", "prim_energy_consumption_y": "39984000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "110952000.0", "total_population_y": "113720000.0", "urban_population_x": "13785000.0", "urban_population_y": "14650000.0", "cinc_score_x": "0.012421399999999999", "cinc_score_y": "0.0124426"},
+    {"country": "OPM", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1967.0", "start_date": "1967-01-01 00:00:00", "end_year": "1968.0", "end_date": "1968-11-30 00:00:00", "days_at_war": "690", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1967.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

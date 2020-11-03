@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Malayan Rebellion", "war_num": "460.0", "war_type_code": "2.0", "war_type": "Extra-State War: Colonial (conflict with colony)", "lagging_war": "nan", "leading_war": "nan"}
+  ],
+  "nodes": [
+    {"country": "United Kingdom", "country_code": "200.0", "side": "1.0", "battle_deaths": "2400.0", "start_year": "1948.0", "start_date": "1948-06-18 00:00:00", "end_year": "1957.0", "end_date": "1957-08-31 00:00:00", "days_at_war": "3361", "alliances_x": "7.0", "alliances_y": "8.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "3.0", "entente_alliances_x": "5.0", "entente_alliances_y": "6.0", "money_flow_out_x": "6512020012.030001", "money_flow_out_y": "9449399997.52", "money_flow_in_x": "6265030512.289999", "money_flow_in_y": "8444829950.99", "imports_x": "8150.0", "imports_y": "10830.0", "exports_x": "6320.0", "exports_y": "9110.0", "military_expenditure_x": "3438984000.0", "military_expenditure_y": "4383177000.0", "military_personnel_x": "847000.0", "military_personnel_y": "702000.0", "prim_energy_consumption_x": "466144000000.0", "prim_energy_consumption_y": "452814000000.0", "iron_steel_production_x": "30232000000.0", "iron_steel_production_y": "44094000000.0", "total_population_x": "50026000.0", "total_population_y": "51632000.0", "urban_population_x": "18852000.0", "urban_population_y": "18824000.0", "cinc_score_x": "0.07542599999999999", "cinc_score_y": "0.047318900000000004"},
+    {"country": "Malayan Communists", "country_code": "nan", "side": "2.0", "battle_deaths": "6700.0", "start_year": "1948.0", "start_date": "1948-06-18 00:00:00", "end_year": "1957.0", "end_date": "1957-08-31 00:00:00", "days_at_war": "3361", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1948.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

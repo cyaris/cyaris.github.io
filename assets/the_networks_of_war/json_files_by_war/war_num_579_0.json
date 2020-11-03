@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Second Polish War of 1863-1864", "war_num": "579.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Russia", "country_code": "365.0", "side": "1.0", "battle_deaths": "5000.0", "start_year": "1863.0", "start_date": "1863-01-22 00:00:00", "end_year": "1864.0", "end_date": "1864-04-19 00:00:00", "days_at_war": "448", "alliances_x": "1.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "26385000.0", "military_expenditure_y": "25359000.0", "military_personnel_x": "812000.0", "military_personnel_y": "1135000.0", "prim_energy_consumption_x": "800000000.0", "prim_energy_consumption_y": "800000000.0", "iron_steel_production_x": "558000000.0", "iron_steel_production_y": "600000000.0", "total_population_x": "74300000.0", "total_population_y": "74700000.0", "urban_population_x": "1193000.0", "urban_population_y": "1209000.0", "cinc_score_x": "0.073884", "cinc_score_y": "0.0784004"},
+    {"country": "Polish nationalists", "country_code": "nan", "side": "2.0", "battle_deaths": "6500.0", "start_year": "1863.0", "start_date": "1863-01-22 00:00:00", "end_year": "1864.0", "end_date": "1864-04-19 00:00:00", "days_at_war": "448", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1863.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Argentine Leftists War of 1975-1976", "war_num": "800.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Argentina", "country_code": "160.0", "side": "1.0", "battle_deaths": "470.0", "start_year": "1975.0", "start_date": "1975-02-22 00:00:00", "end_year": "1976.0", "end_date": "1976-12-16 00:00:00", "days_at_war": "655", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "3523824008.5554", "money_flow_out_y": "2665200982.3724995", "money_flow_in_x": "3316589187.3073993", "money_flow_in_y": "4023191617.420799", "imports_x": "3958.15", "imports_y": "3032.82", "exports_x": "2960.95", "exports_y": "3915.79", "military_expenditure_x": "628415000.0", "military_expenditure_y": "571428000.0", "military_personnel_x": "160000.0", "military_personnel_y": "155000.0", "prim_energy_consumption_x": "102224000000.0", "prim_energy_consumption_y": "107632000000.0", "iron_steel_production_x": "4086000000.0", "iron_steel_production_y": "4488000000.0", "total_population_x": "26049000.0", "total_population_y": "26458000.0", "urban_population_x": "10046000.0", "urban_population_y": "10451000.0", "cinc_score_x": "0.005882899999999999", "cinc_score_y": "0.0058499"},
+    {"country": "Monteneros and ERP", "country_code": "nan", "side": "2.0", "battle_deaths": "4000.0", "start_year": "1975.0", "start_date": "1975-02-22 00:00:00", "end_year": "1976.0", "end_date": "1976-12-16 00:00:00", "days_at_war": "655", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1975.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

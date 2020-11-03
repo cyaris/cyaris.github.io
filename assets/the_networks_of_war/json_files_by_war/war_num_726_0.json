@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Taiwan Revolt of 1947", "war_num": "726.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "China", "country_code": "710.0", "side": "1.0", "battle_deaths": "200.0", "start_year": "1947.0", "start_date": "1947-02-28 00:00:00", "end_year": "1947.0", "end_date": "1947-03-21 00:00:00", "days_at_war": "22", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "919999.9990000001", "money_flow_out_y": "919999.9990000001", "money_flow_in_x": "40504694.0", "money_flow_in_y": "40504694.0", "imports_x": "451.2000122070313", "imports_y": "451.2000122070313", "exports_x": "215.6999969482422", "exports_y": "215.6999969482422", "military_expenditure_x": "257474000.0", "military_expenditure_y": "257474000.0", "military_personnel_x": "4015000.0", "military_personnel_y": "4015000.0", "prim_energy_consumption_x": "36374000000.0", "prim_energy_consumption_y": "36374000000.0", "iron_steel_production_x": "140000000.0", "iron_steel_production_y": "140000000.0", "total_population_x": "557992000.0", "total_population_y": "557992000.0", "urban_population_x": "31118000.0", "urban_population_y": "31118000.0", "cinc_score_x": "0.11921980000000001", "cinc_score_y": "0.11921980000000001"},
+    {"country": "Taiwanese", "country_code": "nan", "side": "2.0", "battle_deaths": "1800.0", "start_year": "1947.0", "start_date": "1947-02-28 00:00:00", "end_year": "1947.0", "end_date": "1947-03-21 00:00:00", "days_at_war": "22", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1947.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

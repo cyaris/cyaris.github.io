@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Punjab Rebellion of 1989-1993", "war_num": "853.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "India", "country_code": "750.0", "side": "1.0", "battle_deaths": "1500.0", "start_year": "1989.0", "start_date": "1989-07-01 00:00:00", "end_year": "1993.0", "end_date": "1993-06-30 00:00:00", "days_at_war": "1440", "alliances_x": "3.0", "alliances_y": "2.0", "non_aggression_alliances_x": "3.0", "non_aggression_alliances_y": "2.0", "entente_alliances_x": "2.0", "entente_alliances_y": "1.0", "money_flow_out_x": "17691099015.73472", "money_flow_out_y": "21611374427.735756", "money_flow_in_x": "16453943666.421392", "money_flow_in_y": "24313425528.447998", "imports_x": "19297.4919422872", "imports_y": "21268.7970173", "exports_x": "15837.518", "exports_y": "20988.5271320069", "military_expenditure_x": "8940000000.0", "military_expenditure_y": "7000000000.0", "military_personnel_x": "1260000.0", "military_personnel_y": "1260000.0", "prim_energy_consumption_x": "783688000000.0", "prim_energy_consumption_y": "970966000000.0", "iron_steel_production_x": "31044000000.0", "iron_steel_production_y": "37232000000.0", "total_population_x": "817488000.0", "total_population_y": "883910000.0", "urban_population_x": "112444000.0", "urban_population_y": "129743000.0", "cinc_score_x": "0.05953630000000001", "cinc_score_y": "0.0634404"},
+    {"country": "Sikh Guerillas", "country_code": "nan", "side": "2.0", "battle_deaths": "6000.0", "start_year": "1989.0", "start_date": "1989-07-01 00:00:00", "end_year": "1993.0", "end_date": "1993-06-30 00:00:00", "days_at_war": "1440", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1989.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Second Burmese War of 1958-1960", "war_num": "746.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Burma", "country_code": "775.0", "side": "1.0", "battle_deaths": "500.0", "start_year": "1958.0", "start_date": "1958-10-28 00:00:00", "end_year": "1960.0", "end_date": "None", "days_at_war": "528", "alliances_x": "0.0", "alliances_y": "1.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "188799999.26000005", "money_flow_out_y": "244699998.98000002", "money_flow_in_x": "219110002.54700002", "money_flow_in_y": "207699998.40999997", "imports_x": "200.5", "imports_y": "255.6", "exports_x": "180.6999969482422", "exports_y": "215.5", "military_expenditure_x": "85131000.0", "military_expenditure_y": "88998000.0", "military_personnel_x": "56000.0", "military_personnel_y": "79000.0", "prim_energy_consumption_x": "2026000000.0", "prim_energy_consumption_y": "2298000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "20838000.0", "total_population_y": "22355000.0", "urban_population_x": "1088000.0", "urban_population_y": "1173000.0", "cinc_score_x": "0.0023724", "cinc_score_y": "0.0025440000000000003"},
+    {"country": "Karens & Communists", "country_code": "nan", "side": "2.0", "battle_deaths": "1000.0", "start_year": "1958.0", "start_date": "1958-10-28 00:00:00", "end_year": "1960.0", "end_date": "None", "days_at_war": "528", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1958.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Second Burundi War of 1993-1998", "war_num": "883.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Burundi", "country_code": "516.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1993.0", "start_date": "1993-10-21 00:00:00", "end_year": "1998.0", "end_date": "1998-07-20 00:00:00", "days_at_war": "1710", "alliances_x": "1.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "183173355.60019", "money_flow_out_y": "140139453.54283303", "money_flow_in_x": "130013768.63832998", "money_flow_in_y": "74667803.22252998", "imports_x": "197.12744048109403", "imports_y": "156.954360445098", "exports_x": "61.863003542301705", "exports_y": "63.95039073622929", "military_expenditure_x": "27000000.0", "military_expenditure_y": "82000000.0", "military_personnel_x": "13000.0", "military_personnel_y": "35000.0", "prim_energy_consumption_x": "3906000000.0", "prim_energy_consumption_y": "4682000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "5769000.0", "total_population_y": "6457000.0", "urban_population_x": "273000.0", "urban_population_y": "341000.0", "cinc_score_x": "0.00032960000000000004", "cinc_score_y": "0.0005296000000000001"},
+    {"country": "Tutsi ", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1993.0", "start_date": "1993-10-21 00:00:00", "end_year": "1998.0", "end_date": "1998-07-20 00:00:00", "days_at_war": "1710", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1993.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

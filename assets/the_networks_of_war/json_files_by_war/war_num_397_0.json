@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Belgian-Tib", "war_num": "397.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+  ],
+  "nodes": [
+    {"country": "Belgium", "country_code": "211.0", "side": "1.0", "battle_deaths": "7000.0", "start_year": "1892.0", "start_date": "NaT", "end_year": "1894.0", "end_date": "NaT", "days_at_war": "None", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "273403628.2789", "money_flow_out_y": "270029994.98", "money_flow_in_x": "328030001.324", "money_flow_in_y": "297760011.19979995", "imports_x": "293.8814392089844", "imports_y": "301.147216796875", "exports_x": "261.7590942382813", "exports_y": "249.3307800292969", "military_expenditure_x": "2049000.0", "military_expenditure_y": "2043000.0", "military_personnel_x": "51000.0", "military_personnel_y": "47000.0", "prim_energy_consumption_x": "30804000000.0", "prim_energy_consumption_y": "32430000000.0", "iron_steel_production_x": "1506000000.0", "iron_steel_production_y": "1638000000.0", "total_population_x": "6195000.0", "total_population_y": "6342000.0", "urban_population_x": "704000.0", "urban_population_y": "719000.0", "cinc_score_x": "0.0165091", "cinc_score_y": "0.0169171"},
+    {"country": "Tippu Tib Empire", "country_code": "nan", "side": "2.0", "battle_deaths": "13000.0", "start_year": "1892.0", "start_date": "NaT", "end_year": "1894.0", "end_date": "NaT", "days_at_war": "None", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1892.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

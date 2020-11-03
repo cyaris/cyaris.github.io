@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Fukien Revolt of 1933-1934", "war_num": "716.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "China", "country_code": "710.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1933.0", "start_date": "1933-11-20 00:00:00", "end_year": "1934.0", "end_date": "None", "days_at_war": "86", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "246387648.10838997", "money_flow_out_y": "261445752.20064002", "money_flow_in_x": "197680386.268297", "money_flow_in_y": "249167067.948378", "imports_x": "349.8399963378906", "imports_y": "354.5736694335938", "exports_x": "159.0700073242188", "exports_y": "182.6507873535156", "military_expenditure_x": "108653000.0", "military_expenditure_y": "137458000.0", "military_personnel_x": "1700000.0", "military_personnel_y": "1700000.0", "prim_energy_consumption_x": "57518000000.0", "prim_energy_consumption_y": "66272000000.0", "iron_steel_production_x": "70000000.0", "iron_steel_production_y": "100000000.0", "total_population_x": "495390000.0", "total_population_y": "499618000.0", "urban_population_x": "16340000.0", "urban_population_y": "16762000.0", "cinc_score_x": "0.1225847", "cinc_score_y": "0.12002180000000001"},
+    {"country": "19th Route Army", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1933.0", "start_date": "1933-11-20 00:00:00", "end_year": "1934.0", "end_date": "None", "days_at_war": "86", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1933.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

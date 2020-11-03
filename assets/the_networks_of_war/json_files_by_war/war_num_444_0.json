@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Franco-Syrian", "war_num": "444.0", "war_type_code": "3.0", "war_type": "Extra-State War: Imperial (state vs non-state)", "lagging_war": "nan", "leading_war": "nan"}
+  ],
+  "nodes": [
+    {"country": "France", "country_code": "220.0", "side": "1.0", "battle_deaths": "3500.0", "start_year": "1920.0", "start_date": "NaT", "end_year": "1920.0", "end_date": "1920-08-07 00:00:00", "days_at_war": "None", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "2480463285.8216896", "money_flow_out_y": "2480463285.8216896", "money_flow_in_x": "1279757869.0999", "money_flow_in_y": "1279757869.0999", "imports_x": "3512.84765625", "imports_y": "3512.84765625", "exports_x": "1893.699462890625", "exports_y": "1893.699462890625", "military_expenditure_x": "361910000.0", "military_expenditure_y": "361910000.0", "military_personnel_x": "1457000.0", "military_personnel_y": "1457000.0", "prim_energy_consumption_x": "116706000000.0", "prim_energy_consumption_y": "116706000000.0", "iron_steel_production_x": "5412000000.0", "iron_steel_production_y": "5412000000.0", "total_population_x": "39000000.0", "total_population_y": "39000000.0", "urban_population_x": "5940000.0", "urban_population_y": "5940000.0", "cinc_score_x": "0.058174699999999996", "cinc_score_y": "0.058174699999999996"},
+    {"country": "Syrians", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1920.0", "start_date": "NaT", "end_year": "1920.0", "end_date": "1920-08-07 00:00:00", "days_at_war": "None", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1920.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

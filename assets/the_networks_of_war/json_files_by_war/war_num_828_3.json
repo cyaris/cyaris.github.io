@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": " Uganda-NRA War of 1982-1986", "war_num": "828.3", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Uganda", "country_code": "500.0", "side": "1.0", "battle_deaths": "39516.0", "start_year": "1982.0", "start_date": "NaT", "end_year": "1986.0", "end_date": "1986-03-19 00:00:00", "days_at_war": "1355", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "294371622.5890001", "money_flow_out_y": "319019657.27599996", "money_flow_in_x": "363735438.0558", "money_flow_in_y": "430144286.7183", "imports_x": "333.201622525913", "imports_y": "358.51658142414595", "exports_x": "356.3700000000002", "exports_y": "423.845795450137", "military_expenditure_x": "94332000.0", "military_expenditure_y": "80000000.0", "military_personnel_x": "10000.0", "military_personnel_y": "15000.0", "prim_energy_consumption_x": "5742000000.0", "prim_energy_consumption_y": "6270000000.0", "iron_steel_production_x": "4000000.0", "iron_steel_production_y": "0.0", "total_population_x": "13804000.0", "total_population_y": "15089000.0", "urban_population_x": "592000.0", "urban_population_y": "673000.0", "cinc_score_x": "0.0007298999999999999", "cinc_score_y": "0.0007593"},
+    {"country": "NRA", "country_code": "nan", "side": "2.0", "battle_deaths": "6000.0", "start_year": "1982.0", "start_date": "NaT", "end_year": "1986.0", "end_date": "1986-03-19 00:00:00", "days_at_war": "1355", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1982.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

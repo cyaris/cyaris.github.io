@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Green Rebellion of 1920-1921", "war_num": "686.0", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Russia", "country_code": "365.0", "side": "1.0", "battle_deaths": "1700.0", "start_year": "1920.0", "start_date": "1920-08-19 00:00:00", "end_year": "1921.0", "end_date": "1921-06-03 00:00:00", "days_at_war": "285", "alliances_x": "0.0", "alliances_y": "1.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "100221159.89959998", "money_flow_out_y": "73843593.099895", "money_flow_in_x": "171208968.19900003", "money_flow_in_y": "35926563.3597", "imports_x": "19.57999992370606", "imports_y": "86.69551086425781", "exports_x": "0.571052610874176", "exports_y": "8.242856979370117", "military_expenditure_x": "1183426000.0", "military_expenditure_y": "1337524000.0", "military_personnel_x": "3050000.0", "military_personnel_y": "5500000.0", "prim_energy_consumption_x": "26126000000.0", "prim_energy_consumption_y": "27850000000.0", "iron_steel_production_x": "388000000.0", "iron_steel_production_y": "440000000.0", "total_population_x": "139675000.0", "total_population_y": "136876000.0", "urban_population_x": "4031000.0", "urban_population_y": "4556000.0", "cinc_score_x": "0.1032007", "cinc_score_y": "0.1485141"},
+    {"country": "Tambov Peasants", "country_code": "nan", "side": "2.0", "battle_deaths": "7500.0", "start_year": "1920.0", "start_date": "1920-08-19 00:00:00", "end_year": "1921.0", "end_date": "1921-06-03 00:00:00", "days_at_war": "285", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1920.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

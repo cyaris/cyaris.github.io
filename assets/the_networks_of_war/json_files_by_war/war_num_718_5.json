@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Dersim Revolt of 1937-1938", "war_num": "718.5", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Turkey", "country_code": "640.0", "side": "1.0", "battle_deaths": "200.0", "start_year": "1937.0", "start_date": "1937-05-08 00:00:00", "end_year": "1938.0", "end_date": "None", "days_at_war": "398", "alliances_x": "12.0", "alliances_y": "12.0", "non_aggression_alliances_x": "6.0", "non_aggression_alliances_y": "6.0", "entente_alliances_x": "2.0", "entente_alliances_y": "2.0", "money_flow_out_x": "86470093.011002", "money_flow_out_y": "120690002.0", "money_flow_in_x": "102412734.59011999", "money_flow_in_y": "96098563.9138", "imports_x": "91.5031967163086", "imports_y": "119.0", "exports_x": "110.38719940185551", "exports_y": "115.0", "military_expenditure_x": "65589000.0", "military_expenditure_y": "81548000.0", "military_personnel_x": "211000.0", "military_personnel_y": "211000.0", "prim_energy_consumption_x": "4070000000.0", "prim_energy_consumption_y": "3638000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "16637000.0", "total_population_y": "16926000.0", "urban_population_x": "1066000.0", "urban_population_y": "1098000.0", "cinc_score_x": "0.0076487", "cinc_score_y": "0.0078265"},
+    {"country": "Dersim Kurds", "country_code": "nan", "side": "2.0", "battle_deaths": "1000.0", "start_year": "1937.0", "start_date": "1937-05-08 00:00:00", "end_year": "1938.0", "end_date": "None", "days_at_war": "398", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1937.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

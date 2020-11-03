@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Fourth Guatemala of 1987 to 1990", "war_num": "845.5", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Guatemala", "country_code": "90.0", "side": "1.0", "battle_deaths": "3000.0", "start_year": "1987.0", "start_date": "NaT", "end_year": "1990.0", "end_date": "None", "days_at_war": "1081", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "1330854482.9810002", "money_flow_out_y": "1594999796.9530995", "money_flow_in_x": "1177738629.0729902", "money_flow_in_y": "1680808093.1920142", "imports_x": "1433.6075", "imports_y": "1698.0006", "exports_x": "981.4252", "exports_y": "1189.2761", "military_expenditure_x": "106320000.0", "military_expenditure_y": "71780000.0", "military_personnel_x": "43000.0", "military_personnel_y": "43000.0", "prim_energy_consumption_x": "9836000000.0", "prim_energy_consumption_y": "10828000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "42000000.0", "total_population_x": "8434000.0", "total_population_y": "9197000.0", "urban_population_x": "926000.0", "urban_population_y": "1002000.0", "cinc_score_x": "0.0007537999999999999", "cinc_score_y": "0.0007608"},
+    {"country": "Leftists", "country_code": "nan", "side": "2.0", "battle_deaths": "6000.0", "start_year": "1987.0", "start_date": "NaT", "end_year": "1990.0", "end_date": "None", "days_at_war": "1081", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 1, "target": 0, "first_year": 1987.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

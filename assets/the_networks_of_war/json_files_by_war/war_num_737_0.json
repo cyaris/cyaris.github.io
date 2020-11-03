@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Bolivian National Revolution of 1952", "war_num": "737.0", "war_type_code": "4.0", "war_type": "Intra-State War: Civil War (for central control)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "Bolivia", "country_code": "145.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1952.0", "start_date": "1952-04-08 00:00:00", "end_year": "1952.0", "end_date": "1952-04-11 00:00:00", "days_at_war": "4", "alliances_x": "3.0", "alliances_y": "3.0", "non_aggression_alliances_x": "3.0", "non_aggression_alliances_y": "3.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "94039999.05000001", "money_flow_out_y": "94039999.05000001", "money_flow_in_x": "119339997.98900001", "money_flow_in_y": "119339997.98900001", "imports_x": "100.6500015258789", "imports_y": "100.6500015258789", "exports_x": "141.8000030517578", "exports_y": "141.8000030517578", "military_expenditure_x": "19505000.0", "military_expenditure_y": "19505000.0", "military_personnel_x": "9000.0", "military_personnel_y": "9000.0", "prim_energy_consumption_x": "190000000.0", "prim_energy_consumption_y": "190000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "3125000.0", "total_population_y": "3125000.0", "urban_population_x": "323000.0", "urban_population_y": "323000.0", "cinc_score_x": "0.0005162000000000001", "cinc_score_y": "0.0005162000000000001"},
+    {"country": "MNR", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1952.0", "start_date": "1952-04-08 00:00:00", "end_year": "1952.0", "end_date": "1952-04-11 00:00:00", "days_at_war": "4", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1952.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

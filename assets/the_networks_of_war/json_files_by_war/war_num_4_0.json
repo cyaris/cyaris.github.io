@@ -1,0 +1,12 @@
+{
+  "war": [
+    {"war_name": "First Russo-Turkish", "war_num": "4.0", "war_type_code": "1.0", "war_type": "Inter-State War", "lagging_war": "nan", "leading_war": "nan"}
+  ],
+  "nodes": [
+    {"country": "Russia", "country_code": "365.0", "side": "1.0", "battle_deaths": "50000.0", "start_year": "1828.0", "start_date": "1828-04-26 00:00:00", "end_year": "1829.0", "end_date": "1829-09-14 00:00:00", "days_at_war": "506", "alliances_x": "1.0", "alliances_y": "1.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "1.0", "entente_alliances_y": "1.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "7587000.0", "military_expenditure_y": "8079000.0", "military_personnel_x": "624000.0", "military_personnel_y": "803000.0", "prim_energy_consumption_x": "52000000.0", "prim_energy_consumption_y": "52000000.0", "iron_steel_production_x": "356000000.0", "iron_steel_production_y": "376000000.0", "total_population_x": "54600000.0", "total_population_y": "55300000.0", "urban_population_x": "833000.0", "urban_population_y": "847000.0", "cinc_score_x": "0.1525648", "cinc_score_y": "0.1653604"},
+    {"country": "Ottoman Empire", "country_code": "640.0", "side": "2.0", "battle_deaths": "80000.0", "start_year": "1828.0", "start_date": "1828-04-26 00:00:00", "end_year": "1829.0", "end_date": "1829-09-14 00:00:00", "days_at_war": "506", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "0.0", "military_expenditure_y": "0.0", "military_personnel_x": "129000.0", "military_personnel_y": "129000.0", "prim_energy_consumption_x": "6000000.0", "prim_energy_consumption_y": "6000000.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "29137000.0", "total_population_y": "29491000.0", "urban_population_x": "900000.0", "urban_population_y": "910000.0", "cinc_score_x": "0.056852999999999994", "cinc_score_y": "0.0561793"}
+  ],
+  "links": [
+
+  ]
+}

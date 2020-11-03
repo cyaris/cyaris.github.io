@@ -1,0 +1,13 @@
+{
+  "war": [
+    {"war_name": "Ili Uprising of 1944-1945", "war_num": "719.8", "war_type_code": "5.0", "war_type": "Intra-State War: Civil War (over local issues)", "lagging_war": "-8.0", "leading_war": "-8.0"}
+  ],
+  "nodes": [
+    {"country": "China", "country_code": "710.0", "side": "1.0", "battle_deaths": "nan", "start_year": "1944.0", "start_date": "1944-10-08 00:00:00", "end_year": "1945.0", "end_date": "1945-09-17 00:00:00", "days_at_war": "340", "alliances_x": "1.0", "alliances_y": "2.0", "non_aggression_alliances_x": "1.0", "non_aggression_alliances_y": "1.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "263239989.99999997", "money_flow_out_y": "87199997.0", "money_flow_in_x": "400190010.001", "money_flow_in_y": "200649990.0", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "195582000.0", "military_expenditure_y": "228612000.0", "military_personnel_x": "4228000.0", "military_personnel_y": "4775000.0", "prim_energy_consumption_x": "103936000000.0", "prim_energy_consumption_y": "54270000000.0", "iron_steel_production_x": "80000000.0", "iron_steel_production_y": "96000000.0", "total_population_x": "543943000.0", "total_population_y": "548586000.0", "urban_population_x": "25352000.0", "urban_population_y": "27040000.0", "cinc_score_x": "0.0974234", "cinc_score_y": "0.09349600000000001"},
+    {"country": "East Turkestan Republic", "country_code": "nan", "side": "2.0", "battle_deaths": "nan", "start_year": "1944.0", "start_date": "1944-10-08 00:00:00", "end_year": "1945.0", "end_date": "1945-09-17 00:00:00", "days_at_war": "340", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "nan", "money_flow_in_y": "nan", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "nan", "military_expenditure_y": "nan", "military_personnel_x": "nan", "military_personnel_y": "nan", "prim_energy_consumption_x": "nan", "prim_energy_consumption_y": "nan", "iron_steel_production_x": "nan", "iron_steel_production_y": "nan", "total_population_x": "nan", "total_population_y": "nan", "urban_population_x": "nan", "urban_population_y": "nan", "cinc_score_x": "nan", "cinc_score_y": "nan"}
+  ],
+  "links": [
+    {"source": 0, "target": 1, "first_year": 1944.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+
+  ]
+}

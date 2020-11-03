@@ -68,7 +68,8 @@
 				{ file_list.push(d.file_name); }
 			});
 
-		d3.json("../assets/the_networks_of_war/json_files_by_war/" + file_list[Math.floor(Math.random() * file_list.length)], function(error, graph) {
+		// d3.json("../assets/the_networks_of_war/json_files_by_war/" + file_list[Math.floor(Math.random() * file_list.length)], function(error, graph) {
+		d3.json("../assets/the_networks_of_war/json_files_by_war/war_num_37_0.json", function(error, graph) {
 
 			function getTextWidth(textInput) {
 
@@ -115,6 +116,16 @@
 			}
 
 		  if (error) throw error;
+
+			graph.war.forEach(function(d) {
+					console.log("war_name: ", d.war_name)
+					console.log("war_num: ", d.war_num)
+					console.log("war_type_code: ", d.war_type_code)
+					console.log("war_type: ", d.war_type)
+					console.log("war_sub_type: ", d.war_sub_type)
+					console.log("lagging_war: ", d.lagging_war)
+					console.log("leading_war: ", d.leading_war)
+			});
 
 			var sumOfAllRadiusInputs = 0,
 					nullBattleDeaths = 0,

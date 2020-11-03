@@ -188,9 +188,13 @@
 			console.log("urgan population: ", urbanPopulationDic);
 			console.log("cinc score: ", cincScoreDic);
 
+			var nullRadiusSize = 0;
+
 			if  ( nullBattleDeaths != totalNodes )
-			{ sumOfAllRadiusInputs = sumOfAllRadiusInputs + ((sumOfAllRadiusInputs/(totalNodes - nullBattleDeaths)) * nullBattleDeaths) }
-			else { sumOfAllRadiusInputs = 2 }
+			{ nullRadiusSize = (sumOfAllRadiusInputs/(totalNodes - nullBattleDeaths));
+				sumOfAllRadiusInputs = sumOfAllRadiusInputs + (nullRadiusSize * nullBattleDeaths); }
+			else { sumOfAllRadiusInputs = 2;
+						nullRadiusSize = sumOfAllRadiusInputs/totalNodes; }
 
 			var color = d3.scale.linear().domain([1,2]).range(["lightgreen", "violet"])
 					maxRadius = 150,
@@ -240,9 +244,8 @@
 
 					if ( d.battle_deaths != 'nan' )
 					 { nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)) }
-					else if ( nullBattleDeaths != totalNodes )
-					 { nodeRadiusDic[d.country] = radius((sumOfAllRadiusInputs/(totalNodes - nullBattleDeaths))) }
-					else { nodeRadiusDic[d.country] = radius(sumOfAllRadiusInputs/totalNodes) }
+					else
+					 { nodeRadiusDic[d.country] = radius(nullRadiusSize) }
 					nameLengthDic[d.country] = getTextWidth(d.country),
 					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusDic[d.country], d.country),
 					nameHorizontalShiftDic[d.country] = nameHorizontalShift(nodeRadiusDic[d.country], d.country),

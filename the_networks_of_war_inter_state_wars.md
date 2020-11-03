@@ -1,7 +1,7 @@
 ---
 layout: page
 title: The Networks of War
-subtitle: Extra-State Wars
+subtitle: Inter-State Wars
 social-share: true
 ---
 

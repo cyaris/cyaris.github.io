@@ -56,13 +56,15 @@
 		<script>
 
 		var warPageURL = window.location.href,
-		warPageType = warPageURL.split("the_networks_of_war_")[1].split("s/")[0];
+				warPageType = warPageURL.split("the_networks_of_war_")[1].split("s/")[0];
+
 		//Read the data
 		d3.csv("../assets/the_networks_of_war/war_file_list.csv", function(data) {
+
 			file_list = [];
 			data.forEach(function(d) {
 				var fileWarType = d.war_type.toLowerCase().replace("-", "_").replace(" ", "_");
-				if ( warPageType == fileWarType)
+				if ( warPageType == fileWarType )
 				{ file_list.push(d.file_name); }
 			});
 
@@ -114,7 +116,9 @@
 
 		  if (error) throw error;
 
-			var sumOfAllRadiusInputs = 0;
+			var sumOfAllRadiusInputs = 0,
+					nullBattleDeaths = 0,
+					totalNodes = 0;
 
 			var startDateDic = {},
 					endDateDic = {},
@@ -136,18 +140,13 @@
 
 			var formatDate = d3.time.format("%Y-%m-%d %S:%M:%S");
 			// format the data
-			// graph.war.forEach(function(d) {
-
-				// console.log("war_name: ", d.war_name);
-				// console.log("war_num: ", d.war_num);
-				// console.log("war_type: ", d.war_type);
-
-			// });
-			// format the data
 			graph.nodes.forEach(function(d) {
 					// determining totalCasualties across all countries as maxRadius.
 					// this will make larger numbers proportional to the total across all countries.
-					sumOfAllRadiusInputs += parseFloat(d.battle_deaths)
+					if ( d.battle_deaths != 'nan' )
+					 { sumOfAllRadiusInputs += parseFloat(d.battle_deaths) }
+					else { nullBattleDeaths += 1 }
+					totalNodes += 1,
 					startDateDic[d.country] = formatDate.parse(d.start_date),
 					endDateDic[d.country] = formatDate.parse(d.end_date),
 					startYearDic[d.country] =+ parseInt(d.start_year),
@@ -188,6 +187,10 @@
 			console.log("population: ", populationDic);
 			console.log("urgan population: ", urbanPopulationDic);
 			console.log("cinc score: ", cincScoreDic);
+
+			if  ( nullBattleDeaths != totalNodes )
+			{ sumOfAllRadiusInputs = sumOfAllRadiusInputs + ((sumOfAllRadiusInputs/(totalNodes - nullBattleDeaths)) * nullBattleDeaths) }
+			else { sumOfAllRadiusInputs = 2 }
 
 			var color = d3.scale.linear().domain([1,2]).range(["lightgreen", "violet"])
 					maxRadius = 150,
@@ -235,7 +238,11 @@
 
 			graph.nodes.forEach(function(d) {
 
-					nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)),
+					if ( d.battle_deaths != 'nan' )
+					 { nodeRadiusDic[d.country] = radius(parseInt(d.battle_deaths)) }
+					else if ( nullBattleDeaths != totalNodes )
+					 { nodeRadiusDic[d.country] = radius((sumOfAllRadiusInputs/(totalNodes - nullBattleDeaths))) }
+					else { nodeRadiusDic[d.country] = radius(sumOfAllRadiusInputs/totalNodes) }
 					nameLengthDic[d.country] = getTextWidth(d.country),
 					nameVerticalShiftDic[d.country] = nameVerticalShift(nodeRadiusDic[d.country], d.country),
 					nameHorizontalShiftDic[d.country] = nameHorizontalShift(nodeRadiusDic[d.country], d.country),

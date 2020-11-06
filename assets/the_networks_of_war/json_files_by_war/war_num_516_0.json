@@ -1,13 +1,13 @@
 {
   "war": [
-    {"war_name": "Egyptian Taka Expedition of 1831", "war_num": "516.0", "war_type_code": "6", "war_type": "Intra-State War", "war_sub_type": "Regional/Internal", "war_start_date": "NaT", "war_end": "NaT", "total_days_in_war": "None", "lagging_war": "nan", "leading_war": "nan"}
+    {"war_name": "Egyptian Taka Expedition", "war_num": "516.0", "war_type_code": "6", "war_type": "Intra-State War", "war_sub_type": "Regional/Internal", "war_start_date": "NaT", "war_end": "NaT", "total_days_in_war": "None", "lagging_war": "nan", "leading_war": "nan", "ongoing_war": "0.0"}
   ],
   "nodes": [
     {"country": "Egypt", "country_code": "-8", "side": "1", "battle_deaths": "1500.0", "start_year": "1831.0", "start_date": "NaT", "end_year": "1831.0", "end_date": "None", "days_at_war": "None", "peak_forces_available": "100000.0", "peak_battle_forces": "6000.0", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "0.0", "money_flow_in_y": "0.0", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "0.0", "military_expenditure_y": "0.0", "military_personnel_x": "0.0", "military_personnel_y": "0.0", "prim_energy_consumption_x": "0.0", "prim_energy_consumption_y": "0.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "0.0", "total_population_y": "0.0", "urban_population_x": "0.0", "urban_population_y": "0.0", "cinc_score_x": "nan", "cinc_score_y": "nan"},
     {"country": "Hadendowa Tribe", "country_code": "-8", "side": "2", "battle_deaths": "500.0", "start_year": "1831.0", "start_date": "NaT", "end_year": "1831.0", "end_date": "None", "days_at_war": "None", "peak_forces_available": "nan", "peak_battle_forces": "nan", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "nan", "money_flow_out_y": "nan", "money_flow_in_x": "0.0", "money_flow_in_y": "0.0", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "0.0", "military_expenditure_y": "0.0", "military_personnel_x": "0.0", "military_personnel_y": "0.0", "prim_energy_consumption_x": "0.0", "prim_energy_consumption_y": "0.0", "iron_steel_production_x": "0.0", "iron_steel_production_y": "0.0", "total_population_x": "0.0", "total_population_y": "0.0", "urban_population_x": "0.0", "urban_population_y": "0.0", "cinc_score_x": "nan", "cinc_score_y": "nan"}
   ],
   "links": [
-    {"source": 1, "target": 0, "first_year": 1831.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 0, "target": 1, "first_year": 1831.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

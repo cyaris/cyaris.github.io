@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Gulf War", "war_num": "211.0", "war_type_code": "1", "war_type": "Inter-State War", "war_sub_type": "", "war_start_date": "1990-08-02 00:00:00", "war_end": "1991-04-11 00:00:00", "total_days_in_war": "252", "lagging_war": "nan", "leading_war": "nan"}
+    {"war_name": "Gulf War", "war_num": "211.0", "war_type_code": "1", "war_type": "Inter-State War", "war_sub_type": "", "war_start_date": "1990-08-02 00:00:00", "war_end": "1991-04-11 00:00:00", "total_days_in_war": "252", "lagging_war": "nan", "leading_war": "nan", "ongoing_war": "0.0"}
   ],
   "nodes": [
     {"country": "United States of America", "country_code": "2", "side": "1", "battle_deaths": "376.0", "start_year": "1991.0", "start_date": "1991-01-16 00:00:00", "end_year": "1991.0", "end_date": "1991-04-11 00:00:00", "days_at_war": "85", "peak_forces_available": "nan", "peak_battle_forces": "nan", "alliances_x": "11.0", "alliances_y": "11.0", "non_aggression_alliances_x": "3.0", "non_aggression_alliances_y": "3.0", "entente_alliances_x": "6.0", "entente_alliances_y": "6.0", "money_flow_out_x": "497821409651.09973", "money_flow_out_y": "497821409651.09973", "money_flow_in_x": "440834605687.01025", "money_flow_in_y": "440834605687.01025", "imports_x": "509319.7", "imports_y": "509319.7", "exports_x": "421857.1", "exports_y": "421857.1", "military_expenditure_x": "262389000000.0", "military_expenditure_y": "262389000000.0", "military_personnel_x": "2110000.0", "military_personnel_y": "2110000.0", "prim_energy_consumption_x": "5654042000000.0", "prim_energy_consumption_y": "2827021.0", "iron_steel_production_x": "159476000000.0", "iron_steel_production_y": "159476000000.0", "total_population_x": "252618000.0", "total_population_y": "252618000.0", "urban_population_x": "64814000.0", "urban_population_y": "64814000.0", "cinc_score_x": "0.1372464", "cinc_score_y": "0.1372464"},
@@ -20,18 +20,18 @@
   ],
   "links": [
     {"source": 10, "target": 6, "first_year": 1990.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 3, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 6, "target": 4, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 7, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 1.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 8, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 1.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 9, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 1.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 2, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 5, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 1, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 0, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 6, "target": 2, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 9, "target": 6, "first_year": 1991.0, "defense_alliance": 1.0, "neutrality_alliance": 0.0, "entente_alliance": 1.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 5, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 12, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 13, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 11, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 1, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 12, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
+    {"source": 8, "target": 6, "first_year": 1991.0, "defense_alliance": 1.0, "neutrality_alliance": 0.0, "entente_alliance": 1.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 6, "target": 3, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 6, "target": 7, "first_year": 1991.0, "defense_alliance": 1.0, "neutrality_alliance": 0.0, "entente_alliance": 1.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 4, "target": 6, "first_year": 1991.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1}
 
   ]
 }

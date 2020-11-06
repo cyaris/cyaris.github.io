@@ -1,6 +1,6 @@
 {
   "war": [
-    {"war_name": "Latvian Liberation", "war_num": "108.0", "war_type_code": "1", "war_type": "Inter-State War", "war_sub_type": "", "war_start_date": "1918-12-02 00:00:00", "war_end": "1920-02-01 00:00:00", "total_days_in_war": "426", "lagging_war": "nan", "leading_war": "nan"}
+    {"war_name": "Latvian Liberation", "war_num": "108.0", "war_type_code": "1", "war_type": "Inter-State War", "war_sub_type": "", "war_start_date": "1918-12-02 00:00:00", "war_end": "1920-02-01 00:00:00", "total_days_in_war": "426", "lagging_war": "nan", "leading_war": "nan", "ongoing_war": "0.0"}
   ],
   "nodes": [
     {"country": "Germany", "country_code": "255", "side": "3", "battle_deaths": "1200.0", "start_year": "1919.0", "start_date": "1918-12-07 00:00:00", "end_year": "1919.0", "end_date": "1919-07-13 00:00:00", "days_at_war": "218", "peak_forces_available": "nan", "peak_battle_forces": "nan", "alliances_x": "0.0", "alliances_y": "0.0", "non_aggression_alliances_x": "0.0", "non_aggression_alliances_y": "0.0", "entente_alliances_x": "0.0", "entente_alliances_y": "0.0", "money_flow_out_x": "-222239998.0", "money_flow_out_y": "-222239998.0", "money_flow_in_x": "749030477.9200001", "money_flow_in_y": "749030477.9200001", "imports_x": "nan", "imports_y": "nan", "exports_x": "nan", "exports_y": "nan", "military_expenditure_x": "80023000.0", "military_expenditure_y": "80023000.0", "military_personnel_x": "114000.0", "military_personnel_y": "114000.0", "prim_energy_consumption_x": "293480000000.0", "prim_energy_consumption_y": "146740.0", "iron_steel_production_x": "15694000000.0", "iron_steel_production_y": "15694000000.0", "total_population_x": "62897000.0", "total_population_y": "62897000.0", "urban_population_x": "14803000.0", "urban_population_y": "14803000.0", "cinc_score_x": "0.0768036", "cinc_score_y": "0.0768036"},
@@ -11,9 +11,9 @@
   "links": [
     {"source": 1, "target": 3, "first_year": 1918.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
     {"source": 1, "target": 2, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 1, "target": 0, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 0, "target": 2, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
-    {"source": 3, "target": 0, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 0, "target": 3, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 2, "target": 0, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
+    {"source": 0, "target": 1, "first_year": 1919.0, "defense_alliance": 0.0, "neutrality_alliance": 0.0, "entente_alliance": 0.0, "land_contiguity": 0, "sea_contiguity": 0, "total_contiguity": 0, "bond": 1},
 
   ]
 }

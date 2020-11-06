@@ -14,8 +14,8 @@ def participant_start_and_end_dates(participant_dataframe):
     participant_dataframe.loc[participant_dataframe['end_year']==-9, 'end_year'] = None
 
     ## creatign a field for ongoing wars
-    participant_dataframe.loc[participant_dataframe['end_day']==-7, 'ongoing_war'] = 1
-    participant_dataframe.loc[participant_dataframe['ongoing_war'].isnull(), 'ongoing_war'] = 0
+    participant_dataframe.loc[participant_dataframe['end_day']==-7, 'ongoing_participation'] = 1
+    participant_dataframe.loc[participant_dataframe['ongoing_participation'].isnull(), 'ongoing_participation'] = 0
     ## adjusting for ongoing with wars with current date end date
     participant_dataframe.loc[participant_dataframe['end_day']==-7, 'end_day'] = None
     participant_dataframe.loc[participant_dataframe['end_month']==-7, 'end_month'] = None

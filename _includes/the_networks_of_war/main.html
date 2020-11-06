@@ -144,14 +144,13 @@
 
 		};
 
+		// set the dimensions and margins of the graph
+		var margin = {top: 0, bottom: 15, left: 0, right: 0},
+				width = 750,
+				height = 500;
 
-		//Read the data
+		// reading in the data to create the war menu
 		d3.csv('../assets/the_networks_of_war/war_file_list.csv', function(data) {
-
-			// set the dimensions and margins of the graph
-			var margin = {top: 0, bottom: 15, left: 0, right: 0},
-					width = 750,
-					height = 500;
 
 			var warPageURL = window.location.href,
 					warPageType = warPageURL.split('the_networks_of_war_')[1].split('s/')[0],
@@ -186,81 +185,86 @@
 					fileDic['total_participants'].push(parseInt(d.total_participants));
 				 }
 			});
-		// console.log(fileDic);
-		// adding area for descriptive statistics to be activated upon hovering nodes.
-		var svg1 = d3.select('#war_menu')
-				.append('svg')
-					.attr('width', width)
-					.attr('height', (Object.keys(fileDic['file_name']).length+1) * 30)
-					.attr('transform',
-				        'translate(' + margin.left + ',' + margin.top + ')')
-					.style('cursor', 'pointer');
+			// adding createMenu function here so that the above will not need to be re-executed each time the user returns to the menu
+			var createMenu = function() {
 
-		for ( var i = 1; i <= fileDic['war_name'].length-1; i++ ) {
+				var svg1 = d3.select('#war_menu')
+						.append('svg')
+							.attr('width', width)
+							.attr('height', (Object.keys(fileDic['file_name']).length+1) * 30)
+							.attr('transform',
+						        'translate(' + margin.left + ',' + margin.top + ')')
+							.style('cursor', 'pointer');
 
-			warNameLengths.push(getTextWidth(svg1, fileDic['war_name'][i], '15px'));
+				for ( var i = 1; i <= fileDic['war_name'].length-1; i++ ) {
 
-			};
+					warNameLengths.push(getTextWidth(svg1, fileDic['war_name'][i], '15px'));
 
-		var warNameMaxLength = warNameLengths.reduce(function(a, b) {
+					};
 
-				return Math.max(a, b);
+				var warNameMaxLength = warNameLengths.reduce(function(a, b) {
 
-		});
+						return Math.max(a, b);
 
-		// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
-		var menuMouseOver = function(d) {
+				});
 
-				d3.select(this)
-					.style('stroke-width', 2)
-					.style('stroke-opacity', 0.75)
-					.style('fill', 'rgb(26,188,156)')
-					.style('fill-opacity', 0.20);
-		 },
-		 menuMouseLeave = function(d) {
+				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
+				var menuMouseOver = function(d) {
 
-				d3.select(this)
-					.style('stroke-width', 1)
-					.style('stroke-opacity', 0.15)
-					.style('fill', 'black')
-					.style('fill-opacity', 0.075);
-			},
-			menuChoice = function(d) {
+						d3.select(this)
+							.style('stroke-width', 2)
+							.style('stroke-opacity', 0.75)
+							.style('fill', 'rgb(26,188,156)')
+							.style('fill-opacity', 0.20);
+				 },
+				 menuMouseLeave = function(d) {
 
-				createNetworkGraph(d3.select(this).attr('id'));
-				d3.select('#war_menu').remove();
-				window.scrollTo(0, 430);
-			};
+						d3.select(this)
+							.style('stroke-width', 1)
+							.style('stroke-opacity', 0.15)
+							.style('fill', 'black')
+							.style('fill-opacity', 0.075);
+					},
+					menuChoice = function(d) {
+
+						// removing all current svgs
+						d3.selectAll("svg").remove();
+						createNetworkGraph(d3.select(this).attr('id'));
+						window.scrollTo(0, 325);
+					};
 
 
-		// first rect is an outline for the entire menu
-		// shifting width (width-2) to allow for stroke to be seen (same reason for adjusting the height)
-		addStdRect(svg1, null, 1,  1, width-2, (Object.keys(fileDic['file_name']).length * 30) + 10 - 1, 'black', 1, null, 'transparent', null, null, null, null);
-		// creating the labels for the menu (everything in the top row)
-		addStdRect(svg1, null, 0,  0, width, 40, 'black', 1, 0.15, 'black', 0.075, null, null, null);
-		addStdText(svg1, null, 10, 25, '15px', 0.75, 'Name');
-		addStdText(svg1, null, warNameMaxLength + 55, 25, '15px', 0.75, 'Timeframe');
-		addStdText(svg1, null, warNameMaxLength + 190, 25, '15px', 0.75, 'Length in Days');
-		addStdText(svg1, null, warNameMaxLength + 330, 25, '15px', 0.75, 'Total Participants');
+				// first rect is an outline for the entire menu
+				// shifting width (width-2) to allow for stroke to be seen (same reason for adjusting the height)
+				addStdRect(svg1, null, 1,  1, width-2, (Object.keys(fileDic['file_name']).length * 30) + 10 - 1, 'black', 1, null, 'transparent', null, null, null, null);
+				// creating the labels for the menu (everything in the top row)
+				addStdRect(svg1, null, 0,  0, width, 40, 'black', 1, 0.15, 'black', 0.075, null, null, null);
+				addStdText(svg1, null, 10, 25, '15px', 0.75, 'Name');
+				addStdText(svg1, null, warNameMaxLength + 55, 25, '15px', 0.75, 'Timeframe');
+				addStdText(svg1, null, warNameMaxLength + 190, 25, '15px', 0.75, 'Length in Days');
+				addStdText(svg1, null, warNameMaxLength + 330, 25, '15px', 0.75, 'Total Participants');
 
-		for ( var i = 1; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
+				for ( var i = 1; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
 
-			addStdRect(svg1, fileDic['file_name'][i], 0,  (30*i)+10, width, 30, 'black', 1, 0.15, 'black', 0.075, menuMouseOver, menuMouseLeave, menuChoice);
-			addStdText(svg1, null, 10, 30*(i+1), '15px', 0, fileDic['war_name'][i]);
-			if ( fileDic['ongoing_war'][i]==1 )
-			{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
-			else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
-			{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i]); }
-			else
-			{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
-			addStdText(svg1, null, warNameMaxLength + 210, 30*(i+1), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
-			addStdText(svg1, null, warNameMaxLength + 385, 30*(i+1), '15px', 0, fileDic['total_participants'][i].toLocaleString());
+					addStdRect(svg1, fileDic['file_name'][i], 0,  (30*i)+10, width, 30, 'black', 1, 0.15, 'black', 0.075, menuMouseOver, menuMouseLeave, menuChoice);
+					addStdText(svg1, null, 10, 30*(i+1), '15px', 0, fileDic['war_name'][i]);
+					if ( fileDic['ongoing_war'][i]==1 )
+					{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
+					else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
+					{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i]); }
+					else
+					{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
+					addStdText(svg1, null, warNameMaxLength + 210, 30*(i+1), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
+					addStdText(svg1, null, warNameMaxLength + 385, 30*(i+1), '15px', 0, fileDic['total_participants'][i].toLocaleString());
 
-			};
-		var randomFileName = fileDic['file_name'][Math.floor(Math.random() * Object.keys(fileDic['file_name']).length)];
+					};
+				var randomFileName = fileDic['file_name'][Math.floor(Math.random() * Object.keys(fileDic['file_name']).length)];
+		}
+		// calling the war menu functio upon page load
+		createMenu();
 
 		var createNetworkGraph = function(fileName) {
-
+			// reading in the data to create the network graph
 			d3.json('../assets/the_networks_of_war/json_files_by_war/' + fileName, function(error, graph) {
 			// d3.json('../assets/the_networks_of_war/json_files_by_war/war_num_37_0.json', function(error, graph) {
 			  if (error) throw error;
@@ -321,20 +325,33 @@
 						.append('svg')
 							// .attr('pointer-events', 'none')
 							.attr('width', width)
-							.attr('height', 50)
+							.attr('height', 100)
 							.attr('transform',
 						        'translate(' + margin.left + ',' + margin.top + ')');
 
-				// append the svg3 object to the body of the page
-				var svg3 = d3.select('#war_network_analysis')
-						.append('svg')
-						  .attr('width', width)
-						  .attr('height', height)
-						  .attr('transform',
-						        'translate(' + margin.left + ',' + margin.top + ')');
+					// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
+					var backToMenuMouseOver = function(d) {
 
+							d3.select(this)
+								.style('stroke-width', 2)
+								.style('cursor', 'pointer');
+					 },
+						 backToMenuMouseLeave = function(d) {
+
+								d3.select(this)
+									.style('stroke-width', 1)
+						},
+							backToMenuClick = function(d) {
+								// removing all current svgs
+								d3.selectAll("svg").remove();
+								createMenu();
+						};
+				// creating a rect for a back to menu button
+				addStdRect(svg2, "back_to_menu", 1,  1, 70, 30, 'black', 1, null, 'transparent', null, backToMenuMouseOver, backToMenuMouseLeave, backToMenuClick);
+				addStdText(svg2, null, 6, 22.5, '15px', 0, "↖ Menu");
+				// not sure how to do this without a loop, but there's only one grow in this section of the json file
 				graph.war.forEach(function(d) {
-						addStdText(svg2, null, 0, 42.5, '15px', 0, d.war_name);
+						addStdText(svg2, null, 0, 92.5, '15px', 0, d.war_name);
 						// getTextWidth(d.war_name, '15px')
 						var warNum = d.war_num,
 								warTypeCode = d.war_type_code,
@@ -344,6 +361,14 @@
 								leadingWar = d.leading_war;
 				});
 
+
+				// append the svg3 object to the body of the page
+				var svg3 = d3.select('#war_network_analysis')
+						.append('svg')
+						  .attr('width', width)
+						  .attr('height', height)
+						  .attr('transform',
+						        'translate(' + margin.left + ',' + margin.top + ')');
 
 						// dic for size of all the country nodes
 				var nodeRadiusDic = {},

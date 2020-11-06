@@ -168,10 +168,11 @@
 						'total_days_in_war': [],
 						'total_participants': []
 				};
+				
 			data.forEach(function(d) {
-
+				// determining the war type for each row in the file.
 				var fileWarType = d.war_type.toLowerCase().replace('-', '_').replace(' ', '_');
-
+				// performing the following actions if the war type in the file matches the war type for the page.
 				if ( warPageType==fileWarType )
 				{ fileDic['file_name'].push(d.file_name),
 					fileDic['war_name'].push(d.war_name),

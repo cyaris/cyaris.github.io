@@ -72,8 +72,7 @@
 			svgInput.append('g')
 							.selectAll('.dummyText')
 							.data([textInput])
-							.enter()
-							.append('text')
+							.enter().append('text')
 								.attr('pointer-events', 'none')
 								// .attr('font-family', 'sans-serif')
 								.attr('font-size', fontSize)
@@ -168,7 +167,7 @@
 						'total_days_in_war': [],
 						'total_participants': []
 				};
-				
+
 			data.forEach(function(d) {
 				// determining the war type for each row in the file.
 				var fileWarType = d.war_type.toLowerCase().replace('-', '_').replace(' ', '_');
@@ -281,24 +280,26 @@
 							.attr('height', 100)
 							.attr('transform',
 						        'translate(' + margin.left + ',' + margin.top + ')');
+
+				var warDic = {};
+				// not sure how to do this without a loop, but there's only one grow in this section of the json file
+				graph.war.forEach(function(d) {
+						warDic['war_num'] = d.war_num,
+						warDic['war_name'] = d.war_name,
+						warDic['war_type_code'] = d.war_type_code,
+						warDic['war_type'] = d.war_type,
+						warDic['war_sub_type'] = d.war_sub_type,
+						warDic['lagging_war'] = d.lagging_war,
+						warDic['leading_war'] = d.leading_war;
+				});
+
 				// creating a rect for a back to menu button
 				addStdRect(svg2, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, backToMenuMouseOver, backToMenuMouseLeave, backToMenuClick);
 				addStdText(svg2, null, 6, 22.5, '15px', 0, '↖ Menu');
-				// not sure how to do this without a loop, but there's only one grow in this section of the json file
-				graph.war.forEach(function(d) {
-						addStdText(svg2, null, 0, 92.5, '15px', 0, d.war_name);
-						// getTextWidth(d.war_name, '15px')
-						var warNum = d.war_num,
-								warTypeCode = d.war_type_code,
-								warType = d.war_type,
-								warSubType = d.war_sub_type,
-								laggingWar = d.lagging_war,
-								leadingWar = d.leading_war;
-				});
+				addStdText(svg2, null, 0, 92.5, '15px', 0, warDic['war_name']);
 
 				var sumOfAllRadiusInputs = 0,
 						nullBattleDeaths = 0,
-						totalNodes = 0,
 						nullRadiusSize = 0,
 						battleDeaths = {};
 				// first defining the data that will influence how the svg is defnined
@@ -308,9 +309,9 @@
 						if ( d.battle_deaths!='nan' )
 						 { sumOfAllRadiusInputs+=parseFloat(d.battle_deaths) }
 						else { nullBattleDeaths+=1 }
-						totalNodes+=1,
 						battleDeaths[d.country]=+d.battle_deaths;
 				});
+				var totalNodes = Object.keys(battleDeaths).length;
 				if  ( nullBattleDeaths!=totalNodes )
 				{ nullRadiusSize = (sumOfAllRadiusInputs/(totalNodes - nullBattleDeaths));
 					sumOfAllRadiusInputs = sumOfAllRadiusInputs + (nullRadiusSize * nullBattleDeaths); }
@@ -323,6 +324,7 @@
 						radius = d3.scale.linear()
 															.domain([0, sumOfAllRadiusInputs])
 															.range([1, maxRadius]);
+
 				// append the svg3 object to the body of the page
 				var svg3 = d3.select('#war_network_analysis')
 						.append('svg')
@@ -332,8 +334,6 @@
 						        'translate(' + margin.left + ',' + margin.top + ')');
 
 				var currentRadiusSize = 0,
-						// will be used for indices
-						nodeNumber = 0,
 						nodeIndices = {},
 						// base value that will be used to calculate the values appended to the arrays above
 						addedMarginSize = 7.5,
@@ -352,7 +352,8 @@
 							'added_bottom_margin': [],
 							'added_left_margin': [],
 							'added_right_margin': []
-						};
+						},
+						linkNodes = [];
 
 				graph.nodes.forEach(function(d) {
 
@@ -389,27 +390,34 @@
 						{ nodeMargins['added_right_margin'].push(currentRadiusSize + addedMarginSize); }
 						// adding each country to the array of indices
 						// this will be used to indice through the nodeMargins by country
-						nodeIndices[d.country] = nodeNumber;
-						nodeNumber+=1;
+						nodeIndices[d.country] = Object.keys(nodeIndices).length;
 				});
 
 				var force = d3.layout.force()
 				    .size([width, height])
-				    .charge(-500)
+				    .charge(-250)
 						// .friction(0.75)
-						.gravity(0.05)
-						.linkStrength(0.35)
-						.linkDistance(function(d) { return (nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]] + (nodeMargins['name_lengths'][nodeIndices[d.source.country]]/2) + (nodeMargins['name_lengths'][nodeIndices[d.target.country]]/2) + 75 ); });
-						// .linkDistance(height/3);
+						// .gravity(0.05)
+						.linkStrength(0.20)
+						.linkDistance(function(d) { return (nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]] + (nodeMargins['horizontal_name_shift'][nodeIndices[d.source.country]]/2) + (nodeMargins['horizontal_name_shift'][nodeIndices[d.target.country]]/2) + 30 ); });
+
+			  graph.links.forEach(function(link) {
+			    linkNodes.push({
+			      source: graph.nodes[link.source],
+			      target: graph.nodes[link.target]
+			    });
+			  });
+
 			  force
-			      .nodes(graph.nodes)
+						.nodes(graph.nodes.concat(linkNodes))
 			      .links(graph.links)
-			      .on('tick', tick)
+		    		.on('tick', tick)
 			      .start();
 
-			  var link = svg3.selectAll()
+				var link = svg3.selectAll()
 			      .data(graph.links)
-			    	.enter().append('g')
+			    .enter().append('g')
+			      .attr('class', 'link')
 
 			  link.append('line')
 						.attr('stroke', '#696969')
@@ -458,7 +466,29 @@
 							if ( isNaN(battleDeaths[d.country])==true )
 								{ return '?' }});
 
+				var linkNode = svg3.selectAll()
+			      .data(linkNodes)
+			    .enter().append('g')
+			      .attr('class', 'link-node')
+			      .call(force.drag);
+
+				// appending invisible circle to decrease possibility of overlap
+				linkNode.append('circle')
+						.attr('stroke-width', 1)
+						.attr('opacity', 0)
+			      .attr('r', 5);
+
 			  function tick() {
+
+					link.selectAll('line')
+							.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)); })
+			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]], d.source.y)); })
+			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x)); })
+			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]], d.target.y)); })
+
+					linkNode.selectAll('circle')
+									.attr('cx', function(d) { return d.x = (d.source.x + d.target.x) * 0.5; })
+			        		.attr('cy', function(d) { return d.y = (d.source.y + d.target.y) * 0.5; });
 
 			    svg3.selectAll('.node')
 							// transform statement below prevents nodes from going beyond the dimensions of the svg3.
@@ -467,95 +497,11 @@
 							// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
 							.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.country]], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.country]], d.y)) + ')'; })
 
-			    link.selectAll('line')
-							.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)); })
-			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]], d.source.y)); })
-			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x)); })
-			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]], d.target.y)); })
-			  }
-		});
 
-		//
-		// d3.json('../assets/networks_of_war/networks_of_war.json', function(error, graph) {
-		//
-		//
-		// var margin = {top: 0, bottom: 15, left: 0, right: 0},
-		//     width = 800,
-		//     height = 450;
-		//
-		// // append the svg3 object to the body of the page
-		// var svg3 = d3.select('#war_network_analysis')
-		// 		.append('svg3')
-		// 		  .attr('width', width)
-		// 		  .attr('height', height)
-		// 			// .append('g')
-		// 		  .attr('transform',
-		// 		        'translate(' + margin.left + ',' + margin.top + ')');
-		//
-		// var color = d3.scale.category20(),
-		// 		maxRadius = 50,
-		// 		radius = d3.scale.linear()
-		// 												.domain([0, d3.max(graph.nodes, function(d) { return d.size ; })])
-		// 												.range([2.5, maxRadius]);
-		//
-		// 	var force = d3.layout.force()
-		// 	    .charge(-500)
-		// 	    .linkDistance(function(d) { return nodeRadiusDic[d.source.country] + nodeRadiusDic[d.target.country] + 30; })
-		// 	    .size([width, height]);
-		//
-		//   var linkNodes = [];
-		//
-		//   graph.links.forEach(function(link) {
-		//     linkNodes.push({
-		//       source: graph.nodes[link.source],
-		//       target: graph.nodes[link.target]
-		//     });
-		//   });
-		//
-		//   force
-		//       .nodes(graph.nodes.concat(linkNodes))
-		//       .links(graph.links)
-		//       .start();
-		//
-		//   var link = svg3.selectAll('.link')
-		//       .data(graph.links)
-		//     .enter().append('line')
-		//       .attr('class', 'link')
-		//       .style('stroke-width', function(d) { return Math.sqrt(d.bond); });
-		//
-		//   var node = svg3.selectAll('.node')
-		//       .data(graph.nodes)
-		//     .enter().append('circle')
-		//       .attr('class', 'node')
-    //       .attr('r', function(d) { return nodeRadiusDic[d.country]; })
-		//       .style('fill', 'red')
-		//       .call(force.drag);
-		//
-		//   node.append('title')
-		//       .text(function(d) { return d.country; });
-		//
-		//   var linkNode = svg3.selectAll('.link-node')
-		//       .data(linkNodes)
-		//     .enter().append('circle')
-		//       .attr('class', 'link-node')
-		//       .attr('r', function(d) { return nodeRadiusDic[d.country]; })
-		//       .style('fill', '#ccc');
-		//
-		//   force.on('tick', function() {
-		//     link.attr('x1', function(d) { return d.source.x; })
-		//         .attr('y1', function(d) { return d.source.y; })
-		//         .attr('x2', function(d) { return d.target.x; })
-		//         .attr('y2', function(d) { return d.target.y; });
-		//
-		//     node.attr('cx', function(d) { return d.x; })
-		//         .attr('cy', function(d) { return d.y; });
-		//
-		//     linkNode.attr('cx', function(d) { return d.x = (d.source.x + d.target.x) * 0.5; })
-		//         .attr('cy', function(d) { return d.y = (d.source.y + d.target.y) * 0.5; });
-		//   });
-		// });
-	}
-	})
+
+				  }
+			});
+		}})
 		</script>
 	</body>
 </html>

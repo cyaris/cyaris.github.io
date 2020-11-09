@@ -47,9 +47,9 @@
 	</head>
 	<body>
 		<!-- Load d3.js -->
-		<!-- <script src='https://d3js.org/d3.v4.min.js'></script> -->
 
-		<script src='//d3js.org/d3.v3.min.js'></script>
+		<!-- <script src='//d3js.org/d3.v3.min.js'></script> -->
+		<script src="https://d3js.org/d3.v4.js"></script>
 		<div id='hidden_project_explained' align='left' style='margin-bottom:15px;'>
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
@@ -319,10 +319,11 @@
 				else { sumOfAllRadiusInputs = 2;
 							nullRadiusSize = sumOfAllRadiusInputs/totalNodes; }
 
-				var formatDate = d3.time.format('%Y-%m-%d %S:%M:%S');
-				var color = d3.scale.linear().domain([1,2]).range(['lightgreen', 'violet'])
+				// var formatDate = d3.time.format('%Y-%m-%d %S:%M:%S');
+				// var formatDate = d3.timeParse("%Y-%m-%d"),
+				var color = d3.scaleLinear().domain([1,2]).range(['lightgreen', 'violet'])
 						maxRadius = 150,
-						radius = d3.scale.linear()
+						radius = d3.scaleLinear()
 															.domain([0, sumOfAllRadiusInputs])
 															.range([1, maxRadius]);
 
@@ -407,49 +408,52 @@
 						nodeIndices[d.country] = Object.keys(nodeIndices).length;
 				});
 
-				var force = d3.layout.force()
-				    .size([width, height])
-				    .charge(-1000)
-						// .friction(0.75)
-						.gravity(0.75)
-						// .charge(-3000)
-						// .gravity(1)
-						.linkStrength(0.50)
-						// .linkDistance(function(d) { return (nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]] + (nodeMargins['horizontal_name_shift'][nodeIndices[d.source.country]]/2) + (nodeMargins['horizontal_name_shift'][nodeIndices[d.target.country]]/2) + 75 ); });
-						.linkDistance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]])) * 2), 75); })
-						.nodes(graph.nodes.concat(linkNodes))
-			      .links(graph.links)
-		    		// .on('tick', tick)
-			      .start();
+				// var force = d3.layout.force()
+				//     .size([width, height])
+				//     .charge(-200)
+				// 		// .friction(0.75)
+				// 		.gravity(0.1)
+				// 		.linkStrength(0.35)
+				// 		// .linkDistance(function(d) { return (nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]] + (nodeMargins['horizontal_name_shift'][nodeIndices[d.source.country]]/2) + (nodeMargins['horizontal_name_shift'][nodeIndices[d.target.country]]/2) + 75 ); });
+				// 		.linkDistance(function(d) { return (nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]] + 75 ); });
 
-				var link = svg3.selectAll('.link')
+				var link = svg3.selectAll()
 			      .data(graph.links)
-			    .enter().append('line')
-						.attr("class", "link")
-						.attr('stroke', '#696969')
-			      .style('stroke-width', function(d) { return (d.lines * 2 - 1) * 2 + 'px'; })
-						.call(force.drag);
+			    .enter().append('g')
+						// .call(force.drag);
 
-			  // link.filter(function(d) { return d.lines > 1; })
-				// 		.append('line')
-				// 		.attr('stroke', '#fff')
-				// 		.attr('stroke-width', '2px');
+			  link.append('line')
+						.attr('stroke', '#696969')
+			      .style('stroke-width', function(d) { return (d.lines * 2 - 1) * 2 + 'px'; });
+
+			  link.filter(function(d) { return d.lines > 1; })
+						.append('line')
+						.attr('stroke', '#fff')
+						.attr('stroke-width', '2px');
+
+				var linkNode = svg3.selectAll()
+			      .data(linkNodes)
+			    .enter().append('g')
+			      // .call(force.drag);
 
 				// appending invisible circle to decrease possibility of overlap
-				var linkNode = svg3.selectAll('.link-node')
-			      .data(linkNodes)
-					.enter().append('circle')
-						.attr("class", "link-node")
+				linkNode.append('circle')
 						// .attr('stroke', 'black')
 						// .attr('stroke-width', 1)
 						// .attr('fill', 'pink')
-						.attr('opacity', 0)
+						.attr('opacity', 1)
 			      .attr('r', linkNodeSize);
 
-				var node = svg3.selectAll('.node')
+			  var node = svg3.selectAll()
 			      .data(graph.nodes)
-			    .enter().append('circle')
+			    .enter().append('g')
 			      .attr('class', 'node')
+						.call(d3.drag()
+							.on("start", dragstarted)
+							.on("drag", dragged)
+							.on("end", dragended));
+
+			  node.append('circle')
 						.attr('stroke', 'black')
 						.attr('stroke-width', 1)
 						// .attr('opacity', 0.5)
@@ -461,55 +465,84 @@
 							{ return color(1.5); }
 							else
 							{ return color(d.side); }
-						})
-						.call(force.drag);
+							});
 
-				var nodeText1 = svg3.selectAll('.node_text_1')
-			      .data(graph.nodes)
-			    .enter().append('text')
-			      .attr('class', 'node_text_1')
+			  node.append('text')
 						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.country]]; })
 			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.country]]; })
 						.attr('font-size', '12px')
 			      .attr('text-anchor', 'middle')
-			      .text(function(d) { return d.country; })
-						.call(force.drag);
+			      .text(function(d) { return d.country; });
 
-				var nodeText2 = svg3.selectAll('.node_text_2')
-			      .data(graph.nodes)
-			    .enter().append('text')
-			      .attr('class', 'node_text_2')
+				node.append('text')
 						.attr('dx', function(d) { return nodeMargins['size'][nodeIndices[d.country]] * -1.5 })
 			      .attr('dy', function(d) { return nodeMargins['size'][nodeIndices[d.country]] * 0.75 })
 						.attr('font-size', '15px')
 			      .attr('text-anchor', 'middle')
 			      .text(function(d) {
 							if ( isNaN(battleDeaths[d.country])==true )
-								{ return '?' }})
-						.call(force.drag);
+								{ return '?' }});
 
-			  force.on("tick", function() {
+				var simulation = d3.forceSimulation()
+				    .force("link", d3.forceLink())
+				    .force("charge", d3.forceManyBody().strength(-20))
+				    .force("center", d3.forceCenter(width/2, height/2));
+
+				simulation
+						.nodes(graph.nodes.concat(linkNodes))
+		    		.on('tick', ticked);
+
+				simulation.force("link")
+			      .links(graph.links);
+
+			  function ticked() {
+
+					// var nodes = force.nodes(d),
+					// 		k = d.alpha * 0.1,
+					// 		q = d3.geom.quadtree(nodes),
+					// 		i = 0,
+					// 		n = nodes.length;
+					//
+					// while (++i < n) q.visit(d3.forceCollide()(nodes[i]));
 
 					// transform statement below prevents nodes from going beyond the dimensions of the svg3.
 					// boundaries are then limited even further since when they get close to the edge of the svg3, items like text begin to be cut off.
 					// needs to also be adjusted for the country name label since this could be positioned below the node
 					// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
 					// includes transformation for nodes and the text itself
-					node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.country]], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.country]], d.y)) + ')'; })
-					nodeText1.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.country]], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.country]], d.y)) + ')'; })
-					nodeText2.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.country]], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.country]], d.y)) + ')'; })
+					svg3.selectAll('.node')
+							.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.country]], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.country]], d.y)) + ')'; })
 
-					linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)) + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x))) * 0.5; })
-									// increasing y limits by 20 to decrease likelihood of getting trapped in top or bottom
-	        				.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]] + 20, Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]] - 20, d.source.y)) + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]] + 20, Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]] - 20, d.target.y))) * 0.5; });
-
-					link.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)); })
+					link.selectAll('line')
+							.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)); })
 			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]], d.source.y)); })
 			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x)); })
 			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]], d.target.y)); })
 
+					linkNode.selectAll('circle')
+							.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)) + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x))) * 0.5; })
+							// increasing y limits by 20 to decrease likelihood of getting trapped in top or bottom
+	        		.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]] + 20, Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]] - 20, d.source.y)) + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]] + 20, Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]] - 20, d.target.y))) * 0.5; });
 
-				  })
+				  }
+
+
+				function dragstarted(d) {
+				  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+				  d.fx = d.x;
+				  d.fy = d.y;
+				}
+
+				function dragged(d) {
+				  d.fx = d3.event.x;
+				  d.fy = d3.event.y;
+				}
+
+				function dragended(d) {
+				  if (!d3.event.active) simulation.alphaTarget(0);
+				  d.fx = null;
+				  d.fy = null;
+				}
 			});
 		}})
 		</script>

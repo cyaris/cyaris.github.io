@@ -137,7 +137,7 @@
 
 		function nameHorizontalShift(svgInput, nodeRadius, countryName) {
 			// adjusting text position when it does not fit inside the node
-			if ( nameVerticalShift(svgInput, nodeRadius, countryName) > 3.5 )
+			if ( nameVerticalShift(svgInput, nodeRadius, countryName) > 3.5)
 			{ return 22.5 }
 			else
 			{ return 0 };
@@ -352,9 +352,9 @@
 							'added_top_margin': [],
 							'added_bottom_margin': [],
 							'added_left_margin': [],
-							'added_right_margin': [],
+							'added_right_margin': []
 							// adding array for the linknodes (midnodes) between each link
-							'added_link_node_margin': []
+							// 'added_link_node_margin': []
 						},
 						linkNodes = [],
 						linkNodeSize = 10;
@@ -381,12 +381,12 @@
 						currentHorizontalShift = nameHorizontalShift(svg3, currentRadiusSize, d.country),
 						nodeMargins['vertical_name_shift'].push(currentVerticalShift),
 						nodeMargins['horizontal_name_shift'].push(currentHorizontalShift),
-						// the node, plus a little extra
+						// the node, plus vertical shift, plus a little extra (and a little extra more to account for text itself
 						// text is not a factor since it is always below or inside the node
-						nodeMargins['added_top_margin'].push(currentRadiusSize + addedMarginSize),
+						nodeMargins['added_top_margin'].push(currentRadiusSize + currentVerticalShift + 5 + addedMarginSize),
 						// the node, plus the added space for the name shift, plus a little extra
 						nodeMargins['added_bottom_margin'].push(currentRadiusSize + currentVerticalShift + addedMarginSize);
-						if ( currentHorizontalShift > 0  && (currentNameLengthHalf + currentHorizontalShift) > currentRadiusSize )
+						if ( currentHorizontalShift > 0 )
 						// the distance from the middle of the node to the left, not including the radius because that's overlap
 						{ nodeMargins['added_left_margin'].push(currentNameLengthHalf + currentHorizontalShift + addedMarginSize); }
 						else
@@ -395,13 +395,13 @@
 						{ nodeMargins['added_left_margin'].push(currentRadiusSize + addedMarginSize); }
 						if ( currentHorizontalShift > 0 )
 						// half the length of the name on the screen, plus the amount shifted to the right, plus a little extra
-						 { nodeMargins['added_right_margin'].push(addedMarginSize + currentNameLengthHalf + currentHorizontalShift); }
+						 { nodeMargins['added_right_margin'].push(currentNameLengthHalf + currentHorizontalShift + addedMarginSize); }
 						else
 						// the node plus a little extra
 						// don't need to adjust for the name if it is inside the node
 						{ nodeMargins['added_right_margin'].push(currentRadiusSize + addedMarginSize); }
 						// margin for linknodes, text will not matter
-						nodeMargins['added_link_node_margin'].push(currentRadiusSize + addedMarginSize);
+						// nodeMargins['added_link_node_margin'].push(currentRadiusSize + addedMarginSize);
 						// adding each country to the array of indices
 						// this will be used to indice through the nodeMargins by country
 						nodeIndices[d.country] = Object.keys(nodeIndices).length;
@@ -409,86 +409,84 @@
 
 				var force = d3.layout.force()
 				    .size([width, height])
-				    .charge(-1000)
-						// .friction(0.75)
+				    .charge(-1500)
+						.friction(0.5)
+						.gravity(1)
 						.gravity(0.75)
-						// .charge(-3000)
-						// .gravity(1)
-						.linkStrength(0.50)
-						// .linkDistance(function(d) { return (nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]] + (nodeMargins['horizontal_name_shift'][nodeIndices[d.source.country]]/2) + (nodeMargins['horizontal_name_shift'][nodeIndices[d.target.country]]/2) + 75 ); });
+						.linkStrength(0.40)
 						.linkDistance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]])) * 2), 75); })
 						.nodes(graph.nodes.concat(linkNodes))
 			      .links(graph.links)
-		    		// .on('tick', tick)
 			      .start();
 
-				var link = svg3.selectAll('.link')
+				// var link = svg3.selectAll('.link')
+				var link = svg3.selectAll()
 			      .data(graph.links)
 			    .enter().append('line')
-						.attr("class", "link")
-						.attr('stroke', '#696969')
-			      .style('stroke-width', function(d) { return (d.lines * 2 - 1) * 2 + 'px'; })
+						.attr('stroke', 'black')
+			      .style('stroke-width', 0.5)
 						.call(force.drag);
 
-			  // link.filter(function(d) { return d.lines > 1; })
-				// 		.append('line')
-				// 		.attr('stroke', '#fff')
-				// 		.attr('stroke-width', '2px');
-
 				// appending invisible circle to decrease possibility of overlap
-				var linkNode = svg3.selectAll('.link-node')
+				var linkNode = svg3.selectAll()
 			      .data(linkNodes)
 					.enter().append('circle')
-						.attr("class", "link-node")
-						// .attr('stroke', 'black')
-						// .attr('stroke-width', 1)
 						// .attr('fill', 'pink')
 						.attr('opacity', 0)
 			      .attr('r', linkNodeSize);
 
-				var node = svg3.selectAll('.node')
+				var node = svg3.selectAll()
 			      .data(graph.nodes)
-			    .enter().append('circle')
-			      .attr('class', 'node')
-						.attr('stroke', 'black')
-						.attr('stroke-width', 1)
-						// .attr('opacity', 0.5)
-			      .attr('r', function(d) { return nodeMargins['size'][nodeIndices[d.country]]; })
-			      .style('fill', function(d) {
-							if ( d.side==3 )
-							// returning a color in the middle of the spectrum if the side is 3
-							// this would mean they were on side 1 and side 2 (1+2)
-							{ return color(1.5); }
-							else
-							{ return color(d.side); }
-						})
+			    .enter().append('g')
 						.call(force.drag);
 
-				var nodeText1 = svg3.selectAll('.node_text_1')
-			      .data(graph.nodes)
-			    .enter().append('text')
-			      .attr('class', 'node_text_1')
+				node.append('circle')
+					.attr('stroke', 'black')
+					.attr('stroke-width', 1)
+					// .attr('opacity', 0.5)
+		      .attr('r', function(d) { return nodeMargins['size'][nodeIndices[d.country]]; })
+					// .attr('opacity', 0.5)
+		      .style('fill', function(d) {
+						if ( d.side==3 )
+						// returning a color in the middle of the spectrum if the side is 3
+						// this would mean they were on side 1 and side 2 (1 + 2)
+						{ return color(1.5); }
+						else
+						{ return color(d.side); }
+					});
+
+				node.append('text')
+						.attr('id', function(d) { return "label_" + nodeIndices[d.country]; })
 						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.country]]; })
 			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.country]]; })
 						.attr('font-size', '12px')
 			      .attr('text-anchor', 'middle')
-			      .text(function(d) { return d.country; })
-						.call(force.drag);
+			      .text(function(d) { return d.country; });
 
-				var nodeText2 = svg3.selectAll('.node_text_2')
-			      .data(graph.nodes)
-			    .enter().append('text')
-			      .attr('class', 'node_text_2')
+				node.append('text')
 						.attr('dx', function(d) { return nodeMargins['size'][nodeIndices[d.country]] * -1.5 })
 			      .attr('dy', function(d) { return nodeMargins['size'][nodeIndices[d.country]] * 0.75 })
 						.attr('font-size', '15px')
 			      .attr('text-anchor', 'middle')
 			      .text(function(d) {
 							if ( isNaN(battleDeaths[d.country])==true )
-								{ return '?' }})
-						.call(force.drag);
+								{ return '?' }});
 
-			  force.on("tick", function() {
+			  force.on('tick', function() {
+
+					node.each(function(d, i) {
+						if ( nodeMargins['horizontal_name_shift'][nodeIndices[d.country]]!=0 )
+						{
+							if ( d.x < width * 0.5 )
+							{ d3.select('#label_' + i).transition().duration(100).attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.country]] * -1; })}
+							else
+							{ d3.select('#label_' + i).transition().duration(100).attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.country]]; })}
+							if ( d.y < height * 0.5 )
+							{ d3.select('#label_' + i).transition().duration(100).attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.country]] * -1; })}
+							else
+							{ d3.select('#label_' + i).transition().duration(100).attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.country]]; })}
+						 }
+				 });
 
 					// transform statement below prevents nodes from going beyond the dimensions of the svg3.
 					// boundaries are then limited even further since when they get close to the edge of the svg3, items like text begin to be cut off.
@@ -496,12 +494,11 @@
 					// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
 					// includes transformation for nodes and the text itself
 					node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.country]], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.country]], d.y)) + ')'; })
-					nodeText1.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.country]], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.country]], d.y)) + ')'; })
-					nodeText2.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.country]], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.country]], d.y)) + ')'; })
 
 					linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)) + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x))) * 0.5; })
 									// increasing y limits by 20 to decrease likelihood of getting trapped in top or bottom
-	        				.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]] + 20, Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]] - 20, d.source.y)) + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]] + 20, Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]] - 20, d.target.y))) * 0.5; });
+	        				// .attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]] + 20, Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]] - 20, d.source.y)) + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]] + 20, Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]] - 20, d.target.y))) * 0.5; });
+									.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]], d.source.y)) + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]], d.target.y))) * 0.5; });
 
 					link.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)); })
 			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]], d.source.y)); })

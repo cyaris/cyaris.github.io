@@ -66,6 +66,7 @@
 		<script src='https://d3js.org/d3.v5.min.js'></script>
 		<script>
 
+		// new code section: functions with non-built-in parameters (functions not of d or something like that).
 		function getTextWidth(svgInput, textInput, fontSize) {
 
 			// obtaining length of any textinput (based on default font size and font family)
@@ -130,7 +131,7 @@
 
 		function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
 			// adjusting text position when it does not fit inside the node
-			if ( nodeRadius * 2 > getTextWidth(svgInput, nameInput, textSize) + 10 )
+			if ( nodeRadius * 2 > getTextWidth(svgInput, nameInput, textSize) + 12.5 )
 			{ return true }
 			else
 			{ return false };
@@ -202,12 +203,13 @@
 			var warNameMaxLength = warNameLengths.reduce(function(a, b) { return Math.max(a, b);});
 			// removing all svgs to this point (only includes dummy svg)
 			d3.selectAll('svg').remove();
-			// start of code for svg1
+			// new code section: start of code for svg1
 			// adding createMenu function here so that the as much can be pre-defined as possible.
 			// this will reduce runtime needed to re-execute the menu upon returning
 			var createMenu = function() {
 				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
 				var menuMouseOver = function(d) {
+
 						d3.select(this)
 							.style('stroke-width', 2)
 							.style('stroke-opacity', 0.75)
@@ -215,6 +217,7 @@
 							.style('fill-opacity', 0.20);
 				 },
 				 	menuMouseLeave = function(d) {
+
 						d3.select(this)
 							.style('stroke-width', 1)
 							.style('stroke-opacity', 0.15)
@@ -262,11 +265,11 @@
 					};
 				// var randomFileName = fileDic['file_name'][Math.floor(Math.random() * Object.keys(fileDic['file_name']).length)];
 		}
-		// calling the war menu functio upon page load
+		// calling the war menu function upon page load
 		createMenu();
 
 		var createNetworkGraph = function(fileName) {
-			// start of code for svg2
+			// new code section: start of code for svg2
 			// reading in the data to create the network graph
 			d3.json('../assets/the_networks_of_war/json_files_by_war/' + fileName).then(function(graph) {
 
@@ -310,9 +313,9 @@
 				addStdText(svg2, null, 6, 22.5, '15px', 0, '↖ Menu');
 				addStdText(svg2, null, 0, 92.5, '15px', 0, warDic['war_name']);
 
-				// start of code for svg3
+				// new code section: start of code for svg3
 				function neighborNodes(a, b) {
-						return a == b || adjlist[a + '-' + b];
+						return a == b || firstDegreeCheck[a + '-' + b];
 				}
 
 				function fixna(x) {
@@ -320,13 +323,17 @@
 						return 0;
 				}
 
-				function focus(d) {
+				function nodeMouseOver(d) {
+						d3.select(this).style('cursor', 'pointer');
 						var index = d3.select(d3.event.target).datum().index;
+						// accenting first degree network for that node
+						// making all objects not associated with that node's first degree network opaque
 						node.style('opacity', function(o) {
 							// not a neighbor node, make it opaque
 							if ( neighborNodes(index, o.index) != 1 )
-								return 0.15;
-						});
+								// return 0.15;
+								return 0.10;
+						})
 						// // not sure why line below did not work.
 						// .style('stroke-width', function(o) {
 						// 	// neighbor node, increase stroke width
@@ -334,12 +341,15 @@
 						// 		return 10;
 						// 		// return 2;
 						// });
+						// accenting first degree links for that node
+						// making all links not associated with that node's first degree network opaque
 						link.style('opacity', function(o) {
 							// make non-neighbor links opaque
 							if ( o.source.index == index || o.target.index == index )
 								{return 1; }
 							else
-							{ return 0.15; }
+							// { return 0.15; }
+							{ return 0.10; }
 					})
 					.style('stroke-width', function(o) {
 						// increase stroke width for neighbor links
@@ -350,7 +360,8 @@
 					});
 				}
 
-				function unfocus() {
+				function nodeMouseLeave() {
+						// reverting all changes in mouseover upon mouseleave
 					 // nodeLabel.attr('display', 'block');
 					 node.style('opacity', 1);
 					 link.style('opacity', 1).style('stroke-width', 1);
@@ -476,11 +487,11 @@
 				    .force('link', d3.forceLink(graph.links).id(function(d) {return d.id; }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]])) * 2), 75); }).strength(1))
 				    .on('tick', ticked);
 
-				var adjlist = [];
+				var firstDegreeCheck = [];
 
 				graph.links.forEach(function(d) {
-				    adjlist[d.source.index + '-' + d.target.index] = true;
-				    adjlist[d.target.index + '-' + d.source.index] = true;
+				    firstDegreeCheck[d.source.index + '-' + d.target.index] = true;
+				    firstDegreeCheck[d.target.index + '-' + d.source.index] = true;
 				});
 
 				var link = svg3.selectAll()
@@ -501,8 +512,8 @@
 				var node = svg3.selectAll()
 			      .data(graph.nodes)
 			    .enter().append('g')
-							.on('mouseover', focus)
-							.on('mouseout', unfocus)
+							.on('mouseover', nodeMouseOver)
+							.on('mouseleave', nodeMouseLeave)
 							.call(d3.drag()
 					        .on('start', dragstarted)
 					        .on('drag', dragged)
@@ -545,6 +556,9 @@
 					node.each(function(d, i) {
 						if ( nodeMargins['name_fits_in_node'][nodeIndices[d.country]]==false )
 						{
+							// need to add two additional if statements,
+							// one for if the label is at max y, and one for if the label is at min y.
+							// some sort of randomization will need to determine what to do in these cases to prevent overlap.
 							if ( d.x < width * 0.5 && d.y < height * 0.5 )
 							{ d3.select('#label_' + i).transition().duration(100)
 							.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.country]] * -1; })
@@ -583,7 +597,6 @@
 			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]], d.source.y)); })
 			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x)); })
 			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]], d.target.y)); })
-
 
 				  }
 

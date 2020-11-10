@@ -362,8 +362,11 @@
 					battleDeaths = {},
 					currentRadiusSize = 0,
 					nodeIndices = {},
-					// base value that will be used to calculate the values appended to the arrays above
-					addedMarginSize = 7.5,
+					linkNodes = [],
+					linkNodeSize = 10,
+					// base value that will be used to calculate the values appended to the arrays above.
+					// including linkNodeSize inside of addedMarginSize.
+					addedMarginSize = 2.5 + linkNodeSize,
 					// dic for size of all the country nodes, and size needed around them according to borders and text adjustments
 					nodeMargins = {
 						'name': [],
@@ -380,9 +383,7 @@
 						'added_bottom_margin': [],
 						'added_left_margin': [],
 						'added_right_margin': []
-					},
-					linkNodes = [],
-					linkNodeSize = 10;
+					};
 
 					graph.links.forEach(function(link) {
 						linkNodes.push({
@@ -556,7 +557,7 @@
 						}
 							else if ( d.x < width * 0.5 && d.y >= height * 0.5 )
 							{ d3.select('#label_' + i).transition().duration(100)
-							.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.country]] * 1; })
+							.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.country]] * -1; })
 							.attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.country]]; })
 						}
 							else

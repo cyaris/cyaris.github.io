@@ -202,45 +202,31 @@
 			var warNameMaxLength = warNameLengths.reduce(function(a, b) { return Math.max(a, b);});
 			// removing all svgs to this point (only includes dummy svg)
 			d3.selectAll('svg').remove();
-			// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
-			var menuMouseOver = function(d) {
-					d3.select(this)
-						.style('stroke-width', 2)
-						.style('stroke-opacity', 0.75)
-						.style('fill', 'rgb(26,188,156)')
-						.style('fill-opacity', 0.20);
-			 },
-			 	menuMouseLeave = function(d) {
-					d3.select(this)
-						.style('stroke-width', 1)
-						.style('stroke-opacity', 0.15)
-						.style('fill', 'black')
-						.style('fill-opacity', 0.075);
-				},
-				menuChoice = function(d) {
-					// removing all current svgs
-					d3.selectAll('svg').remove();
-					createNetworkGraph(d3.select(this).attr('id'));
-					window.scrollTo(0, 325);
-				},
-				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
-				backToMenuMouseOver = function(d) {
-					d3.select(this)
-						.style('stroke-width', 2)
-						.style('cursor', 'pointer');
-			 },
-				 backToMenuMouseLeave = function(d) {
-						d3.select(this)
-							.style('stroke-width', 1)
-				},
-					backToMenuClick = function(d) {
-						// removing all current svgs
-						d3.selectAll('svg').remove();
-						createMenu();
-				};
+			// start of code for svg1
 			// adding createMenu function here so that the as much can be pre-defined as possible.
 			// this will reduce runtime needed to re-execute the menu upon returning
 			var createMenu = function() {
+				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
+				var menuMouseOver = function(d) {
+						d3.select(this)
+							.style('stroke-width', 2)
+							.style('stroke-opacity', 0.75)
+							.style('fill', 'rgb(26,188,156)')
+							.style('fill-opacity', 0.20);
+				 },
+				 	menuMouseLeave = function(d) {
+						d3.select(this)
+							.style('stroke-width', 1)
+							.style('stroke-opacity', 0.15)
+							.style('fill', 'black')
+							.style('fill-opacity', 0.075);
+					},
+					menuChoice = function(d) {
+						// removing all current svgs
+						d3.selectAll('svg').remove();
+						createNetworkGraph(d3.select(this).attr('id'));
+						window.scrollTo(0, 325);
+					};
 
 				var svg1 = d3.select('#war_menu')
 						.append('svg')
@@ -280,9 +266,25 @@
 		createMenu();
 
 		var createNetworkGraph = function(fileName) {
+			// start of code for svg2
 			// reading in the data to create the network graph
 			d3.json('../assets/the_networks_of_war/json_files_by_war/' + fileName).then(function(graph) {
 
+				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
+				var backToMenuMouseOver = function(d) {
+						d3.select(this)
+							.style('stroke-width', 2)
+							.style('cursor', 'pointer');
+				 },
+					 backToMenuMouseLeave = function(d) {
+							d3.select(this)
+								.style('stroke-width', 1)
+					},
+						backToMenuClick = function(d) {
+							// removing all current svgs
+							d3.selectAll('svg').remove();
+							createMenu();
+					};
 				// adding area for descriptive statistics to be activated upon hovering nodes.
 				var svg2 = d3.select('#hover_statistics')
 						.append('svg')
@@ -308,12 +310,52 @@
 				addStdText(svg2, null, 6, 22.5, '15px', 0, '↖ Menu');
 				addStdText(svg2, null, 0, 92.5, '15px', 0, warDic['war_name']);
 
+				// start of code for svg3
+				function neighborNodes(a, b) {
+						return a == b || adjlist[a + '-' + b];
+				}
 
-				// var label = {
-				//     'nodes': [],
-				// 		// 'node_sizes': [],
-				//     'links': [],
-				// 	},
+				function fixna(x) {
+						if (isFinite(x)) return x;
+						return 0;
+				}
+
+				function focus(d) {
+						var index = d3.select(d3.event.target).datum().index;
+						node.style('opacity', function(o) {
+							// not a neighbor node, make it opaque
+							if ( neighborNodes(index, o.index) != 1 )
+								return 0.15;
+						});
+						// // not sure why line below did not work.
+						// .style('stroke-width', function(o) {
+						// 	// neighbor node, increase stroke width
+						// 	if ( neighborNodes(index, o.index) == 1 )
+						// 		return 10;
+						// 		// return 2;
+						// });
+						link.style('opacity', function(o) {
+							// make non-neighbor links opaque
+							if ( o.source.index == index || o.target.index == index )
+								{return 1; }
+							else
+							{ return 0.15; }
+					})
+					.style('stroke-width', function(o) {
+						// increase stroke width for neighbor links
+						if ( o.source.index == index || o.target.index == index )
+							{return 1.5; }
+						// else
+						// { return 1; }
+					});
+				}
+
+				function unfocus() {
+					 // nodeLabel.attr('display', 'block');
+					 node.style('opacity', 1);
+					 link.style('opacity', 1).style('stroke-width', 1);
+				}
+
 				var sumOfAllRadiusInputs = 0,
 					nullBattleDeaths = 0,
 					nullRadiusSize = 0,
@@ -445,7 +487,7 @@
 				    .enter()
 				    .append('line')
 				    .attr('stroke', '#aaa')
-				    .attr('stroke-width', '1px');
+				    .attr('stroke-width', 1);
 
 				// appending invisible circle to decrease possibility of overlap
 				var linkNode = svg3.selectAll()
@@ -466,6 +508,7 @@
 					        .on('end', dragended));
 
 				node.append('circle')
+					// .attr('class', 'node_circles')
 					.attr('stroke', 'black')
 					.attr('stroke-width', 1)
 		      .attr('r', function(d) { return nodeMargins['size'][nodeIndices[d.country]]; })
@@ -542,31 +585,6 @@
 
 
 				  }
-
-				function neighborNodes(a, b) {
-				    return a == b || adjlist[a + '-' + b];
-				}
-
-				function fixna(x) {
-				    if (isFinite(x)) return x;
-				    return 0;
-				}
-
-				function focus(d) {
-				    var index = d3.select(d3.event.target).datum().index;
-				    node.style('opacity', function(o) {
-				        return neighborNodes(index, o.index) ? 1 : 0.1;
-				    });
-				    link.style('opacity', function(o) {
-				        return o.source.index == index || o.target.index == index ? 1 : 0.1;
-				    });
-				}
-
-				function unfocus() {
-				   // nodeLabel.attr('display', 'block');
-				   node.style('opacity', 1);
-				   link.style('opacity', 1);
-				}
 
 				function dragstarted(d) {
 				    d3.event.sourceEvent.stopPropagation();

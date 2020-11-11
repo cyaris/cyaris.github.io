@@ -319,6 +319,8 @@
 
 				var linkNodes = [],
 						linkNodeSize = 10,
+						alliances = [],
+						contiguity = [],
 						sumOfAllRadiusInputs = 0,
 						nullBattleDeaths = 0,
 						nullRadiusSize = 0,
@@ -327,10 +329,22 @@
 						nodeIndices = {};
 
 					graph.links.forEach(function(link) {
+
+						if ( parseInt(link.defense_alliance) + parseInt(link.neutrality_alliance) + parseInt(link.entente_alliance) > 0 )
+						{ alliances.push(1); }
+						else
+						{ alliances.push(0); }
+
+						if ( parseInt(link.total_contiguity) > 0 )
+						{ contiguity.push(1); }
+						else
+						{ contiguity.push(0); }
+
 						linkNodes.push({
 							source: graph.nodes[link.source],
 							target: graph.nodes[link.target]
 						});
+
 					});
 
 					// first defining the data that will ifnnfluence how the svg is defnined
@@ -440,12 +454,13 @@
 				    .force('link', d3.forceLink(graph.links).id(function(d) {return d.id; }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]])) * 2), 75); }).strength(1))
 				    .on('tick', ticked);
 
+				var linkStrokeWidth = 1;
 				var link = svg3.selectAll()
 				    .data(graph.links)
 				    .enter()
 				    .append('line')
 				    .attr('stroke', '#aaa')
-				    .attr('stroke-width', 1);
+				    .attr('stroke-width', linkStrokeWidth);
 
 				// creating inputs for the function to check whether each node is part of the selected node's primary network.
 				// I have no idea why but this line doesn't work if I move it anywhere else.
@@ -455,6 +470,39 @@
 				    firstDegreeLinks[d.source.index + '-' + d.target.index] = true;
 				    firstDegreeLinks[d.target.index + '-' + d.source.index] = true;
 				});
+
+				// overlaying lines of different styles
+				// this will be used to accent alliances between nodes
+				var linkAlliancesStrokeWidth = 2;
+				var linkAlliances = svg3.selectAll()
+						.data(graph.links)
+						.enter()
+						.append('line')
+						.attr('stroke', function(d, i) {
+							if ( alliances[i] > 0 )
+							{ return 'red'; }
+							else
+							{ return 'transparent'; }
+						})
+						.attr('stroke-dasharray', ("3, 12"))
+						.attr('stroke-width', linkAlliancesStrokeWidth);
+
+				// overlaying lines of different styles
+				// this will be used to accent contiguity between nodes
+				var linkContiguityStrokeWidth = 2;
+				var linkContiguity = svg3.selectAll()
+						.data(graph.links)
+						.enter()
+						.append('line')
+						.attr('stroke', function(d, i) {
+							if ( contiguity[i] > 0 )
+							{ return 'blue'; }
+							else
+							{ return 'transparent'; }
+						})
+						.attr('stroke-dasharray', ("3, 12"))
+						.attr('stroke-dashoffset', -7.5)
+						.attr('stroke-width', linkContiguityStrokeWidth);
 
 				// appending invisible circle to decrease possibility of overlap
 				var linkNode = svg3.selectAll()
@@ -514,14 +562,32 @@
 						return 0;
 				};
 
+				function nodeMouseOverForLinks(linkInput, indexInput, strokWidthInput) {
+					// accenting first degree links for that node
+					// making all links not associated with that node's first degree network opaque
+					linkInput.style('opacity', function(o) {
+										// make non-neighbor links opaque
+										if ( o.source.index == indexInput || o.target.index == indexInput )
+											{ return 1; }
+										else
+										{ return 0.15; }
+									})
+									.style('stroke-width', function(o) {
+										// increase stroke width for neighbor links
+										if ( o.source.index == indexInput || o.target.index == indexInput )
+											{ return strokWidthInput + 0.5 }
+									});
+
+
+				}
 				function nodeMouseOver(d) {
 						d3.select(this).style('cursor', 'pointer');
-						var index = d3.select(d3.event.target).datum().index;
+						var eventTargetIndex = d3.select(d3.event.target).datum().index;
 						// accenting first degree network for that node
 						// making all objects not associated with that node's first degree network opaque
 						node.style('opacity', function(o) {
 							// not a neighbor node, make it opaque
-							if ( firstDegreeCheck(index, o.index) != 1 )
+							if ( firstDegreeCheck(eventTargetIndex, o.index) != 1 )
 								{ return 0.15; }
 						});
 						// // not sure why line below did not work.
@@ -531,20 +597,10 @@
 						// 		return 10;
 						// 		// return 2;
 						// });
-						// accenting first degree links for that node
-						// making all links not associated with that node's first degree network opaque
-						link.style('opacity', function(o) {
-							// make non-neighbor links opaque
-							if ( o.source.index == index || o.target.index == index )
-								{return 1; }
-							else
-							{ return 0.15; }
-						})
-								.style('stroke-width', function(o) {
-									// increase stroke width for neighbor links
-									if ( o.source.index == index || o.target.index == index )
-										{return 1.5; }
-								});
+
+						nodeMouseOverForLinks(link, eventTargetIndex, linkStrokeWidth);
+						nodeMouseOverForLinks(linkAlliances, eventTargetIndex, linkAlliancesStrokeWidth);
+						nodeMouseOverForLinks(linkContiguity, eventTargetIndex, linkContiguityStrokeWidth);
 				};
 
 				function nodeMouseLeave() {
@@ -552,6 +608,8 @@
 					 // nodeLabel.attr('display', 'block');
 					 node.style('opacity', 1);
 					 link.style('opacity', 1).style('stroke-width', 1);
+					 linkAlliances.style('opacity', 1).style('stroke-width', 1.5);
+					 linkContiguity.style('opacity', 1).style('stroke-width', 1.5);
 				};
 
 			  function ticked() {
@@ -601,9 +659,21 @@
 			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x)); })
 			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]], d.target.y)); })
 
+					linkAlliances.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)); })
+					        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]], d.source.y)); })
+					        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x)); })
+					        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]], d.target.y)); })
+
+					linkContiguity.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.country]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.country]], d.source.x)); })
+								        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.country]], d.source.y)); })
+								        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.country]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.country]], d.target.x)); })
+								        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.country]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.country]], d.target.y)); })
+
 				  }
 
 				function dragstarted(d) {
+						// need to figure out why cursor is being interfered when drag has not ended
+						d3.select(this).style('cursor', 'grab');
 				    d3.event.sourceEvent.stopPropagation();
 				    if (!d3.event.active) graphLayout.alphaTarget(0.3).restart();
 				    d.fx = d.x;
@@ -611,11 +681,15 @@
 				}
 
 				function dragged(d) {
+						// need to figure out why cursor is being interfered when drag has not ended
+						d3.select(this).style('cursor', 'grab');
 				    d.fx = d3.event.x;
 				    d.fy = d3.event.y;
 				}
 
 				function dragended(d) {
+						// need to figure out why cursor is being interfered when drag has not ended
+						d3.select(this).style('cursor', 'pointer');
 				    if (!d3.event.active) graphLayout.alphaTarget(0);
 				    d.fx = null;
 				    d.fy = null;

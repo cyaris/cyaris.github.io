@@ -314,8 +314,8 @@
 				addStdText(svg2, null, 0, 92.5, '15px', 0, warDic['war_name']);
 
 				// new code section: start of code for svg3
-				function neighborNodes(a, b) {
-						return a == b || firstDegreeCheck[a + '-' + b];
+				function firstDegreeCheck(a, b) {
+						return a == b || firstDegreeLinks[a + '-' + b];
 				}
 
 				function fixna(x) {
@@ -330,14 +330,14 @@
 						// making all objects not associated with that node's first degree network opaque
 						node.style('opacity', function(o) {
 							// not a neighbor node, make it opaque
-							if ( neighborNodes(index, o.index) != 1 )
-								// return 0.15;
-								return 0.10;
+							if ( firstDegreeCheck(index, o.index) != 1 )
+								return 0.15;
+								// return 0.10;
 						})
 						// // not sure why line below did not work.
 						// .style('stroke-width', function(o) {
 						// 	// neighbor node, increase stroke width
-						// 	if ( neighborNodes(index, o.index) == 1 )
+						// 	if ( firstDegreeCheck(index, o.index) == 1 )
 						// 		return 10;
 						// 		// return 2;
 						// });
@@ -348,8 +348,8 @@
 							if ( o.source.index == index || o.target.index == index )
 								{return 1; }
 							else
-							// { return 0.15; }
-							{ return 0.10; }
+							{ return 0.15; }
+							// { return 0.10; }
 					})
 					.style('stroke-width', function(o) {
 						// increase stroke width for neighbor links
@@ -367,40 +367,43 @@
 					 link.style('opacity', 1).style('stroke-width', 1);
 				}
 
-				var sumOfAllRadiusInputs = 0,
-					nullBattleDeaths = 0,
-					nullRadiusSize = 0,
-					battleDeaths = {},
-					currentRadiusSize = 0,
-					nodeIndices = {},
-					linkNodes = [],
-					linkNodeSize = 10,
-					// base value that will be used to calculate the values appended to the arrays above.
-					// including linkNodeSize inside of addedMarginSize.
-					addedMarginSize = 2.5 + linkNodeSize,
-					// dic for size of all the country nodes, and size needed around them according to borders and text adjustments
-					nodeMargins = {
-						'name': [],
-						'size': [],
-						// array for vertical distance each text label needs to be shifted
-						'vertical_name_shift': [],
-						'name_fits_in_node': [],
-						// array for horizontal distance each text label needs to be shifted
-						'horizontal_name_shift': [],
-						// array for the lengths of the names of all the country names on the screen
-						'name_lengths': [],
-						// creating four arrays to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg3.
-						'added_top_margin': [],
-						'added_bottom_margin': [],
-						'added_left_margin': [],
-						'added_right_margin': []
-					};
+				var linkNodes = [],
+						linkNodeSize = 10,
+						firstDegreeLinks = [],
+						sumOfAllRadiusInputs = 0,
+						nullBattleDeaths = 0,
+						nullRadiusSize = 0,
+						battleDeaths = {},
+						currentRadiusSize = 0,
+						nodeIndices = {},
+						// base value that will be used to calculate the values appended to the arrays above.
+						// including linkNodeSize inside of addedMarginSize.
+						addedMarginSize = 2.5 + linkNodeSize,
+						// dic for size of all the country nodes, and size needed around them according to borders and text adjustments
+						nodeMargins = {
+							'name': [],
+							'size': [],
+							// array for vertical distance each text label needs to be shifted
+							'vertical_name_shift': [],
+							'name_fits_in_node': [],
+							// array for horizontal distance each text label needs to be shifted
+							'horizontal_name_shift': [],
+							// array for the lengths of the names of all the country names on the screen
+							'name_lengths': [],
+							// creating four arrays to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg3.
+							'added_top_margin': [],
+							'added_bottom_margin': [],
+							'added_left_margin': [],
+							'added_right_margin': []
+						};
 
 					graph.links.forEach(function(link) {
 						linkNodes.push({
 							source: graph.nodes[link.source],
 							target: graph.nodes[link.target]
 						});
+						firstDegreeLinks[link.source.index + '-' + link.target.index] = true;
+						firstDegreeLinks[link.target.index + '-' + link.source.index] = true;
 					});
 
 					// first defining the data that will influence how the svg is defnined
@@ -486,13 +489,6 @@
 				    .force('y', d3.forceY(height/2).strength(1))
 				    .force('link', d3.forceLink(graph.links).id(function(d) {return d.id; }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.country]] + nodeMargins['size'][nodeIndices[d.target.country]])) * 2), 75); }).strength(1))
 				    .on('tick', ticked);
-
-				var firstDegreeCheck = [];
-
-				graph.links.forEach(function(d) {
-				    firstDegreeCheck[d.source.index + '-' + d.target.index] = true;
-				    firstDegreeCheck[d.target.index + '-' + d.source.index] = true;
-				});
 
 				var link = svg3.selectAll()
 				    .data(graph.links)

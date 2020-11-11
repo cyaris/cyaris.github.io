@@ -207,29 +207,6 @@
 			// adding createMenu function here so that the as much can be pre-defined as possible.
 			// this will reduce runtime needed to re-execute the menu upon returning
 			var createMenu = function() {
-				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
-				var menuMouseOver = function(d) {
-
-						d3.select(this)
-							.style('stroke-width', 2)
-							.style('stroke-opacity', 0.75)
-							.style('fill', 'rgb(26,188,156)')
-							.style('fill-opacity', 0.20);
-				 },
-				 	menuMouseLeave = function(d) {
-
-						d3.select(this)
-							.style('stroke-width', 1)
-							.style('stroke-opacity', 0.15)
-							.style('fill', 'black')
-							.style('fill-opacity', 0.075);
-					},
-					menuChoice = function(d) {
-						// removing all current svgs
-						d3.selectAll('svg').remove();
-						createNetworkGraph(d3.select(this).attr('id'));
-						window.scrollTo(0, 325);
-					};
 
 				var svg1 = d3.select('#war_menu')
 						.append('svg')
@@ -249,20 +226,45 @@
 				addStdText(svg1, null, warNameMaxLength + 190, 25, '15px', 0.75, 'Length in Days');
 				addStdText(svg1, null, warNameMaxLength + 330, 25, '15px', 0.75, 'Total Participants');
 
+				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
+				var menuMouseOver = function(d) {
+
+						d3.select(this)
+							.style('stroke-width', 2)
+							.style('stroke-opacity', 0.75)
+							.style('fill', 'rgb(26,188,156)')
+							.style('fill-opacity', 0.20);
+				 },
+					menuMouseLeave = function(d) {
+
+						d3.select(this)
+							.style('stroke-width', 1)
+							.style('stroke-opacity', 0.15)
+							.style('fill', 'black')
+							.style('fill-opacity', 0.075);
+					},
+					menuChoice = function(d) {
+						// removing all current svgs
+						d3.selectAll('svg').remove();
+						createNetworkGraph(d3.select(this).attr('id'));
+						window.scrollTo(0, 325);
+					};
+
 				for ( var i = 1; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
 
 					addStdRect(svg1, fileDic['file_name'][i], 0,  (30*i)+10, width, 30, 'black', 1, 0.15, 'black', 0.075, menuMouseOver, menuMouseLeave, menuChoice);
 					addStdText(svg1, null, 10, 30*(i+1), '15px', 0, fileDic['war_name'][i]);
+
 					if ( fileDic['ongoing_war'][i]==1 )
 					{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
 					else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
 					{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i]); }
 					else
 					{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
-					addStdText(svg1, null, warNameMaxLength + 210, 30*(i+1), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
-					addStdText(svg1, null, warNameMaxLength + 385, 30*(i+1), '15px', 0, fileDic['total_participants'][i].toLocaleString());
+						addStdText(svg1, null, warNameMaxLength + 210, 30*(i+1), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
+						addStdText(svg1, null, warNameMaxLength + 385, 30*(i+1), '15px', 0, fileDic['total_participants'][i].toLocaleString());
 
-					};
+			};
 				// var randomFileName = fileDic['file_name'][Math.floor(Math.random() * Object.keys(fileDic['file_name']).length)];
 		}
 		// calling the war menu function upon page load
@@ -273,21 +275,6 @@
 			// reading in the data to create the network graph
 			d3.json('../assets/the_networks_of_war/json_files_by_war/' + fileName).then(function(graph) {
 
-				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
-				var backToMenuMouseOver = function(d) {
-						d3.select(this)
-							.style('stroke-width', 2)
-							.style('cursor', 'pointer');
-				 },
-					 backToMenuMouseLeave = function(d) {
-							d3.select(this)
-								.style('stroke-width', 1)
-					},
-						backToMenuClick = function(d) {
-							// removing all current svgs
-							d3.selectAll('svg').remove();
-							createMenu();
-					};
 				// adding area for descriptive statistics to be activated upon hovering nodes.
 				var svg2 = d3.select('#hover_statistics')
 						.append('svg')
@@ -308,105 +295,45 @@
 						warDic['leading_war'] = d.leading_war;
 				});
 
+				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
+				var backToMenuMouseOver = function(d) {
+						d3.select(this)
+							.style('stroke-width', 2)
+							.style('cursor', 'pointer');
+				 },
+					 backToMenuMouseLeave = function(d) {
+							d3.select(this)
+								.style('stroke-width', 1)
+					},
+						backToMenuClick = function(d) {
+							// removing all current svgs
+							d3.selectAll('svg').remove();
+							createMenu();
+					};
 				// creating a rect for a back to menu button
 				addStdRect(svg2, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, backToMenuMouseOver, backToMenuMouseLeave, backToMenuClick);
 				addStdText(svg2, null, 6, 22.5, '15px', 0, '↖ Menu');
 				addStdText(svg2, null, 0, 92.5, '15px', 0, warDic['war_name']);
 
 				// new code section: start of code for svg3
-				function firstDegreeCheck(a, b) {
-						return a == b || firstDegreeLinks[a + '-' + b];
-				}
-
-				function fixna(x) {
-						if (isFinite(x)) return x;
-						return 0;
-				}
-
-				function nodeMouseOver(d) {
-						d3.select(this).style('cursor', 'pointer');
-						var index = d3.select(d3.event.target).datum().index;
-						// accenting first degree network for that node
-						// making all objects not associated with that node's first degree network opaque
-						node.style('opacity', function(o) {
-							// not a neighbor node, make it opaque
-							if ( firstDegreeCheck(index, o.index) != 1 )
-								return 0.15;
-								// return 0.10;
-						})
-						// // not sure why line below did not work.
-						// .style('stroke-width', function(o) {
-						// 	// neighbor node, increase stroke width
-						// 	if ( firstDegreeCheck(index, o.index) == 1 )
-						// 		return 10;
-						// 		// return 2;
-						// });
-						// accenting first degree links for that node
-						// making all links not associated with that node's first degree network opaque
-						link.style('opacity', function(o) {
-							// make non-neighbor links opaque
-							if ( o.source.index == index || o.target.index == index )
-								{return 1; }
-							else
-							{ return 0.15; }
-							// { return 0.10; }
-					})
-					.style('stroke-width', function(o) {
-						// increase stroke width for neighbor links
-						if ( o.source.index == index || o.target.index == index )
-							{return 1.5; }
-						// else
-						// { return 1; }
-					});
-				}
-
-				function nodeMouseLeave() {
-						// reverting all changes in mouseover upon mouseleave
-					 // nodeLabel.attr('display', 'block');
-					 node.style('opacity', 1);
-					 link.style('opacity', 1).style('stroke-width', 1);
-				}
 
 				var linkNodes = [],
 						linkNodeSize = 10,
-						firstDegreeLinks = [],
 						sumOfAllRadiusInputs = 0,
 						nullBattleDeaths = 0,
 						nullRadiusSize = 0,
 						battleDeaths = {},
 						currentRadiusSize = 0,
-						nodeIndices = {},
-						// base value that will be used to calculate the values appended to the arrays above.
-						// including linkNodeSize inside of addedMarginSize.
-						addedMarginSize = 2.5 + linkNodeSize,
-						// dic for size of all the country nodes, and size needed around them according to borders and text adjustments
-						nodeMargins = {
-							'name': [],
-							'size': [],
-							// array for vertical distance each text label needs to be shifted
-							'vertical_name_shift': [],
-							'name_fits_in_node': [],
-							// array for horizontal distance each text label needs to be shifted
-							'horizontal_name_shift': [],
-							// array for the lengths of the names of all the country names on the screen
-							'name_lengths': [],
-							// creating four arrays to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg3.
-							'added_top_margin': [],
-							'added_bottom_margin': [],
-							'added_left_margin': [],
-							'added_right_margin': []
-						};
+						nodeIndices = {};
 
 					graph.links.forEach(function(link) {
 						linkNodes.push({
 							source: graph.nodes[link.source],
 							target: graph.nodes[link.target]
 						});
-						firstDegreeLinks[link.source.index + '-' + link.target.index] = true;
-						firstDegreeLinks[link.target.index + '-' + link.source.index] = true;
 					});
 
-					// first defining the data that will influence how the svg is defnined
+					// first defining the data that will ifnnfluence how the svg is defnined
 					graph.nodes.forEach(function(d, i) {
 							// determining totalCasualties across all countries as maxRadius.
 							// this will make larger numbers proportional to the total across all countries.
@@ -430,13 +357,28 @@
 																.domain([0, sumOfAllRadiusInputs])
 																.range([1, maxRadius]);
 
-					// append the svg3 object to the body of the page
-					var svg3 = d3.select('#war_network_analysis')
-							.append('svg')
-							  .attr('width', width)
-							  .attr('height', height)
-							  .attr('transform',
-							        'translate(' + margin.left + ',' + margin.top + ')');
+						// base value that will be used to calculate the values appended to the arrays above.
+						// including linkNodeSize inside of addedMarginSize.
+						var addedMarginSize = 2.5 + linkNodeSize,
+								// dic for size of all the country nodes, and size needed around them according to borders and text adjustments
+								nodeMargins = {
+									'name': [],
+									'size': [],
+									// array for vertical distance each text label needs to be shifted
+									'vertical_name_shift': [],
+									'name_fits_in_node': [],
+									// array for horizontal distance each text label needs to be shifted
+									'horizontal_name_shift': [],
+									// array for the lengths of the names of all the country names on the screen
+									'name_lengths': [],
+									// creating four arrays to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg3.
+									'added_top_margin': [],
+									'added_bottom_margin': [],
+									'added_left_margin': [],
+									'added_right_margin': []
+								},
+								// creating a dummy svg so that the gettextwidth function can be used before any 'real' svgs are defined
+								svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0);
 
 					// now going through the iterations that needed radius to already be defined
 					graph.nodes.forEach(function(d, i) {
@@ -448,13 +390,13 @@
 							 { currentRadiusSize = radius(nullRadiusSize); };
 							nodeMargins['size'].push(currentRadiusSize),
 							nodeMargins['name'].push(d.country),
-							currentNameLength = getTextWidth(svg3, d.country, '15px'),
+							currentNameLength = getTextWidth(svgDummy, d.country, '15px'),
 							currentNameLengthHalf = currentNameLength/2,
 							nodeMargins['name_lengths'].push(currentNameLength),
-							currentVerticalShift = nameVerticalShift(svg3, currentRadiusSize, d.country, '12px'),
-							currentHorizontalShift = nameHorizontalShift(svg3, currentRadiusSize, d.country, '12px'),
+							currentVerticalShift = nameVerticalShift(svgDummy, currentRadiusSize, d.country, '12px'),
+							currentHorizontalShift = nameHorizontalShift(svgDummy, currentRadiusSize, d.country, '12px'),
 							nodeMargins['vertical_name_shift'].push(currentVerticalShift),
-							nodeMargins['name_fits_in_node'].push(nameFitsInNode(svg3, currentRadiusSize, d.country, '12px')),
+							nodeMargins['name_fits_in_node'].push(nameFitsInNode(svgDummy, currentRadiusSize, d.country, '12px')),
 							nodeMargins['horizontal_name_shift'].push(currentHorizontalShift),
 							// the node, plus vertical shift, plus a little extra (and a little extra more to account for text itself
 							// text is not a factor since it is always below or inside the node
@@ -482,6 +424,14 @@
 							nodeIndices[d.country] = Object.keys(nodeIndices).length;
 					});
 
+				// append the svg3 object to the body of the page
+				var svg3 = d3.select('#war_network_analysis')
+						.append('svg')
+						  .attr('width', width)
+						  .attr('height', height)
+						  .attr('transform',
+						        'translate(' + margin.left + ',' + margin.top + ')');
+
 				var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
 				    .force('charge', d3.forceManyBody().strength(-3000))
 				    .force('center', d3.forceCenter(width/2, height/2))
@@ -497,6 +447,15 @@
 				    .attr('stroke', '#aaa')
 				    .attr('stroke-width', 1);
 
+				// creating inputs for the function to check whether each node is part of the selected node's primary network.
+				// I have no idea why but this line doesn't work if I move it anywhere else.
+				var firstDegreeLinks = [];
+
+				graph.links.forEach(function(d) {
+				    firstDegreeLinks[d.source.index + '-' + d.target.index] = true;
+				    firstDegreeLinks[d.target.index + '-' + d.source.index] = true;
+				});
+
 				// appending invisible circle to decrease possibility of overlap
 				var linkNode = svg3.selectAll()
 			      .data(linkNodes)
@@ -508,15 +467,14 @@
 				var node = svg3.selectAll()
 			      .data(graph.nodes)
 			    .enter().append('g')
-							.on('mouseover', nodeMouseOver)
-							.on('mouseleave', nodeMouseLeave)
-							.call(d3.drag()
-					        .on('start', dragstarted)
-					        .on('drag', dragged)
-					        .on('end', dragended));
+						.on('mouseover', nodeMouseOver)
+						.on('mouseleave', nodeMouseLeave)
+						.call(d3.drag()
+				        .on('start', dragstarted)
+				        .on('drag', dragged)
+				        .on('end', dragended));
 
 				node.append('circle')
-					// .attr('class', 'node_circles')
 					.attr('stroke', 'black')
 					.attr('stroke-width', 1)
 		      .attr('r', function(d) { return nodeMargins['size'][nodeIndices[d.country]]; })
@@ -546,6 +504,55 @@
 			      .text(function(d) {
 							if ( isNaN(battleDeaths[d.country])==true )
 								{ return '?' }});
+
+				function firstDegreeCheck(a, b) {
+						return a == b || firstDegreeLinks[a + '-' + b];
+				};
+
+				function fixna(x) {
+						if (isFinite(x)) return x;
+						return 0;
+				};
+
+				function nodeMouseOver(d) {
+						d3.select(this).style('cursor', 'pointer');
+						var index = d3.select(d3.event.target).datum().index;
+						// accenting first degree network for that node
+						// making all objects not associated with that node's first degree network opaque
+						node.style('opacity', function(o) {
+							// not a neighbor node, make it opaque
+							if ( firstDegreeCheck(index, o.index) != 1 )
+								{ return 0.15; }
+						});
+						// // not sure why line below did not work.
+						// .style('stroke-width', function(o) {
+						// 	// neighbor node, increase stroke width
+						// 	if ( firstDegreeCheck(index, o.index) == 1 )
+						// 		return 10;
+						// 		// return 2;
+						// });
+						// accenting first degree links for that node
+						// making all links not associated with that node's first degree network opaque
+						link.style('opacity', function(o) {
+							// make non-neighbor links opaque
+							if ( o.source.index == index || o.target.index == index )
+								{return 1; }
+							else
+							{ return 0.15; }
+						})
+								.style('stroke-width', function(o) {
+									// increase stroke width for neighbor links
+									if ( o.source.index == index || o.target.index == index )
+										{return 1.5; }
+								});
+				};
+
+				function nodeMouseLeave() {
+						// reverting all changes in mouseover upon mouseleave
+					 // nodeLabel.attr('display', 'block');
+					 node.style('opacity', 1);
+					 link.style('opacity', 1).style('stroke-width', 1);
+				};
 
 			  function ticked() {
 

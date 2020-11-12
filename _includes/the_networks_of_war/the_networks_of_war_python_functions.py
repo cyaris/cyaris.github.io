@@ -61,8 +61,8 @@ def participant_start_and_end_dates(participant_dataframe):
         else:
             dates_not_found+=1
 
-    print("\ntotal participants with both dates found {}".format(dates_found))
-    print("total participants with at least one date not found {}".format(dates_not_found))
+    print("total rows with both dates found {}".format(dates_found))
+    print("total rows with at least one date not found {}\n".format(dates_not_found))
 
     return participant_dataframe
 

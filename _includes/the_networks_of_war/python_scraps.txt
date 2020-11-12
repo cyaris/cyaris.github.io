@@ -1,0 +1,170 @@
+## figuring out how much before adding missing values in next cell
+missing_values_length = deepcopy(len(participant_df))
+
+# ## some values in dyad_df for a given war aren't in the participant_df
+# ## these need to be added manually
+
+# participant_df[participant_df['war_num']==184]
+# dyad_df_test = pd.read_csv('/Users/the_networks_of_war/data_sources/csvs/directed_dyadic_war.csv', encoding = 'latin-1')
+# dyad_df_test = dyad_df_test[(dyad_df_test['warnum']==184) & ((dyad_df_test['statea']==350) | (dyad_df_test['stateb']==350))]
+
+# mid_test = pd.read_csv('/Users/the_networks_of_war/data_sources/csvs/dyadic MIDs 3.1.csv', encoding = 'latin-1')
+# mid_test = deepcopy(mid_test[(mid_test['disno']==1293) & ((mid_test['statea']==350)|(mid_test['stateb']==350))])
+
+
+## manually filling in values that are found in dyadic cow datasets but seem to be missing from country level sources.
+## values have been obtained from dyadic data (directed_dyadic_war.csv' and dyadic MIDs 3.1.csv)
+
+# df_length = deepcopy(len(dyad_df))
+
+# dyad_df.loc[df_length, 'war_num'] = 163
+# dyad_df.loc[df_length, 'c_code_a'] = 811
+# dyad_df.loc[df_length, 'participant_a'] = c_code_dic[811]
+# dyad_df.loc[df_length, 'c_code_b'] = c_code_dic[816]
+# dyad_df.loc[df_length, 'participant_b'] = 816
+
+# df_length = deepcopy(len(dyad_df))
+
+# dyad_df.loc[df_length, 'war_num'] = 163
+# dyad_df.loc[df_length, 'c_code_a'] = 811
+# dyad_df.loc[df_length, 'participant_a'] = c_code_dic[811]
+# dyad_df.loc[df_length, 'c_code_b'] = c_code_dic[710]
+# dyad_df.loc[df_length, 'c_code_b'] = 710
+
+df_length = deepcopy(len(participant_df))
+
+participant_df.loc[df_length, 'war_num'] = 108
+participant_df.loc[df_length, 'war_name'] = 'Latvian Liberation'
+participant_df.loc[df_length, 'war_type'] = 1
+participant_df.loc[df_length, 'c_code'] = 200
+participant_df.loc[df_length, 'participant'] = c_code_dic[200]
+participant_df.loc[df_length, 'side'] = 1
+participant_df.loc[df_length, 'battle_deaths'] = 128
+participant_df.loc[df_length, 'start_day'] = 12
+participant_df.loc[df_length, 'start_month'] = 12
+participant_df.loc[df_length, 'start_year'] = 1918
+participant_df.loc[df_length, 'end_day'] = 1
+participant_df.loc[df_length, 'end_month'] = 2
+participant_df.loc[df_length, 'end_year'] = 1920
+
+participant_df.loc[df_length, 'end_date'] = pd.to_datetime(participant_df.loc[df_length, 'end_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_day'].astype(int).astype(str))
+participant_df.loc[df_length, 'start_date'] = pd.to_datetime(participant_df.loc[df_length, 'start_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_day'].astype(int).astype(str))
+
+df_length = deepcopy(len(participant_df))
+
+participant_df.loc[df_length, 'war_num'] = 108
+participant_df.loc[df_length, 'war_name'] = 'Latvian Liberation'
+participant_df.loc[df_length, 'war_type'] = 1
+participant_df.loc[df_length, 'c_code'] = 290
+participant_df.loc[df_length, 'participant'] = c_code_dic[290]
+participant_df.loc[df_length, 'side'] = 1
+participant_df.loc[df_length, 'battle_deaths'] = 100
+participant_df.loc[df_length, 'start_day'] = 3
+participant_df.loc[df_length, 'start_month'] = 1
+participant_df.loc[df_length, 'start_year'] = 1920
+participant_df.loc[df_length, 'end_day'] = 1
+participant_df.loc[df_length, 'end_month'] = 2
+participant_df.loc[df_length, 'end_year'] = 1920
+
+participant_df.loc[df_length, 'end_date'] = pd.to_datetime(participant_df.loc[df_length, 'end_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_day'].astype(int).astype(str))
+participant_df.loc[df_length, 'start_date'] = pd.to_datetime(participant_df.loc[df_length, 'start_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_day'].astype(int).astype(str))
+
+df_length = deepcopy(len(participant_df))
+
+participant_df.loc[df_length, 'war_num'] = 108
+participant_df.loc[df_length, 'war_name'] = 'Latvian Liberation'
+participant_df.loc[df_length, 'war_type'] = 1
+participant_df.loc[df_length, 'c_code'] = 220
+participant_df.loc[df_length, 'participant'] = c_code_dic[220]
+## need to figure out how to determine this one
+participant_df.loc[df_length, 'side'] = 1
+participant_df.loc[df_length, 'battle_deaths'] = 0
+participant_df.loc[df_length, 'start_day'] = 27
+participant_df.loc[df_length, 'start_month'] = 3
+participant_df.loc[df_length, 'start_year'] = 1919
+participant_df.loc[df_length, 'end_day'] = 1
+participant_df.loc[df_length, 'end_month'] = 2
+participant_df.loc[df_length, 'end_year'] = 1920
+
+participant_df.loc[df_length, 'end_date'] = pd.to_datetime(participant_df.loc[df_length, 'end_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_day'].astype(int).astype(str))
+participant_df.loc[df_length, 'start_date'] = pd.to_datetime(participant_df.loc[df_length, 'start_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_day'].astype(int).astype(str))
+
+df_length = deepcopy(len(participant_df))
+
+participant_df.loc[df_length, 'war_num'] = 139
+participant_df.loc[df_length, 'war_name'] = 'World War II'
+participant_df.loc[df_length, 'war_type'] = 1
+participant_df.loc[df_length, 'c_code'] = 230
+participant_df.loc[df_length, 'participant'] = c_code_dic[230]
+participant_df.loc[df_length, 'side'] = 2
+participant_df.loc[df_length, 'battle_deaths'] = 950
+participant_df.loc[df_length, 'start_day'] = 26
+participant_df.loc[df_length, 'start_month'] = 6
+participant_df.loc[df_length, 'start_year'] = 1941
+participant_df.loc[df_length, 'end_day'] = 20
+participant_df.loc[df_length, 'end_month'] = 2
+participant_df.loc[df_length, 'end_year'] = 1944
+
+participant_df.loc[df_length, 'end_date'] = pd.to_datetime(participant_df.loc[df_length, 'end_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_day'].astype(int).astype(str))
+participant_df.loc[df_length, 'start_date'] = pd.to_datetime(participant_df.loc[df_length, 'start_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_day'].astype(int).astype(str))
+
+df_length = deepcopy(len(participant_df))
+
+participant_df.loc[df_length, 'war_num'] = 151
+participant_df.loc[df_length, 'war_name'] = 'Korean'
+participant_df.loc[df_length, 'war_type'] = 1
+participant_df.loc[df_length, 'c_code'] = 920
+participant_df.loc[df_length, 'participant'] = c_code_dic[920]
+participant_df.loc[df_length, 'side'] = 1
+participant_df.loc[df_length, 'battle_deaths'] = 23
+participant_df.loc[df_length, 'start_day'] = 29
+participant_df.loc[df_length, 'start_month'] = 6
+participant_df.loc[df_length, 'start_year'] = 1950
+participant_df.loc[df_length, 'end_day'] = 27
+participant_df.loc[df_length, 'end_month'] = 7
+participant_df.loc[df_length, 'end_year'] = 1953
+
+participant_df.loc[df_length, 'end_date'] = pd.to_datetime(participant_df.loc[df_length, 'end_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_day'].astype(int).astype(str))
+participant_df.loc[df_length, 'start_date'] = pd.to_datetime(participant_df.loc[df_length, 'start_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_day'].astype(int).astype(str))
+
+df_length = deepcopy(len(participant_df))
+
+participant_df.loc[df_length, 'war_num'] = 169
+participant_df.loc[df_length, 'war_name'] = 'Six Day War'
+participant_df.loc[df_length, 'war_type'] = 1
+participant_df.loc[df_length, 'c_code'] = 645
+participant_df.loc[df_length, 'participant'] = c_code_dic[645]
+participant_df.loc[df_length, 'side'] = 2
+participant_df.loc[df_length, 'battle_deaths'] = 30
+participant_df.loc[df_length, 'start_day'] = 17
+participant_df.loc[df_length, 'start_month'] = 5
+participant_df.loc[df_length, 'start_year'] = 1967
+participant_df.loc[df_length, 'end_day'] = 10
+participant_df.loc[df_length, 'end_month'] = 6
+participant_df.loc[df_length, 'end_year'] = 1967
+
+participant_df.loc[df_length, 'end_date'] = pd.to_datetime(participant_df.loc[df_length, 'end_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_day'].astype(int).astype(str))
+participant_df.loc[df_length, 'start_date'] = pd.to_datetime(participant_df.loc[df_length, 'start_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_day'].astype(int).astype(str))
+
+df_length = deepcopy(len(participant_df))
+
+participant_df.loc[df_length, 'war_num'] = 184
+participant_df.loc[df_length, 'war_name'] = 'Turco-Cypriot'
+participant_df.loc[df_length, 'war_type'] = 1
+participant_df.loc[df_length, 'c_code'] = 350
+participant_df.loc[df_length, 'participant'] = c_code_dic[350]
+participant_df.loc[df_length, 'side'] = 2
+## value is 2, documented as 26-100 deaths
+participant_df.loc[df_length, 'battle_deaths'] = 100
+participant_df.loc[df_length, 'start_day'] = 2
+participant_df.loc[df_length, 'start_month'] = 7
+participant_df.loc[df_length, 'start_year'] = 1974
+participant_df.loc[df_length, 'end_day'] = 16
+participant_df.loc[df_length, 'end_month'] = 8
+participant_df.loc[df_length, 'end_year'] = 1974
+
+# participant_df.loc[df_length, 'end_date'] = pd.to_datetime(participant_df.loc[df_length, 'end_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'end_day'].astype(int).astype(str))
+# participant_df.loc[df_length, 'start_date'] = pd.to_datetime(participant_df.loc[df_length, 'start_year'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_month'].astype(int).astype(str) + "-" + participant_df.loc[df_length, 'start_day'].astype(int).astype(str))
+
+print(str(len(participant_df)) + " total values")
+print("{} values before".format(missing_values_length))

@@ -61,8 +61,8 @@ def participant_start_and_end_dates(dataframe):
         else:
             dates_not_found+=1
 
-    print("total rows with both dates found: {}".format(dates_found))
-    print("total rows with at least one date not found: {}\n".format(dates_not_found))
+    print("total rows with both dates found: {}".format(format(dates_found, ',d')))
+    print("total rows with at least one date not found: {}\n".format(format(dates_not_found, ',d')))
 
     return dataframe
 
@@ -150,12 +150,12 @@ def column_fills_and_converions(dataframe, conversion_dic):
             # converting these to their proper units according to documentation
             dataframe[column] = ([s * conversion_dic[column[:-2]] for s in dataframe[column]])
 
-    print('\ntotal columns adjusted: {}'.format(len(x_y_columns)))
+    print('\ntotal columns adjusted: {}'.format(format(len(x_y_columns), ',d')))
     if conversion_dic==None:
         print('total columns adjusted for conversion: 0')
     else:
-        print('total columns adjusted for conversion: {}'.format(len(list(conversion_dic.keys())) * 2))
-    print('null values notated: {}'.format(null_values))
-    print('unknown values notated: {}'.format(unknown_values))
+        print('total columns adjusted for conversion: {}'.format(format(len(list(conversion_dic.keys())) * 2, ',d')))
+    print('null values notated: {}'.format(format(null_values, ',d')))
+    print('unknown values notated: {}'.format(format(unknown_values, ',d')))
 
     return dataframe

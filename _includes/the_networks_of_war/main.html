@@ -342,12 +342,12 @@
 						else
 						{ allianceEnd.push(0); }
 
-						if ( parseInt(link.total_contiguity_x) > 0 )
+						if ( parseInt(link.contiguity_level_x) > 0 )
 						{ contiguityStart.push(1); }
 						else
 						{ contiguityStart.push(0); }
 
-						if ( parseInt(link.total_contiguity_y) > 0 )
+						if ( parseInt(link.contiguity_level_y) > 0 )
 						{ contiguityEnd.push(1); }
 						else
 						{ contiguityEnd.push(0); }
@@ -463,7 +463,7 @@
 				    .force('center', d3.forceCenter(width/2, height/2))
 				    .force('x', d3.forceX(width/2).strength(1))
 				    .force('y', d3.forceY(height/2).strength(1))
-				    .force('link', d3.forceLink(graph.links).id(function(d) {return d.id; }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.participant]] + nodeMargins['size'][nodeIndices[d.target.participant]])) * 2), 75); }).strength(1))
+				    .force('link', d3.forceLink(graph.links).id(function(d) {return parseInt(d.id); }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.participant]] + nodeMargins['size'][nodeIndices[d.target.participant]])) * 2), 75); }).strength(1))
 				    .on('tick', ticked);
 
 				var linkStrokeWidth = 1;
@@ -540,12 +540,12 @@
 		      .attr('r', function(d) { return nodeMargins['size'][nodeIndices[d.participant]]; })
 					// .attr('opacity', 0.5)
 		      .style('fill', function(d) {
-						if ( d.side==3 )
+						if ( parseInt(d.side)==3 )
 						// returning a color in the middle of the spectrum if the side is 3
 						// this would mean they were on side 1 and side 2 (1 + 2)
 						{ return color(1.5); }
 						else
-						{ return color(d.side); }
+						{ return color(parseInt(d.side)); }
 					});
 
 				node.append('text')

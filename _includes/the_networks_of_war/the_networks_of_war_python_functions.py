@@ -224,3 +224,18 @@ def add_missing_dyads(part_df, dy_df, war_input, side_input):
             dy_df.loc[df_length, 'participant_b'] = party_b
 
     return dy_df
+
+def descriptive_dyad_from_source(source, c_code_a, c_code_b, year, binary_field):
+    
+    dy_df = pd.read_csv(source, encoding = 'utf8')[[c_code_a, c_code_b, year]]
+    dy_df.rename({c_code_a: 'c_code_a',
+                  c_code_b: 'c_code_b',
+                  year: 'year'}, axis = 1, inplace = True)
+    ## creating a binary field to represent this dataset
+    ## more specific fields can be added later
+    dy_df[binary_field] = 1
+    ## unioning mismatching columns so each participant will get their own row
+    switched_columns_list = ['c_code_a',
+                             'c_code_b']
+    dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
+    return dy_df

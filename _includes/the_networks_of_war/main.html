@@ -21,6 +21,9 @@
 				#message {
 						display: none;
 	      }
+				#data_source_citations {
+						display: none;
+	      }
 			}
 
 		@media (min-width:660px){
@@ -43,6 +46,14 @@
 			/* pointer-events: none; */
 		}
 
+		/* #data_sources{
+		    text-align:center;
+		}
+		#data_sources ul li{
+		   display:inline;
+
+		 } */
+
 		</style>
 	</head>
 	<body>
@@ -59,6 +70,30 @@
 		<div id='hover_statistics' align='center' style='margin-bottom:-7.5px;'></div>
 		<!-- Create a div where the graph will take place -->
 		<div id='war_network_analysis' align='center' style='margin-bottom:15px;'></div>
+		<div id='data_sources' align='left' style='margin-bottom:15px;'>
+			<p>All data has been obtained from the <a href='https://correlatesofwar.org/' target='_blank'>Correlates of War Project</a>, using all of the following files in some capacity:
+				<ul>
+					<li>COW Country Codes: COW country codes.csv</li>
+					<li>COW War Data, 1816 - 2007</li>
+						<ul>
+							<li>Inter-StateWarData_v4.0.csv</li>
+							<li>INTRA-STATE_State_participants v5.1.csv</li>
+							<li>Extra-StateWarData_v4.0.csv</li>
+							<li>directed_dyadic_war.csv</li>
+						</ul>
+					<li>Colonial/Dependency Contiguity: contcold.csv</li>
+					<li>Direct Contiguity: contdird.csv</li>
+					<li>Defense Cooperation Agreement Dataset: DCAD-v1.0-dyadic.csv</li>
+					<li>Diplomatic Exchange: Diplomatic_Exchange_2006v1.csv</li>
+					<li>Formal Alliances: alliance_v4.1_by_dyad_yearly.csv</li>
+					<li>Militarized Interstate Disputes: dyadic MIDs 3.1.csv</li>
+					<li>National Material Capabilities: NMC_5_0-wsupplementary.csv</li>
+					<li>Intergovernmental Organizations: dyadic_formatv3.csv</li>
+					<li>Territorial Change: tc2018.csv</li>
+					<li>Trade: Dyadic_COW_4.0.csv</li>
+				</ul>
+			</p>
+			</div>
 		<!-- Load d3.js -->
 		<!-- <script src='https://d3js.org/d3.v4.min.js'></script> -->
 
@@ -329,7 +364,7 @@
 
 					graph.links.forEach(function(link) {
 
-						if ( parseInt(link.diplomatic_exchange_z) > 0 )
+						if ( parseInt(link.contiguity_z) + parseInt(link.colonial_contiguity_z) > 0 )
 						{ linkDashOverall.push(1); }
 						else
 						{ linkDashOverall.push(0); }

@@ -331,12 +331,12 @@
 
 					graph.links.forEach(function(link) {
 
-						if ( parseInt(link.defense_alliance_z) + parseInt(link.neutrality_alliance_z) + parseInt(link.entente_alliance_z) > 0 )
+						if ( parseInt(link.alliance_z) > 0 )
 						{ allianceOverall.push(1); }
 						else
 						{ allianceOverall.push(0); }
 
-						if ( parseInt(link.contiguity_level_z) + parseInt(link.total_colonial_contiguity_z) > 0 )
+						if ( parseInt(link.contiguity_z) + parseInt(link.colonial_contiguity_z) > 0 )
 						{ contiguityOverall.push(1); }
 						else
 						{ contiguityOverall.push(0); }

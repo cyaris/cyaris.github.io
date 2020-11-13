@@ -226,7 +226,7 @@ def add_missing_dyads(part_df, dy_df, war_input, side_input):
     return dy_df
 
 def descriptive_dyad_from_source(source, c_code_a, c_code_b, year, binary_field):
-    
+
     dy_df = pd.read_csv(source, encoding = 'utf8')[[c_code_a, c_code_b, year]]
     dy_df.rename({c_code_a: 'c_code_a',
                   c_code_b: 'c_code_b',
@@ -239,3 +239,14 @@ def descriptive_dyad_from_source(source, c_code_a, c_code_b, year, binary_field)
                              'c_code_b']
     dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
     return dy_df
+
+def descriptive_dyad_from_dd(df_dd, conditional_statement, binary_field):
+
+    df_dd = deepcopy(df_dd[conditional_statement][['c_code_a', 'c_code_b', 'year']])
+    ## creating a binary field to represent this conditional statement
+    df_dd[binary_field] = 1
+    ## unioning mismatching columns so each participant will get their own row
+    switched_columns_list = ['c_code_a',
+                             'c_code_b']
+    df_dd = deepcopy(union_opposite_columns(df_dd, switched_columns_list))
+    return df_dd

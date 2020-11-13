@@ -516,15 +516,15 @@
 
 				node.append('text')
 						.attr('id', function(d) { return "label_" + nodeIndices[d.participant]; })
-						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]]; })
-			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.participant]]; })
+						.attr('dx', function(d) { console.log(nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]]); return nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]]; })
+			      .attr('dy', function(d) { console.log(nodeMargins['vertical_name_shift'][nodeIndices[d.participant]]); return nodeMargins['vertical_name_shift'][nodeIndices[d.participant]]; })
 						.attr('font-size', '12px')
 			      .attr('text-anchor', 'middle')
 			      .text(function(d) { return d.participant; });
 
 				node.append('text')
-						.attr('dx', function(d) { return nodeMargins['size'][nodeIndices[d.participant]] * -1.5 })
-			      .attr('dy', function(d) { return nodeMargins['size'][nodeIndices[d.participant]] * 0.75 })
+						.attr('dx', function(d) { console.log(nodeMargins['size'][nodeIndices[d.participant]] * -1.5); return nodeMargins['size'][nodeIndices[d.participant]] * -1.5 })
+			      .attr('dy', function(d) { console.log(nodeMargins['size'][nodeIndices[d.participant]] * 0.75); return nodeMargins['size'][nodeIndices[d.participant]] * 0.75 })
 						.attr('font-size', '15px')
 			      .attr('text-anchor', 'middle')
 			      .text(function(d) {

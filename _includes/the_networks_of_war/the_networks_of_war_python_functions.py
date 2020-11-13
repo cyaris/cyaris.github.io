@@ -161,3 +161,66 @@ def column_fills_and_converions(dataframe, conversion_dic):
     print('unknown values notated: {}'.format(format(unknown_values, ',d')))
 
     return dataframe
+
+def column_fills_and_converions(dataframe, conversion_dic):
+
+    column_list = list(dataframe.columns)
+    x_y_z_columns = []
+
+    for i, column in enumerate(column_list):
+        if column[-2:]=='_x':
+            x_y_z_columns.append(column)
+        elif column[-2:]=='_y':
+            x_y_z_columns.append(column)
+        elif column[-2:]=='_z':
+            x_y_z_columns.append(column)
+
+    null_values = 0
+    unknown_values = 0
+    ## filling in nulls with zeros
+    ## these are ones that most likely mean zero if null (not due to missing data)
+    for column in x_y_z_columns:
+        null_values = null_values + len(dataframe[dataframe[column].isnull()])
+        ## giving this zeros because they weren't in the dataset at all.
+        ## no result following join.
+        dataframe.loc[dataframe[column].isnull(), column] = 0
+        ## -9 is unknown value in the dataset
+        ## giving these null values
+        unknown_values = unknown_values + len(dataframe[dataframe[column]==-9])
+        dataframe.loc[dataframe[column]==-9, column] = None
+        if conversion_dic==None:
+            pass
+        elif column[:-2] in list(conversion_dic.keys()):
+            # converting these to their proper units according to documentation
+            dataframe[column] = ([s * conversion_dic[column[:-2]] for s in dataframe[column]])
+
+    print('\ntotal columns adjusted: {}'.format(format(len(x_y_z_columns), ',d')))
+    if conversion_dic==None:
+        print('total columns adjusted for conversion: 0')
+    else:
+        print('total columns adjusted for conversion: {}'.format(format(len(list(conversion_dic.keys())) * 2, ',d')))
+    print('null values notated: {}'.format(format(null_values, ',d')))
+    print('unknown values notated: {}'.format(format(unknown_values, ',d')))
+
+    return dataframe
+
+def add_missing_dyads(part_df, dy_df, war_input, side_input):
+
+    opposing_side_dic = {1: 2, 2: 1}
+    c_code_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input)]['c_code'].values[0]
+    participant_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input)]['participant'].values[0]
+    participating_parties = sorted(list(set(list(part_df[(part_df['war_num']==war_input) & (part_df['side']==opposing_side_dic[side_input])]['participant']))))
+    dyadic_parties = sorted(list(set(list(dy_df[dy_df['war_num']==war_input]['participant_a']) + list(dy_df[dy_df['war_num']==war_input]['participant_b']))))
+    for i, party_b in enumerate(participating_parties):
+        if party_b in dyadic_parties and len(dyadic_parties) > 0:
+            pass
+        else:
+            df_length = deepcopy(len(dy_df))
+            dy_df.loc[df_length, 'war_num'] = war_input
+            dy_df.loc[df_length, 'c_code_a'] = c_code_a
+            dy_df.loc[df_length, 'participant_a'] = participant_a
+            dy_df.loc[df_length, 'year'] = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['start_year'].values[0]
+            dy_df.loc[df_length, 'c_code_b'] = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['c_code'].values[0]
+            dy_df.loc[df_length, 'participant_b'] = party_b
+
+    return dy_df

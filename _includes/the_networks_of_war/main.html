@@ -321,8 +321,10 @@
 						linkNodeSize = 10,
 						allianceStart = [],
 						allianceEnd = [],
+						allianceOverall = [],
 						contiguityStart = [],
 						contiguityEnd = [],
+						contiguityOverall = [],
 						sumOfAllRadiusInputs = 0,
 						nullBattleDeaths = 0,
 						nullRadiusSize = 0,
@@ -342,6 +344,11 @@
 						else
 						{ allianceEnd.push(0); }
 
+						if ( parseInt(link.defense_alliance_z) + parseInt(link.neutrality_alliance_z) + parseInt(link.entente_alliance_z) > 0 )
+						{ allianceOverall.push(1); }
+						else
+						{ allianceOverall.push(0); }
+
 						if ( parseInt(link.contiguity_level_x) > 0 )
 						{ contiguityStart.push(1); }
 						else
@@ -351,6 +358,11 @@
 						{ contiguityEnd.push(1); }
 						else
 						{ contiguityEnd.push(0); }
+
+						if ( parseInt(link.contiguity_level_z) > 0 )
+						{ contiguityOverall.push(1); }
+						else
+						{ contiguityOverall.push(0); }
 
 						linkNodes.push({
 							source: graph.nodes[link.source],
@@ -491,7 +503,7 @@
 						.enter()
 						.append('line')
 						.attr('stroke', function(d, i) {
-							if ( allianceStart[i] + allianceEnd[i] > 0 )
+							if ( allianceStart[i] + allianceEnd[i] + allianceOverall[i] > 0 )
 							{ return 'red'; }
 							else
 							{ return 'transparent'; }
@@ -507,7 +519,7 @@
 						.enter()
 						.append('line')
 						.attr('stroke', function(d, i) {
-							if ( contiguityStart[i] + contiguityEnd[i] > 0 )
+							if ( contiguityStart[i] + contiguityEnd[i] + contiguityOverall[i] > 0 )
 							{ return 'blue'; }
 							else
 							{ return 'transparent'; }

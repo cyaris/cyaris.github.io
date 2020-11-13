@@ -123,19 +123,21 @@ def drop_participant_b_columns(dataframe, switched_columns_list):
 def column_fills_and_converions(dataframe, conversion_dic):
 
     column_list = list(dataframe.columns)
-    x_y_columns = []
+    x_y_z_columns = []
 
     for i, column in enumerate(column_list):
         if column[-2:]=='_x':
-            x_y_columns.append(column)
+            x_y_z_columns.append(column)
         elif column[-2:]=='_y':
-            x_y_columns.append(column)
+            x_y_z_columns.append(column)
+        elif column[-2:]=='_z':
+            x_y_z_columns.append(column)
 
     null_values = 0
     unknown_values = 0
     ## filling in nulls with zeros
     ## these are ones that most likely mean zero if null (not due to missing data)
-    for column in x_y_columns:
+    for column in x_y_z_columns:
         null_values = null_values + len(dataframe[dataframe[column].isnull()])
         ## giving this zeros because they weren't in the dataset at all.
         ## no result following join.
@@ -150,7 +152,7 @@ def column_fills_and_converions(dataframe, conversion_dic):
             # converting these to their proper units according to documentation
             dataframe[column] = ([s * conversion_dic[column[:-2]] for s in dataframe[column]])
 
-    print('\ntotal columns adjusted: {}'.format(format(len(x_y_columns), ',d')))
+    print('\ntotal columns adjusted: {}'.format(format(len(x_y_z_columns), ',d')))
     if conversion_dic==None:
         print('total columns adjusted for conversion: 0')
     else:

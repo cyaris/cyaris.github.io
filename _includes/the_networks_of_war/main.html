@@ -319,12 +319,9 @@
 
 				var linkNodes = [],
 						linkNodeSize = 10,
-						allianceStart = [],
-						allianceEnd = [],
 						allianceOverall = [],
-						contiguityStart = [],
-						contiguityEnd = [],
 						contiguityOverall = [],
+						territoryExchangeOverall = [],
 						sumOfAllRadiusInputs = 0,
 						nullBattleDeaths = 0,
 						nullRadiusSize = 0,
@@ -334,35 +331,20 @@
 
 					graph.links.forEach(function(link) {
 
-						if ( parseInt(link.defense_alliance_x) + parseInt(link.neutrality_alliance_x) + parseInt(link.entente_alliance_x) > 0 )
-						{ allianceStart.push(1); }
-						else
-						{ allianceStart.push(0); }
-
-						if ( parseInt(link.defense_alliance_y) + parseInt(link.neutrality_alliance_y) + parseInt(link.entente_alliance_y) > 0 )
-						{ allianceEnd.push(1); }
-						else
-						{ allianceEnd.push(0); }
-
 						if ( parseInt(link.defense_alliance_z) + parseInt(link.neutrality_alliance_z) + parseInt(link.entente_alliance_z) > 0 )
 						{ allianceOverall.push(1); }
 						else
 						{ allianceOverall.push(0); }
 
-						if ( parseInt(link.contiguity_level_x) > 0 )
-						{ contiguityStart.push(1); }
-						else
-						{ contiguityStart.push(0); }
-
-						if ( parseInt(link.contiguity_level_y) > 0 )
-						{ contiguityEnd.push(1); }
-						else
-						{ contiguityEnd.push(0); }
-
-						if ( parseInt(link.contiguity_level_z) > 0 )
+						if ( parseInt(link.contiguity_level_z) + parseInt(link.total_colonial_contiguity_z) > 0 )
 						{ contiguityOverall.push(1); }
 						else
 						{ contiguityOverall.push(0); }
+
+						if ( parseInt(link.territory_exchange_z) > 0 )
+						{ territoryExchangeOverall.push(1); }
+						else
+						{ territoryExchangeOverall.push(0); }
 
 						linkNodes.push({
 							source: graph.nodes[link.source],
@@ -497,19 +479,19 @@
 
 				// overlaying lines of different styles
 				// this will be used to accent alliances between nodes
-				var linkAlliancesStrokeWidth = 2;
-				var linkAlliances = svg3.selectAll()
-						.data(graph.links)
-						.enter()
-						.append('line')
-						.attr('stroke', function(d, i) {
-							if ( allianceStart[i] + allianceEnd[i] + allianceOverall[i] > 0 )
-							{ return 'red'; }
-							else
-							{ return 'transparent'; }
-						})
-						.attr('stroke-dasharray', ("3, 12"))
-						.attr('stroke-width', linkAlliancesStrokeWidth);
+				// var linkAlliancesStrokeWidth = 2;
+				// var linkAlliances = svg3.selectAll()
+				// 		.data(graph.links)
+				// 		.enter()
+				// 		.append('line')
+				// 		.attr('stroke', function(d, i) {
+				// 			if ( allianceOverall[i] > 0 )
+				// 			{ return 'red'; }
+				// 			else
+				// 			{ return 'transparent'; }
+				// 		})
+				// 		.attr('stroke-dasharray', ("3, 12"))
+				// 		.attr('stroke-width', linkAlliancesStrokeWidth);
 
 				// overlaying lines of different styles
 				// this will be used to accent contiguity between nodes
@@ -519,7 +501,7 @@
 						.enter()
 						.append('line')
 						.attr('stroke', function(d, i) {
-							if ( contiguityStart[i] + contiguityEnd[i] + contiguityOverall[i] > 0 )
+							if ( contiguityOverall[i] > 0 )
 							{ return 'blue'; }
 							else
 							{ return 'transparent'; }
@@ -527,6 +509,23 @@
 						.attr('stroke-dasharray', ("3, 12"))
 						.attr('stroke-dashoffset', -7.5)
 						.attr('stroke-width', linkContiguityStrokeWidth);
+
+					// overlaying lines of different styles
+					// this will be used to accent contiguity between nodes
+					// var linkTerritoryExchangeStrokeWidth = 2;
+					// var linkTerritoryExchange = svg3.selectAll()
+					// 		.data(graph.links)
+					// 		.enter()
+					// 		.append('line')
+					// 		.attr('stroke', function(d, i) {
+					// 			if ( territoryExchangeOverall[i] > 0 )
+					// 			{ return 'orange'; }
+					// 			else
+					// 			{ return 'transparent'; }
+					// 		})
+					// 		.attr('stroke-dasharray', ("3, 12"))
+					// 		.attr('stroke-dashoffset', -10)
+					// 		.attr('stroke-width', linkTerritoryExchangeStrokeWidth);
 
 				// appending invisible circle to decrease possibility of overlap
 				var linkNode = svg3.selectAll()
@@ -623,8 +622,9 @@
 						// });
 
 						nodeMouseOverForLinks(link, eventTargetIndex, linkStrokeWidth);
-						nodeMouseOverForLinks(linkAlliances, eventTargetIndex, linkAlliancesStrokeWidth);
+						// nodeMouseOverForLinks(linkAlliances, eventTargetIndex, linkAlliancesStrokeWidth);
 						nodeMouseOverForLinks(linkContiguity, eventTargetIndex, linkContiguityStrokeWidth);
+						// nodeMouseOverForLinks(linkTerritoryExchange, eventTargetIndex, linkTerritoryExchangeStrokeWidth);
 				};
 
 				function nodeMouseLeave() {
@@ -632,8 +632,9 @@
 					 // nodeLabel.attr('display', 'block');
 					 node.style('opacity', 1);
 					 link.style('opacity', 1).style('stroke-width', 1);
-					 linkAlliances.style('opacity', 1).style('stroke-width', 1.5);
+					 // linkAlliances.style('opacity', 1).style('stroke-width', 1.5);
 					 linkContiguity.style('opacity', 1).style('stroke-width', 1.5);
+					 // linkTerritoryExchange.style('opacity', 1).style('stroke-width', 1.5);
 				};
 
 			  function ticked() {
@@ -683,15 +684,20 @@
 			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x)); })
 			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y)); })
 
-					linkAlliances.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)); })
-					        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)); })
-					        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x)); })
-					        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y)); })
+					// linkAlliances.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)); })
+					//         .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)); })
+					//         .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x)); })
+					//         .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y)); })
 
 					linkContiguity.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)); })
 								        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)); })
 								        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x)); })
 								        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y)); })
+
+					// linkTerritoryExchange.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)); })
+					// 										.attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)); })
+					// 						        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x)); })
+					// 						        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y)); })
 
 				  }
 

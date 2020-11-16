@@ -191,18 +191,18 @@ def format_part_df_from_dyadic_data(part_dataframe, extra_switch_columns_list):
 
     ## making a copy before duplicates a taken out.
     ## this will be used below for dyadic data (since no dyadic files are available for intra-state wars)
-    dyad_df_copy = deepcopy(part_dataframe[['war_num',
-                                            'c_code_a',
-                                            'c_code_b',
-                                            'participant_a',
-                                            'participant_b',
-                                            'side_a',
-                                            'side_b',
-                                            'start_year',
-                                            'battle_deaths_a',
-                                            'battle_deaths_b']])
+    dy_df = deepcopy(part_dataframe[['war_num',
+                                     'c_code_a',
+                                     'c_code_b',
+                                     'participant_a',
+                                     'participant_b',
+                                     'side_a',
+                                     'side_b',
+                                     'start_year',
+                                     'battle_deaths_a',
+                                     'battle_deaths_b']])
     ## this will be adjusted again later
-    dyad_df_copy.rename({'start_year': 'year'}, axis = 1, inplace = True)
+    dy_df.rename({'start_year': 'year'}, axis = 1, inplace = True)
 
     # keeping one state (or non-state) per war after duplicate removal
     duplicate_list = ['war_num', 'c_code_a', 'participant_a']
@@ -211,8 +211,10 @@ def format_part_df_from_dyadic_data(part_dataframe, extra_switch_columns_list):
     part_dataframe = deepcopy(drop_participant_b_columns(part_dataframe, switched_columns_list))
 
     ## removing non applicable participants
+    ## don't need to do this for inter-state war because all is applicable
     part_dataframe = deepcopy(part_dataframe[part_dataframe['participant']!='-8']).reset_index(drop = True)
-    return part_dataframe, dyad_df_copy
+    dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')]).reset_index(drop = True)
+    return part_dataframe, dy_df
 
 def column_fills_and_converions(dataframe, conversion_dic):
 
@@ -256,14 +258,18 @@ def column_fills_and_converions(dataframe, conversion_dic):
 
     return dataframe
 
-def add_missing_dyads(part_df, dy_df, war_input, side_input):
+def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
 
     opposing_side_dic = {1: 2, 2: 1}
-    c_code_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input)]['c_code'].values[0]
-    participant_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input)]['participant'].values[0]
-    participating_parties = sorted(list(set(list(part_df[(part_df['war_num']==war_input) & (part_df['side']==opposing_side_dic[side_input])]['participant']))))
+    if opposition_type=='all_participants':
+        c_code_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input)]['c_code'].values[0]
+        participant_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input)]['participant'].values[0]
+    elif opposition_type=='non-state':
+        c_code_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input) & (part_df['c_code']==-8)]['c_code'].values[0]
+        participant_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input) & (part_df['c_code']==-8)]['participant'].values[0]
+    opposing_participants = sorted(list(set(list(part_df[(part_df['war_num']==war_input) & (part_df['side']==opposing_side_dic[side_input])]['participant']))))
     dyadic_parties = sorted(list(set(list(dy_df[dy_df['war_num']==war_input]['participant_a']) + list(dy_df[dy_df['war_num']==war_input]['participant_b']))))
-    for i, party_b in enumerate(participating_parties):
+    for i, party_b in enumerate(opposing_participants):
         if party_b in dyadic_parties and len(dyadic_parties) > 0:
             pass
         else:
@@ -290,6 +296,7 @@ def descriptive_dyad_from_source(source, c_code_a, c_code_b, year, binary_field)
     switched_columns_list = ['c_code_a',
                              'c_code_b']
     dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
+
     return dy_df
 
 def descriptive_dyad_from_dd(df_dd, conditional_statement, binary_field):
@@ -301,4 +308,5 @@ def descriptive_dyad_from_dd(df_dd, conditional_statement, binary_field):
     switched_columns_list = ['c_code_a',
                              'c_code_b']
     df_dd = deepcopy(union_opposite_columns(df_dd, switched_columns_list))
+
     return df_dd

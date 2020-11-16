@@ -3,6 +3,7 @@ import numpy as np
 from copy import deepcopy
 from traceback import format_exc
 
+
 def start_and_end_dates(dataframe):
 
     ## defining null values (missing data)
@@ -61,8 +62,8 @@ def start_and_end_dates(dataframe):
         else:
             dates_not_found+=1
 
-    print("total rows with both dates found: {}".format(format(dates_found, ',d')))
-    print("total rows with at least one date not found: {}\n".format(format(dates_not_found, ',d')))
+    print("Total Rows With Both Dates Found: {}".format(format(dates_found, ',d')))
+    print("Total Rows With At Least One Date Not Found: {}\n".format(format(dates_not_found, ',d')))
 
     return dataframe
 
@@ -152,13 +153,13 @@ def column_fills_and_converions(dataframe, conversion_dic):
             # converting these to their proper units according to documentation
             dataframe[column] = ([s * conversion_dic[column[:-2]] for s in dataframe[column]])
 
-    print('\ntotal columns adjusted: {}'.format(format(len(x_y_z_columns), ',d')))
+    print('\nTotal Columns Adjusted: {}'.format(format(len(x_y_z_columns), ',d')))
     if conversion_dic==None:
-        print('total columns adjusted for conversion: 0')
+        print('Total Columns Adjusted for Conversion: 0')
     else:
-        print('total columns adjusted for conversion: {}'.format(format(len(list(conversion_dic.keys())) * 2, ',d')))
-    print('null values notated: {}'.format(format(null_values, ',d')))
-    print('unknown values notated: {}'.format(format(unknown_values, ',d')))
+        print('Total Columns Adjusted for Conversion: {}'.format(format(len(list(conversion_dic.keys())) * 2, ',d')))
+    print('Total Null Values Notated: {}'.format(format(null_values, ',d')))
+    print('Total Unknown Values Notated: {}'.format(format(unknown_values, ',d')))
 
     return dataframe
 
@@ -216,47 +217,6 @@ def format_part_df_from_dyadic_data(part_dataframe, extra_switch_columns_list):
     dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')]).reset_index(drop = True)
     return part_dataframe, dy_df
 
-def column_fills_and_converions(dataframe, conversion_dic):
-
-    column_list = list(dataframe.columns)
-    x_y_z_columns = []
-
-    for i, column in enumerate(column_list):
-        if column[-2:]=='_x':
-            x_y_z_columns.append(column)
-        elif column[-2:]=='_y':
-            x_y_z_columns.append(column)
-        elif column[-2:]=='_z':
-            x_y_z_columns.append(column)
-
-    null_values = 0
-    unknown_values = 0
-    ## filling in nulls with zeros
-    ## these are ones that most likely mean zero if null (not due to missing data)
-    for column in x_y_z_columns:
-        null_values = null_values + len(dataframe[dataframe[column].isnull()])
-        ## giving this zeros because they weren't in the dataset at all.
-        ## no result following join.
-        dataframe.loc[dataframe[column].isnull(), column] = 0
-        ## -9 is unknown value in the dataset
-        ## giving these null values
-        unknown_values = unknown_values + len(dataframe[dataframe[column]==-9])
-        dataframe.loc[dataframe[column]==-9, column] = None
-        if conversion_dic==None:
-            pass
-        elif column[:-2] in list(conversion_dic.keys()):
-            # converting these to their proper units according to documentation
-            dataframe[column] = ([s * conversion_dic[column[:-2]] for s in dataframe[column]])
-
-    print('\ntotal columns adjusted: {}'.format(format(len(x_y_z_columns), ',d')))
-    if conversion_dic==None:
-        print('total columns adjusted for conversion: 0')
-    else:
-        print('total columns adjusted for conversion: {}'.format(format(len(list(conversion_dic.keys())) * 2, ',d')))
-    print('null values notated: {}'.format(format(null_values, ',d')))
-    print('unknown values notated: {}'.format(format(unknown_values, ',d')))
-
-    return dataframe
 
 def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
 
@@ -283,6 +243,7 @@ def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
 
     return dy_df
 
+
 def descriptive_dyad_from_source(source, c_code_a, c_code_b, year, binary_field):
 
     dy_df = pd.read_csv(source, encoding = 'utf8')[[c_code_a, c_code_b, year]]
@@ -298,6 +259,7 @@ def descriptive_dyad_from_source(source, c_code_a, c_code_b, year, binary_field)
     dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
 
     return dy_df
+
 
 def descriptive_dyad_from_dd(df_dd, conditional_statement, binary_field):
 

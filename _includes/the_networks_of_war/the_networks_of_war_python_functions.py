@@ -3,7 +3,7 @@ import numpy as np
 from copy import deepcopy
 from traceback import format_exc
 
-def participant_start_and_end_dates(dataframe):
+def start_and_end_dates(dataframe):
 
     ## defining null values (missing data)
     dataframe.loc[dataframe['start_day']==-9, 'start_day'] = None
@@ -161,6 +161,58 @@ def column_fills_and_converions(dataframe, conversion_dic):
     print('unknown values notated: {}'.format(format(unknown_values, ',d')))
 
     return dataframe
+
+
+def format_part_df_from_dyadic_data(part_dataframe, extra_switch_columns_list):
+    ## whoever is originally marked as side a is getting labelled as 1.
+    ## whoever is originally marked as side b is getting labelled as 2.
+    part_dataframe['side_a'] = 1
+    part_dataframe['side_b'] = 2
+
+    part_dataframe = deepcopy(start_and_end_dates(part_dataframe))
+
+    ## unioning mismatching columns so each participant will get their own row
+    switched_columns_list = ['c_code_a',
+                             'c_code_b',
+                             'participant_a',
+                             'participant_b',
+                             'side_a',
+                             'side_b',
+                             'battle_deaths_a',
+                             'battle_deaths_b']
+
+    if extra_switch_columns_list==None:
+        pass
+    else:
+        for column in extra_switch_columns_list:
+            switched_columns_list.append(column)
+
+    part_dataframe = deepcopy(union_opposite_columns(part_dataframe, switched_columns_list))
+
+    ## making a copy before duplicates a taken out.
+    ## this will be used below for dyadic data (since no dyadic files are available for intra-state wars)
+    dyad_df_copy = deepcopy(part_dataframe[['war_num',
+                                            'c_code_a',
+                                            'c_code_b',
+                                            'participant_a',
+                                            'participant_b',
+                                            'side_a',
+                                            'side_b',
+                                            'start_year',
+                                            'battle_deaths_a',
+                                            'battle_deaths_b']])
+    ## this will be adjusted again later
+    dyad_df_copy.rename({'start_year': 'year'}, axis = 1, inplace = True)
+
+    # keeping one state (or non-state) per war after duplicate removal
+    duplicate_list = ['war_num', 'c_code_a', 'participant_a']
+    part_dataframe.drop_duplicates(subset = duplicate_list, keep = 'first', inplace = True)
+    part_dataframe = deepcopy(part_dataframe.reset_index(drop = True))
+    part_dataframe = deepcopy(drop_participant_b_columns(part_dataframe, switched_columns_list))
+
+    ## removing non applicable participants
+    part_dataframe = deepcopy(part_dataframe[part_dataframe['participant']!='-8']).reset_index(drop = True)
+    return part_dataframe, dyad_df_copy
 
 def column_fills_and_converions(dataframe, conversion_dic):
 

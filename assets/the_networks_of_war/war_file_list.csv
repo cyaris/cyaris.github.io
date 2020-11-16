@@ -114,14 +114,14 @@ war_num_843_0.json,843.0,Holy Spirit Movement War,4.0,Intra-State War,Civil War 
 war_num_207_0.json,207.0,War over the Aouzou Strip,1.0,Inter-State War,,2.0,1986.0,1987.0,,,0.0,1986-11-15,1987-09-11,300.0
 war_num_840_0.json,840.0,Fifth Iraqi Kurds War,5.0,Intra-State War,Civil War (over local issues),3.0,1985.0,1988.0,,,0.0,,1988-08-28,
 war_num_837_0.json,837.0,Indian Golden Temple War,5.0,Intra-State War,Civil War (over local issues),2.0,1984.0,1984.0,,,0.0,1984-06-01,1984-07-30,59.0
-war_num_838_0.json,838.0, First Turkish Kurds War,5.0,Intra-State War,Civil War (over local issues),2.0,1984.0,1986.0,,,0.0,1984-08-14,1986-03-28,591.0
+war_num_838_0.json,838.0,First Turkish Kurds War,5.0,Intra-State War,Civil War (over local issues),2.0,1984.0,1986.0,,,0.0,1984-08-14,1986-03-28,591.0
 war_num_833_0.json,833.0,Fourth Lebanese War,4.0,Intra-State War,Civil War (for central control),6.0,1983.0,1984.0,,,0.0,1983-04-18,1984-02-29,317.0
 war_num_835_0.json,835.0,First Sri Lanka Tamil War,5.0,Intra-State War,Civil War (over local issues),2.0,1983.0,1985.0,,477.0,0.0,1983-07-23,1985-06-18,696.0
 war_num_834_0.json,834.0,Second South Sudan War,4.0,Intra-State War,Civil War (for central control),4.0,1983.0,1991.0,,,0.0,1983-05-17,1991-09-10,3038.0
 war_num_202_0.json,202.0,Falkland Islands,1.0,Inter-State War,,2.0,1982.0,1982.0,,,0.0,1982-03-25,1982-06-15,82.0
 war_num_826_5.json,826.5,Hama Uprising,4.0,Intra-State War,Civil War (for central control),2.0,1982.0,1982.0,,,0.0,1982-02-03,1982-02-28,25.0
 war_num_205_0.json,205.0,War over Lebanon,1.0,Inter-State War,,2.0,1982.0,1982.0,,,0.0,1982-04-21,1982-09-15,147.0
-war_num_828_3.json,828.3, Uganda-NRA War,4.0,Intra-State War,Civil War (for central control),2.0,1982.0,1986.0,,,0.0,,1986-03-19,
+war_num_828_3.json,828.3,Uganda-NRA War,4.0,Intra-State War,Civil War (for central control),2.0,1982.0,1986.0,,,0.0,,1986-03-19,
 war_num_828_0.json,828.0,Contra War,4.0,Intra-State War,Civil War (for central control),2.0,1982.0,1988.0,,,0.0,1982-03-14,1988-03-23,2201.0
 war_num_826_0.json,826.0,Tigrean & Eritrean War,5.0,Intra-State War,Civil War (over local issues),2.0,1982.0,1991.0,,,0.0,1982-01-23,1991-05-28,3412.0
 war_num_829_0.json,829.0,Shining Path War,4.0,Intra-State War,Civil War (for central control),2.0,1982.0,1992.0,,,0.0,1982-11-28,1992-09-12,3576.0
@@ -591,7 +591,7 @@ war_num_551_0.json,551.0,Milan Five Day Revolt,5.0,Intra-State War,Civil War (ov
 war_num_549_0.json,549.0,Second French Insurrection,4.0,Intra-State War,Civil War (for central control),2.0,1848.0,1848.0,,,0.0,1848-02-22,1848-02-24,2.0
 war_num_547_0.json,547.0,Second Two Sicilies War,4.0,Intra-State War,Civil War (for central control),2.0,1848.0,1848.0,,,0.0,1848-01-12,1848-01-29,17.0
 war_num_550_0.json,550.0,Viennese Revolt,4.0,Intra-State War,Civil War (for central control),2.0,1848.0,1848.0,,,0.0,1848-03-13,1848-03-15,2.0
-war_num_548_0.json,548.0, First Venezuela War,4.0,Intra-State War,Civil War (for central control),2.0,1848.0,1849.0,,,0.0,1848-02-04,1849-08-15,558.0
+war_num_548_0.json,548.0,First Venezuela War,4.0,Intra-State War,Civil War (for central control),2.0,1848.0,1849.0,,,0.0,1848-02-04,1849-08-15,558.0
 war_num_554_0.json,554.0,Hungarian War,5.0,Intra-State War,Civil War (over local issues),3.0,1848.0,1849.0,,,0.0,1848-09-11,1849-08-11,334.0
 war_num_335_0.json,335.0,Second British-Sikh,3.0,Extra-State War,Imperial (state vs non-state),2.0,1848.0,1849.0,,,0.0,1848-05-18,1849-03-10,296.0
 war_num_553_0.json,553.0,Mayan Caste War phase 2,5.0,Intra-State War,Civil War (over local issues),2.0,1848.0,1855.0,545.0,,0.0,1848-08-17,1855-03-04,2390.0

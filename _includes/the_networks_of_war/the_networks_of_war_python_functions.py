@@ -6,21 +6,18 @@ from traceback import format_exc
 
 def start_and_end_dates(dataframe):
 
-    ## defining null values (missing data)
-    dataframe.loc[dataframe['start_day']==-9, 'start_day'] = None
-    dataframe.loc[dataframe['start_month']==-9, 'start_month'] = None
-    dataframe.loc[dataframe['start_year']==-9, 'start_year'] = None
-    dataframe.loc[dataframe['end_day']==-9, 'end_day'] = None
-    dataframe.loc[dataframe['end_month']==-9, 'end_month'] = None
-    dataframe.loc[dataframe['end_year']==-9, 'end_year'] = None
-
     ## creatign a field for ongoing wars
     dataframe.loc[dataframe['end_day']==-7, 'ongoing_participation'] = 1
     dataframe.loc[dataframe['ongoing_participation'].isnull(), 'ongoing_participation'] = 0
-    ## adjusting for ongoing with wars with current date end date
-    dataframe.loc[dataframe['end_day']==-7, 'end_day'] = None
-    dataframe.loc[dataframe['end_month']==-7, 'end_month'] = None
-    dataframe.loc[dataframe['end_year']==-7, 'end_year'] = None
+
+    ## defining null values (missing or non-applicable data)
+    ## includes ongoing wars (end date is non-applicable)
+    dataframe.loc[dataframe['start_day']<=0, 'start_day'] = None
+    dataframe.loc[dataframe['start_month']<=0, 'start_month'] = None
+    dataframe.loc[dataframe['start_year']<=0, 'start_year'] = None
+    dataframe.loc[dataframe['end_day']<=0, 'end_day'] = None
+    dataframe.loc[dataframe['end_month']<=0, 'end_month'] = None
+    dataframe.loc[dataframe['end_year']<=0, 'end_year'] = None
 
     ## calculating null for all without valid start/end dates.
     ## those with invalid data will have null values.

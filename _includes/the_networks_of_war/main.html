@@ -87,9 +87,6 @@
 			</p>
 			</div>
 		<!-- Load d3.js -->
-		<!-- <script src='https://d3js.org/d3.v4.min.js'></script> -->
-
-		<!-- <script src='//d3js.org/d3.v3.min.js'></script> -->
 		<script src='https://d3js.org/d3.v5.min.js'></script>
 		<script>
 
@@ -478,8 +475,7 @@
 				var linkStrokeWidth = 1;
 				var link = svg3.selectAll()
 				    .data(graph.links)
-				    .enter()
-				    .append('line')
+				    .enter().append('line')
 				    .attr('stroke', '#aaa')
 				    .attr('stroke-width', linkStrokeWidth);
 
@@ -493,21 +489,25 @@
 				});
 
 				// overlaying lines of different styles
-				// this will be used to accent contiguity between nodes
-				var linkDashStrokeWidth = 2;
+				// this will be used to accent interactions between nodes
+				// identifying all dyads that shouldn't be included with a class assignment.
+				// these will be removed immediately after creation.
+				var linkDashStrokeWidth = 1.5;
 				var linkDash = svg3.selectAll()
 						.data(graph.links)
 						.enter()
 						.append('line')
-						.attr('stroke', function(d, i) {
-							if ( linkDashOverall[i] > 0 )
-							{ return 'blue'; }
-							else
-							{ return 'transparent'; }
+						.attr('class', function(d) {
+							if ( linkDashOverall[d.index] <= 0 )
+							{ return 'links_without_interactions'; }
 						})
-						.attr('stroke-dasharray', ("3, 12"))
-						.attr('stroke-dashoffset', -7.5)
+						.attr('stroke', 'blue')
+						.attr('stroke-dasharray', ("1.5, 12"))
+						.attr('stroke-dashoffset', -6)
 						.attr('stroke-width', linkDashStrokeWidth);
+
+				// removing all link dashes that should not have been added
+				svg3.selectAll('.links_without_interactions').remove();
 
 				// appending invisible circle to decrease possibility of overlap
 				var linkNode = svg3.selectAll()
@@ -543,15 +543,15 @@
 
 				node.append('text')
 						.attr('id', function(d) { return "label_" + nodeIndices[d.participant]; })
-						.attr('dx', function(d) { console.log(nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]]); return nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]]; })
-			      .attr('dy', function(d) { console.log(nodeMargins['vertical_name_shift'][nodeIndices[d.participant]]); return nodeMargins['vertical_name_shift'][nodeIndices[d.participant]]; })
+						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]]; })
+			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.participant]]; })
 						.attr('font-size', '12px')
 			      .attr('text-anchor', 'middle')
 			      .text(function(d) { return d.participant; });
 
 				node.append('text')
-						.attr('dx', function(d) { console.log(nodeMargins['size'][nodeIndices[d.participant]] * -1.5); return nodeMargins['size'][nodeIndices[d.participant]] * -1.5 })
-			      .attr('dy', function(d) { console.log(nodeMargins['size'][nodeIndices[d.participant]] * 0.75); return nodeMargins['size'][nodeIndices[d.participant]] * 0.75 })
+						.attr('dx', function(d) { return nodeMargins['size'][nodeIndices[d.participant]] * -1.5 })
+			      .attr('dy', function(d) { return nodeMargins['size'][nodeIndices[d.participant]] * 0.75 })
 						.attr('font-size', '15px')
 			      .attr('text-anchor', 'middle')
 			      .text(function(d) {
@@ -567,7 +567,7 @@
 						return 0;
 				};
 
-				function nodeMouseOverForLinks(linkInput, indexInput, strokWidthInput) {
+				function nodeMouseOverForLinks(linkInput, indexInput, strokeWidthInput) {
 					// accenting first degree links for that node
 					// making all links not associated with that node's first degree network opaque
 					linkInput.style('opacity', function(o) {
@@ -580,11 +580,10 @@
 									.style('stroke-width', function(o) {
 										// increase stroke width for neighbor links
 										if ( o.source.index == indexInput || o.target.index == indexInput )
-											{ return strokWidthInput + 0.5 }
+											{ return strokeWidthInput }
 									});
-
-
 				}
+
 				function nodeMouseOver(d) {
 						d3.select(this).style('cursor', 'pointer');
 						var eventTargetIndex = d3.select(d3.event.target).datum().index;
@@ -603,16 +602,16 @@
 						// 		// return 2;
 						// });
 
-						nodeMouseOverForLinks(link, eventTargetIndex, linkStrokeWidth);
-						nodeMouseOverForLinks(linkDash, eventTargetIndex, linkDashStrokeWidth);
+						nodeMouseOverForLinks(link, eventTargetIndex, linkStrokeWidth + 0.5);
+						nodeMouseOverForLinks(linkDash, eventTargetIndex, linkDashStrokeWidth + 2);
 				};
 
 				function nodeMouseLeave() {
 						// reverting all changes in mouseover upon mouseleave
 					 // nodeLabel.attr('display', 'block');
 					 node.style('opacity', 1);
-					 link.style('opacity', 1).style('stroke-width', 1);
-					 linkDash.style('opacity', 1).style('stroke-width', 1.5);
+					 link.style('opacity', 1).style('stroke-width', linkStrokeWidth);
+					 linkDash.style('opacity', 1).style('stroke-width', linkDashStrokeWidth);
 				};
 
 			  function ticked() {

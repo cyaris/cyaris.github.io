@@ -102,7 +102,7 @@ def union_opposite_columns(dataframe, switched_columns_list):
         else:
             pass
 
-    dataframe = deepcopy(pd.concat([dataframe, union_dataframe], ignore_index=True).reset_index(drop=True))
+    dataframe = deepcopy(pd.concat([dataframe, union_dataframe], sort=True, ignore_index=True).reset_index(drop=True))
 
     return dataframe
 

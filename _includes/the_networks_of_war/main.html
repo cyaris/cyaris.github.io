@@ -32,9 +32,9 @@
 	    }
 	  }
 
-		svg {
+		/* svg {
 			border: 1px solid #000;
-		}
+		} */
 
 		svg text {
 			font-family: 'Libre Franklin', sans-serif;
@@ -116,9 +116,10 @@
 			}
 		};
 
-		function addStdText(svgInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
+		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
 
 			svgInput.append('text')
+				.attr('class', classInput)
 				.attr('id', idInput)
 				.attr('x', textX)
 				.attr('y', textY)
@@ -135,9 +136,10 @@
 					 });
 		};
 
-		function addStdRect(svgInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
+		function addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
 
 			svgInput.append('rect')
+						.attr('class', classInput)
 						.attr('id', idInput)
 						.attr('x', rectX)
 						.attr('y', rectY)
@@ -183,6 +185,16 @@
 		var margin = {top: 0, bottom: 15, left: 0, right: 0},
 				width = 750,
 				height = 500;
+
+		var generalRectMO = function(d) {
+					d3.select(this)
+						.style("stroke-width", 2)
+						.style("cursor", "pointer");
+		},
+				generalRectML = function(d) {
+					d3.select(this)
+						.style("stroke-width", 1);
+		};
 
 		// reading in the data to create the war menu
 		d3.csv('../assets/the_networks_of_war/war_file_list.csv').then(function(data) {
@@ -242,13 +254,13 @@
 
 				// first rect is an outline for the entire menu
 				// shifting width (width-2) to allow for stroke to be seen (same reason for adjusting the height)
-				addStdRect(svg1, null, 1,  1, width-2, (Object.keys(fileDic['file_name']).length * 30) + 10 - 1, 'black', 1, null, 'transparent', null, null, null, null);
+				addStdRect(svg1, null, null, 1,  1, width-2, (Object.keys(fileDic['file_name']).length * 30) + 10 - 1, 'black', 1, null, 'transparent', null, null, null, null);
 				// creating the labels for the menu (everything in the top row)
-				addStdRect(svg1, null, 0,  0, width, 40, 'black', 1, 0.15, 'black', 0.075, null, null, null);
-				addStdText(svg1, null, 10, 25, '15px', 0.75, 'Name');
-				addStdText(svg1, null, warNameMaxLength + 55, 25, '15px', 0.75, 'Timeframe');
-				addStdText(svg1, null, warNameMaxLength + 190, 25, '15px', 0.75, 'Length in Days');
-				addStdText(svg1, null, warNameMaxLength + 330, 25, '15px', 0.75, 'Total Participants');
+				addStdRect(svg1, null, null, 0,  0, width, 40, 'black', 1, 0.15, 'black', 0.075, null, null, null);
+				addStdText(svg1, null, null, 10, 25, '15px', 0.75, 'Name');
+				addStdText(svg1, null, null, warNameMaxLength + 55, 25, '15px', 0.75, 'Timeframe');
+				addStdText(svg1, null, null, warNameMaxLength + 190, 25, '15px', 0.75, 'Length in Days');
+				addStdText(svg1, null, null, warNameMaxLength + 330, 25, '15px', 0.75, 'Total Participants');
 
 				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
 				var menuMouseOver = function(d) {
@@ -276,17 +288,17 @@
 
 				for ( var i = 1; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
 
-					addStdRect(svg1, fileDic['file_name'][i], 0,  (30*i)+10, width, 30, 'black', 1, 0.15, 'black', 0.075, menuMouseOver, menuMouseLeave, menuChoice);
-					addStdText(svg1, null, 10, 30*(i+1), '15px', 0, fileDic['war_name'][i]);
+					addStdRect(svg1, null, fileDic['file_name'][i], 0,  (30*i)+10, width, 30, 'black', 1, 0.15, 'black', 0.075, menuMouseOver, menuMouseLeave, menuChoice);
+					addStdText(svg1, null, null, 10, 30*(i+1), '15px', 0, fileDic['war_name'][i]);
 
 					if ( fileDic['ongoing_war'][i]==1 )
-					{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
+					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
 					else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
-					{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i]); }
+					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i]); }
 					else
-					{ addStdText(svg1, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
-						addStdText(svg1, null, warNameMaxLength + 210, 30*(i+1), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
-						addStdText(svg1, null, warNameMaxLength + 385, 30*(i+1), '15px', 0, fileDic['total_participants'][i].toLocaleString());
+					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
+						addStdText(svg1, null, null, warNameMaxLength + 210, 30*(i+1), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
+						addStdText(svg1, null, null, warNameMaxLength + 385, 30*(i+1), '15px', 0, fileDic['total_participants'][i].toLocaleString());
 
 			};
 				// var randomFileName = fileDic['file_name'][Math.floor(Math.random() * Object.keys(fileDic['file_name']).length)];
@@ -307,6 +319,15 @@
 							.attr('transform',
 						        'translate(' + margin.left + ',' + margin.top + ')');
 
+				var svg2BodyMO = function(d) {
+					svg2.selectAll('.link_descriptor_dropdown').remove();
+				};
+				// svg2BodyML = function(d) {
+				// 	svg2.selectAll('.link_descriptor_dropdown').remove();
+				// };
+
+				addStdRect(svg2, null, null, 0, 0, width, 100, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
+
 				var warDic = {};
 				// not sure how to do this without a loop, but there's only one grow in this section of the json file
 				graph.war.forEach(function(d, i) {
@@ -319,7 +340,7 @@
 						warDic['leading_war'] = d.leading_war;
 				});
 
-				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
+				// Three functions that change the tooltip when user hover / move / leave a rectangle on the menu
 				var backToMenuMouseOver = function(d) {
 						d3.select(this)
 							.style('stroke-width', 2)
@@ -335,15 +356,74 @@
 							createMenu();
 					};
 				// creating a rect for a back to menu button
-				addStdRect(svg2, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, backToMenuMouseOver, backToMenuMouseLeave, backToMenuClick);
-				addStdText(svg2, null, 6, 22.5, '15px', 0, '↖ Menu');
-				addStdText(svg2, null, 0, 92.5, '15px', 0, warDic['war_name']);
+				addStdRect(svg2, null, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, backToMenuMouseOver, backToMenuMouseLeave, backToMenuClick);
+				addStdText(svg2, null, null, 6, 22.5, '15px', 0, '↖ Menu');
+				addStdText(svg2, null, null, 0, 92.5, '15px', 0, warDic['war_name']);
+
+				var linkFields = Object.keys(graph.links[0]),
+						linkDescriptors = [],
+						linkDescriptorNameLengths = [];
+
+				for ( var i = 1; i <= linkFields.length-1; i++ ) {
+					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
+					// getting an array of name lengths for all items added
+					if ( linkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[linkFields[i]]; }) > 0 )
+					// { linkDescriptors.push(linkFields[i].split('_z')[0]); }
+					{ linkDescriptors.push(linkFields[i]);
+						linkDescriptorNameLengths.push(getTextWidth(svg2, linkFields[i], '12px'));
+					 }
+			};
+				linkDescriptors = linkDescriptors.sort();
+				console.log(linkDescriptors);
+
+				var linkDashOverall = [];
+
+				graph.links.forEach(function(link) {
+
+					if ( parseInt(link[linkDescriptors[0]]) > 0 )
+					{ linkDashOverall.push(1); }
+					else
+					{ linkDashOverall.push(0); }
+				});
+
+				// Three functions that change the the selection for link dash marks (based on interaction variables).
+				var linkMenuMouseOver = function(d) {
+						d3.select(this)
+							.style('stroke-width', 2)
+							.style('cursor', 'pointer');
+
+						if ( linkDescriptors.length > 1 )
+						{	for ( var i = 1; i <= linkDescriptors.length-2; i++ ) {
+							addStdRect(svg2, 'link_descriptor_dropdown', null, width-linkDescriptorMaxNameWidth-10, 1 + (i*30), linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, null);
+							addStdText(svg2, 'link_descriptor_dropdown', null, width-linkDescriptorMaxNameWidth-5, 22.5 + (30*i), '12px', 0, linkDescriptors[i+1]);
+	 					}}
+					},
+					 linkMenuMouseLeave = function(d) {
+						 d3.select(this)
+	 						.style("stroke-width", 1);
+					},
+						linkMenuClick = function(d) {
+							// // removing all current svgs
+							// d3.selectAll('svg').remove();
+							// createMenu();
+					};
+
+				// creating a rect for a default link descriptor
+				if ( linkDescriptors.length==0 )
+				{ linkDescriptors.push('None');
+					linkDescriptorNameLengths.push(getTextWidth(svg2, 'None', '12px'));
+				}
+
+				var linkDescriptorMaxNameWidth = linkDescriptorNameLengths.reduce(function(a, b) {
+				    return Math.max(a, b);
+				});
+				console.log(linkDescriptorMaxNameWidth);
+				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, linkMenuMouseLeave, null);
+				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDescriptors[0]);
 
 				// new code section: start of code for svg3
-
 				var linkNodes = [],
 						linkNodeSize = 10,
-						linkDashOverall = [],
 						sumOfAllRadiusInputs = 0,
 						nullBattleDeaths = 0,
 						nullRadiusSize = 0,
@@ -353,16 +433,10 @@
 
 					graph.links.forEach(function(link) {
 
-						if ( parseInt(link.contiguity_z) + parseInt(link.colonial_contiguity_z) > 0 )
-						{ linkDashOverall.push(1); }
-						else
-						{ linkDashOverall.push(0); }
-
 						linkNodes.push({
 							source: graph.nodes[link.source],
 							target: graph.nodes[link.target]
 						});
-
 					});
 
 					// first defining the data that will ifnnfluence how the svg is defnined
@@ -464,6 +538,8 @@
 						  .attr('transform',
 						        'translate(' + margin.left + ',' + margin.top + ')');
 
+				addStdRect(svg3, null, null, 0, 0, width, height, 'black', 1, null, 'transparent', null, null, null, null);
+
 				var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
 				    .force('charge', d3.forceManyBody().strength(-3000))
 				    .force('center', d3.forceCenter(width/2, height/2))
@@ -492,7 +568,7 @@
 				// this will be used to accent interactions between nodes
 				// identifying all dyads that shouldn't be included with a class assignment.
 				// these will be removed immediately after creation.
-				var linkDashStrokeWidth = 1.5;
+				var linkDashStrokeWidth = 2;
 				var linkDash = svg3.selectAll()
 						.data(graph.links)
 						.enter()
@@ -502,8 +578,8 @@
 							{ return 'links_without_interactions'; }
 						})
 						.attr('stroke', 'blue')
-						.attr('stroke-dasharray', ("1.5, 12"))
-						.attr('stroke-dashoffset', -6)
+						.attr('stroke-dasharray', ("3, 12"))
+						.attr('stroke-dashoffset', -9)
 						.attr('stroke-width', linkDashStrokeWidth);
 
 				// removing all link dashes that should not have been added
@@ -603,7 +679,7 @@
 						// });
 
 						nodeMouseOverForLinks(link, eventTargetIndex, linkStrokeWidth + 0.5);
-						nodeMouseOverForLinks(linkDash, eventTargetIndex, linkDashStrokeWidth + 2);
+						nodeMouseOverForLinks(linkDash, eventTargetIndex, linkDashStrokeWidth + 1.5);
 				};
 
 				function nodeMouseLeave() {

@@ -3,6 +3,24 @@ import numpy as np
 from copy import deepcopy
 from traceback import format_exc
 
+def define_c_code_dic():
+    c_code_df = pd.read_csv('/Users/the_networks_of_war/data_sources/csvs/COW country codes.csv', encoding = 'utf8')
+    c_code_df.rename({'CCode': 'c_code',
+                      'StateNme': 'country'}, axis=1, inplace = True)
+    c_code_df.drop(['StateAbb'], axis=1, inplace = True)
+
+    duplicate_list = ['c_code', 'country']
+    c_code_df.drop_duplicates(subset = duplicate_list, keep = 'first', inplace = True)
+    c_code_df = deepcopy(c_code_df.reset_index(drop = True))
+
+    c_code_dic = {}
+    for i, c_code in enumerate(c_code_df['c_code']):
+        c_code_dic[c_code] = c_code_df.loc[i, 'country']
+
+    print('Total Country Codes: {}'.format(format(len(c_code_dic.keys()), ',d')))
+
+    return c_code_dic
+
 
 def start_and_end_dates(dataframe):
 
@@ -12,12 +30,12 @@ def start_and_end_dates(dataframe):
 
     ## defining null values (missing or non-applicable data)
     ## includes ongoing wars (end date is non-applicable)
-    dataframe.loc[dataframe['start_day']<=0, 'start_day'] = None
-    dataframe.loc[dataframe['start_month']<=0, 'start_month'] = None
-    dataframe.loc[dataframe['start_year']<=0, 'start_year'] = None
-    dataframe.loc[dataframe['end_day']<=0, 'end_day'] = None
-    dataframe.loc[dataframe['end_month']<=0, 'end_month'] = None
-    dataframe.loc[dataframe['end_year']<=0, 'end_year'] = None
+    dataframe.loc[dataframe['start_day'].astype(float)<=0, 'start_day'] = None
+    dataframe.loc[dataframe['start_month'].astype(float)<=0, 'start_month'] = None
+    dataframe.loc[dataframe['start_year'].astype(float)<=0, 'start_year'] = None
+    dataframe.loc[dataframe['end_day'].astype(float)<=0, 'end_day'] = None
+    dataframe.loc[dataframe['end_month'].astype(float)<=0, 'end_month'] = None
+    dataframe.loc[dataframe['end_year'].astype(float)<=0, 'end_year'] = None
 
     ## calculating null for all without valid start/end dates.
     ## those with invalid data will have null values.
@@ -200,18 +218,18 @@ def format_part_df_from_dyadic_data(part_dataframe, extra_switch_columns_list):
                                      'battle_deaths_a',
                                      'battle_deaths_b']])
     ## this will be adjusted again later
-    dy_df.rename({'start_year': 'year'}, axis = 1, inplace = True)
+    dy_df.rename({'start_year': 'year'}, axis=1, inplace=True)
 
     # keeping one state (or non-state) per war after duplicate removal
     duplicate_list = ['war_num', 'c_code_a', 'participant_a']
-    part_dataframe.drop_duplicates(subset = duplicate_list, keep = 'first', inplace = True)
-    part_dataframe = deepcopy(part_dataframe.reset_index(drop = True))
+    part_dataframe.drop_duplicates(subset=duplicate_list, keep='first', inplace=True)
+    part_dataframe = deepcopy(part_dataframe.reset_index(drop=True))
     part_dataframe = deepcopy(drop_participant_b_columns(part_dataframe, switched_columns_list))
 
     ## removing non applicable participants
     ## don't need to do this for inter-state war because all is applicable
-    part_dataframe = deepcopy(part_dataframe[part_dataframe['participant']!='-8']).reset_index(drop = True)
-    dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')]).reset_index(drop = True)
+    part_dataframe = deepcopy(part_dataframe[part_dataframe['participant']!='-8']).reset_index(drop=True)
+    dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')]).reset_index(drop=True)
     return part_dataframe, dy_df
 
 
@@ -241,22 +259,32 @@ def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
     return dy_df
 
 
-def descriptive_dyad_from_source(source, c_code_a, c_code_b, year, binary_field):
+def remove_extra_dyads(dyad_df, dy_df):
+    ## inner join to only include dyads found in dyadic war data
+    ## this will limit runtime significantly
+    dy_df = deepcopy(pd.merge(dyad_df, dy_df, how='inner', on=['c_code_a', 'c_code_b', 'year']))
+    return dy_df
 
-    dy_df = pd.read_csv(source, encoding = 'utf8')[[c_code_a, c_code_b, year]]
+
+def descriptive_dyad_from_source(dyad_df, source, c_code_a, c_code_b, year, binary_field):
+
+    dy_df = pd.read_csv(source, encoding='utf8')[[c_code_a, c_code_b, year]]
     dy_df.rename({c_code_a: 'c_code_a',
                   c_code_b: 'c_code_b',
-                  year: 'year'}, axis = 1, inplace = True)
+                  year: 'year'}, axis=1, inplace=True)
+    ## removing dyads from descriptive data that won't be needed
+    dy_df = deepcopy(remove_extra_dyads(dyad_df, dy_df))
     ## creating a binary field to represent this dataset
     ## more specific fields can be added later
     dy_df[binary_field] = 1
     ## unioning mismatching columns so each participant will get their own row
-    switched_columns_list = ['c_code_a',
-                             'c_code_b']
+    switched_columns_list = ['c_code_a', 'c_code_b']
     dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
+    ## removing any duplicates that may have occured
+    duplicate_columns_list = ['c_code_a', 'c_code_b', 'year']
+    dy_df.drop_duplicates(subset=duplicate_columns_list, keep='first', inplace=True)
 
     return dy_df
-
 
 def descriptive_dyad_from_dd(df_dd, conditional_statement, binary_field):
 
@@ -267,5 +295,8 @@ def descriptive_dyad_from_dd(df_dd, conditional_statement, binary_field):
     switched_columns_list = ['c_code_a',
                              'c_code_b']
     df_dd = deepcopy(union_opposite_columns(df_dd, switched_columns_list))
+    ## removing any duplicates that may have occured
+    duplicate_columns_list = ['c_code_a', 'c_code_b', 'year']
+    df_dd.drop_duplicates(subset=duplicate_columns_list, keep='first', inplace=True)
 
     return df_dd

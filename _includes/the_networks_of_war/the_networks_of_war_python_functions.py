@@ -266,9 +266,12 @@ def remove_extra_dyads(dyad_df, dy_df):
     return dy_df
 
 
-def descriptive_dyad_from_source(dyad_df, source, c_code_a, c_code_b, year, binary_field):
+def descriptive_dyad_from_source(dyad_df, source, dataframe, c_code_a, c_code_b, year, binary_field):
 
-    dy_df = pd.read_csv(source, encoding='utf8')[[c_code_a, c_code_b, year]]
+    if source==None:
+        dy_df = deepcopy(dataframe)[[c_code_a, c_code_b, year]]
+    else:
+        dy_df = pd.read_csv(source, encoding='utf8')[[c_code_a, c_code_b, year]]
     dy_df.rename({c_code_a: 'c_code_a',
                   c_code_b: 'c_code_b',
                   year: 'year'}, axis=1, inplace=True)

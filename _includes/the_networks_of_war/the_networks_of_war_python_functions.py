@@ -191,10 +191,6 @@ def format_part_df_from_dyadic_data(dy_df, extra_switch_columns_list):
     dy_df['side_a'] = 1
     dy_df['side_b'] = 2
 
-    ## removing non applicable participants
-    ## don't need to do this for inter-state war because all is applicable
-    dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')].reset_index(drop=True))
-
     ## getting start dates and end dates
     dy_df = deepcopy(start_and_end_dates(dy_df))
 
@@ -219,9 +215,6 @@ def format_part_df_from_dyadic_data(dy_df, extra_switch_columns_list):
     ## making a copy before duplicates a taken out.
     ## this will be used below for dyadic data (since no dyadic files are available for intra-state wars)
     dy_df_columns = deepcopy(switched_columns_list)
-    dy_df_columns.append('war_num')
-    dy_df_columns.append('start_year')
-    dy_df = deepcopy(dy_df[dy_df_columns])
     ## this will be adjusted again later
     dy_df.rename({'start_year': 'year'}, axis=1, inplace=True)
 
@@ -232,8 +225,17 @@ def format_part_df_from_dyadic_data(dy_df, extra_switch_columns_list):
     part_dataframe = deepcopy(part_dataframe.reset_index(drop=True))
     part_dataframe = deepcopy(drop_participant_b_columns(part_dataframe, switched_columns_list))
 
-    return part_dataframe, dy_df
+    dy_df_columns.append('war_num')
+    dy_df_columns.append('year')
+    dy_df = deepcopy(dy_df[dy_df_columns])
 
+    ## removing non applicable participants
+    ## don't need to do this for inter-state war because all is applicable
+    part_dataframe = deepcopy(part_dataframe[(part_dataframe['participant']!='-8')].reset_index(drop=True))
+    dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')].reset_index(drop=True))
+
+    return part_dataframe, dy_df
+    
 
 def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
 
@@ -260,12 +262,15 @@ def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
 
     return dy_df
 
-def descriptive_dyad_from_source(descriptive_df, dyad_df_initial, source, dataframe, c_code_a, c_code_b, year, binary_field):
+def descriptive_dyad_from_source(descriptive_df, source, dataframe, conditional_statement, c_code_a, c_code_b, year, binary_field):
 
-    if source==None:
-        dy_df = deepcopy(dataframe)[[c_code_a, c_code_b, year]]
+    if source=='conditional':
+        dy_df = deepcopy(dataframe[conditional_statement][[c_code_a, c_code_b, year]].reset_index(drop=True))
+    elif source==None:
+        dy_df = deepcopy(dataframe[[c_code_a, c_code_b, year]])
     else:
         dy_df = pd.read_csv(source, encoding='utf8')[[c_code_a, c_code_b, year]]
+
     dy_df.rename({c_code_a: 'c_code_a',
                   c_code_b: 'c_code_b',
                   year: 'year'}, axis=1, inplace=True)
@@ -280,24 +285,6 @@ def descriptive_dyad_from_source(descriptive_df, dyad_df_initial, source, datafr
     dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
     ## intergrating the descriptive data into the master dataframe for all dyads
     descriptive_df = deepcopy(pd.merge(descriptive_df, dy_df, how='left', on=['c_code_a', 'c_code_b', 'year']))
-
-    return descriptive_df
-
-
-def descriptive_dyad_from_dd(descriptive_df, df_dd, conditional_statement, binary_field):
-
-    df_dd = deepcopy(df_dd[conditional_statement][['c_code_a', 'c_code_b', 'year']])
-    ## removing any duplicates that may have occured
-    duplicate_columns_list = ['c_code_a', 'c_code_b', 'year']
-    df_dd.drop_duplicates(subset=duplicate_columns_list, keep='first', inplace=True)
-    ## creating a binary field to represent this conditional statement
-    df_dd[binary_field] = 1
-    ## unioning mismatching columns so each participant will get their own row
-    switched_columns_list = ['c_code_a',
-                             'c_code_b']
-    df_dd = deepcopy(union_opposite_columns(df_dd, switched_columns_list))
-    ## intergrating the descriptive data into the master dataframe for all dyads
-    descriptive_df = deepcopy(pd.merge(descriptive_df, df_dd, how='left', on=['c_code_a', 'c_code_b', 'year']))
 
     return descriptive_df
 

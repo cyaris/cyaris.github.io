@@ -120,6 +120,9 @@ def union_opposite_columns(dataframe, switched_columns_list):
 
     dataframe = deepcopy(pd.concat([dataframe, union_dataframe], sort=True, ignore_index=True).reset_index(drop=True))
 
+    duplicate_list = list(dataframe.columns)
+    dataframe.drop_duplicates(subset=duplicate_list, keep='first', inplace=True)
+
     return dataframe
 
 
@@ -230,6 +233,7 @@ def format_part_df_from_dyadic_data(part_dataframe, extra_switch_columns_list):
     ## don't need to do this for inter-state war because all is applicable
     part_dataframe = deepcopy(part_dataframe[part_dataframe['participant']!='-8']).reset_index(drop=True)
     dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')]).reset_index(drop=True)
+
     return part_dataframe, dy_df
 
 
@@ -258,14 +262,6 @@ def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
 
     return dy_df
 
-
-def remove_extra_dyads(dyad_df, dy_df):
-    ## inner join to only include dyads found in dyadic war data
-    ## this will limit runtime significantly
-    dy_df = deepcopy(pd.merge(dyad_df, dy_df, how='inner', on=['c_code_a', 'c_code_b', 'year']))
-    return dy_df
-
-
 def descriptive_dyad_from_source(descriptive_df, dyad_df_initial, source, dataframe, c_code_a, c_code_b, year, binary_field):
 
     if source==None:
@@ -275,36 +271,35 @@ def descriptive_dyad_from_source(descriptive_df, dyad_df_initial, source, datafr
     dy_df.rename({c_code_a: 'c_code_a',
                   c_code_b: 'c_code_b',
                   year: 'year'}, axis=1, inplace=True)
-    ## removing dyads from descriptive data that won't be needed
-    dy_df = deepcopy(remove_extra_dyads(dyad_df_initial, dy_df))
+    # removing any duplicates that may have occured
+    duplicate_columns_list = ['c_code_a', 'c_code_b', 'year']
+    dy_df.drop_duplicates(subset=duplicate_columns_list, keep='first', inplace=True)
     ## creating a binary field to represent this dataset
     ## more specific fields can be added later
     dy_df[binary_field] = 1
     ## unioning mismatching columns so each participant will get their own row
     switched_columns_list = ['c_code_a', 'c_code_b']
     dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
-    ## removing any duplicates that may have occured
-    duplicate_columns_list = ['c_code_a', 'c_code_b', 'year']
-    dy_df.drop_duplicates(subset=duplicate_columns_list, keep='first', inplace=True)
     ## intergrating the descriptive data into the master dataframe for all dyads
-    descriptive_df = deepcopy(pd.merge(descriptive_df, dy_df, how='outer', on=['c_code_a', 'c_code_b', 'year']))
+    descriptive_df = deepcopy(pd.merge(descriptive_df, dy_df, how='left', on=['c_code_a', 'c_code_b', 'year']))
 
     return descriptive_df
+
 
 def descriptive_dyad_from_dd(descriptive_df, df_dd, conditional_statement, binary_field):
 
     df_dd = deepcopy(df_dd[conditional_statement][['c_code_a', 'c_code_b', 'year']])
+    ## removing any duplicates that may have occured
+    duplicate_columns_list = ['c_code_a', 'c_code_b', 'year']
+    df_dd.drop_duplicates(subset=duplicate_columns_list, keep='first', inplace=True)
     ## creating a binary field to represent this conditional statement
     df_dd[binary_field] = 1
     ## unioning mismatching columns so each participant will get their own row
     switched_columns_list = ['c_code_a',
                              'c_code_b']
     df_dd = deepcopy(union_opposite_columns(df_dd, switched_columns_list))
-    ## removing any duplicates that may have occured
-    duplicate_columns_list = ['c_code_a', 'c_code_b', 'year']
-    df_dd.drop_duplicates(subset=duplicate_columns_list, keep='first', inplace=True)
     ## intergrating the descriptive data into the master dataframe for all dyads
-    descriptive_df = deepcopy(pd.merge(descriptive_df, df_dd, how='outer', on=['c_code_a', 'c_code_b', 'year']))
+    descriptive_df = deepcopy(pd.merge(descriptive_df, df_dd, how='left', on=['c_code_a', 'c_code_b', 'year']))
 
     return descriptive_df
 

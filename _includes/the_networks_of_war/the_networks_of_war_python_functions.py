@@ -118,10 +118,12 @@ def union_opposite_columns(dataframe, switched_columns_list):
         else:
             pass
 
-    dataframe = deepcopy(pd.concat([dataframe, union_dataframe], sort=True, ignore_index=True).reset_index(drop=True))
+    dataframe = deepcopy(pd.concat([dataframe, union_dataframe], sort=True, ignore_index=True))
 
     duplicate_list = list(dataframe.columns)
     dataframe.drop_duplicates(subset=duplicate_list, keep='first', inplace=True)
+
+    dataframe = deepcopy(dataframe.reset_index(drop=True))
 
     return dataframe
 
@@ -182,13 +184,19 @@ def column_fills_and_converions(dataframe, conversion_dic):
     return dataframe
 
 
-def format_part_df_from_dyadic_data(part_dataframe, extra_switch_columns_list):
+def format_part_df_from_dyadic_data(dy_df, extra_switch_columns_list):
+
     ## whoever is originally marked as side a is getting labelled as 1.
     ## whoever is originally marked as side b is getting labelled as 2.
-    part_dataframe['side_a'] = 1
-    part_dataframe['side_b'] = 2
+    dy_df['side_a'] = 1
+    dy_df['side_b'] = 2
 
-    part_dataframe = deepcopy(start_and_end_dates(part_dataframe))
+    ## removing non applicable participants
+    ## don't need to do this for inter-state war because all is applicable
+    dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')].reset_index(drop=True))
+
+    ## getting start dates and end dates
+    dy_df = deepcopy(start_and_end_dates(dy_df))
 
     ## unioning mismatching columns so each participant will get their own row
     switched_columns_list = ['c_code_a',
@@ -206,33 +214,23 @@ def format_part_df_from_dyadic_data(part_dataframe, extra_switch_columns_list):
         for column in extra_switch_columns_list:
             switched_columns_list.append(column)
 
-    part_dataframe = deepcopy(union_opposite_columns(part_dataframe, switched_columns_list))
+    dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
 
     ## making a copy before duplicates a taken out.
     ## this will be used below for dyadic data (since no dyadic files are available for intra-state wars)
-    dy_df = deepcopy(part_dataframe[['war_num',
-                                     'c_code_a',
-                                     'c_code_b',
-                                     'participant_a',
-                                     'participant_b',
-                                     'side_a',
-                                     'side_b',
-                                     'start_year',
-                                     'battle_deaths_a',
-                                     'battle_deaths_b']])
+    dy_df_columns = deepcopy(switched_columns_list)
+    dy_df_columns.append('war_num')
+    dy_df_columns.append('start_year')
+    dy_df = deepcopy(dy_df[dy_df_columns])
     ## this will be adjusted again later
     dy_df.rename({'start_year': 'year'}, axis=1, inplace=True)
 
     # keeping one state (or non-state) per war after duplicate removal
     duplicate_list = ['war_num', 'c_code_a', 'participant_a']
+    part_dataframe = deepcopy(dy_df)
     part_dataframe.drop_duplicates(subset=duplicate_list, keep='first', inplace=True)
     part_dataframe = deepcopy(part_dataframe.reset_index(drop=True))
     part_dataframe = deepcopy(drop_participant_b_columns(part_dataframe, switched_columns_list))
-
-    ## removing non applicable participants
-    ## don't need to do this for inter-state war because all is applicable
-    part_dataframe = deepcopy(part_dataframe[part_dataframe['participant']!='-8']).reset_index(drop=True)
-    dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')]).reset_index(drop=True)
 
     return part_dataframe, dy_df
 

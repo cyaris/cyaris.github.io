@@ -170,3 +170,10 @@ for war_num in war_list:
 participant_df['war_num'] = participant_df['war_num'].astype(float)
 participant_df['start_year'] = participant_df['start_year'].astype(float)
 participant_df['end_year'] = participant_df['end_year'].astype(float)
+
+
+# def remove_extra_dyads(dyad_df, dy_df):
+#     ## inner join to only include dyads found in dyadic war data
+#     ## this will limit runtime significantly
+#     dy_df = deepcopy(pd.merge(dyad_df, dy_df, how='inner', on=['c_code_a', 'c_code_b', 'year']))
+#     return dy_df

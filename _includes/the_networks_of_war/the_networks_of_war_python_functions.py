@@ -266,7 +266,7 @@ def remove_extra_dyads(dyad_df, dy_df):
     return dy_df
 
 
-def descriptive_dyad_from_source(dyad_df, source, dataframe, c_code_a, c_code_b, year, binary_field):
+def descriptive_dyad_from_source(descriptive_df, dyad_df_initial, source, dataframe, c_code_a, c_code_b, year, binary_field):
 
     if source==None:
         dy_df = deepcopy(dataframe)[[c_code_a, c_code_b, year]]
@@ -276,7 +276,7 @@ def descriptive_dyad_from_source(dyad_df, source, dataframe, c_code_a, c_code_b,
                   c_code_b: 'c_code_b',
                   year: 'year'}, axis=1, inplace=True)
     ## removing dyads from descriptive data that won't be needed
-    dy_df = deepcopy(remove_extra_dyads(dyad_df, dy_df))
+    dy_df = deepcopy(remove_extra_dyads(dyad_df_initial, dy_df))
     ## creating a binary field to represent this dataset
     ## more specific fields can be added later
     dy_df[binary_field] = 1
@@ -286,10 +286,12 @@ def descriptive_dyad_from_source(dyad_df, source, dataframe, c_code_a, c_code_b,
     ## removing any duplicates that may have occured
     duplicate_columns_list = ['c_code_a', 'c_code_b', 'year']
     dy_df.drop_duplicates(subset=duplicate_columns_list, keep='first', inplace=True)
+    ## intergrating the descriptive data into the master dataframe for all dyads
+    descriptive_df = deepcopy(pd.merge(descriptive_df, dy_df, how='outer', on=['c_code_a', 'c_code_b', 'year']))
 
-    return dy_df
+    return descriptive_df
 
-def descriptive_dyad_from_dd(df_dd, conditional_statement, binary_field):
+def descriptive_dyad_from_dd(descriptive_df, df_dd, conditional_statement, binary_field):
 
     df_dd = deepcopy(df_dd[conditional_statement][['c_code_a', 'c_code_b', 'year']])
     ## creating a binary field to represent this conditional statement
@@ -301,5 +303,44 @@ def descriptive_dyad_from_dd(df_dd, conditional_statement, binary_field):
     ## removing any duplicates that may have occured
     duplicate_columns_list = ['c_code_a', 'c_code_b', 'year']
     df_dd.drop_duplicates(subset=duplicate_columns_list, keep='first', inplace=True)
+    ## intergrating the descriptive data into the master dataframe for all dyads
+    descriptive_df = deepcopy(pd.merge(descriptive_df, df_dd, how='outer', on=['c_code_a', 'c_code_b', 'year']))
 
-    return df_dd
+    return descriptive_df
+
+
+def print_new_fields(descriptive_df, initial_columns, descriptive_columns):
+
+    ## using this field for both the descriptive dataframes, and the dyadic dataframes joined to descriptive data.
+    ## the descriptive dataframes have duplicates from unions while the dyadic dataframes do not.
+
+    ## only need the initial columns if descriptive columns not provided
+    if descriptive_columns==None:
+        descriptive_columns = deepcopy(set(list(descriptive_df.columns)))
+        descriptive_columns = deepcopy(list(descriptive_columns - initial_columns))
+
+    print_dic = {}
+    for column in descriptive_columns:
+        if initial_columns==None:
+            print_dic[column] = len(descriptive_df[descriptive_df[column]==1])
+        else:
+            print_dic[column] = int(len(descriptive_df[descriptive_df[column]==1])/2)
+
+    print_df = pd.DataFrame(list(print_dic.items()), columns=['field', 'dyads'])
+
+    if initial_columns==None:
+        print_df.loc[(['_z' in s[-2:] for s in print_df['field']]), 'timeframe'] = 'Overall'
+        print_df.loc[(['_y' in s[-2:] for s in print_df['field']]), 'timeframe'] = 'Last Year'
+        print_df.loc[(['_x' in s[-2:] for s in print_df['field']]), 'timeframe'] = 'First Year'
+        print_df = deepcopy(print_df[['timeframe', 'field', 'dyads']])
+        for i, field in enumerate(print_df['field']):
+            print_df.loc[i, 'field'] = field[:-2]
+
+        print_df.sort_values(by=['dyads', 'field', 'timeframe'], ascending=(False, True, True), inplace=True)
+
+        print(print_df.to_string(index=False, header=False))
+    else:
+        print_df.sort_values(by=['dyads', 'field'], ascending=(False, True), inplace=True)
+        print(print_df.to_string(index=False, header=False))
+
+    return

@@ -135,9 +135,22 @@ def remaining_participant_null_values(dataframe, remaining_fields):
     return dataframe
 
 
-def union_opposite_columns(dataframe, switched_columns_list):
+def get_switched_columns(dataframe):
+
+    switched_columns_list = []
+    ## unioning mismatching columns so each participant will get their own row
+    for column in list(dataframe.columns):
+        if column[-2:]=='_a' or column[-2:]=='_b':
+            switched_columns_list.append(column)
+
+    return switched_columns_list
+
+
+def union_opposite_columns(dataframe):
 
     union_dataframe = deepcopy(dataframe)
+
+    switched_columns_list = deepcopy(get_switched_columns(dataframe))
 
     ## doing these inefficient column name changes to fill in for a much needed sql union of mismatching column names
     for column in switched_columns_list:
@@ -152,22 +165,19 @@ def union_opposite_columns(dataframe, switched_columns_list):
             pass
 
     dataframe = deepcopy(pd.concat([dataframe, union_dataframe], sort=True, ignore_index=True))
-
-    duplicate_list = list(dataframe.columns)
-    dataframe.drop_duplicates(subset=duplicate_list, keep='first', inplace=True)
-
+    dataframe.drop_duplicates(subset=list(dataframe.columns), keep='first', inplace=True)
     dataframe = deepcopy(dataframe.reset_index(drop=True))
 
     return dataframe
 
 
-def drop_participant_b_columns(dataframe, switched_columns_list):
+def drop_participant_b_columns(dataframe):
 
-    for column in switched_columns_list:
+    for column in list(dataframe.columns):
         if column[-2:]=='_b':
             dataframe.drop(column, axis=1, inplace=True)
 
-    for column in switched_columns_list:
+    for column in list(dataframe.columns):
         if column[-2:]=='_a':
             dataframe.rename({column: column[:-2]}, axis=1, inplace=True)
 
@@ -229,14 +239,9 @@ def format_part_df_from_dyadic_data(dy_df):
     ## getting start dates and end dates
     dy_df = deepcopy(start_and_end_dates(dy_df))
 
-    switched_columns_list = []
-    ## unioning mismatching columns so each participant will get their own row
-    for column in list(dy_df.columns):
-        if column[-2:]=='_a' or column[-2:]=='_b':
-            switched_columns_list.append(column)
+    dy_df = deepcopy(union_opposite_columns(dy_df))
 
-    dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
-
+    switched_columns_list = deepcopy(get_switched_columns(dy_df))
     ## making a copy before duplicates a taken out.
     ## this will be used below for dyadic data (since no dyadic files are available for intra-state wars)
     dy_df_columns = deepcopy(switched_columns_list)
@@ -248,7 +253,7 @@ def format_part_df_from_dyadic_data(dy_df):
     part_dataframe = deepcopy(dy_df)
     part_dataframe.drop_duplicates(subset=duplicate_list, keep='first', inplace=True)
     part_dataframe = deepcopy(part_dataframe.reset_index(drop=True))
-    part_dataframe = deepcopy(drop_participant_b_columns(part_dataframe, switched_columns_list))
+    part_dataframe = deepcopy(drop_participant_b_columns(part_dataframe))
 
     dy_df_columns.append('war_num')
     dy_df_columns.append('year')
@@ -321,9 +326,7 @@ def descriptive_dyad_from_source(descriptive_df, source, dataframe, conditional_
     ## creating a binary field to represent this dataset
     ## more specific fields can be added later
     dy_df[binary_field] = 1
-    ## unioning mismatching columns so each participant will get their own row
-    switched_columns_list = ['c_code_a', 'c_code_b']
-    dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
+    dy_df = deepcopy(union_opposite_columns(dy_df))
     ## intergrating the descriptive data into the master dataframe for all dyads
     descriptive_df = deepcopy(pd.merge(descriptive_df, dy_df, how='left', on=['c_code_a', 'c_code_b', 'year']))
 

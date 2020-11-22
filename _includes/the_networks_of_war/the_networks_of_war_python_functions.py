@@ -3,6 +3,16 @@ import numpy as np
 from copy import deepcopy
 from traceback import format_exc
 
+
+def dictionary_from_field(dataframe, key_input, value_input):
+
+    field_dic = {}
+    for i, key in enumerate(dataframe[key_input]):
+        field_dic[key] = dataframe.loc[i, value_input]
+
+    return field_dic
+
+
 def define_c_code_dic():
     c_code_df = pd.read_csv('/Users/the_networks_of_war/data_sources/csvs/COW country codes.csv', encoding = 'utf8')
     c_code_df.rename({'CCode': 'c_code',
@@ -13,9 +23,7 @@ def define_c_code_dic():
     c_code_df.drop_duplicates(subset = duplicate_list, keep = 'first', inplace = True)
     c_code_df = deepcopy(c_code_df.reset_index(drop = True))
 
-    c_code_dic = {}
-    for i, c_code in enumerate(c_code_df['c_code']):
-        c_code_dic[c_code] = c_code_df.loc[i, 'country']
+    c_code_dic = deepcopy(dictionary_from_field(c_code_df, 'c_code', 'country'))
 
     print('Total Country Codes: {}'.format(format(len(c_code_dic.keys()), ',d')))
 
@@ -46,12 +54,18 @@ def start_and_end_dates(dataframe):
     for i, date in enumerate(dataframe['war_num']):
 
         ## unsure why this occurs (.0 after integer)
-        dataframe.loc[i, 'start_day'] = str(dataframe.loc[i, 'start_day']).split('.')[0]
-        dataframe.loc[i, 'start_month'] = str(dataframe.loc[i, 'start_month']).split('.')[0]
-        dataframe.loc[i, 'start_year'] = str(dataframe.loc[i, 'start_year']).split('.')[0]
-        dataframe.loc[i, 'end_day'] = str(dataframe.loc[i, 'end_day']).split('.')[0]
-        dataframe.loc[i, 'end_month'] = str(dataframe.loc[i, 'end_month']).split('.')[0]
-        dataframe.loc[i, 'end_year'] = str(dataframe.loc[i, 'end_year']).split('.')[0]
+        if '.' in str(dataframe.loc[i, 'start_day']):
+            dataframe.loc[i, 'start_day'] = str(dataframe.loc[i, 'start_day']).split('.')[0]
+        if '.' in str(dataframe.loc[i, 'start_month']):
+            dataframe.loc[i, 'start_month'] = str(dataframe.loc[i, 'start_month']).split('.')[0]
+        if '.' in str(dataframe.loc[i, 'start_year']):
+            dataframe.loc[i, 'start_year'] = str(dataframe.loc[i, 'start_year']).split('.')[0]
+        if '.' in str(dataframe.loc[i, 'end_day']):
+            dataframe.loc[i, 'end_day'] = str(dataframe.loc[i, 'end_day']).split('.')[0]
+        if '.' in str(dataframe.loc[i, 'end_month']):
+            dataframe.loc[i, 'end_month'] = str(dataframe.loc[i, 'end_month']).split('.')[0]
+        if '.' in str(dataframe.loc[i, 'end_year']):
+            dataframe.loc[i, 'end_year'] = str(dataframe.loc[i, 'end_year']).split('.')[0]
 
         try:
             dataframe.loc[i, 'start_date'] = pd.to_datetime(dataframe.loc[i, 'start_year'] + "-" + dataframe.loc[i, 'start_month'] + "-" + dataframe.loc[i, 'start_day'])
@@ -83,21 +97,40 @@ def start_and_end_dates(dataframe):
     return dataframe
 
 
-def remaining_participant_null_values(dataframe):
+def final_date_formatting(dataframe):
+
+    null_start_years = deepcopy(len(dataframe[dataframe['start_year'].isnull()]))
+    null_end_years = deepcopy(len(dataframe[dataframe['end_year'].isnull()]))
+
+    for i, row in enumerate(dataframe[list(dataframe.columns)[0]]):
+        if len(str(dataframe.loc[i, 'start_year'])) < 4:
+            try:
+                dataframe.loc[i, 'start_year'] = int(str(dataframe.loc[i, 'start_date'])[0:4])
+            except:
+                pass
+        if len(str(dataframe.loc[i, 'end_year'])) < 4:
+            try:
+                dataframe.loc[i, 'end_year'] = int(str(dataframe.loc[i, 'end_date'])[0:4])
+            except:
+                pass
+
+    final_null_start_years = deepcopy(len(dataframe[dataframe['start_year'].isnull()]))
+    final_null_end_years = deepcopy(len(dataframe[dataframe['end_year'].isnull()]))
+
+    print('Start Years Reformatted: {}'.format(format(null_start_years-final_null_start_years, ',d')))
+    print('End Years Reformatted: {}\n'.format(format(null_end_years-final_null_end_years, ',d')))
+
+    return dataframe
+
+
+def remaining_participant_null_values(dataframe, remaining_fields):
 
     ## defining null values (missing data)
-    ## -8 is not applicable.
-    dataframe.loc[dataframe['battle_deaths']==-8, 'battle_deaths'] = None
-    dataframe.loc[dataframe['total_deaths_both_sides']==-8, 'total_deaths_both_sides'] = None
-    dataframe.loc[dataframe['peak_forces_available']==-8, 'peak_forces_available'] = None
-    dataframe.loc[dataframe['peak_battle_forces']==-8, 'peak_battle_forces'] = None
-    dataframe.loc[dataframe['lagging_war']==-8, 'lagging_war'] = None
-    dataframe.loc[dataframe['leading_war']==-8, 'leading_war'] = None
-    ## -9 is unknown.
-    dataframe.loc[dataframe['battle_deaths']==-9, 'battle_deaths'] = None
-    dataframe.loc[dataframe['total_deaths_both_sides']==-9, 'total_deaths_both_sides'] = None
-    dataframe.loc[dataframe['peak_forces_available']==-9, 'peak_forces_available'] = None
-    dataframe.loc[dataframe['peak_battle_forces']==-9, 'peak_battle_forces'] = None
+    for field in remaining_fields:
+        ## -8 is not applicable.
+        dataframe.loc[dataframe[field]==-8, field] = None
+        ## -9 is unknown.
+        dataframe.loc[dataframe[field]==-9, field] = None
 
     return dataframe
 
@@ -235,7 +268,7 @@ def format_part_df_from_dyadic_data(dy_df, extra_switch_columns_list):
     dy_df = deepcopy(dy_df[(dy_df['participant_a']!='-8') & (dy_df['participant_b']!='-8')].reset_index(drop=True))
 
     return part_dataframe, dy_df
-    
+
 
 def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
 

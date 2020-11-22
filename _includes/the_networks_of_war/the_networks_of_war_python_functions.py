@@ -14,14 +14,14 @@ def dictionary_from_field(dataframe, key_input, value_input):
 
 
 def define_c_code_dic():
-    c_code_df = pd.read_csv('/Users/the_networks_of_war/data_sources/csvs/COW country codes.csv', encoding = 'utf8')
+    c_code_df = pd.read_csv('/Users/the_networks_of_war/data_sources/csvs/COW country codes.csv', encoding='utf8')
     c_code_df.rename({'CCode': 'c_code',
-                      'StateNme': 'country'}, axis=1, inplace = True)
-    c_code_df.drop(['StateAbb'], axis=1, inplace = True)
+                      'StateNme': 'country'}, axis=1, inplace=True)
+    c_code_df.drop(['StateAbb'], axis=1, inplace=True)
 
     duplicate_list = ['c_code', 'country']
-    c_code_df.drop_duplicates(subset = duplicate_list, keep = 'first', inplace = True)
-    c_code_df = deepcopy(c_code_df.reset_index(drop = True))
+    c_code_df.drop_duplicates(subset=duplicate_list, keep='first', inplace=True)
+    c_code_df = deepcopy(c_code_df.reset_index(drop=True))
 
     c_code_dic = deepcopy(dictionary_from_field(c_code_df, 'c_code', 'country'))
 
@@ -192,14 +192,16 @@ def column_fills_and_converions(dataframe, conversion_dic):
     ## filling in nulls with zeros
     ## these are ones that most likely mean zero if null (not due to missing data)
     for column in x_y_z_columns:
-        null_values = null_values + len(dataframe[dataframe[column].isnull()])
+        null_values = null_values + len(dataframe[(dataframe[column].isnull())])
         ## giving this zeros because they weren't in the dataset at all.
         ## no result following join.
         dataframe.loc[dataframe[column].isnull(), column] = 0
-        ## -9 is unknown value in the dataset
         ## giving these null values
-        unknown_values = unknown_values + len(dataframe[dataframe[column]==-9])
+        ## -9 is unknown value in the dataset
+        ## -8 is non-applicable value
+        unknown_values = unknown_values + len(dataframe[(dataframe[column]==-9) | (dataframe[column]==-8)])
         dataframe.loc[dataframe[column]==-9, column] = None
+        dataframe.loc[dataframe[column]==-8, column] = None
         if conversion_dic==None:
             pass
         elif column[:-2] in list(conversion_dic.keys()):
@@ -211,13 +213,13 @@ def column_fills_and_converions(dataframe, conversion_dic):
         print('Total Columns Adjusted for Conversion: 0')
     else:
         print('Total Columns Adjusted for Conversion: {}'.format(format(len(list(conversion_dic.keys())) * 2, ',d')))
-    print('Total Null Values Notated: {}'.format(format(null_values, ',d')))
-    print('Total Unknown Values Notated: {}'.format(format(unknown_values, ',d')))
+        print('Total Null Values Notated: {}'.format(format(null_values, ',d')))
+        print('Total Unknown Values Notated: {}'.format(format(unknown_values, ',d')))
 
     return dataframe
 
 
-def format_part_df_from_dyadic_data(dy_df, extra_switch_columns_list):
+def format_part_df_from_dyadic_data(dy_df):
 
     ## whoever is originally marked as side a is getting labelled as 1.
     ## whoever is originally marked as side b is getting labelled as 2.
@@ -227,20 +229,10 @@ def format_part_df_from_dyadic_data(dy_df, extra_switch_columns_list):
     ## getting start dates and end dates
     dy_df = deepcopy(start_and_end_dates(dy_df))
 
+    switched_columns_list = []
     ## unioning mismatching columns so each participant will get their own row
-    switched_columns_list = ['c_code_a',
-                             'c_code_b',
-                             'participant_a',
-                             'participant_b',
-                             'side_a',
-                             'side_b',
-                             'battle_deaths_a',
-                             'battle_deaths_b']
-
-    if extra_switch_columns_list==None:
-        pass
-    else:
-        for column in extra_switch_columns_list:
+    for column in list(dy_df.columns):
+        if column[-2:]=='_a' or column[-2:]=='_b':
             switched_columns_list.append(column)
 
     dy_df = deepcopy(union_opposite_columns(dy_df, switched_columns_list))
@@ -285,13 +277,29 @@ def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
         if party_b in dyadic_parties and len(dyadic_parties) > 0:
             pass
         else:
-            df_length = deepcopy(len(dy_df))
-            dy_df.loc[df_length, 'war_num'] = war_input
-            dy_df.loc[df_length, 'c_code_a'] = c_code_a
-            dy_df.loc[df_length, 'participant_a'] = participant_a
-            dy_df.loc[df_length, 'year'] = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['start_year'].values[0]
-            dy_df.loc[df_length, 'c_code_b'] = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['c_code'].values[0]
-            dy_df.loc[df_length, 'participant_b'] = party_b
+            ## preparing list for start years, end years and all years in-between
+            ## each assumed dyad will be joined to all years where the participant being added (not in list) was a part of the war.
+            part_b_start_year = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['start_year'].values[0]
+            part_b_end_year = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['end_year'].values[0]
+            part_b_year_list = []
+            if len(str(part_b_start_year))==4 and len(str(part_b_end_year))==4:
+                for year in np.arange(int(part_b_start_year), int(part_b_end_year)+1):
+                    part_b_year_list.append(year)
+            elif len(str(part_b_start_year))==4:
+                part_b_year_list.append(int(part_b_start_year))
+            elif len(str(part_b_end_year))==4:
+                part_b_year_list.append(int(part_b_end_year))
+            else:
+                ## acounting for when the list is empty since that would break the loop
+                part_b_year_list.append(None)
+            for part_b_year in part_b_year_list:
+                df_length = deepcopy(len(dy_df))
+                dy_df.loc[df_length, 'war_num'] = war_input
+                dy_df.loc[df_length, 'c_code_a'] = c_code_a
+                dy_df.loc[df_length, 'participant_a'] = participant_a
+                dy_df.loc[df_length, 'year'] = part_b_year
+                dy_df.loc[df_length, 'c_code_b'] = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['c_code'].values[0]
+                dy_df.loc[df_length, 'participant_b'] = party_b
 
     return dy_df
 

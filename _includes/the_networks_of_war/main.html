@@ -167,16 +167,16 @@
 
 		function nameVerticalShift(svgInput, nodeRadius, participantName, textSize) {
 			// adjusting text position when it does not fit inside the node
-			if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize) == false )
+			if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
 			{ return nodeRadius + 25 }
 			else
-			{ return 3.5 };
+			{ return 7.5 };
 
 		}
 
 		function nameHorizontalShift(svgInput, nodeRadius, participantName, textSize) {
 			// adjusting text position when it does not fit inside the node
-			if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize) == false )
+			if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
 			{ return 20 }
 			else
 			{ return 0 };
@@ -648,7 +648,7 @@
 								{ return '?' }});
 
 				function firstDegreeCheck(a, b) {
-						return a == b || firstDegreeLinks[a + '-' + b];
+						return a==b || firstDegreeLinks[a + '-' + b];
 				};
 
 				function fixna(x) {
@@ -661,14 +661,14 @@
 					// making all links not associated with that node's first degree network opaque
 					linkInput.style('opacity', function(o) {
 										// make non-neighbor links opaque
-										if ( o.source.index == indexInput || o.target.index == indexInput )
+										if ( o.source.index==indexInput || o.target.index==indexInput )
 											{ return 1; }
 										else
 										{ return 0.15; }
 									})
 									.style('stroke-width', function(o) {
 										// increase stroke width for neighbor links
-										if ( o.source.index == indexInput || o.target.index == indexInput )
+										if ( o.source.index==indexInput || o.target.index==indexInput )
 											{ return strokeWidthInput }
 									});
 				}
@@ -680,13 +680,13 @@
 						// making all objects not associated with that node's first degree network opaque
 						node.style('opacity', function(o) {
 							// not a neighbor node, make it opaque
-							if ( firstDegreeCheck(eventTargetIndex, o.index) != 1 )
+							if ( firstDegreeCheck(eventTargetIndex, o.index)!=1 )
 								{ return 0.15; }
 						});
 						// // not sure why line below did not work.
 						// .style('stroke-width', function(o) {
 						// 	// neighbor node, increase stroke width
-						// 	if ( firstDegreeCheck(index, o.index) == 1 )
+						// 	if ( firstDegreeCheck(index, o.index)==1 )
 						// 		return 10;
 						// 		// return 2;
 						// });

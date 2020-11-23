@@ -247,14 +247,14 @@
 				var svg1 = d3.select('#war_menu')
 						.append('svg')
 							.attr('width', width)
-							.attr('height', (Object.keys(fileDic['file_name']).length+1) * 30)
+							.attr('height', (Object.keys(fileDic['file_name']).length+2) * 30)
 							.attr('transform',
 						        'translate(' + margin.left + ',' + margin.top + ')')
 							.style('cursor', 'pointer');
 
 				// first rect is an outline for the entire menu
 				// shifting width (width-2) to allow for stroke to be seen (same reason for adjusting the height)
-				addStdRect(svg1, null, null, 1,  1, width-2, (Object.keys(fileDic['file_name']).length * 30) + 10 - 1, 'black', 1, null, 'transparent', null, null, null, null);
+				addStdRect(svg1, null, null, 1,  1, width-2, ((Object.keys(fileDic['file_name']).length+1) * 30) + 10 - 1, 'black', 1, null, 'transparent', null, null, null, null);
 				// creating the labels for the menu (everything in the top row)
 				addStdRect(svg1, null, null, 0,  0, width, 40, 'black', 1, 0.15, 'black', 0.075, null, null, null);
 				addStdText(svg1, null, null, 10, 25, '15px', 0.75, 'Name');
@@ -286,19 +286,19 @@
 						window.scrollTo(0, 325);
 					};
 
-				for ( var i = 1; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
+				for ( var i = 0; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
 
-					addStdRect(svg1, null, fileDic['file_name'][i], 0,  (30*i)+10, width, 30, 'black', 1, 0.15, 'black', 0.075, menuMouseOver, menuMouseLeave, menuChoice);
-					addStdText(svg1, null, null, 10, 30*(i+1), '15px', 0, fileDic['war_name'][i]);
+					addStdRect(svg1, null, fileDic['file_name'][i], 0,  (30*(i+1))+10, width, 30, 'black', 1, 0.15, 'black', 0.075, menuMouseOver, menuMouseLeave, menuChoice);
+					addStdText(svg1, null, null, 10, 30*(i+2), '15px', 0, fileDic['war_name'][i]);
 
 					if ( fileDic['ongoing_war'][i]==1 )
-					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
+					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
 					else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
-					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i]); }
+					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i]); }
 					else
-					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+1), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
-						addStdText(svg1, null, null, warNameMaxLength + 210, 30*(i+1), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
-						addStdText(svg1, null, null, warNameMaxLength + 385, 30*(i+1), '15px', 0, fileDic['total_participants'][i].toLocaleString());
+					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
+						addStdText(svg1, null, null, warNameMaxLength + 210, 30*(i+2), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
+						addStdText(svg1, null, null, warNameMaxLength + 385, 30*(i+2), '15px', 0, fileDic['total_participants'][i].toLocaleString());
 
 			};
 				// var randomFileName = fileDic['file_name'][Math.floor(Math.random() * Object.keys(fileDic['file_name']).length)];

@@ -45,6 +45,15 @@ def start_and_end_dates(dataframe):
     dataframe.loc[dataframe['end_month'].astype(float)<=0, 'end_month'] = None
     dataframe.loc[dataframe['end_year'].astype(float)<=0, 'end_year'] = None
 
+
+    ## filling null days with the first day of the month
+    ## this will lead to an estimation for start_date-end_date (total days at war)
+    dataframe.loc[dataframe['start_day'].isnull(), 'start_day'] = 1
+    dataframe.loc[dataframe['end_day'].isnull(), 'end_day'] = 1
+    ## filling null months with the first month of the year
+    dataframe.loc[dataframe['start_month'].isnull(), 'start_month'] = 1
+    dataframe.loc[dataframe['end_month'].isnull(), 'end_month'] = 1
+
     ## calculating null for all without valid start/end dates.
     ## those with invalid data will have null values.
     ## this will need to be improved

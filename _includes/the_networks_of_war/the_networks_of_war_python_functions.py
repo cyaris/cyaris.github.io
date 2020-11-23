@@ -45,6 +45,15 @@ def start_and_end_dates(dataframe):
     dataframe.loc[dataframe['end_month'].astype(float)<=0, 'end_month'] = None
     dataframe.loc[dataframe['end_year'].astype(float)<=0, 'end_year'] = None
 
+    # ## creating an initial flag to say that the value has been filled in arbitrarily
+    # ## this will be made null if total_days_at_war is not calculated
+    # dataframe.loc[dataframe['start_day'].isnull(), 'days_at_war_estimated'] = 1
+    # dataframe.loc[dataframe['end_day'].isnull(), 'days_at_war_estimated'] = 1
+    # dataframe.loc[dataframe['start_month'].isnull(), 'days_at_war_estimated'] = 1
+    # dataframe.loc[dataframe['end_month'].isnull(), 'days_at_war_estimated'] = 1
+    # ## if the above doesn't apply, then the dates were not calculated arbitrarily (or not calculated at all)
+    # ## this value will be adjusted to None later if not calculated at all
+    # dataframe.loc[dataframe['days_at_war_estimated'].isnull(), 'days_at_war_estimated'] = 0
 
     ## filling null days with the first day of the month
     ## this will lead to an estimation for start_date-end_date (total days at war)
@@ -94,6 +103,7 @@ def start_and_end_dates(dataframe):
             dataframe.loc[i, 'days_at_war'] = int(str(dataframe.loc[i, 'days_at_war']).split(' ')[0])
         else:
             dataframe.loc[i, 'days_at_war'] = None
+            # dataframe.loc[dataframe['days_at_war_estimated'].isnull(), 'days_at_war_estimated'] = None
 
         if valid_start_date + valid_end_date==2:
             dates_found += 1

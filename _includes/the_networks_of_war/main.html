@@ -88,6 +88,7 @@
 			</div>
 		<!-- Load d3.js -->
 		<script src='https://d3js.org/d3.v5.min.js'></script>
+		<script src="https://d3js.org/d3-time.v2.min.js"></script>
 		<script>
 
 		// new code section: functions with non-built-in parameters (functions not of d or something like that).
@@ -216,6 +217,8 @@
 						'total_participants': []
 				};
 
+			var parseTime = d3.timeParse('%Y-%m-%d');
+
 			data.forEach(function(d) {
 				// determining the war type for each row in the file.
 				var fileWarType = d.war_type.toLowerCase().replace('-', '_').replace(' ', '_');
@@ -231,7 +234,7 @@
 					fileDic['ongoing_war'].push(parseInt(d.ongoing_war)),
 					fileDic['total_participants'].push(parseInt(d.total_participants));
 					if ( parseInt(d.ongoing_war)==1 )
-					{ fileDic['total_days_in_war'].push('Ongoing'); }
+					{ fileDic['total_days_in_war'].push(d3.timeDay.count(parseTime(d.start_date), new Date()).toLocaleString()); }
 					else { fileDic['total_days_in_war'].push(parseInt(d.total_days_in_war));	}
 				 }
 			});

@@ -6,14 +6,13 @@ from traceback import format_exc
 
 def dictionary_from_field(dataframe, key_input, value_input):
 
-    field_dic = {}
-    for i, key in enumerate(dataframe[key_input]):
-        field_dic[key] = dataframe.loc[i, value_input]
+    field_dic = dict(zip(dataframe[key_input], dataframe[value_input]))
 
     return field_dic
 
 
 def define_c_code_dic():
+
     c_code_df = pd.read_csv('/Users/the_networks_of_war/data_sources/csvs/COW country codes.csv', encoding='utf8')
     c_code_df.rename({'CCode': 'c_code',
                       'StateNme': 'country'}, axis=1, inplace=True)
@@ -32,86 +31,75 @@ def define_c_code_dic():
 
 def start_and_end_dates(dataframe):
 
-    ## creatign a field for ongoing wars
-    dataframe.loc[dataframe['end_day']==-7, 'ongoing_participation'] = 1
-    dataframe.loc[dataframe['ongoing_participation'].isnull(), 'ongoing_participation'] = 0
+    start_date_fields = ['start_day', 'start_month', 'start_year']
+    end_date_fields = ['end_day', 'end_month', 'end_year']
+    ## creating a field for ongoing wars
+    for date_part in end_date_fields:
+        dataframe.loc[dataframe[date_part]==-7, 'ongoing_participation'] = 1
 
     ## defining null values (missing or non-applicable data)
     ## includes ongoing wars (end date is non-applicable)
-    dataframe.loc[dataframe['start_day'].astype(float)<=0, 'start_day'] = None
-    dataframe.loc[dataframe['start_month'].astype(float)<=0, 'start_month'] = None
-    dataframe.loc[dataframe['start_year'].astype(float)<=0, 'start_year'] = None
-    dataframe.loc[dataframe['end_day'].astype(float)<=0, 'end_day'] = None
-    dataframe.loc[dataframe['end_month'].astype(float)<=0, 'end_month'] = None
-    dataframe.loc[dataframe['end_year'].astype(float)<=0, 'end_year'] = None
+    for date_part in start_date_fields + end_date_fields:
 
-    # ## creating an initial flag to say that the value has been filled in arbitrarily
-    # ## this will be made null if total_days_at_war is not calculated
-    # dataframe.loc[dataframe['start_day'].isnull(), 'days_at_war_estimated'] = 1
-    # dataframe.loc[dataframe['end_day'].isnull(), 'days_at_war_estimated'] = 1
-    # dataframe.loc[dataframe['start_month'].isnull(), 'days_at_war_estimated'] = 1
-    # dataframe.loc[dataframe['end_month'].isnull(), 'days_at_war_estimated'] = 1
-    # ## if the above doesn't apply, then the dates were not calculated arbitrarily (or not calculated at all)
-    # ## this value will be adjusted to None later if not calculated at all
-    # dataframe.loc[dataframe['days_at_war_estimated'].isnull(), 'days_at_war_estimated'] = 0
+        dataframe.loc[dataframe[date_part].astype(float)<=0, date_part] = None
 
-    ## filling null days with the first day of the month
-    ## this will lead to an estimation for start_date-end_date (total days at war)
-    dataframe.loc[dataframe['start_day'].isnull(), 'start_day'] = 1
-    dataframe.loc[dataframe['end_day'].isnull(), 'end_day'] = 1
-    ## filling null months with the first month of the year
-    dataframe.loc[dataframe['start_month'].isnull(), 'start_month'] = 1
-    dataframe.loc[dataframe['end_month'].isnull(), 'end_month'] = 1
+        if date_part[-4:]!='year':
+            ## creating an initial flag to say that the value has been filled in arbitrarily
+            ## this will be made null if total_days_at_war is not calculated
+            dataframe.loc[dataframe[date_part].isnull(), date_part.split('_')[0] + '_date_estimated'] = 1
+            ## filling null days with the first day of the month
+            ## filling null months with the first month of the year
+            ## this will lead to an estimation for start_date-end_date (total days at war)
+            dataframe.loc[dataframe[date_part].isnull(), date_part] = 1
+
+    dataframe.loc[dataframe['ongoing_participation'].isnull(), 'ongoing_participation'] = 0
+    ## if the above doesn't apply, then the dates were not calculated arbitrarily (or not calculated at all)
+    ## this value will be adjusted to None later if not calculated at all
+    dataframe.loc[dataframe['start_date_estimated'].isnull(), 'start_date_estimated'] = 0
+    dataframe.loc[dataframe['end_date_estimated'].isnull(), 'end_date_estimated'] = 0
 
     ## calculating null for all without valid start/end dates.
-    ## those with invalid data will have null values.
-    ## this will need to be improved
+    ## those with invalid data will have null dates and increae the count for not_found.
     dates_found = 0
     dates_not_found = 0
 
     for i, date in enumerate(dataframe['war_num']):
 
-        ## unsure why this occurs (.0 after integer)
-        if '.' in str(dataframe.loc[i, 'start_day']):
-            dataframe.loc[i, 'start_day'] = str(dataframe.loc[i, 'start_day']).split('.')[0]
-        if '.' in str(dataframe.loc[i, 'start_month']):
-            dataframe.loc[i, 'start_month'] = str(dataframe.loc[i, 'start_month']).split('.')[0]
-        if '.' in str(dataframe.loc[i, 'start_year']):
-            dataframe.loc[i, 'start_year'] = str(dataframe.loc[i, 'start_year']).split('.')[0]
-        if '.' in str(dataframe.loc[i, 'end_day']):
-            dataframe.loc[i, 'end_day'] = str(dataframe.loc[i, 'end_day']).split('.')[0]
-        if '.' in str(dataframe.loc[i, 'end_month']):
-            dataframe.loc[i, 'end_month'] = str(dataframe.loc[i, 'end_month']).split('.')[0]
-        if '.' in str(dataframe.loc[i, 'end_year']):
-            dataframe.loc[i, 'end_year'] = str(dataframe.loc[i, 'end_year']).split('.')[0]
+        for date_part in start_date_fields + end_date_fields:
+            ## unsure why this occurs (.0 after integer)
+            if '.' in str(dataframe.loc[i, date_part]):
+                dataframe.loc[i, date_part] = str(dataframe.loc[i, date_part]).split('.')[0]
 
         try:
             dataframe.loc[i, 'start_date'] = pd.to_datetime(dataframe.loc[i, 'start_year'] + "-" + dataframe.loc[i, 'start_month'] + "-" + dataframe.loc[i, 'start_day'])
             valid_start_date = 1
         except:
-            valid_start_date = 0
             dataframe.loc[i, 'start_date'] = None
+            dataframe.loc[i, 'start_date_estimated'] = None
+            valid_start_date = 0
         try:
             dataframe.loc[i, 'end_date'] = pd.to_datetime(dataframe.loc[i, 'end_year'] + "-" + dataframe.loc[i, 'end_month'] + "-" + dataframe.loc[i, 'end_day'])
             valid_end_date = 1
         except:
-            valid_end_date = 0
             dataframe.loc[i, 'end_date'] = None
+            dataframe.loc[i, 'end_date_estimated'] = None
+            valid_end_date = 0
 
         if valid_start_date==1 and valid_end_date==1:
             dataframe.loc[i, 'days_at_war'] = dataframe.loc[i, 'end_date'] - dataframe.loc[i, 'start_date']
             dataframe.loc[i, 'days_at_war'] = int(str(dataframe.loc[i, 'days_at_war']).split(' ')[0])
         else:
             dataframe.loc[i, 'days_at_war'] = None
-            # dataframe.loc[dataframe['days_at_war_estimated'].isnull(), 'days_at_war_estimated'] = None
 
-        if valid_start_date + valid_end_date==2:
-            dates_found += 1
+        if valid_start_date==1 and valid_end_date==1:
+            dates_found+=1
         else:
             dates_not_found+=1
 
     print("Total Rows With Both Dates Found: {}".format(format(dates_found, ',d')))
-    print("Total Rows With At Least One Date Not Found: {}\n".format(format(dates_not_found, ',d')))
+    print("Total Rows With At Least One Date Not Found: {}".format(format(dates_not_found, ',d')))
+    print("\nTotal Estimated Start Dates: {}".format(format(len(dataframe[dataframe['start_date_estimated']==1]), ',d')))
+    print("Total Estimated End Dates: {}\n".format(format(len(dataframe[dataframe['end_date_estimated']==1]), ',d')))
 
     return dataframe
 
@@ -119,7 +107,8 @@ def start_and_end_dates(dataframe):
 def final_date_formatting(dataframe):
 
     null_start_years = deepcopy(len(dataframe[dataframe['start_year'].isnull()]))
-    null_end_years = deepcopy(len(dataframe[dataframe['end_year'].isnull()]))
+    ## accounting for ongoing participation (the only time when null year is okay)
+    null_end_years = deepcopy(len(dataframe[(dataframe['end_year'].isnull()) & (dataframe['ongoing_participation']==1)]))
 
     for i, row in enumerate(dataframe[list(dataframe.columns)[0]]):
         if len(str(dataframe.loc[i, 'start_year'])) < 4:
@@ -127,14 +116,15 @@ def final_date_formatting(dataframe):
                 dataframe.loc[i, 'start_year'] = int(str(dataframe.loc[i, 'start_date'])[0:4])
             except:
                 pass
-        if len(str(dataframe.loc[i, 'end_year'])) < 4:
+        if len(str(dataframe.loc[i, 'end_year'])) < 4 and dataframe.loc[i, 'ongoing_participation']==False:
             try:
                 dataframe.loc[i, 'end_year'] = int(str(dataframe.loc[i, 'end_date'])[0:4])
             except:
                 pass
 
     final_null_start_years = deepcopy(len(dataframe[dataframe['start_year'].isnull()]))
-    final_null_end_years = deepcopy(len(dataframe[dataframe['end_year'].isnull()]))
+    ## accounting for ongoing participation (the only time when null year is okay)
+    final_null_end_years = deepcopy(len(dataframe[(dataframe['end_year'].isnull()) & (dataframe['ongoing_participation']==1)]))
 
     print('Start Years Reformatted: {}'.format(format(null_start_years-final_null_start_years, ',d')))
     print('End Years Reformatted: {}\n'.format(format(null_end_years-final_null_end_years, ',d')))

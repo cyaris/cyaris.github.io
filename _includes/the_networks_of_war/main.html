@@ -170,7 +170,7 @@
 			if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
 			{ return nodeRadius + 25 }
 			else
-			{ return 7.5 };
+			{ return 5 };
 
 		}
 
@@ -233,9 +233,13 @@
 					fileDic['war_sub_type'].push(d.war_sub_type),
 					fileDic['ongoing_war'].push(parseInt(d.ongoing_war)),
 					fileDic['total_participants'].push(parseInt(d.total_participants));
+					if ( parseInt(d.start_date_estimated)==1 || parseInt(d.end_date_estimated)==1 )
+					{ estimationFlag = ' *' }
+					else
+					{ estimationFlag = ' ' }
 					if ( parseInt(d.ongoing_war)==1 )
-					{ fileDic['total_days_in_war'].push(d3.timeDay.count(parseTime(d.start_date), new Date()).toLocaleString()); }
-					else { fileDic['total_days_in_war'].push(parseInt(d.total_days_in_war));	}
+					{ fileDic['total_days_in_war'].push(d3.timeDay.count(parseTime(d.start_date), new Date()).toLocaleString()) + estimationFlag; }
+					else { fileDic['total_days_in_war'].push(parseInt(d.total_days_in_war)) + estimationFlag;	}
 				 }
 			});
 

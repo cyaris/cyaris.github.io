@@ -87,7 +87,7 @@ def start_and_end_dates(dataframe):
 
         if valid_start_date==1 and valid_end_date==1:
             dataframe.loc[i, 'days_at_war'] = dataframe.loc[i, 'end_date'] - dataframe.loc[i, 'start_date']
-            dataframe.loc[i, 'days_at_war'] = int(str(dataframe.loc[i, 'days_at_war']).split(' ')[0])
+            dataframe.loc[i, 'days_at_war'] = int(str(dataframe.loc[i, 'days_at_war']).split(' ')[0]) + 1
         else:
             dataframe.loc[i, 'days_at_war'] = None
 
@@ -98,7 +98,7 @@ def start_and_end_dates(dataframe):
 
     print("Total Rows With Both Dates Found: {}".format(format(dates_found, ',d')))
     print("Total Rows With At Least One Date Not Found: {}".format(format(dates_not_found, ',d')))
-    print("\nTotal Estimated Start Dates: {}".format(format(len(dataframe[dataframe['start_date_estimated']==1]), ',d')))
+    print("Total Estimated Start Dates: {}".format(format(len(dataframe[dataframe['start_date_estimated']==1]), ',d')))
     print("Total Estimated End Dates: {}\n".format(format(len(dataframe[dataframe['end_date_estimated']==1]), ',d')))
 
     return dataframe

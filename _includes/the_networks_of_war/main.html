@@ -238,8 +238,8 @@
 					else
 					{ estimationFlag = ' ' }
 					if ( parseInt(d.ongoing_war)==1 )
-					{ fileDic['total_days_in_war'].push(d3.timeDay.count(parseTime(d.start_date), new Date()).toLocaleString()) + estimationFlag; }
-					else { fileDic['total_days_in_war'].push(parseInt(d.total_days_in_war)) + estimationFlag;	}
+					{ fileDic['total_days_in_war'].push(d3.timeDay.count(parseTime(d.start_date), new Date()).toLocaleString() + estimationFlag); }
+					else { fileDic['total_days_in_war'].push(parseInt(d.total_days_in_war).toLocaleString() + estimationFlag);	}
 				 }
 			});
 

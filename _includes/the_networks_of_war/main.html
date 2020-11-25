@@ -32,9 +32,9 @@
 	    }
 	  }
 
-		/* svg {
+		svg {
 			border: 1px solid #000;
-		} */
+		}
 
 		svg text {
 			font-family: 'Libre Franklin', sans-serif;
@@ -59,7 +59,8 @@
 		<!-- Create a div where overall metrics will be -->
 		<div id='war_menu' align='center' style='margin-bottom:15px;'></div>
 		<!-- Create a div where overall metrics will be -->
-		<div id='hover_statistics' align='center' style='margin-bottom:-7.5px;'></div>
+		<div id='hover_statistics' align='center' style='margin-bottom:10px;'></div>
+		<!-- <div id='hover_statistics' align='center' style='margin-bottom:-7.5px;'></div> -->
 		<!-- Create a div where the graph will take place -->
 		<div id='war_network_analysis' align='center' style='margin-bottom:15px;'></div>
 		<div id='list_of_data_sources' align='left' style='margin-bottom:15px;'>
@@ -88,9 +89,11 @@
 			</div>
 		<!-- Load d3.js -->
 		<script src='https://d3js.org/d3.v5.min.js'></script>
-		<script src="https://d3js.org/d3-time.v2.min.js"></script>
+		<script src='https://d3js.org/d3-time.v2.min.js'></script>
+		<script src='../js/node_modules/lodash/lodash.js'></script>
 		<script>
 
+		// import _ from "../js/lodash"
 		// new code section: functions with non-built-in parameters (functions not of d or something like that).
 		function getTextWidth(svgInput, textInput, fontSize) {
 
@@ -238,7 +241,7 @@
 					else
 					{ estimationFlag = ' ' }
 					if ( parseInt(d.ongoing_war)==1 )
-					{ fileDic['total_days_in_war'].push(d3.timeDay.count(parseTime(d.start_date), new Date()).toLocaleString() + estimationFlag); }
+					{ fileDic['total_days_in_war'].push((d3.timeDay.count(parseTime(d.start_date), new Date()) + 1).toLocaleString() + estimationFlag); }
 					else { fileDic['total_days_in_war'].push(parseInt(d.total_days_in_war).toLocaleString() + estimationFlag);	}
 				 }
 			});
@@ -322,18 +325,18 @@
 				var svg2 = d3.select('#hover_statistics')
 						.append('svg')
 							.attr('width', width)
-							.attr('height', 100)
+							.attr('height', 300)
 							.attr('transform',
 						        'translate(' + margin.left + ',' + margin.top + ')');
 
 				var svg2BodyMO = function(d) {
-					svg2.selectAll('.link_descriptor_dropdowns').remove();
-				};
-				// svg2BodyML = function(d) {
-				// 	svg2.selectAll('.link_descriptor_dropdown').remove();
-				// };
 
-				addStdRect(svg2, null, null, 0, 0, width, 100, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
+					svg2.selectAll('.link_descriptor_dropdowns').remove();
+					svg2.select('#link_dropdown_selected_text').style('opacity', 1);
+
+				};
+
+				addStdRect(svg2, null, null, 0, 0, width, 300, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
 
 				var warDic = {};
 				// not sure how to do this without a loop, but there's only one grow in this section of the json file
@@ -380,10 +383,11 @@
 						linkDescriptorNameLengths.push(getTextWidth(svg2, linkFields[i], '12px'));
 					 }
 			};
-				linkDescriptors = linkDescriptors.sort();
-				console.log(linkDescriptors);
 
-				var linkDashOverall = [];
+
+				var linkDescInitialLength = linkDescriptors.lengths,
+						linkDescriptors = linkDescriptors.sort(),
+						linkDashOverall = [];
 
 				graph.links.forEach(function(link) {
 
@@ -395,31 +399,35 @@
 
 				// Three functions that change the the selection for link dash marks (based on interaction variables).
 				var linkMenuMouseOver = function(d) {
+
 						d3.select(this)
 							.style('stroke-width', 2)
 							.style('cursor', 'pointer');
+// addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
+							svg2.selectAll('.link_descriptor_dropdowns').remove();
+							svg2.select('#link_dropdown_selected_text').style('opacity', 0);
 
-						// addStdRect(svg2, 'link_descriptor_dropdowns', null, width-linkDescriptorMaxNameWidth-10, 1 + 30, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, null);
-
-						if ( linkDescriptors.length > 0 )
-						{	for ( var i = 0; i <= linkDescriptors.length-1; i++ ) {
+							// console.log(document.getElementById('#link_dropdown_selected_text').toString().split('>')[1]);
+						for ( var i = 0; i <= linkDescriptors.length-1; i++ ) {
 							addStdRect(svg2, 'link_descriptor_dropdowns', 'link_descriptor_dropdown_' + i, width-linkDescriptorMaxNameWidth-10, 1 + ((i+1)*30), linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, linkMenuClick);
-							console.log(linkDescriptors[i]);
 							addStdText(svg2, 'link_descriptor_dropdowns', null, width-linkDescriptorMaxNameWidth-5, 22.5 + ((i+1)*30), '12px', 0, linkDescriptors[i]);
-	 					}}
+						}
 					},
 					 linkMenuMouseLeave = function(d) {
 						 d3.select(this)
 	 						.style("stroke-width", 1);
+
+
 					},
 						linkMenuClick = function(d) {
 
 							var link_descriptor_indice = d3.select(this).attr('id').slice(-1);
-							linkDescriptors.unshift(linkDropDownSelected);
 							var linkDropDownSelected = linkDescriptors[link_descriptor_indice];
 							svg2.selectAll('.link_descriptor_dropdowns').remove();
 							svg2.selectAll('#link_dropdown_selected_text').remove();
+							addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, linkMenuMouseLeave, null);
 							addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDropDownSelected);
+							// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
 					};
 
 				// creating a rect for a default link descriptor
@@ -432,8 +440,10 @@
 				    return Math.max(a, b);
 				});
 
+// )
 				var linkDropDownSelected = linkDescriptors[0];
-				linkDescriptors.shift();
+
+				// linkDescriptors.shift();
 
 				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, linkMenuMouseLeave, null);
 				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDropDownSelected);
@@ -555,7 +565,14 @@
 						  .attr('transform',
 						        'translate(' + margin.left + ',' + margin.top + ')');
 
-				addStdRect(svg3, null, null, 0, 0, width, height, 'black', 1, null, 'transparent', null, null, null, null);
+				var svg3BodyMO = function(d) {
+
+					svg2.selectAll('.link_descriptor_dropdowns').remove();
+					svg2.select('#link_dropdown_selected_text').style('opacity', 1);
+
+				};
+
+				addStdRect(svg3, null, null, 0, 0, width, height, 'black', 1, null, 'transparent', null, svg3BodyMO, null, null);
 
 				var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
 				    .force('charge', d3.forceManyBody().strength(-3000))

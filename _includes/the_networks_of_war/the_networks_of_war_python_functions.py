@@ -276,25 +276,25 @@ def format_part_df_from_dyadic_data(dy_df):
     return part_dataframe, dy_df
 
 
-def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
+def add_missing_dyads(pa_df, dy_df, war_input, side_input, opposition_type):
 
     opposing_side_dic = {1: 2, 2: 1}
     if opposition_type=='all_participants':
-        c_code_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input)]['c_code'].values[0]
-        participant_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input)]['participant'].values[0]
+        c_code_a = pa_df[pa_df['side']==side_input]['c_code'].values[0]
+        participant_a = pa_df[pa_df['side']==side_input]['participant'].values[0]
     elif opposition_type=='non-state':
-        c_code_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input) & (part_df['c_code']==-8)]['c_code'].values[0]
-        participant_a = part_df[(part_df['war_num']==war_input) & (part_df['side']==side_input) & (part_df['c_code']==-8)]['participant'].values[0]
-    opposing_participants = sorted(list(set(list(part_df[(part_df['war_num']==war_input) & (part_df['side']==opposing_side_dic[side_input])]['participant']))))
-    dyadic_parties = sorted(list(set(list(dy_df[dy_df['war_num']==war_input]['participant_a']) + list(dy_df[dy_df['war_num']==war_input]['participant_b']))))
+        c_code_a = pa_df[(pa_df['side']==side_input) & (pa_df['c_code']==-8)]['c_code'].values[0]
+        participant_a = pa_df[(pa_df['side']==side_input) & (pa_df['c_code']==-8)]['participant'].values[0]
+    opposing_participants = sorted(list(set(list(pa_df[pa_df['side']==opposing_side_dic[side_input]]['participant']))))
+    dyadic_parties = sorted(list(set(list(dy_df['participant_a']) + list(dy_df['participant_b']))))
     for i, party_b in enumerate(opposing_participants):
         if party_b in dyadic_parties and len(dyadic_parties) > 0:
             pass
         else:
             ## preparing list for start years, end years and all years in-between
             ## each assumed dyad will be joined to all years where the participant being added (not in list) was a part of the war.
-            part_b_start_year = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['start_year'].values[0]
-            part_b_end_year = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['end_year'].values[0]
+            part_b_start_year = pa_df[pa_df['participant']==party_b]['start_year'].values[0]
+            part_b_end_year = pa_df[pa_df['participant']==party_b]['end_year'].values[0]
             part_b_year_list = []
             if len(str(part_b_start_year))==4 and len(str(part_b_end_year))==4:
                 for year in np.arange(int(part_b_start_year), int(part_b_end_year)+1):
@@ -312,7 +312,7 @@ def add_missing_dyads(part_df, dy_df, war_input, side_input, opposition_type):
                 dy_df.loc[df_length, 'c_code_a'] = c_code_a
                 dy_df.loc[df_length, 'participant_a'] = participant_a
                 dy_df.loc[df_length, 'year'] = part_b_year
-                dy_df.loc[df_length, 'c_code_b'] = part_df[(part_df['war_num']==war_input) & (part_df['participant']==party_b)]['c_code'].values[0]
+                dy_df.loc[df_length, 'c_code_b'] = pa_df[pa_df['participant']==party_b]['c_code'].values[0]
                 dy_df.loc[df_length, 'participant_b'] = party_b
 
     return dy_df

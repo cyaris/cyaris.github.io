@@ -494,7 +494,7 @@
 					graph.nodes.forEach(function(d, i) {
 							// determining totalCasualties across all countries as maxRadius.
 							// this will make larger numbers proportional to the total across all countries.
-							if ( d.battle_deaths!='nan' )
+							if ( parseFloat(d.battle_deaths)==NaN )
 							 { maxDomain+=parseFloat(d.battle_deaths) }
 							else
 							{ nullRadiusNodes+=1 }
@@ -544,8 +544,8 @@
 					graph.nodes.forEach(function(d, i) {
 							// determining totalCasualties across all countries as maxRadius.
 							// this will make larger numbers proportional to the total across all countries.
-							// if ( partDescriptiveValues[d.participant]!=NaN )
-							if ( d.battle_deaths!='nan' )
+							if ( parseFloat(partDescriptiveValues[d.participant])==NaN )
+							// if ( partDescriptiveValues[d.participant]!='nan' )
 							 { currentRadiusSize = radius(partDescriptiveValues[d.participant]); }
 							else
 							 { currentRadiusSize = radius(stdNullRadiusSize); };
@@ -694,7 +694,7 @@
 
 				node.append('text')
 						.attr('class', function(d) {
-							if ( isNaN(partDescriptiveValues[d.participant])==true )
+							if ( parseFloat(partDescriptiveValues[d.participant])==NaN )
 								{ return 'null_descriptive_values'; }
 							else
 							{ return 'non_null_descriptive_values'; }

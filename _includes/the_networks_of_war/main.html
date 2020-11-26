@@ -370,41 +370,49 @@
 				addStdText(svg2, null, null, 6, 22.5, '15px', 0, '↖ Menu');
 				addStdText(svg2, null, null, 0, 92.5, '15px', 0, warDic['war_name']);
 
-				var linkFields = Object.keys(graph.links[0]),
-						linkDescriptorFields = [],
-						linkDescriptorNameLengths = [];
+				var participantFields = Object.keys(graph.nodes[0]),
+						linkFields = Object.keys(graph.links[0]),
+						descriptiveFields = {
+							'participant': [],
+							'dyadic': []
+						}
+						descriptorNameLengths = {
+							'participant': [],
+							'dyadic': []
+						}
 
 				for ( var i = 0; i <= linkFields.length-1; i++ ) {
 					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
-					// getting an array of name lengths for all items added
 					if ( linkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[linkFields[i]]; }) > 0 )
-					// { linkDescriptorFields.push(linkFields[i].split('_z')[0]); }
-					{ linkDescriptorFields.push(linkFields[i]);
-						linkDescriptorNameLengths.push(getTextWidth(svg2, linkFields[i], '12px'));
+					// { descriptiveFields['dyadic'].push(linkFields[i].split('_z')[0]); }
+					{ descriptiveFields['dyadic'].push(linkFields[i]);
+						// getting an array of name lengths for all items added
+						descriptorNameLengths['dyadic'].push(getTextWidth(svg2, linkFields[i], '12px'));
 					 }
 			};
 
 
-				var linkDescInitialLength = linkDescriptorFields.lengths,
-						linkDescriptorFields = linkDescriptorFields.sort();
+				var totalLinkDescriptors = descriptiveFields['dyadic'].lengths;
+						// descriptiveFields['participant'] = descriptiveFields['participant'].sort(),
+						// descriptiveFields['dyadic'] = descriptiveFields['dyadic'].sort();
 
-				var getLinkDescriptorValues = function(linkDescriptorInput) {
+				var getLinkDescriptorValues = function(descriptor_type, linkDescriptorInput) {
 
 					// will need to return this array to make it global
-					var linkDescriptorLocalValues = [];
+					var linkDescriptorValues = [];
 
 					graph.links.forEach(function(link) {
 
-						if ( parseInt(link[linkDescriptorFields[linkDescriptorInput]]) > 0 )
-						{ linkDescriptorLocalValues.push(1); }
+						if ( parseInt(link[descriptiveFields[descriptor_type][linkDescriptorInput]]) > 0 )
+						{ linkDescriptorValues.push(1); }
 						else
-						{ linkDescriptorLocalValues.push(0); }
+						{ linkDescriptorValues.push(0); }
 
 					})
-					{ return linkDescriptorLocalValues; }
+					{ return linkDescriptorValues; }
 				};
 
-				var linkDescriptorValues = getLinkDescriptorValues(0);
+				var linkDescriptorValues = getLinkDescriptorValues('dyadic', 0);
 				console.log(linkDescriptorValues);
 				// Three functions that change the the selection for link dash marks (based on interaction variables).
 				var linkMenuMouseOver = function(d) {
@@ -417,9 +425,9 @@
 							svg2.select('#link_dropdown_selected_text').style('opacity', 0);
 
 							// console.log(document.getElementById('#link_dropdown_selected_text').toString().split('>')[1]);
-						for ( var i = 0; i <= linkDescriptorFields.length-1; i++ ) {
+						for ( var i = 0; i <= descriptiveFields['dyadic'].length-1; i++ ) {
 							addStdRect(svg2, 'link_descriptor_dropdowns', 'link_descriptor_dropdown_' + i, width-linkDescriptorMaxNameWidth-10, 1 + ((i+1)*30), linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, linkMenuClick);
-							addStdText(svg2, 'link_descriptor_dropdowns', null, width-linkDescriptorMaxNameWidth-5, 22.5 + ((i+1)*30), '12px', 0, linkDescriptorFields[i]);
+							addStdText(svg2, 'link_descriptor_dropdowns', null, width-linkDescriptorMaxNameWidth-5, 22.5 + ((i+1)*30), '12px', 0, descriptiveFields['dyadic'][i]);
 						}
 					},
 					 linkMenuMouseLeave = function(d) {
@@ -431,27 +439,27 @@
 						linkMenuClick = function(d) {
 
 							var link_descriptor_indice = parseInt(d3.select(this).attr('id').slice(-1));
-							var linkDropDownSelected = linkDescriptorFields[link_descriptor_indice];
+							var linkDropDownSelected = descriptiveFields['dyadic'][link_descriptor_indice];
 							svg2.selectAll('.link_descriptor_dropdowns').remove();
 							svg2.selectAll('#link_dropdown_selected_text').remove();
 							addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, linkMenuMouseLeave, null);
 							addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDropDownSelected);
 							// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
 
-							var linkDescriptorValues = getLinkDescriptorValues(link_descriptor_indice);
+							var linkDescriptorValues = getLinkDescriptorValues('dyadic', link_descriptor_indice);
 							console.log(linkDescriptorValues);
 							// var linkDashStrokeWidth = 3.5;
 							updateLinkDash(linkDescriptorValues);
 					};
 
 				// creating a rect for a default link descriptor
-				if ( linkDescriptorFields.length==0 )
-				{ linkDescriptorFields.push('None');
+				if ( descriptiveFields['dyadic'].length==0 )
+				{ descriptiveFields['dyadic'].push('None');
 					linkDescriptorNameLengths.push(getTextWidth(svg2, 'None', '12px'));
 				}
 
-				var linkDropDownSelected = linkDescriptorFields[0],
-						linkDescriptorMaxNameWidth = linkDescriptorNameLengths.reduce(function(a, b) { return Math.max(a, b); });
+				var linkDropDownSelected = descriptiveFields['dyadic'][0],
+						linkDescriptorMaxNameWidth = descriptorNameLengths['dyadic'].reduce(function(a, b) { return Math.max(a, b); });
 
 				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, linkMenuMouseLeave, null);
 				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDropDownSelected);
@@ -614,7 +622,7 @@
 				// this will be used to accent interactions between nodes
 				// identifying all dyads that shouldn't be included with a class assignment.
 				// these will be removed immediately after creation.
-				var linkDashStrokeWidth = 3.5;
+				var linkDashStrokeWidth = 2;
 
 				link.append('line')
 						.attr('class', 'link_dash')
@@ -810,13 +818,14 @@
 				function updateLinkDash(linkDescriptorValuesInput) {
 
 					link.selectAll('.link_dash')
+							// .transition()
+							// .duration(1000)
 							.attr('stroke', function(d) {
 								if ( linkDescriptorValuesInput[d.index] <= 0 )
 								{ return 'transparent'; }
 								else
 								{ return 'blue'; }
 							});
-
 				}
 				});
 		}})

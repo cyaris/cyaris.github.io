@@ -93,7 +93,7 @@
 		<script src='../js/node_modules/lodash/lodash.js'></script>
 		<script>
 
-		// import _ from "../js/lodash"
+		// import _ from '../js/lodash'
 		// new code section: functions with non-built-in parameters (functions not of d or something like that).
 		function getTextWidth(svgInput, textInput, fontSize) {
 
@@ -191,13 +191,15 @@
 				height = 500;
 
 		var generalRectMO = function(d) {
+
 					d3.select(this)
-						.style("stroke-width", 2)
-						.style("cursor", "pointer");
+						.style('stroke-width', 2)
+						.style('cursor', 'pointer');
 		},
 				generalRectML = function(d) {
+
 					d3.select(this)
-						.style("stroke-width", 1);
+						.style('stroke-width', 1);
 		};
 
 		// reading in the data to create the war menu
@@ -255,7 +257,7 @@
 				 }
 			});
 
-			var warNameMaxLength = warNameLengths.reduce(function(a, b) { return Math.max(a, b); });
+			var warNameMaxLength = warNameLengths.reduce(function(a, b) { return Math.max(a, b) });
 			// removing all svgs to this point (only includes dummy svg)
 			d3.selectAll('svg').remove();
 			// new code section: start of code for svg1
@@ -343,13 +345,15 @@
 					svg2.selectAll('.link_descriptor_dropdowns').remove();
 					svg2.select('#link_dropdown_selected_text').style('opacity', 1);
 
+					svg2.selectAll('.part_descriptor_dropdowns').remove();
+					svg2.select('#part_dropdown_selected_text').style('opacity', 1);
 				};
 
 				addStdRect(svg2, null, null, 0, 0, width, 300, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
 
 				var warDic = {};
 				// not sure how to do this without a loop, but there's only one grow in this section of the json file
-				graph.war.forEach(function(d, i) {
+				graph.war.forEach(function(d) {
 						warDic['war_num'] = d.war_num,
 						warDic['war_name'] = d.war_name,
 						warDic['war_type_code'] = d.war_type_code,
@@ -389,10 +393,10 @@
 							'participant': [],
 							'dyadic': []
 						}
-
+				// console.log(participantFields);
 				for ( var i = 0; i <= linkFields.length-1; i++ ) {
 					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
-					if ( linkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[linkFields[i]]; }) > 0 )
+					if ( linkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[linkFields[i]] }) > 0 )
 					// { descriptiveFields['dyadic'].push(linkFields[i].split('_z')[0]); }
 					{ descriptiveFields['dyadic'].push(linkFields[i]);
 						// getting an array of name lengths for all items added
@@ -400,8 +404,33 @@
 					 }
 				};
 
+				var nonDescriptivePartFields =
+						[
+							'id',
+							'war_type_code',
+							'c_code',
+							'participant',
+							'side',
+							'start_date',
+							'start_year',
+							'end_date',
+							'end_year',
+							'lagging_war',
+							'leading_war',
+							'ongoing_participation'
+						];
 
-				var totalLinkDescriptors = descriptiveFields['dyadic'].length;
+				for ( var i = 0; i <= participantFields.length-1; i++ ) {
+
+						if ( nonDescriptivePartFields.includes(participantFields[i])==false ) {
+							descriptiveFields['participant'].push(participantFields[i]);
+							// getting an array of name lengths for all items added
+							descriptorNameLengths['participant'].push(getTextWidth(svg2, participantFields[i], '12px'));
+						}
+				};
+
+				var totalLinkDescriptors = descriptiveFields['dyadic'].length,
+						totalPartDescriptors = descriptiveFields['participant'].length;
 						// descriptiveFields['participant'] = descriptiveFields['participant'].sort(),
 						// descriptiveFields['dyadic'] = descriptiveFields['dyadic'].sort();
 
@@ -413,11 +442,11 @@
 					graph.links.forEach(function(link) {
 
 						if ( parseInt(link[descriptiveFields[descriptor_type][linkDescriptorInput]]) > 0 )
-						{ linkDescriptorValues.push(1); }
+						{ linkDescriptorValues.push(1) }
 						else
-						{ linkDescriptorValues.push(0); }
+						{ linkDescriptorValues.push(0) }
 					})
-					{ return linkDescriptorValues; }
+					{ return linkDescriptorValues }
 				};
 
 				var linkDescriptorValues = getLinkDescriptorValues('dyadic', 0);
@@ -429,8 +458,8 @@
 							.style('stroke-width', 2)
 							.style('cursor', 'pointer');
 // addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
-							svg2.selectAll('.link_descriptor_dropdowns').remove();
-							svg2.select('#link_dropdown_selected_text').style('opacity', 0);
+						svg2.selectAll('.link_descriptor_dropdowns').remove();
+						svg2.select('#link_dropdown_selected_text').style('opacity', 0);
 
 							// console.log(document.getElementById('#link_dropdown_selected_text').toString().split('>')[1]);
 						for ( var i = 0; i <= descriptiveFields['dyadic'].length-1; i++ ) {
@@ -441,43 +470,131 @@
 					 linkMenuMouseLeave = function(d) {
 
 						 d3.select(this)
-	 						.style("stroke-width", 1);
-
+	 						.style('stroke-width', 1);
 					},
 						linkMenuClick = function(d) {
 
-							var link_descriptor_indice = parseInt(d3.select(this).attr('id').slice(-1));
-							var linkDropDownSelected = descriptiveFields['dyadic'][link_descriptor_indice];
+							link_descriptor_indice = parseInt(d3.select(this).attr('id').slice(-1)),
+							linkDropDownSelected = descriptiveFields['dyadic'][link_descriptor_indice];
+
 							svg2.selectAll('.link_descriptor_dropdowns').remove();
 							svg2.selectAll('#link_dropdown_selected_text').remove();
+
 							addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, linkMenuMouseLeave, null);
 							addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDropDownSelected);
 							// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
 
-							var linkDescriptorValues = getLinkDescriptorValues('dyadic', link_descriptor_indice);
+							linkDescriptorValues = getLinkDescriptorValues('dyadic', link_descriptor_indice);
 
 							link.selectAll('.link_dash')
-									// .transition()
-									// .duration(1000)
+									// .transition().duration(1000)
 									.attr('stroke', function(d) {
-										if ( linkDescriptorValuesInput[d.index] <= 0 )
-										{ return 'transparent'; }
+										if ( linkDescriptorValues[d.index] <= 0 )
+										{ return 'transparent' }
 										else
-										{ return 'blue'; }
+										{ return 'blue' }
 									});
+				};
+
+
+				// Three functions that change the the selection for participant node sizes
+				var partMenuMouseOver = function(d) {
+
+						d3.select(this)
+							.style('stroke-width', 2)
+							.style('cursor', 'pointer');
+
+						svg2.selectAll('.part_descriptor_dropdowns').remove();
+						svg2.select('#part_dropdown_selected_text').style('opacity', 0);
+
+						for ( var i = 0; i <= descriptiveFields['participant'].length-1; i++ ) {
+							addStdRect(svg2, 'part_descriptor_dropdowns', 'part_descriptor_dropdown_' + i, width-partDescriptorMaxNameWidth-300, 1 + ((i+1)*30), partDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, partMenuClick);
+							addStdText(svg2, 'part_descriptor_dropdowns', null, width-partDescriptorMaxNameWidth-295, 22.5 + ((i+1)*30), '12px', 0, descriptiveFields['participant'][i]);
+						}
+					},
+					 partMenuMouseLeave = function(d) {
+
+						 d3.select(this)
+	 						.style('stroke-width', 1);
+					},
+						partMenuClick = function(d) {
+
+							part_descriptor_indice = parseInt(d3.select(this).attr('id').slice(-1)),
+							partDropDownSelected = descriptiveFields['participant'][part_descriptor_indice];
+
+							svg2.selectAll('.part_descriptor_dropdowns').remove();
+							svg2.selectAll('#part_dropdown_selected_text').remove();
+
+							addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptorMaxNameWidth-300, 1, partDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, partMenuMouseLeave, null);
+							addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptorMaxNameWidth-295, 22.5, '12px', 0, partDropDownSelected);
+
+
+							nodeSizeSetupOutput = nodeSizeSetup(partDropDownSelected),
+							partDescriptiveValues = nodeSizeSetupOutput[0],
+							maxDomain = nodeSizeSetupOutput[1],
+							stdNullRadiusSize = nodeSizeSetupOutput[2];
+
+							// base value that will be used to calculate the values appended to the arrays above.
+							// including linkNodeSize inside of addedMarginSize.
+							linkNodeSize = 10,
+							nodeMarginCalculationOutput = nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize),
+							nodeMargins = nodeMarginCalculationOutput[0],
+							nodeIndices = nodeMarginCalculationOutput[1];
+
+							svg3.selectAll('.nodes').transition().duration(3000)
+									.attr('r', function(d, i) { return nodeMargins['size'][i] });
+
+							svg3.selectAll('.node_names').transition().duration(3000)
+									.attr('dx', function(d, i) { return nodeMargins['horizontal_name_shift'][i] })
+									.attr('dy', function(d, i) { return nodeMargins['vertical_name_shift'][i] });
+
+							svg3.selectAll('.node_size_warning')
+									.attr('dx', function(d, i) { return nodeMargins['size'][i] * -1.5 })
+						      .attr('dy', function(d, i) { return nodeMargins['size'][i] * 0.75 })
+									.style('opacity', function(d, i) {
+										if ( isNaN(parseFloat(partDescriptiveValues[i])) )
+											{ return 1 }
+										else
+										{ return 0 }
+									});
+
+							// if (!d3.event.active) graphLayout.alphaTarget(0.3).restart();
+
+							graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
+									.force('charge', d3.forceManyBody().strength(-3000))
+							    .force('center', d3.forceCenter(width/2, height/2))
+							    .force('x', d3.forceX(width/2).strength(1))
+							    .force('y', d3.forceY(height/2).strength(1))
+							    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.participant]] + nodeMargins['size'][nodeIndices[d.target.participant]])) * 2), 75) }).strength(1))
+							    .on('tick', ticked);
 					};
 
-				// creating a value for a default link descriptor
-				if ( descriptiveFields['dyadic'].length==0 )
-				{ descriptiveFields['dyadic'].push('None');
-					descriptorNameLengths['dyadic'].push(getTextWidth(svg2, 'None', '12px'));
-				}
+				var fillNullDescriptors = function(descriptive_fields, descriptor_name_lengths, grouping) {
+					// creating a value for a default link descriptor
+					if ( descriptive_fields[grouping].length==0 )
+					{ descriptiveFields[grouping].push('None');
+						descriptor_name_lengths[grouping].push(getTextWidth(svg2, 'None', '12px'));
+					}
 
-				var linkDropDownSelected = descriptiveFields['dyadic'][0],
-						linkDescriptorMaxNameWidth = descriptorNameLengths['dyadic'].reduce(function(a, b) { return Math.max(a, b); });
+					var dropDownSelected = descriptive_fields[grouping][0],
+							descriptorMaxNameWidth = descriptor_name_lengths[grouping].reduce(function(a, b) { return Math.max(a, b) });
+
+					return 	[dropDownSelected, descriptorMaxNameWidth]
+				};
+
+				var linkNullDescriptorOutput = fillNullDescriptors(descriptiveFields, descriptorNameLengths, 'dyadic'),
+						linkDropDownSelected = linkNullDescriptorOutput[0],
+						linkDescriptorMaxNameWidth = linkNullDescriptorOutput[1];
 
 				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, linkMenuMouseLeave, null);
 				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDropDownSelected);
+
+				var partNullDescriptorOutput = fillNullDescriptors(descriptiveFields, descriptorNameLengths, 'participant'),
+						partDropDownSelected = partNullDescriptorOutput[0],
+						partDescriptorMaxNameWidth = partNullDescriptorOutput[1];
+
+				addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptorMaxNameWidth-300, 1, partDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, partMenuMouseLeave, null);
+				addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptorMaxNameWidth-295, 22.5, '12px', 0, partDropDownSelected);
 
 				// new code section: start of code for svg3
 				var color = d3.scaleLinear().domain([1,2]).range(['lightgreen', 'violet']);
@@ -501,7 +618,7 @@
 							nullRadiusNodes = 0;
 
 					// first defining the data that will ifnnfluence how the svg is defnined
-					graph.nodes.forEach(function(d, i) {
+					graph.nodes.forEach(function(d) {
 							// determining totalCasualties across all countries as maxRadius.
 							// this will make larger numbers proportional to the total across all countries.
 							if ( isNaN(+d[sizeField]) )
@@ -513,9 +630,9 @@
 					});
 
 					var totalNodes = partDescriptiveValues.length;
-					console.log('nullRadiusNodes: ', nullRadiusNodes);
-					console.log('totalNodes: ', totalNodes);
-					if  ( nullRadiusNodes!=totalNodes )
+					// console.log('nullRadiusNodes: ', nullRadiusNodes);
+					// console.log('totalNodes: ', totalNodes);
+					if ( nullRadiusNodes!=totalNodes )
 					// stdNullRadiusSize is the average of non-null inputs for node size
 					{ stdNullRadiusSize = (maxDomain/(totalNodes - nullRadiusNodes));
 						maxDomain = maxDomain + (stdNullRadiusSize * nullRadiusNodes); }
@@ -556,6 +673,9 @@
 
 					// now going through the iterations that needed radius to already be defined
 					graph.nodes.forEach(function(d, i) {
+							// adding each participant to the array of indices
+							// this will be used to indice through the nodeMargins by participant
+							nodeIndices[d.participant] = i;
 							// determining totalCasualties across all countries as maxRadius.
 							// this will make larger numbers proportional to the total across all countries.
 							if ( isNaN(partDescriptiveValues[i]) )
@@ -591,22 +711,15 @@
 							// the node plus a little extra
 							// don't need to adjust for the name if it is inside the node
 							{ nodeMargins['added_right_margin'].push(currentRadiusSize + addedMarginSize); }
-							// adding each participant to the array of indices
-							// this will be used to indice through the nodeMargins by participant
-							nodeIndices[d.participant] = i;
 					});
-
 					return [nodeMargins, nodeIndices];
-
 				};
 
 				var nodeSizeSetupOutput = nodeSizeSetup('battle_deaths'),
 						partDescriptiveValues = nodeSizeSetupOutput[0],
 						maxDomain = nodeSizeSetupOutput[1],
 						stdNullRadiusSize = nodeSizeSetupOutput[2];
-				// console.log('partDescriptiveValues: ', partDescriptiveValues);
-				// console.log('maxDomain: ', maxDomain);
-				// console.log('stdNullRadiusSize: ', stdNullRadiusSize);
+
 				// base value that will be used to calculate the values appended to the arrays above.
 				// including linkNodeSize inside of addedMarginSize.
 				var linkNodeSize = 10,
@@ -614,8 +727,6 @@
 						nodeMargins = nodeMarginCalculationOutput[0],
 						nodeIndices = nodeMarginCalculationOutput[1];
 
-				// console.log('nodeMargins: ', nodeMargins);
-				// console.log('nodeIndices: ', nodeIndices);
 				// append the svg3 object to the body of the page
 				var svg3 = d3.select('#war_network_analysis')
 						.append('svg')
@@ -629,6 +740,8 @@
 					svg2.selectAll('.link_descriptor_dropdowns').remove();
 					svg2.select('#link_dropdown_selected_text').style('opacity', 1);
 
+					svg2.selectAll('.part_descriptor_dropdowns').remove();
+					svg2.select('#part_dropdown_selected_text').style('opacity', 1);
 				};
 
 				addStdRect(svg3, null, null, 0, 0, width, height, 'black', 1, null, 'transparent', null, svg3BodyMO, null, null);
@@ -638,7 +751,7 @@
 				    .force('center', d3.forceCenter(width/2, height/2))
 				    .force('x', d3.forceX(width/2).strength(1))
 				    .force('y', d3.forceY(height/2).strength(1))
-				    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.participant]] + nodeMargins['size'][nodeIndices[d.target.participant]])) * 2), 75); }).strength(1))
+				    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.participant]] + nodeMargins['size'][nodeIndices[d.target.participant]])) * 2), 75) }).strength(1))
 				    .on('tick', ticked);
 
 				var linkStrokeWidth = 1;
@@ -672,11 +785,11 @@
 						.attr('stroke', 'blue')
 						.attr('stroke', function(d) {
 							if ( linkDescriptorValues[d.index] <= 0 )
-							{ return 'transparent'; }
+							{ return 'transparent' }
 							else
-							{ return 'blue'; }
+							{ return 'blue' }
 						})
-						.attr('stroke-dasharray', ("2.5, 12"))
+						.attr('stroke-dasharray', ('2.5, 12'))
 						.attr('stroke-dashoffset', -7.5)
 						.attr('stroke-width', linkDashStrokeWidth);
 
@@ -699,70 +812,69 @@
 				        .on('end', dragended));
 
 				node.append('circle')
+					.attr('class', 'nodes')
 					.attr('stroke', 'black')
 					.attr('stroke-width', 1)
-		      .attr('r', function(d) { return nodeMargins['size'][nodeIndices[d.participant]]; })
+		      .attr('r', function(d, i) { return nodeMargins['size'][i] })
 					// .attr('opacity', 0.5)
 		      .style('fill', function(d) {
 						if ( parseInt(d.side)==3 )
 						// returning a color in the middle of the spectrum if the side is 3
 						// this would mean they were on side 1 and side 2 (1 + 2)
-						{ return color(1.5); }
+						{ return color(1.5) }
 						else
-						{ return color(parseInt(d.side)); }
+						{ return color(parseInt(d.side)) }
 					});
 
 				node.append('text')
-						.attr('id', function(d) { return "label_" + nodeIndices[d.participant]; })
-						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]]; })
-			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.participant]]; })
+						.attr('class', 'node_names')
+						.attr('id', function(d, i) { return 'label_' + i })
+						.attr('dx', function(d, i) { return nodeMargins['horizontal_name_shift'][i] })
+			      .attr('dy', function(d, i) { return nodeMargins['vertical_name_shift'][i] })
 						.attr('font-size', '12px')
 			      .attr('text-anchor', 'middle')
 			      .text(function(d)
 						{ return d.participant; });
 
 				node.append('text')
-						.attr('class', function(d, i) {
-							if ( isNaN(parseFloat(partDescriptiveValues[i])) )
-								{ return 'null_descriptive_values'; }
-							else
-							{ return 'non_null_descriptive_values'; }
-						})
-						.attr('dx', function(d) { return nodeMargins['size'][nodeIndices[d.participant]] * -1.5 })
-			      .attr('dy', function(d) { return nodeMargins['size'][nodeIndices[d.participant]] * 0.75 })
+						.attr('class', 'node_size_warning')
+						.attr('dx', function(d, i) { return nodeMargins['size'][i] * -1.5 })
+			      .attr('dy', function(d, i) { return nodeMargins['size'][i] * 0.75 })
 						.attr('font-size', '15px')
 			      .attr('text-anchor', 'middle')
+						.style('opacity', function(d, i) {
+							if ( isNaN(parseFloat(partDescriptiveValues[i])) )
+								{ return 1 }
+							else
+							{ return 0 }
+						})
 			      .text('?');
 
-				svg3.selectAll('.non_null_descriptive_values').remove();
-
 				function firstDegreeCheck(a, b) {
-						return a==b || firstDegreeLinks[a + '-' + b];
-				};
 
-				function fixna(x) {
-						if (isFinite(x)) return x;
-						return 0;
+						return a==b || firstDegreeLinks[a + '-' + b]
 				};
 
 				function nodeMouseOverForLinks(linkInput, indexInput, strokeWidthInput) {
 					// accenting first degree links for that node
 					// making all links not associated with that node's first degree network opaque
-					svg3.selectAll(linkInput).style('opacity', function(o) {
-										// make non-neighbor links opaque
-										if ( o.source.index==indexInput || o.target.index==indexInput )
-											{ return 1; }
-										else
-										{ return 0.15; }
-									})
-									.style('stroke-width', function(o) {
-										// increase stroke width for neighbor links
-										if ( o.source.index==indexInput || o.target.index==indexInput )
-											{ return strokeWidthInput }
-									});
+					svg3.selectAll(linkInput)
+							.style('opacity', function(o) {
+								// make non-neighbor links opaque
+								if ( o.source.index==indexInput || o.target.index==indexInput )
+									{ return 1 }
+								else
+								{ return 0.15 }
+							})
+							.style('stroke-width', function(o) {
+								// increase stroke width for neighbor links
+								if ( o.source.index==indexInput || o.target.index==indexInput )
+									{ return strokeWidthInput }
+							});
 				}
 
 				function nodeMouseOver(d) {
+
 						d3.select(this).style('cursor', 'pointer');
 						var eventTargetIndex = d3.select(d3.event.target).datum().index;
 						// accenting first degree network for that node
@@ -770,7 +882,7 @@
 						node.style('opacity', function(o) {
 							// not a neighbor node, make it opaque
 							if ( firstDegreeCheck(eventTargetIndex, o.index)!=1 )
-								{ return 0.15; }
+								{ return 0.15 }
 						});
 						// // not sure why line below did not work.
 						// .style('stroke-width', function(o) {
@@ -795,31 +907,36 @@
 			  function ticked() {
 
 					node.each(function(d, i) {
-						if ( nodeMargins['name_fits_in_node'][nodeIndices[d.participant]]==false )
+
+						if ( nodeMargins['name_fits_in_node'][i]==false )
 						{
 							// need to add two additional if statements,
 							// one for if the label is at max y, and one for if the label is at min y.
 							// some sort of randomization will need to determine what to do in these cases to prevent overlap.
 							if ( d.x < width * 0.5 && d.y < height * 0.5 )
-							{ d3.select('#label_' + i).transition().duration(100)
-							.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]] * -1; })
-							.attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.participant]] * -1; })
+							{ d3.select('#label_' + i)
+									.transition().duration(100)
+									.attr('dx', nodeMargins['horizontal_name_shift'][i] * -1)
+									.attr('dy', nodeMargins['vertical_name_shift'][i] * -1);
 						}
 							else if ( d.x >= width * 0.5 && d.y < height * 0.5 )
-							{ d3.select('#label_' + i).transition().duration(100)
-							.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]]; })
-							.attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.participant]] * -1; })
+							{ d3.select('#label_' + i)
+									.transition().duration(100)
+									.attr('dx', nodeMargins['horizontal_name_shift'][i])
+									.attr('dy', nodeMargins['vertical_name_shift'][i] * -1);
 						}
 							else if ( d.x < width * 0.5 && d.y >= height * 0.5 )
-							{ d3.select('#label_' + i).transition().duration(100)
-							.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]] * -1; })
-							.attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.participant]]; })
+							{ d3.select('#label_' + i)
+									.transition().duration(100)
+									.attr('dx', nodeMargins['horizontal_name_shift'][i] * -1)
+									.attr('dy', nodeMargins['vertical_name_shift'][i]);
 						}
 							else
 							//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
-							{ d3.select('#label_' + i).transition().duration(100)
-							.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][nodeIndices[d.participant]]; })
-							.attr('dy', function(d) { return nodeMargins['vertical_name_shift'][nodeIndices[d.participant]]; })
+							{ d3.select('#label_' + i)
+								.transition().duration(100)
+								.attr('dx', nodeMargins['horizontal_name_shift'][i])
+								.attr('dy', nodeMargins['vertical_name_shift'][i]);
 						}
 					}
 				 });
@@ -829,17 +946,16 @@
 					// needs to also be adjusted for the participant name label since this could be positioned below the node
 					// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
 					// includes transformation for nodes and the text itself
-					node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.participant]], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.participant]], d.y)) + ')'; })
+					node.attr('transform', function(d, i) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][i], Math.min(width - nodeMargins['added_right_margin'][i], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][i], Math.min(height - nodeMargins['added_bottom_margin'][i], d.y)) + ')' })
 
-					linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)) + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x))) * 0.5; })
-									.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)) + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y))) * 0.5; });
+					linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)) + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x))) * 0.5 })
+									.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)) + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y))) * 0.5 });
 
 					svg3.selectAll('.link,.link_dash')
-							.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)); })
-			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)); })
-			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x)); })
-			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y)); })
-
+							.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)) })
+			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)) })
+			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x)) })
+			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y)) })
 				  }
 
 				function dragstarted(d) {

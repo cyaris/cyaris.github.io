@@ -340,6 +340,8 @@
 							.attr('transform',
 						        'translate(' + margin.left + ',' + margin.top + ')');
 
+				addStdRect(svg2, null, null, 0, 0, width, 300, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
+
 				var svg2BodyMO = function(d) {
 
 					svg2.selectAll('.link_descriptor_dropdowns').remove();
@@ -349,25 +351,19 @@
 					svg2.select('#part_dropdown_selected_text').style('opacity', 1);
 				};
 
-				addStdRect(svg2, null, null, 0, 0, width, 300, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
+				var warDic = {},
+						warFields = Object.keys(graph.war[0]);
 
-				var warDic = {};
-				// not sure how to do this without a loop, but there's only one grow in this section of the json file
-				graph.war.forEach(function(d) {
-						warDic['war_num'] = d.war_num,
-						warDic['war_name'] = d.war_name,
-						warDic['war_type_code'] = d.war_type_code,
-						warDic['war_type'] = d.war_type,
-						warDic['war_sub_type'] = d.war_sub_type,
-						warDic['lagging_war'] = d.lagging_war,
-						warDic['leading_war'] = d.leading_war;
-				});
+				for ( var i = 0; i <= warFields.length-1; i++ ) {
+					// obtaining all values from war json dictionary (originally war_df)
+					warDic[warFields[i]] = graph.war[0][warFields[i]];
+				};
 
 				// this will send you back to choose a new war (of the same type)
 				var backToMenuClick = function(d) {
-							// removing all current svgs
-							d3.selectAll('svg').remove();
-							createMenu();
+						// removing all current svgs
+						d3.selectAll('svg').remove();
+						createMenu();
 				};
 				// creating a rect for a back to menu button
 				addStdRect(svg2, null, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, backToMenuClick);
@@ -468,21 +464,22 @@
 					return dropDownSelected
 				}
 
-				// Three functions that change the the selection for link dash marks (based on interaction variables).
+				// Two functions that change the the selection for link dash marks (based on interaction variables).
 				var linkMenuMouseOver = function(d) {
 
 						generalRectML;
-						descriptiveMenuMouseOver('link', linkDescriptorMaxNameWidth, descriptiveFields['dyadic'], linkMenuClick, 10);
+						descriptiveMenuMouseOver('link', linkDescriptorMaxNameWidth, descriptiveFields['dyadic'], linkMenuClick, linkXLoc);
 					},
 						linkMenuClick = function(d) {
 
 						descriptorIndice = parseInt(d3.select(this).attr('id').slice(-1));
-						linkDropDownSelected = descriptiveMenuClick('link', descriptorIndice, linkDescriptorMaxNameWidth, descriptiveFields['dyadic'], linkMenuMouseOver, 10);
-						// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
+						linkDropDownSelected = descriptiveMenuClick('link', descriptorIndice, linkDescriptorMaxNameWidth, descriptiveFields['dyadic'], linkMenuMouseOver, linkXLoc);
 						linkDescriptorValues = getLinkDescriptorValues('dyadic', descriptorIndice);
 
+						// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
+
 						link.selectAll('.link_dash')
-								.transition().duration(500)
+								.transition().delay(100).duration(500)
 								.attr('stroke', function(d) {
 									if ( linkDescriptorValues[d.index] <= 0 )
 									{ return 'transparent' }
@@ -492,20 +489,18 @@
 								.attr('stroke-width', linkDashStrokeWidth+4)
 								.transition().duration(1000)
 								.attr('stroke-width', linkDashStrokeWidth);
-
-								;
 				};
 
-				// Three functions that change the the selection for participant node sizes
+				// Two functions that change the the selection for participant node sizes
 				var partMenuMouseOver = function(d) {
 
 						generalRectML;
-						descriptiveMenuMouseOver('part', partDescriptorMaxNameWidth, descriptiveFields['participant'], partMenuClick, 300);
+						descriptiveMenuMouseOver('part', partDescriptorMaxNameWidth, descriptiveFields['participant'], partMenuClick, partXLoc);
 					},
 						partMenuClick = function(d) {
 
 						descriptorIndice = parseInt(d3.select(this).attr('id').slice(-1));
-						partDropDownSelected = descriptiveMenuClick('part', descriptorIndice, partDescriptorMaxNameWidth, descriptiveFields['participant'], partMenuMouseOver, 300);
+						partDropDownSelected = descriptiveMenuClick('part', descriptorIndice, partDescriptorMaxNameWidth, descriptiveFields['participant'], partMenuMouseOver, partXLoc);
 
 						nodeSizeSetupOutput = nodeSizeSetup(partDropDownSelected),
 						partDescriptiveValues = nodeSizeSetupOutput[0],
@@ -514,17 +509,16 @@
 
 						// base value that will be used to calculate the values appended to the arrays above.
 						// including linkNodeSize inside of addedMarginSize.
-						linkNodeSize = 10,
-						nodeMargins = nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize);
+						nodeMargins = nodeSizeCalculation(maxDomain, partDescriptiveValues, stdNullRadiusSize);
 
-						svg3.selectAll('.nodes').transition().duration(3000)
+						svg3.selectAll('.nodes').transition().delay(100).duration(3000)
 								.attr('r', function(d) { return nodeMargins['size'][d.id] });
 
-						svg3.selectAll('.node_names').transition().duration(3000)
+						svg3.selectAll('.node_names').transition().delay(200).duration(3000)
 								.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
 								.attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] });
 
-						svg3.selectAll('.node_size_warning').transition().duration(3000)
+						svg3.selectAll('.node_size_warning').transition().delay(200).duration(3000)
 								.attr('dx', function(d) { return nodeMargins['size'][d.id] * -1.5 })
 					      .attr('dy', function(d) { return nodeMargins['size'][d.id] * 0.75 })
 								.style('opacity', function(d) {
@@ -553,17 +547,19 @@
 
 				var linkNullDescriptorOutput = fillNullDescriptors(descriptiveFields, descriptorNameLengths, 'dyadic'),
 						linkDropDownSelected = linkNullDescriptorOutput[0],
-						linkDescriptorMaxNameWidth = linkNullDescriptorOutput[1];
+						linkDescriptorMaxNameWidth = linkNullDescriptorOutput[1],
+						linkXLoc = 10;
 
-				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
-				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDropDownSelected);
+				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-linkXLoc, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
+				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-linkXLoc+5, 22.5, '12px', 0, linkDropDownSelected);
 
 				var partNullDescriptorOutput = fillNullDescriptors(descriptiveFields, descriptorNameLengths, 'participant'),
 						partDropDownSelected = partNullDescriptorOutput[0],
-						partDescriptorMaxNameWidth = partNullDescriptorOutput[1];
+						partDescriptorMaxNameWidth = partNullDescriptorOutput[1],
+						partXLoc = 300;
 
-				addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptorMaxNameWidth-300, 1, partDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
-				addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptorMaxNameWidth-295, 22.5, '12px', 0, partDropDownSelected);
+				addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptorMaxNameWidth-partXLoc, 1, partDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
+				addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptorMaxNameWidth-partXLoc+5, 22.5, '12px', 0, partDropDownSelected);
 
 				// new code section: start of code for svg3
 				var color = d3.scaleLinear().domain([1,2]).range(['lightgreen', 'violet']);
@@ -602,8 +598,8 @@
 					});
 
 					var totalNodes = partDescriptiveValues.length;
-					// console.log('nullRadiusNodes: ', nullRadiusNodes);
-					// console.log('totalNodes: ', totalNodes);
+					console.log('totalNodes: ', totalNodes);
+					console.log('nullRadiusNodes: ', nullRadiusNodes);
 					if ( nullRadiusNodes!=totalNodes )
 					// stdNullRadiusSize is the average of non-null inputs for node size
 					{ stdNullRadiusSize = (maxDomain/(totalNodes - nullRadiusNodes));
@@ -614,7 +610,7 @@
 					return [partDescriptiveValues, maxDomain, stdNullRadiusSize];
 				};
 
-				function nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize) {
+				function nodeSizeCalculation(maxDomain, partDescriptiveValues, stdNullRadiusSize) {
 
 					var maxRadius = 150,
 							radius = d3.scaleLinear()
@@ -680,6 +676,7 @@
 							// don't need to adjust for the name if it is inside the node
 							{ nodeMargins['added_right_margin'].push(currentRadiusSize + addedMarginSize); }
 					});
+
 					return nodeMargins;
 				};
 
@@ -691,7 +688,7 @@
 				// base value that will be used to calculate the values appended to the arrays above.
 				// including linkNodeSize inside of addedMarginSize.
 				var linkNodeSize = 10,
-						nodeMargins = nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize);
+						nodeMargins = nodeSizeCalculation(maxDomain, partDescriptiveValues, stdNullRadiusSize);
 
 				// append the svg3 object to the body of the page
 				var svg3 = d3.select('#war_network_analysis')
@@ -701,6 +698,8 @@
 						  .attr('transform',
 						        'translate(' + margin.left + ',' + margin.top + ')');
 
+				addStdRect(svg3, null, null, 0, 0, width, height, 'black', 1, null, 'transparent', null, svg3BodyMO, null, null);
+
 				var svg3BodyMO = function(d) {
 
 					svg2.selectAll('.link_descriptor_dropdowns').remove();
@@ -709,8 +708,6 @@
 					svg2.selectAll('.part_descriptor_dropdowns').remove();
 					svg2.select('#part_dropdown_selected_text').style('opacity', 1);
 				};
-
-				addStdRect(svg3, null, null, 0, 0, width, height, 'black', 1, null, 'transparent', null, svg3BodyMO, null, null);
 
 				function createGraphLayout() {
 
@@ -722,7 +719,7 @@
 					    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { return Math.max((((nodeMargins['size'][d.source.id] + nodeMargins['size'][d.target.id])) * 2), 80) }).strength(1))
 					    .on('tick', ticked);
 
-						{ return graphLayout; }
+					return graphLayout
 				}
 
 				var graphLayout = createGraphLayout();
@@ -830,23 +827,23 @@
 					    firstDegreeLinks[d.target.index + '-' + d.source.index] = true;
 					});
 
-					return firstDegreeLinks;
+					return firstDegreeLinks
 				};
 
 				function nodeMouseOverForLinks(linkInput, indexInput, strokeWidthInput) {
 					// accenting first degree links for that node
 					// making all links not associated with that node's first degree network opaque
 					svg3.selectAll(linkInput)
-							.style('opacity', function(o) {
+							.style('opacity', function(d) {
 								// make non-neighbor links opaque
-								if ( o.source.index==indexInput || o.target.index==indexInput )
+								if ( d.source.index==indexInput || d.target.index==indexInput )
 									{ return 1 }
 								else
 								{ return 0.15 }
 							})
-							.style('stroke-width', function(o) {
+							.style('stroke-width', function(d) {
 								// increase stroke width for neighbor links
-								if ( o.source.index==indexInput || o.target.index==indexInput )
+								if ( d.source.index==indexInput || d.target.index==indexInput )
 									{ return strokeWidthInput }
 							});
 				}
@@ -857,9 +854,9 @@
 						var eventTargetIndex = d3.select(d3.event.target).datum().index;
 						// accenting first degree network for that node
 						// making all objects not associated with that node's first degree network opaque
-						node.style('opacity', function(o) {
+						node.style('opacity', function(d) {
 							// not a neighbor node, make it opaque
-							if ( firstDegreeCheck(eventTargetIndex, o.index)!=1 )
+							if ( firstDegreeCheck(eventTargetIndex, d.index)!=1 )
 								{ return 0.15 }
 						});
 						// // not sure why line below did not work.

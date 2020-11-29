@@ -90,7 +90,7 @@
 		<!-- Load d3.js -->
 		<script src='https://d3js.org/d3.v5.min.js'></script>
 		<script src='https://d3js.org/d3-time.v2.min.js'></script>
-		<script src='../js/node_modules/lodash/lodash.js'></script>
+		<!-- <script src='../js/node_modules/lodash/lodash.js'></script> -->
 		<script>
 
 		// import _ from '../js/lodash'
@@ -191,15 +191,15 @@
 				height = 500;
 
 		var generalRectMO = function(d) {
-
-					d3.select(this)
-						.style('stroke-width', 2)
-						.style('cursor', 'pointer');
+				// this will be used as a decorator to other mouseover functions
+				d3.select(this)
+					.style('stroke-width', 2)
+					.style('cursor', 'pointer');
 		},
 				generalRectML = function(d) {
-
-					d3.select(this)
-						.style('stroke-width', 1);
+				// this will be used as a decorator to other mouseleave
+				d3.select(this)
+					.style('stroke-width', 1);
 		};
 
 		// reading in the data to create the war menu
@@ -228,7 +228,7 @@
 
 			var parseTime = d3.timeParse('%Y-%m-%d');
 
-			data.forEach(function(d, i) {
+			data.forEach(function(d) {
 				// determining the war type for each row in the file.
 				var fileWarType = d.war_type.toLowerCase().replace('-', '_').replace(' ', '_');
 				// performing the following actions if the war type in the file matches the war type for the page.
@@ -246,12 +246,12 @@
 					fileDic['start_date_estimated'].push(parseInt(d.start_date_estimated)),
 					fileDic['end_date_estimated'].push(parseInt(d.end_date_estimated)),
 					fileDic['total_participants'].push(parseInt(d.total_participants));
-					if ( fileDic['start_date_estimated'][i]==1 || fileDic['end_date_estimated'][i]==1 )
+					if ( fileDic['start_date_estimated'][d.id]==1 || fileDic['end_date_estimated'][d.id]==1 )
 					{ estimationFlag = ' *' }
 					else
 					{ estimationFlag = ' ' }
-					if ( fileDic['ongoing_war'][i]==1 )
-					{ fileDic['total_days_in_war'].push((d3.timeDay.count(fileDic['start_date'][i], new Date()) + 1).toLocaleString() + estimationFlag); }
+					if ( fileDic['ongoing_war'][d.id]==1 )
+					{ fileDic['total_days_in_war'].push((d3.timeDay.count(fileDic['start_date'][d.id], new Date()) + 1).toLocaleString() + estimationFlag); }
 					else
 					{ fileDic['total_days_in_war'].push(parseInt(d.total_days_in_war).toLocaleString() + estimationFlag);	}
 				 }
@@ -284,7 +284,7 @@
 				addStdText(svg1, null, null, warNameMaxLength + 330, 25, '15px', 0.75, 'Total Participants');
 
 				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
-				var menuMouseOver = function(d) {
+				var mainMenuMouseOver = function(d) {
 
 						d3.select(this)
 							.style('stroke-width', 2)
@@ -292,7 +292,7 @@
 							.style('fill', 'rgb(26,188,156)')
 							.style('fill-opacity', 0.20);
 				 },
-					menuMouseLeave = function(d) {
+					mainMenuMouseLeave = function(d) {
 
 						d3.select(this)
 							.style('stroke-width', 1)
@@ -300,7 +300,7 @@
 							.style('fill', 'black')
 							.style('fill-opacity', 0.075);
 					},
-					menuChoice = function(d) {
+					mainMenuClick = function(d) {
 						// removing all current svgs
 						d3.selectAll('svg').remove();
 						createNetworkGraph(d3.select(this).attr('id'));
@@ -309,7 +309,7 @@
 
 				for ( var i = 0; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
 
-					addStdRect(svg1, null, fileDic['file_name'][i], 0,  (30*(i+1))+10, width, 30, 'black', 1, 0.15, 'black', 0.075, menuMouseOver, menuMouseLeave, menuChoice);
+					addStdRect(svg1, null, fileDic['file_name'][i], 0,  (30*(i+1))+10, width, 30, 'black', 1, 0.15, 'black', 0.075, mainMenuMouseOver, mainMenuMouseLeave, mainMenuClick);
 					addStdText(svg1, null, null, 10, 30*(i+2), '15px', 0, fileDic['war_name'][i]);
 
 					if ( fileDic['ongoing_war'][i]==1 )
@@ -327,7 +327,7 @@
 		// calling the war menu function upon page load
 		createMenu();
 
-		var createNetworkGraph = function(fileName) {
+		function createNetworkGraph(fileName) {
 			// new code section: start of code for svg2
 			// reading in the data to create the network graph
 			d3.json('../assets/the_networks_of_war/json_files_by_war/' + fileName).then(function(graph) {
@@ -363,23 +363,14 @@
 						warDic['leading_war'] = d.leading_war;
 				});
 
-				// Three functions that change the tooltip when user hover / move / leave a rectangle on the menu
-				var backToMenuMouseOver = function(d) {
-						d3.select(this)
-							.style('stroke-width', 2)
-							.style('cursor', 'pointer');
-				 },
-					 backToMenuMouseLeave = function(d) {
-							d3.select(this)
-								.style('stroke-width', 1)
-					},
-						backToMenuClick = function(d) {
+				// this will send you back to choose a new war (of the same type)
+				var backToMenuClick = function(d) {
 							// removing all current svgs
 							d3.selectAll('svg').remove();
 							createMenu();
-					};
+				};
 				// creating a rect for a back to menu button
-				addStdRect(svg2, null, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, backToMenuMouseOver, backToMenuMouseLeave, backToMenuClick);
+				addStdRect(svg2, null, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, backToMenuClick);
 				addStdText(svg2, null, null, 6, 22.5, '15px', 0, '↖ Menu');
 				addStdText(svg2, null, null, 0, 92.5, '15px', 0, warDic['war_name']);
 
@@ -388,11 +379,11 @@
 						descriptiveFields = {
 							'participant': [],
 							'dyadic': []
-						}
+						},
 						descriptorNameLengths = {
 							'participant': [],
 							'dyadic': []
-						}
+						};
 				// console.log(participantFields);
 				for ( var i = 0; i <= linkFields.length-1; i++ ) {
 					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
@@ -434,7 +425,7 @@
 						// descriptiveFields['participant'] = descriptiveFields['participant'].sort(),
 						// descriptiveFields['dyadic'] = descriptiveFields['dyadic'].sort();
 
-				var getLinkDescriptorValues = function(descriptor_type, linkDescriptorInput) {
+				function getLinkDescriptorValues(descriptor_type, linkDescriptorInput) {
 
 					// will need to return this array to make it global
 					var linkDescriptorValues = [];
@@ -449,127 +440,102 @@
 					{ return linkDescriptorValues }
 				};
 
+				// console.log(document.getElementById('#link_dropdown_selected_text').toString().split('>')[1]);
+
 				var linkDescriptorValues = getLinkDescriptorValues('dyadic', 0);
+
+				function descriptiveMenuMouseOver(groupingType, maxWidth, descriptiveArray, clickFunction, xLoc) {
+
+					svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
+					svg2.select('#' + groupingType + '_dropdown_selected_text').style('opacity', 0);
+
+					for ( var i = 0; i <= descriptiveArray.length-1; i++ ) {
+						addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, clickFunction);
+						addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), '12px', 0, descriptiveArray[i]);
+					}
+				}
+
+				function descriptiveMenuClick(groupingType, descriptorIndice, maxWidth, descriptiveArray, moFunction, xLoc) {
+
+					dropDownSelected = descriptiveArray[descriptorIndice];
+
+					svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
+					svg2.select('#' + groupingType + '_dropdown_selected_text').remove();
+
+					addStdRect(svg2, null, groupingType + '_dropdown_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'transparent', null, moFunction, generalRectML, null);
+					addStdText(svg2, null, groupingType + '_dropdown_selected_text', width-maxWidth-xLoc+5, 22.5, '12px', 0, dropDownSelected);
+
+					{ return dropDownSelected }
+				}
 
 				// Three functions that change the the selection for link dash marks (based on interaction variables).
 				var linkMenuMouseOver = function(d) {
 
-						d3.select(this)
-							.style('stroke-width', 2)
-							.style('cursor', 'pointer');
-// addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
-						svg2.selectAll('.link_descriptor_dropdowns').remove();
-						svg2.select('#link_dropdown_selected_text').style('opacity', 0);
-
-							// console.log(document.getElementById('#link_dropdown_selected_text').toString().split('>')[1]);
-						for ( var i = 0; i <= descriptiveFields['dyadic'].length-1; i++ ) {
-							addStdRect(svg2, 'link_descriptor_dropdowns', 'link_descriptor_dropdown_' + i, width-linkDescriptorMaxNameWidth-10, 1 + ((i+1)*30), linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, linkMenuClick);
-							addStdText(svg2, 'link_descriptor_dropdowns', null, width-linkDescriptorMaxNameWidth-5, 22.5 + ((i+1)*30), '12px', 0, descriptiveFields['dyadic'][i]);
-						}
-					},
-					 linkMenuMouseLeave = function(d) {
-
-						 d3.select(this)
-	 						.style('stroke-width', 1);
+						generalRectML;
+						descriptiveMenuMouseOver('link', linkDescriptorMaxNameWidth, descriptiveFields['dyadic'], linkMenuClick, 10);
 					},
 						linkMenuClick = function(d) {
 
-							link_descriptor_indice = parseInt(d3.select(this).attr('id').slice(-1)),
-							linkDropDownSelected = descriptiveFields['dyadic'][link_descriptor_indice];
+						descriptorIndice = parseInt(d3.select(this).attr('id').slice(-1));
+						linkDropDownSelected = descriptiveMenuClick('link', descriptorIndice, linkDescriptorMaxNameWidth, descriptiveFields['dyadic'], linkMenuMouseOver, 10);
+						// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
+						linkDescriptorValues = getLinkDescriptorValues('dyadic', descriptorIndice);
 
-							svg2.selectAll('.link_descriptor_dropdowns').remove();
-							svg2.selectAll('#link_dropdown_selected_text').remove();
-
-							addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, linkMenuMouseLeave, null);
-							addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDropDownSelected);
-							// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
-
-							linkDescriptorValues = getLinkDescriptorValues('dyadic', link_descriptor_indice);
-
-							link.selectAll('.link_dash')
-									// .transition().duration(1000)
-									.attr('stroke', function(d) {
-										if ( linkDescriptorValues[d.index] <= 0 )
-										{ return 'transparent' }
-										else
-										{ return 'blue' }
-									});
+						link.selectAll('.link_dash')
+								// .transition().duration(1000)
+								.attr('stroke', function(d) {
+									if ( linkDescriptorValues[d.index] <= 0 )
+									{ return 'transparent' }
+									else
+									{ return 'blue' }
+								});
 				};
-
 
 				// Three functions that change the the selection for participant node sizes
 				var partMenuMouseOver = function(d) {
 
-						d3.select(this)
-							.style('stroke-width', 2)
-							.style('cursor', 'pointer');
-
-						svg2.selectAll('.part_descriptor_dropdowns').remove();
-						svg2.select('#part_dropdown_selected_text').style('opacity', 0);
-
-						for ( var i = 0; i <= descriptiveFields['participant'].length-1; i++ ) {
-							addStdRect(svg2, 'part_descriptor_dropdowns', 'part_descriptor_dropdown_' + i, width-partDescriptorMaxNameWidth-300, 1 + ((i+1)*30), partDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, partMenuClick);
-							addStdText(svg2, 'part_descriptor_dropdowns', null, width-partDescriptorMaxNameWidth-295, 22.5 + ((i+1)*30), '12px', 0, descriptiveFields['participant'][i]);
-						}
-					},
-					 partMenuMouseLeave = function(d) {
-
-						 d3.select(this)
-	 						.style('stroke-width', 1);
+						generalRectML;
+						descriptiveMenuMouseOver('part', partDescriptorMaxNameWidth, descriptiveFields['participant'], partMenuClick, 300);
 					},
 						partMenuClick = function(d) {
 
-							part_descriptor_indice = parseInt(d3.select(this).attr('id').slice(-1)),
-							partDropDownSelected = descriptiveFields['participant'][part_descriptor_indice];
+						descriptorIndice = parseInt(d3.select(this).attr('id').slice(-1));
+						partDropDownSelected = descriptiveMenuClick('part', descriptorIndice, partDescriptorMaxNameWidth, descriptiveFields['participant'], partMenuMouseOver, 300);
 
-							svg2.selectAll('.part_descriptor_dropdowns').remove();
-							svg2.selectAll('#part_dropdown_selected_text').remove();
+						nodeSizeSetupOutput = nodeSizeSetup(partDropDownSelected),
+						partDescriptiveValues = nodeSizeSetupOutput[0],
+						maxDomain = nodeSizeSetupOutput[1],
+						stdNullRadiusSize = nodeSizeSetupOutput[2];
 
-							addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptorMaxNameWidth-300, 1, partDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, partMenuMouseLeave, null);
-							addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptorMaxNameWidth-295, 22.5, '12px', 0, partDropDownSelected);
+						// base value that will be used to calculate the values appended to the arrays above.
+						// including linkNodeSize inside of addedMarginSize.
+						linkNodeSize = 10,
+						nodeMarginCalculationOutput = nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize),
+						nodeMargins = nodeMarginCalculationOutput[0],
+						nodeIndices = nodeMarginCalculationOutput[1];
 
+						svg3.selectAll('.nodes').transition().duration(3000)
+								.attr('r', function(d) { return nodeMargins['size'][d.id] });
 
-							nodeSizeSetupOutput = nodeSizeSetup(partDropDownSelected),
-							partDescriptiveValues = nodeSizeSetupOutput[0],
-							maxDomain = nodeSizeSetupOutput[1],
-							stdNullRadiusSize = nodeSizeSetupOutput[2];
+						svg3.selectAll('.node_names').transition().duration(3000)
+								.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
+								.attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] });
 
-							// base value that will be used to calculate the values appended to the arrays above.
-							// including linkNodeSize inside of addedMarginSize.
-							linkNodeSize = 10,
-							nodeMarginCalculationOutput = nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize),
-							nodeMargins = nodeMarginCalculationOutput[0],
-							nodeIndices = nodeMarginCalculationOutput[1];
+						svg3.selectAll('.node_size_warning').transition().duration(3000)
+								.attr('dx', function(d) { return nodeMargins['size'][d.id] * -1.5 })
+					      .attr('dy', function(d) { return nodeMargins['size'][d.id] * 0.75 })
+								.style('opacity', function(d) {
+									if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
+										{ return 1 }
+									else
+									{ return 0 }
+								});
 
-							svg3.selectAll('.nodes').transition().duration(3000)
-									.attr('r', function(d, i) { return nodeMargins['size'][i] });
+						// if (!d3.event.active) graphLayout.alphaTarget(0.3).restart();
+						graphLayout = createGraphLayout();
+				};
 
-							svg3.selectAll('.node_names').transition().duration(3000)
-									.attr('dx', function(d, i) { return nodeMargins['horizontal_name_shift'][i] })
-									.attr('dy', function(d, i) { return nodeMargins['vertical_name_shift'][i] });
-
-							svg3.selectAll('.node_size_warning')
-									.attr('dx', function(d, i) { return nodeMargins['size'][i] * -1.5 })
-						      .attr('dy', function(d, i) { return nodeMargins['size'][i] * 0.75 })
-									.style('opacity', function(d, i) {
-										if ( isNaN(parseFloat(partDescriptiveValues[i])) )
-											{ return 1 }
-										else
-										{ return 0 }
-									});
-
-							// if (!d3.event.active) graphLayout.alphaTarget(0.3).restart();
-
-							graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
-									.force('charge', d3.forceManyBody().strength(-3000))
-							    .force('center', d3.forceCenter(width/2, height/2))
-							    .force('x', d3.forceX(width/2).strength(1))
-							    .force('y', d3.forceY(height/2).strength(1))
-							    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.participant]] + nodeMargins['size'][nodeIndices[d.target.participant]])) * 2), 75) }).strength(1))
-							    .on('tick', ticked);
-					};
-
-				var fillNullDescriptors = function(descriptive_fields, descriptor_name_lengths, grouping) {
+				function fillNullDescriptors(descriptive_fields, descriptor_name_lengths, grouping) {
 					// creating a value for a default link descriptor
 					if ( descriptive_fields[grouping].length==0 )
 					{ descriptiveFields[grouping].push('None');
@@ -586,14 +552,14 @@
 						linkDropDownSelected = linkNullDescriptorOutput[0],
 						linkDescriptorMaxNameWidth = linkNullDescriptorOutput[1];
 
-				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, linkMenuMouseLeave, null);
+				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptorMaxNameWidth-10, 1, linkDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
 				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptorMaxNameWidth-5, 22.5, '12px', 0, linkDropDownSelected);
 
 				var partNullDescriptorOutput = fillNullDescriptors(descriptiveFields, descriptorNameLengths, 'participant'),
 						partDropDownSelected = partNullDescriptorOutput[0],
 						partDescriptorMaxNameWidth = partNullDescriptorOutput[1];
 
-				addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptorMaxNameWidth-300, 1, partDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, partMenuMouseLeave, null);
+				addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptorMaxNameWidth-300, 1, partDescriptorMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
 				addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptorMaxNameWidth-295, 22.5, '12px', 0, partDropDownSelected);
 
 				// new code section: start of code for svg3
@@ -609,7 +575,7 @@
 					});
 				});
 
-				var nodeSizeSetup = function (sizeField) {
+				function nodeSizeSetup(sizeField) {
 
 					var	partDescriptiveValues = [],
 							// this will become the sum of all inputs to the radius function
@@ -624,9 +590,12 @@
 							if ( isNaN(+d[sizeField]) )
 							 { nullRadiusNodes+=1; }
 							else
-							{ maxDomain+=parseFloat(d[sizeField]); }
-
-							partDescriptiveValues.push(+d[sizeField]);
+							// cannot be a negative value
+							// the plus may need to be removed here
+							{ maxDomain+=Math.max(0, parseFloat(+d[sizeField])); }
+							// cannot be a negative value
+							// the plus may need to be removed here
+							partDescriptiveValues.push(Math.max(0, +d[sizeField]));
 					});
 
 					var totalNodes = partDescriptiveValues.length;
@@ -642,7 +611,7 @@
 					return [partDescriptiveValues, maxDomain, stdNullRadiusSize];
 				};
 
-				var nodeSizeCalculation = function (maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize) {
+				function nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize) {
 
 					var maxRadius = 150,
 							radius = d3.scaleLinear()
@@ -672,16 +641,13 @@
 							svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0);
 
 					// now going through the iterations that needed radius to already be defined
-					graph.nodes.forEach(function(d, i) {
-							// adding each participant to the array of indices
-							// this will be used to indice through the nodeMargins by participant
-							nodeIndices[d.participant] = i;
+					graph.nodes.forEach(function(d) {
 							// determining totalCasualties across all countries as maxRadius.
 							// this will make larger numbers proportional to the total across all countries.
-							if ( isNaN(partDescriptiveValues[i]) )
+							if ( isNaN(partDescriptiveValues[d.id]) )
 							 { currentRadiusSize = radius(stdNullRadiusSize); }
 							else
-							 { currentRadiusSize = radius(partDescriptiveValues[i]); }
+							 { currentRadiusSize = radius(partDescriptiveValues[d.id]); }
 							nodeMargins['size'].push(currentRadiusSize),
 							nodeMargins['name'].push(d.participant),
 							currentNameLength = getTextWidth(svgDummy, d.participant, '15px'),
@@ -746,13 +712,20 @@
 
 				addStdRect(svg3, null, null, 0, 0, width, height, 'black', 1, null, 'transparent', null, svg3BodyMO, null, null);
 
-				var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
-				    .force('charge', d3.forceManyBody().strength(-3000))
-				    .force('center', d3.forceCenter(width/2, height/2))
-				    .force('x', d3.forceX(width/2).strength(1))
-				    .force('y', d3.forceY(height/2).strength(1))
-				    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { return Math.max((((nodeMargins['size'][nodeIndices[d.source.participant]] + nodeMargins['size'][nodeIndices[d.target.participant]])) * 2), 75) }).strength(1))
-				    .on('tick', ticked);
+				function createGraphLayout() {
+
+					var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
+					    .force('charge', d3.forceManyBody().strength(-3000))
+					    .force('center', d3.forceCenter(width/2, height/2))
+					    .force('x', d3.forceX(width/2).strength(1))
+					    .force('y', d3.forceY(height/2).strength(1))
+					    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { return Math.max((((nodeMargins['size'][d.source.id] + nodeMargins['size'][d.target.id])) * 2.5), 100) }).strength(1))
+					    .on('tick', ticked);
+
+						{ return graphLayout; }
+				}
+
+				var graphLayout = createGraphLayout();
 
 				var linkStrokeWidth = 1;
 
@@ -765,15 +738,7 @@
 				    .attr('stroke', '#aaa')
 				    .attr('stroke-width', linkStrokeWidth);
 
-				// creating inputs for the function to check whether each node is part of the selected node's primary network.
-				// I have no idea why but this line doesn't work if I move it anywhere else.
-				var firstDegreeLinks = [];
-
-				graph.links.forEach(function(d) {
-				    firstDegreeLinks[d.source.index + '-' + d.target.index] = true;
-				    firstDegreeLinks[d.target.index + '-' + d.source.index] = true;
-				});
-
+				var firstDegreeLinks = getFirsDegreeLinks();
 				// overlaying lines of different styles
 				// this will be used to accent interactions between nodes
 				// identifying all dyads that shouldn't be included with a class assignment.
@@ -815,7 +780,7 @@
 					.attr('class', 'nodes')
 					.attr('stroke', 'black')
 					.attr('stroke-width', 1)
-		      .attr('r', function(d, i) { return nodeMargins['size'][i] })
+		      .attr('r', function(d) { return nodeMargins['size'][d.id] })
 					// .attr('opacity', 0.5)
 		      .style('fill', function(d) {
 						if ( parseInt(d.side)==3 )
@@ -828,9 +793,9 @@
 
 				node.append('text')
 						.attr('class', 'node_names')
-						.attr('id', function(d, i) { return 'label_' + i })
-						.attr('dx', function(d, i) { return nodeMargins['horizontal_name_shift'][i] })
-			      .attr('dy', function(d, i) { return nodeMargins['vertical_name_shift'][i] })
+						.attr('id', function(d) { return 'label_' + d.id })
+						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
+			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] })
 						.attr('font-size', '12px')
 			      .attr('text-anchor', 'middle')
 			      .text(function(d)
@@ -838,12 +803,12 @@
 
 				node.append('text')
 						.attr('class', 'node_size_warning')
-						.attr('dx', function(d, i) { return nodeMargins['size'][i] * -1.5 })
-			      .attr('dy', function(d, i) { return nodeMargins['size'][i] * 0.75 })
+						.attr('dx', function(d) { return nodeMargins['size'][d.id] * -1.5 })
+			      .attr('dy', function(d) { return nodeMargins['size'][d.id] * 0.75 })
 						.attr('font-size', '15px')
 			      .attr('text-anchor', 'middle')
-						.style('opacity', function(d, i) {
-							if ( isNaN(parseFloat(partDescriptiveValues[i])) )
+						.style('opacity', function(d) {
+							if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
 								{ return 1 }
 							else
 							{ return 0 }
@@ -853,6 +818,19 @@
 				function firstDegreeCheck(a, b) {
 
 						return a==b || firstDegreeLinks[a + '-' + b]
+				};
+
+				function getFirsDegreeLinks() {
+					// creating inputs for the function to check whether each node is part of the selected node's primary network.
+					// I have no idea why but this line doesn't work if I move it anywhere else.
+					var firstDegreeLinks = [];
+
+					graph.links.forEach(function(d) {
+					    firstDegreeLinks[d.source.index + '-' + d.target.index] = true;
+					    firstDegreeLinks[d.target.index + '-' + d.source.index] = true;
+					});
+
+					return firstDegreeLinks;
 				};
 
 				function nodeMouseOverForLinks(linkInput, indexInput, strokeWidthInput) {
@@ -906,37 +884,37 @@
 
 			  function ticked() {
 
-					node.each(function(d, i) {
+					node.each(function(d) {
 
-						if ( nodeMargins['name_fits_in_node'][i]==false )
+						if ( nodeMargins['name_fits_in_node'][d.id]==false )
 						{
 							// need to add two additional if statements,
 							// one for if the label is at max y, and one for if the label is at min y.
 							// some sort of randomization will need to determine what to do in these cases to prevent overlap.
 							if ( d.x < width * 0.5 && d.y < height * 0.5 )
-							{ d3.select('#label_' + i)
+							{ d3.select('#label_' + d.id)
 									.transition().duration(100)
-									.attr('dx', nodeMargins['horizontal_name_shift'][i] * -1)
-									.attr('dy', nodeMargins['vertical_name_shift'][i] * -1);
+									.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
+									.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
 						}
 							else if ( d.x >= width * 0.5 && d.y < height * 0.5 )
 							{ d3.select('#label_' + i)
 									.transition().duration(100)
-									.attr('dx', nodeMargins['horizontal_name_shift'][i])
-									.attr('dy', nodeMargins['vertical_name_shift'][i] * -1);
+									.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
+									.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
 						}
 							else if ( d.x < width * 0.5 && d.y >= height * 0.5 )
-							{ d3.select('#label_' + i)
+							{ d3.select('#label_' + d.id)
 									.transition().duration(100)
-									.attr('dx', nodeMargins['horizontal_name_shift'][i] * -1)
-									.attr('dy', nodeMargins['vertical_name_shift'][i]);
+									.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
+									.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
 						}
 							else
 							//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
-							{ d3.select('#label_' + i)
+							{ d3.select('#label_' + d.id)
 								.transition().duration(100)
-								.attr('dx', nodeMargins['horizontal_name_shift'][i])
-								.attr('dy', nodeMargins['vertical_name_shift'][i]);
+								.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
+								.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
 						}
 					}
 				 });
@@ -946,16 +924,16 @@
 					// needs to also be adjusted for the participant name label since this could be positioned below the node
 					// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
 					// includes transformation for nodes and the text itself
-					node.attr('transform', function(d, i) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][i], Math.min(width - nodeMargins['added_right_margin'][i], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][i], Math.min(height - nodeMargins['added_bottom_margin'][i], d.y)) + ')' })
+					node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][d.id], Math.min(width - nodeMargins['added_right_margin'][d.id], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][d.id], Math.min(height - nodeMargins['added_bottom_margin'][d.id], d.y)) + ')' })
 
-					linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)) + Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x))) * 0.5 })
-									.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)) + Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y))) * 0.5 });
+					linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x))) * 0.5 })
+									.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y))) * 0.5 });
 
 					svg3.selectAll('.link,.link_dash')
-							.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.source.participant]], Math.min(width - nodeMargins['added_right_margin'][nodeIndices[d.source.participant]], d.source.x)) })
-			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.source.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.source.participant]], d.source.y)) })
-			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], Math.min(width - nodeMargins['added_left_margin'][nodeIndices[d.target.participant]], d.target.x)) })
-			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][nodeIndices[d.target.participant]], Math.min(height - nodeMargins['added_bottom_margin'][nodeIndices[d.target.participant]], d.target.y)) })
+							.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) })
+			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) })
+			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x)) })
+			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y)) })
 				  }
 
 				function dragstarted(d) {

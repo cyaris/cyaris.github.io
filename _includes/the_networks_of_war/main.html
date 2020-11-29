@@ -465,7 +465,7 @@
 					addStdRect(svg2, null, groupingType + '_dropdown_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'transparent', null, moFunction, generalRectML, null);
 					addStdText(svg2, null, groupingType + '_dropdown_selected_text', width-maxWidth-xLoc+5, 22.5, '12px', 0, dropDownSelected);
 
-					{ return dropDownSelected }
+					return dropDownSelected
 				}
 
 				// Three functions that change the the selection for link dash marks (based on interaction variables).
@@ -482,13 +482,18 @@
 						linkDescriptorValues = getLinkDescriptorValues('dyadic', descriptorIndice);
 
 						link.selectAll('.link_dash')
-								// .transition().duration(1000)
+								.transition().duration(500)
 								.attr('stroke', function(d) {
 									if ( linkDescriptorValues[d.index] <= 0 )
 									{ return 'transparent' }
 									else
 									{ return 'blue' }
-								});
+								})
+								.attr('stroke-width', linkDashStrokeWidth+4)
+								.transition().duration(1000)
+								.attr('stroke-width', linkDashStrokeWidth);
+
+								;
 				};
 
 				// Three functions that change the the selection for participant node sizes
@@ -743,7 +748,7 @@
 				// this will be used to accent interactions between nodes
 				// identifying all dyads that shouldn't be included with a class assignment.
 				// these will be removed immediately after creation.
-				var linkDashStrokeWidth = 2;
+				var linkDashStrokeWidth = 3;
 
 				link.append('line')
 						.attr('class', 'link_dash')
@@ -754,7 +759,7 @@
 							else
 							{ return 'blue' }
 						})
-						.attr('stroke-dasharray', ('2.5, 12'))
+						.attr('stroke-dasharray', ('2.5, 15'))
 						.attr('stroke-dashoffset', -7.5)
 						.attr('stroke-width', linkDashStrokeWidth);
 

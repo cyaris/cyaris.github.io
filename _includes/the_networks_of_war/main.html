@@ -515,9 +515,7 @@
 						// base value that will be used to calculate the values appended to the arrays above.
 						// including linkNodeSize inside of addedMarginSize.
 						linkNodeSize = 10,
-						nodeMarginCalculationOutput = nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize),
-						nodeMargins = nodeMarginCalculationOutput[0],
-						nodeIndices = nodeMarginCalculationOutput[1];
+						nodeMargins = nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize);
 
 						svg3.selectAll('.nodes').transition().duration(3000)
 								.attr('r', function(d) { return nodeMargins['size'][d.id] });
@@ -641,7 +639,6 @@
 								'added_left_margin': [],
 								'added_right_margin': []
 							},
-							nodeIndices = {},
 							// creating a dummy svg so that the gettextwidth function can be used before any 'real' svgs are defined
 							svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0);
 
@@ -683,7 +680,7 @@
 							// don't need to adjust for the name if it is inside the node
 							{ nodeMargins['added_right_margin'].push(currentRadiusSize + addedMarginSize); }
 					});
-					return [nodeMargins, nodeIndices];
+					return nodeMargins;
 				};
 
 				var nodeSizeSetupOutput = nodeSizeSetup('battle_deaths'),
@@ -694,9 +691,7 @@
 				// base value that will be used to calculate the values appended to the arrays above.
 				// including linkNodeSize inside of addedMarginSize.
 				var linkNodeSize = 10,
-						nodeMarginCalculationOutput = nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize),
-						nodeMargins = nodeMarginCalculationOutput[0],
-						nodeIndices = nodeMarginCalculationOutput[1];
+						nodeMargins = nodeSizeCalculation(maxDomain, linkNodeSize, partDescriptiveValues, stdNullRadiusSize);
 
 				// append the svg3 object to the body of the page
 				var svg3 = d3.select('#war_network_analysis')
@@ -724,7 +719,7 @@
 					    .force('center', d3.forceCenter(width/2, height/2))
 					    .force('x', d3.forceX(width/2).strength(1))
 					    .force('y', d3.forceY(height/2).strength(1))
-					    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { return Math.max((((nodeMargins['size'][d.source.id] + nodeMargins['size'][d.target.id])) * 2.5), 100) }).strength(1))
+					    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { return Math.max((((nodeMargins['size'][d.source.id] + nodeMargins['size'][d.target.id])) * 2), 80) }).strength(1))
 					    .on('tick', ticked);
 
 						{ return graphLayout; }

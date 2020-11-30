@@ -131,37 +131,46 @@
 
 		// value for all numbers in an array.
 		function arrayAverage(array) {
-		    //Find the sum
-		    var sum = 0;
-		    for(var i in array) {
-		        sum += array[i];
+
+				// Find the sum
+		    var sumOfAllItems = 0;
+
+		    for( var i in array ) {
+		        sumOfAllItems+=array[i];
 		    }
 		    //Get the length of the array
-		    var numbersCnt = array.length;
+		    var totalItems = array.length;
 		    //Return the average / mean.
-		    return (sum / numbersCnt);
+		    return (sumOfAllItems/totalItems)
 		}
 
 		// unique values from array part 1
 		Array.prototype.contains = function(v) {
+
 		  for (var i = 0; i < this.length; i++) {
 		    if (this[i] === v) return true;
 		  }
+
 		  return false
 		};
 
 		// unique values from array part 2
-		Array.prototype.unique = function() {
+		Array.prototype.uniqueNonNull = function() {
+
 		  var array = [];
+
 		  for (var i = 0; i < this.length; i++) {
 		    if (!array.contains(this[i])) {
 		      array.push(this[i]);
 		    }
 		  }
 
-			nullIndex = array.indexOf(null);
-			array.splice(nullIndex, 1);
+			// removing any null values in array
+			if ( array.includes(null) ) {
 
+				nullIndex = array.indexOf(null);
+				array.splice(nullIndex, 1);
+			}
 		  return array
 		}
 
@@ -444,17 +453,16 @@
 					{ return linkDescriptiveValues }
 				};
 
-				function fillNullDescriptives(descriptive_fields, descriptor_name_lengths, grouping, descriptor_indice) {
+				function fillNullDescriptives(descriptiveFields, descriptorNameLengths, grouping, dropDownSelected) {
 					// creating a value for a default link descriptor
-					if ( descriptive_fields[grouping].length==0 )
+					if ( descriptiveFields[grouping].length==0 )
 					{ descriptiveFields[grouping].push('None');
-						descriptor_name_lengths[grouping].push(getTextWidth(svg2, 'None', '12px'));
+						descriptorNameLengths[grouping].push(getTextWidth(svg2, 'None', '12px'));
 					}
 
-					var dropDownSelected = descriptive_fields[grouping][descriptor_indice],
-							descriptorMaxNameWidth = maxFromArray(descriptor_name_lengths[grouping]);
+					var descriptorMaxNameWidth = maxFromArray(descriptorNameLengths[grouping]);
 
-					return 	[dropDownSelected, descriptorMaxNameWidth, descriptiveFields]
+					return 	[descriptorMaxNameWidth, descriptiveFields]
 				};
 
 				function descriptiveMenuMouseOver(groupingType, maxWidth, descriptiveArray, clickFunction, xLoc) {
@@ -489,9 +497,9 @@
 				},
 						linkMenuClick = function(d) {
 
-						descriptorIndice = parseInt(d3.select(this).attr('id').slice(-1));
-						linkDropDownSelected = descriptiveMenuClick('link', descriptorIndice, linkDescriptiveMaxNameWidth, descriptiveFields['dyad'], linkMenuMouseOver, linkXLoc);
-						linkDescriptiveValues = getLinkDescriptiveValues('dyad', descriptorIndice);
+						linkDropDownSelectedIndice = parseInt(d3.select(this).attr('id').slice(-1));
+						linkDropDownSelected = descriptiveMenuClick('link', linkDropDownSelectedIndice, linkDescriptiveMaxNameWidth, descriptiveFields['dyad'], linkMenuMouseOver, linkXLoc);
+						linkDescriptiveValues = getLinkDescriptiveValues('dyad', linkDropDownSelectedIndice);
 
 						// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
 
@@ -516,8 +524,8 @@
 				},
 						partMenuClick = function(d) {
 
-						descriptorIndice = parseInt(d3.select(this).attr('id').slice(-1));
-						partDropDownSelected = descriptiveMenuClick('part', descriptorIndice, partDescriptiveMaxNameWidth, descriptiveFields['participant'], partMenuMouseOver, partXLoc);
+						partDropDownSelectedIndice = parseInt(d3.select(this).attr('id').slice(-1));
+						partDropDownSelected = descriptiveMenuClick('part', partDropDownSelectedIndice, partDescriptiveMaxNameWidth, descriptiveFields['participant'], partMenuMouseOver, partXLoc);
 
 						nodeSizeSetupOutput = nodeSizeSetup(partDropDownSelected),
 						partDescriptiveValues = nodeSizeSetupOutput[0],
@@ -529,22 +537,22 @@
 						nodeMargins = nodeSizeCalculation(maxDomain, partDescriptiveValues, stdNullRadiusSize);
 
 						console.log('partDescriptiveValues', partDescriptiveValues);
-						console.log('nodeMargins', nodeMargins['size']);
+						console.log('nodeMargins', nodeMargins['radius_size']);
 
 						var nodeTransitionDelay = 50,
-								textTransitionDelay = 500,
+								textTransitionDelay = 1000,
 								transitionDuration = 3000;
 
 						svg3.selectAll('.nodes').transition().delay(nodeTransitionDelay).duration(transitionDuration)
-								.attr('r', function(d) { return nodeMargins['size'][d.id] })
+								.attr('r', function(d) { return nodeMargins['radius_size'][d.id] })
 
 						// calling same function used on tick to reposition node names
 						repositionNodeNames(textTransitionDelay, transitionDuration);
 						// console.log(nodeMargins);
 						svg3.selectAll('.node_size_warning').transition().delay(textTransitionDelay).duration(transitionDuration)
 								// need a better solution for when text comes too close to node because nodesize is small
-								.attr('dx', function(d) { return  Math.min(nodeMargins['size'][d.id] * -1.5, -20) })
-								.attr('dy', function(d) { return Math.max(nodeMargins['size'][d.id], 20) })
+								.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -20) })
+								.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 20) })
 								.style('opacity', function(d) {
 									if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
 										{ return 1 }
@@ -595,9 +603,9 @@
 					// accounting for when all values in array are zeros
 					// assuming that any network with all zeros should actually be all nulls
 					// could happen when descriptive data years do not cover war years
-					var uniquePartDescriptiveValues = partDescriptiveValues.unique();
-					// console.log('uniquePartDescriptiveValues.length', uniquePartDescriptiveValues.length)
-					// console.log('uniquePartDescriptiveValues', uniquePartDescriptiveValues)
+					var uniquePartDescriptiveValues = partDescriptiveValues.uniqueNonNull();
+					console.log('uniquePartDescriptiveValues.length', uniquePartDescriptiveValues.length)
+					console.log('uniquePartDescriptiveValues', uniquePartDescriptiveValues)
 					// need to fix this logic below
 					if ( uniquePartDescriptiveValues.length==0 || (uniquePartDescriptiveValues.length==1 && uniquePartDescriptiveValues[0]==0)  || (uniquePartDescriptiveValues.length==2 && uniquePartDescriptiveValues[0]==0  && isNaN(uniquePartDescriptiveValues[1])) ) {
 						for ( var i = 0; i <= partDescriptiveValues.length-1; i++ ) {
@@ -629,7 +637,7 @@
 							// dic for size of all the participant nodes, and size needed around them according to borders and text adjustments
 							nodeMargins = {
 								'name': [],
-								'size': [],
+								'radius_size': [],
 								// array for vertical distance each text label needs to be shifted
 								'vertical_name_shift': [],
 								'name_fits_in_node': [],
@@ -656,7 +664,7 @@
 							 { currentRadiusSize = Math.max(radius(stdNullRadiusSize), minRadiusSize); }
 							else
 							 { currentRadiusSize = Math.max(radius(partDescriptiveValues[d.id]), minRadiusSize); }
-							nodeMargins['size'].push(currentRadiusSize),
+							nodeMargins['radius_size'].push(currentRadiusSize),
 							nodeMargins['name'].push(d.participant),
 							currentNameLength = getTextWidth(svgDummy, d.participant, '15px'),
 							currentNameLengthHalf = currentNameLength/2,
@@ -721,8 +729,8 @@
 							'participant',
 							'side',
 							'start_date',
-							'start_year',
 							'end_date',
+							'start_year',
 							'end_year',
 							'ongoing_participation'
 						];
@@ -736,16 +744,24 @@
 						}
 				};
 
+				// looping through nonDescriptiveFields to remove them from participantFields.
+				// cannot remove item above because it would affect the duration of the for loop.
+				for ( var i = 0; i <= nonDescriptivePartFields.length-1; i++ ) {
+						// removing all nonDescriptivePartField from participantFields
+						nonDescriptiveIndex = participantFields.indexOf(nonDescriptivePartFields[i]);
+						participantFields.splice(nonDescriptiveIndex, 1);
+				};
+
 				var totalLinkDescriptives = descriptiveFields['dyad'].length,
 						totalPartDescriptives = descriptiveFields['participant'].length;
 
-				var randomLinkDescriptorIndice = Math.floor(Math.random() * descriptiveFields['dyad'].length),
-						linkDescriptiveValues = getLinkDescriptiveValues('dyad', randomLinkDescriptorIndice);
+				var linkDropDownSelectedIndice = Math.floor(Math.random() * descriptiveFields['dyad'].length),
+						linkDropDownSelected = descriptiveFields['dyad'][linkDropDownSelectedIndice]
+						linkDescriptiveValues = getLinkDescriptiveValues('dyad', linkDropDownSelectedIndice);
 
-				var linkNullDescriptiveOutput = fillNullDescriptives(descriptiveFields, descriptorNameLengths, 'dyad', randomLinkDescriptorIndice),
-						linkDropDownSelected = linkNullDescriptiveOutput[0],
-						linkDescriptiveMaxNameWidth = linkNullDescriptiveOutput[1],
-						descriptiveFields = linkNullDescriptiveOutput[2],
+				var linkNullDescriptiveOutput = fillNullDescriptives(descriptiveFields, descriptorNameLengths, 'dyad', linkDropDownSelected),
+						linkDescriptiveMaxNameWidth = linkNullDescriptiveOutput[0],
+						descriptiveFields = linkNullDescriptiveOutput[1],
 						linkXLoc = 10;
 
 				// console.log('random link indice', randomLinkDescriptorIndice);
@@ -753,18 +769,17 @@
 				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptiveMaxNameWidth-linkXLoc, 1, linkDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
 				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, '12px', 0, linkDropDownSelected);
 
-				var randomPartIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
-				// var randomPartIndice =  descriptiveFields['participant'].indexOf('total_population_x'),
-						randomPartField = participantFields[randomPartIndice],
-						nodeSizeSetupOutput = nodeSizeSetup(randomPartField),
+				var partDropDownSelectedIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
+				// var partDropDownSelectedIndice =  participantFields.indexOf('total_population_x'),
+						partDropDownSelected = participantFields[partDropDownSelectedIndice],
+						nodeSizeSetupOutput = nodeSizeSetup(partDropDownSelected),
 						partDescriptiveValues = nodeSizeSetupOutput[0],
 						maxDomain = nodeSizeSetupOutput[1],
 						stdNullRadiusSize = nodeSizeSetupOutput[2];
 
-				var partNullDescriptiveOutput = fillNullDescriptives(descriptiveFields, descriptorNameLengths, 'participant', randomPartIndice),
-						partDropDownSelected = partNullDescriptiveOutput[0],
-						partDescriptiveMaxNameWidth = partNullDescriptiveOutput[1],
-						descriptiveFields = partNullDescriptiveOutput[2],
+				var partNullDescriptiveOutput = fillNullDescriptives(descriptiveFields, descriptorNameLengths, 'participant', partDropDownSelected),
+						partDescriptiveMaxNameWidth = partNullDescriptiveOutput[0],
+						descriptiveFields = partNullDescriptiveOutput[1],
 						partXLoc = 300;
 
 				addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptiveMaxNameWidth-partXLoc, 1, partDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
@@ -773,11 +788,11 @@
 				// console.log('random part indice', randomPartIndice);
 				// base value that will be used to calculate the values appended to the arrays above.
 				// including linkNodeSize inside of addedMarginSize.
-				var linkNodeSize = 5,
+				var linkNodeSize = 10,
 						nodeMargins = nodeSizeCalculation(maxDomain, partDescriptiveValues, stdNullRadiusSize);
 
 				console.log('partDescriptiveValues', partDescriptiveValues);
-				console.log('nodeMargins', nodeMargins['size']);
+				console.log('nodeMargins', nodeMargins['radius_size']);
 
 				// append the svg3 object to the body of the page
 				var svg3 = d3.select('#war_network_analysis')
@@ -798,26 +813,26 @@
 					svg2.select('#part_dropdown_selected_text').style('opacity', 1);
 				};
 
-				function createGraphLayout() {
+				var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
+				    .force('charge', d3.forceManyBody().strength(-3000))
+				    .force('center', d3.forceCenter(width/2, height/2))
+				    .force('x', d3.forceX(width/2).strength(0.90))
+				    .force('y', d3.forceY(height/2).strength(0.90))
+						.force('collision', d3.forceCollide().radius(function(d) { return Math.max((nodeMargins['radius_size'][d.id] * 2) + nodeMargins['horizontal_name_shift'][d.id] + linkNodeSize,
+																																											 (arrayAverage(nodeMargins['radius_size']) * 2)+ arrayAverage(nodeMargins['horizontal_name_shift']) + linkNodeSize,
+																																											 linkNodeSize + 25,
+																																											 30)}).strength(1))
+																																											 // creating conditional rules for defining link distance based on how many nodes are in the network.
+																																											 // link distance can be much greater if there are only two nodes.
+				    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( nodeMargins['radius_size'].length==2 )
+																																																											{ return ((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 5) + linkNodeSize + 50 }
+																																																											else
+																																																											{ return Math.max((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) + linkNodeSize + 50,
+				 																																																											 linkNodeSize + 30,
+																																																															 40)}}).strength(0.25))
+				    .on('tick', ticked);
 
-					var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
-					    .force('charge', d3.forceManyBody().strength(-3000))
-					    .force('center', d3.forceCenter(width/2, height/2))
-					    .force('x', d3.forceX(width/2).strength(0.95))
-					    .force('y', d3.forceY(height/2).strength(0.95))
-							.force('collision', d3.forceCollide().radius(function(d) { return Math.max(nodeMargins['size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + linkNodeSize,
-																																												 arrayAverage(nodeMargins['size']) + arrayAverage(nodeMargins['horizontal_name_shift']) + linkNodeSize,
-																																												 linkNodeSize + 25,
-																																												 30)}).strength(1))
-					    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { return Math.max((nodeMargins['size'][d.source.id] + nodeMargins['size'][d.target.id]) + linkNodeSize + 30,
-							 																																																													 linkNodeSize + 30,
-							 																																																													 40)}).strength(0.25))
-					    .on('tick', ticked);
-
-					return graphLayout
-				}
-
-				var graphLayout = createGraphLayout();
+				console.log(graphLayout);
 
 				var linkStrokeWidth = 1;
 
@@ -854,12 +869,6 @@
 				var linkNode = svg3.selectAll()
 			      .data(linkNodes)
 					.enter().append('circle')
-						.attr('fill', 'green')
-
-						// .attr('stroke-width', 1)
-						// .attr('stroke', 'black')
-						// .attr('opacity', 1)
-
 						.attr('opacity', 0)
 			      .attr('r', linkNodeSize);
 
@@ -877,7 +886,7 @@
 					.attr('class', 'nodes')
 					.attr('stroke', 'black')
 					.attr('stroke-width', 1)
-		      .attr('r', function(d) { return nodeMargins['size'][d.id] })
+		      .attr('r', function(d) { return nodeMargins['radius_size'][d.id] })
 					// .attr('opacity', 0.5)
 		      .style('fill', function(d) {
 						if ( parseInt(d.side)==3 )
@@ -901,8 +910,8 @@
 				node.append('text')
 						.attr('class', 'node_size_warning')
 						// need a better solution for when text comes too close to node because nodesize is small
-						.attr('dx', function(d) { return  Math.min(nodeMargins['size'][d.id] * -1.5, -20) })
-						.attr('dy', function(d) { return Math.max(nodeMargins['size'][d.id], 20) })
+						.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -20) })
+						.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 20) })
 						.attr('font-size', '15px')
 			      .attr('text-anchor', 'middle')
 						.style('opacity', function(d) {

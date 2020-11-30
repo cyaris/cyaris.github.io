@@ -705,22 +705,22 @@
 				function createGraphLayout(nodeMargins) {
 
 						var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
-						    .force('charge', d3.forceManyBody().strength(-3000))
+						    .force('charge', d3.forceManyBody().strength(-3500))
 						    .force('center', d3.forceCenter(width/2, height/2))
 						    .force('x', d3.forceX(width/2).strength(0.90))
 						    .force('y', d3.forceY(height/2).strength(0.90))
 								.force('collision', d3.forceCollide().radius(function(d) { return Math.max((nodeMargins['radius_size'][d.id] * 2) + nodeMargins['horizontal_name_shift'][d.id] + linkNodeSize,
 																																													 (arrayAverage(nodeMargins['radius_size']) * 2)+ arrayAverage(nodeMargins['horizontal_name_shift']) + linkNodeSize,
-																																													 linkNodeSize + 25,
+																																													 linkNodeSize + 20,
 																																													 30)}).strength(0.90))
 																																													 // creating conditional rules for defining link distance based on how many nodes are in the network.
 																																													 // link distance can be much greater if there are only two nodes.
 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( nodeMargins['radius_size'].length==2 )
 																																																													{ return ((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 5) + linkNodeSize + 30 }
 																																																													else
-																																																													{ return (Math.max((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + linkNodeSize + 30,
-						 																																																											 linkNodeSize + 30,
-																																																																	 40)}}).strength(0.25))
+																																																													{ return (Math.max((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + linkNodeSize,
+						 																																																											 linkNodeSize + 20,
+																																																																	 30)}}).strength(0.25))
 						    .on('tick', ticked);
 
 								return graphLayout
@@ -806,7 +806,7 @@
 								.style('stroke-width', function(d) {
 									// not a neighbor node, make it opaque
 									if ( eventTargetIndex==d.id )
-										{ return nodeStrokeWidth + 0.5 }
+										{ return nodeStrokeWidth + 1 }
 								});
 
 						nodeMouseOverForLinks('.link', eventTargetIndex, linkStrokeWidth + 0.5);

@@ -193,7 +193,7 @@ def drop_participant_b_columns(dataframe):
     return dataframe
 
 
-def column_fills_and_converions(dataframe, conversion_dic):
+def column_fills_and_converions(dataframe, grouping_type, conversion_dic):
 
     column_list = list(dataframe.columns)
     x_y_z_columns = []
@@ -212,9 +212,14 @@ def column_fills_and_converions(dataframe, conversion_dic):
     ## these are ones that most likely mean zero if null (not due to missing data)
     for column in x_y_z_columns:
         null_values = null_values + len(dataframe[(dataframe[column].isnull())])
-        ## giving this zeros because they weren't in the dataset at all.
-        ## no result following join.
-        dataframe.loc[dataframe[column].isnull(), column] = 0
+        if grouping_type=='participant':
+            ## marking null values for non-state participants as null because they are non-applicable
+            dataframe.loc[(dataframe[column].isnull()) & (dataframe['c_code']<=0), column] = None
+            ## marking remaining null values as 0 because they are applicable and non-existant
+            dataframe.loc[(dataframe[column].isnull()) & (dataframe['c_code']>=0), column] = 0
+        elif grouping_type=='dyad':
+            ## marking remaining null values as 0 because they are either applicable (and non-existant), or N/A but 0 does not affect the end result
+            dataframe.loc[(dataframe[column].isnull()), column] = 0
         ## giving these null values
         ## -9 is unknown value in the dataset
         ## -8 is non-applicable value

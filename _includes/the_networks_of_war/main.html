@@ -142,6 +142,28 @@
 		    return (sum / numbersCnt);
 		}
 
+
+		Array.prototype.contains = function(v) {
+		  for (var i = 0; i < this.length; i++) {
+		    if (this[i] === v) return true;
+		  }
+		  return false
+		};
+
+
+		Array.prototype.unique = function() {
+		  var array = [];
+		  for (var i = 0; i < this.length; i++) {
+		    if (!array.contains(this[i])) {
+		      array.push(this[i]);
+		    }
+		  }
+		  return array
+		}
+
+		var duplicates = [1, 3, 4, 2, 1, 2, 3, 8];
+		var uniques = duplicates.unique(); // result = [1,3,4,2,8]
+
 		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
 
 			svgInput.append('text')
@@ -492,6 +514,9 @@
 						// including linkNodeSize inside of addedMarginSize.
 						nodeMargins = nodeSizeCalculation(maxDomain, partDescriptiveValues, stdNullRadiusSize);
 
+						console.log('partDescriptiveValues', partDescriptiveValues);
+						console.log('nodeMargins', nodeMargins['size']);
+
 						svg3.selectAll('.nodes').transition().delay(100).duration(3000)
 								.attr('r', function(d) { return nodeMargins['size'][d.id] });
 
@@ -539,7 +564,7 @@
 					graph.nodes.forEach(function(d) {
 							// determining totalCasualties across all countries as maxRadius.
 							// this will make larger numbers proportional to the total across all countries.
-							if ( isNaN(+d[sizeField]) )
+							if ( isNaN(parseFloat(d[sizeField])) )
 							 { nullRadiusNodes+=1; }
 							else
 							// cannot be a negative value
@@ -551,6 +576,16 @@
 					});
 
 					var totalNodes = partDescriptiveValues.length;
+					// accounting for when all values in array are zeros
+					// assuming that any network with all zeros should actually be all nulls
+					// could happen when descriptive data years do not cover war years
+					var uniquePartDescriptiveValues = partDescriptiveValues.unique();
+					if ( uniquePartDescriptiveValues.length==1 && uniquePartDescriptiveValues[0]==0 ) {
+						for ( var i = 0; i <= partDescriptiveValues.length-1; i++ ) {
+						 	partDescriptiveValues[i] = NaN
+ 							nullRadiusNodes+=1
+						}
+					}
 					// console.log('totalNodes: ', totalNodes);
 					// console.log('nullRadiusNodes: ', nullRadiusNodes);
 					if ( nullRadiusNodes!=totalNodes )
@@ -592,7 +627,7 @@
 					graph.nodes.forEach(function(d) {
 							// determining totalCasualties across all countries as maxRadius.
 							// this will make larger numbers proportional to the total across all countries.
-							if ( isNaN(partDescriptiveValues[d.id]) )
+							if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
 							 { currentRadiusSize = radius(stdNullRadiusSize); }
 							else
 							 { currentRadiusSize = radius(partDescriptiveValues[d.id]); }
@@ -693,8 +728,8 @@
 				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptiveMaxNameWidth-linkXLoc, 1, linkDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
 				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, '12px', 0, linkDropDownSelected);
 
-				var randomPartIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
-				// var randomPartIndice = participantFields.indexOf('military_expenditure_x'),
+				// var randomPartIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
+				var randomPartIndice =  descriptiveFields['participant'].indexOf('total_population_x'),
 						randomPartField = participantFields[randomPartIndice],
 						nodeSizeSetupOutput = nodeSizeSetup(randomPartField),
 						partDescriptiveValues = nodeSizeSetupOutput[0],

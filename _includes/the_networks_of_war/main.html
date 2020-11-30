@@ -539,15 +539,20 @@
 						console.log('partDescriptiveValues', partDescriptiveValues);
 						console.log('nodeMargins', nodeMargins['radius_size']);
 
+						// redefining graph layout with updated nodeMargins
+						graphLayout = createGraphLayout(nodeMargins);
+
 						var nodeTransitionDelay = 50,
 								textTransitionDelay = 1000,
 								transitionDuration = 3000;
 
 						svg3.selectAll('.nodes').transition().delay(nodeTransitionDelay).duration(transitionDuration)
-								.attr('r', function(d) { return nodeMargins['radius_size'][d.id] })
+								.attr('r', function(d) { return nodeMargins['radius_size'][d.id] });
+								// .end(dragProcess);
 
 						// calling same function used on tick to reposition node names
 						repositionNodeNames(textTransitionDelay, transitionDuration);
+
 						// console.log(nodeMargins);
 						svg3.selectAll('.node_size_warning').transition().delay(textTransitionDelay).duration(transitionDuration)
 								// need a better solution for when text comes too close to node because nodesize is small
@@ -560,7 +565,10 @@
 									{ return 0 }
 								});
 
- 						// ticked();
+						// adjusting alpha for a set number of miliseconds
+						// var alphaMiliseconds = transitionDuration + 2500;
+						// setInterval( function() { graphLayout.alpha(1) }, alphaMiliseconds);
+						// setTimeout( function() { graphLayout.alpha(0) }, alphaMiliseconds);
 				};
 
 				// new code section: start of code for svg3
@@ -613,9 +621,6 @@
  							nullRadiusNodes+=1
 							maxDomain+=1
 						}
-
-						// nullIndex = descriptiveFields['participant'].indexOf(null);
-						// descriptiveFields['participant'].splice(nullIndex, 1);
 					}
 					// console.log('totalNodes: ', totalNodes);
 					// console.log('nullRadiusNodes: ', nullRadiusNodes);
@@ -700,8 +705,10 @@
 
 				// console.log(document.getElementById('#link_dropdown_selected_text').toString().split('>')[1]);
 
-				var participantFields = Object.keys(graph.nodes[0]).sort(),
-						linkFields = Object.keys(graph.links[0]).sort(),
+				// obtaining arrays of all participant/link fields in json files.
+				// these will be used to fill the descriptiveFields and descriptorNameLengths arrays.
+				var allParticipantFields = Object.keys(graph.nodes[0]).sort(),
+						allLinkFields = Object.keys(graph.links[0]).sort(),
 						descriptiveFields = {
 							'participant': [],
 							'dyad': []
@@ -710,14 +717,14 @@
 							'participant': [],
 							'dyad': []
 						};
-				// console.log(participantFields);
-				for ( var i = 0; i <= linkFields.length-1; i++ ) {
+				// console.log(allParticipantFields);
+				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
 					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
-					if ( linkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[linkFields[i]] }) > 0 )
-					// { descriptiveFields['dyad'].push(linkFields[i].split('_z')[0]); }
-					{ descriptiveFields['dyad'].push(linkFields[i]);
+					if ( allLinkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[allLinkFields[i]] }) > 0 )
+					// { descriptiveFields['dyad'].push(allLinkFields[i].split('_z')[0]); }
+					{ descriptiveFields['dyad'].push(allLinkFields[i]);
 						// getting an array of name lengths for all items added
-						descriptorNameLengths['dyad'].push(getTextWidth(svg2, linkFields[i], '12px'));
+						descriptorNameLengths['dyad'].push(getTextWidth(svg2, allLinkFields[i], '12px'));
 					 }
 				};
 
@@ -735,21 +742,13 @@
 							'ongoing_participation'
 						];
 
-				for ( var i = 0; i <= participantFields.length-1; i++ ) {
+				for ( var i = 0; i <= allParticipantFields.length-1; i++ ) {
 
-						if ( nonDescriptivePartFields.includes(participantFields[i])==false ) {
-							descriptiveFields['participant'].push(participantFields[i]);
+						if ( nonDescriptivePartFields.includes(allParticipantFields[i])==false ) {
+							descriptiveFields['participant'].push(allParticipantFields[i]);
 							// getting an array of name lengths for all items added
-							descriptorNameLengths['participant'].push(getTextWidth(svg2, participantFields[i], '12px'));
+							descriptorNameLengths['participant'].push(getTextWidth(svg2, allParticipantFields[i], '12px'));
 						}
-				};
-
-				// looping through nonDescriptiveFields to remove them from participantFields.
-				// cannot remove item above because it would affect the duration of the for loop.
-				for ( var i = 0; i <= nonDescriptivePartFields.length-1; i++ ) {
-						// removing all nonDescriptivePartField from participantFields
-						nonDescriptiveIndex = participantFields.indexOf(nonDescriptivePartFields[i]);
-						participantFields.splice(nonDescriptiveIndex, 1);
 				};
 
 				var totalLinkDescriptives = descriptiveFields['dyad'].length,
@@ -770,8 +769,8 @@
 				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, '12px', 0, linkDropDownSelected);
 
 				var partDropDownSelectedIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
-				// var partDropDownSelectedIndice =  participantFields.indexOf('total_population_x'),
-						partDropDownSelected = participantFields[partDropDownSelectedIndice],
+				// var partDropDownSelectedIndice =  allParticipantFields.indexOf('total_population_x'),
+						partDropDownSelected = descriptiveFields['participant'][partDropDownSelectedIndice],
 						nodeSizeSetupOutput = nodeSizeSetup(partDropDownSelected),
 						partDescriptiveValues = nodeSizeSetupOutput[0],
 						maxDomain = nodeSizeSetupOutput[1],
@@ -813,32 +812,38 @@
 					svg2.select('#part_dropdown_selected_text').style('opacity', 1);
 				};
 
-				var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
-				    .force('charge', d3.forceManyBody().strength(-3000))
-				    .force('center', d3.forceCenter(width/2, height/2))
-				    .force('x', d3.forceX(width/2).strength(0.90))
-				    .force('y', d3.forceY(height/2).strength(0.90))
-						.force('collision', d3.forceCollide().radius(function(d) { return Math.max((nodeMargins['radius_size'][d.id] * 2) + nodeMargins['horizontal_name_shift'][d.id] + linkNodeSize,
-																																											 (arrayAverage(nodeMargins['radius_size']) * 2)+ arrayAverage(nodeMargins['horizontal_name_shift']) + linkNodeSize,
-																																											 linkNodeSize + 25,
-																																											 30)}).strength(1))
-																																											 // creating conditional rules for defining link distance based on how many nodes are in the network.
-																																											 // link distance can be much greater if there are only two nodes.
-				    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( nodeMargins['radius_size'].length==2 )
-																																																											{ return ((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 5) + linkNodeSize + 50 }
-																																																											else
-																																																											{ return Math.max((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) + linkNodeSize + 50,
-				 																																																											 linkNodeSize + 30,
-																																																															 40)}}).strength(0.25))
-				    .on('tick', ticked);
+				function createGraphLayout(nodeMargins) {
 
-				console.log(graphLayout);
+					var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
+					    .force('charge', d3.forceManyBody().strength(-3000))
+					    .force('center', d3.forceCenter(width/2, height/2))
+					    .force('x', d3.forceX(width/2).strength(0.90))
+					    .force('y', d3.forceY(height/2).strength(0.90))
+							.force('collision', d3.forceCollide().radius(function(d) { return Math.max((nodeMargins['radius_size'][d.id] * 2) + nodeMargins['horizontal_name_shift'][d.id] + linkNodeSize,
+																																												 (arrayAverage(nodeMargins['radius_size']) * 2)+ arrayAverage(nodeMargins['horizontal_name_shift']) + linkNodeSize,
+																																												 linkNodeSize + 25,
+																																												 30)}).strength(0.90))
+																																												 // creating conditional rules for defining link distance based on how many nodes are in the network.
+																																												 // link distance can be much greater if there are only two nodes.
+					    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( nodeMargins['radius_size'].length==2 )
+																																																												{ return ((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 5) + linkNodeSize + 50 }
+																																																												else
+																																																												{ return Math.max((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) + linkNodeSize + 50,
+					 																																																											 linkNodeSize + 30,
+																																																																 40)}}).strength(0.25))
+					    .on('tick', ticked);
 
-				var linkStrokeWidth = 1;
+							return graphLayout
+				}
+
+				// defining graph layout with nodeMargins dictionary
+				var graphLayout = createGraphLayout(nodeMargins);
 
 				var link = svg3.selectAll().append('g')
 						.data(graph.links)
 						.enter();
+
+				var linkStrokeWidth = 1;
 
 		    link.append('line')
 						.attr('class', 'link')
@@ -872,15 +877,20 @@
 						.attr('opacity', 0)
 			      .attr('r', linkNodeSize);
 
+				// var dragProcess = d3.drag()
+				// 		.on('start', dragStarted)
+				// 		.on('drag', dragged)
+				// 		.on('end', dragEnded);
+
 				var node = svg3.selectAll()
 			      .data(graph.nodes)
 			    .enter().append('g')
 						.on('mouseover', nodeMouseOver)
 						.on('mouseleave', nodeMouseLeave)
 						.call(d3.drag()
-				        .on('start', dragstarted)
-				        .on('drag', dragged)
-				        .on('end', dragended));
+								.on('start', dragStarted)
+								.on('drag', dragged)
+								.on('end', dragEnded);
 
 				node.append('circle')
 					.attr('class', 'nodes')
@@ -1051,18 +1061,20 @@
 								d3.select('#label_' + d.id)
 							 	.transition().delay(delay).duration(duration)
 								.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
-					      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] })
+					      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] });
 							}
 					 });
 
 				}
-				function dragstarted(d) {
+				function dragStarted(d) {
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'grab');
 				    d3.event.sourceEvent.stopPropagation();
-				    if (!d3.event.active) graphLayout.alphaTarget(0.3).restart();
-				    d.fx = d.x;
-				    d.fy = d.y;
+				    if (!d3.event.active) {
+							graphLayout.alphaTarget(0.3).restart();
+					    d.fx = d.x;
+					    d.fy = d.y;
+						}
 				}
 
 				function dragged(d) {
@@ -1072,12 +1084,14 @@
 				    d.fy = d3.event.y;
 				}
 
-				function dragended(d) {
+				function dragEnded(d) {
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'pointer');
-				    if (!d3.event.active) graphLayout.alphaTarget(0);
-				    d.fx = null;
-				    d.fy = null;
+				    if (!d3.event.active) {
+							graphLayout.alphaTarget(0);
+					    d.fx = null;
+					    d.fy = null;
+					}
 				}
 				});
 		}})

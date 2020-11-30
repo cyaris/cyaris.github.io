@@ -97,36 +97,35 @@
 		// new code section: functions with non-built-in parameters (functions not of d or something like that).
 		function getTextWidth(svgInput, textInput, fontSize) {
 
-			// obtaining length of any textinput (based on default font size and font family)
-			var textWidthArray = [];
+				// obtaining length of any textinput (based on default font size and font family)
+				var textWidthArray = [];
 
-			svgInput.append('g')
-							.selectAll('.dummyText')
-							.data([textInput])
-							.enter().append('text')
-								.attr('pointer-events', 'none')
-								// .attr('font-family', 'sans-serif')
-								.attr('font-size', fontSize)
-								.text(function(d) { return d; })
-								.each(function(d,i) {
-										var thisWidth = this.getComputedTextLength();
-										textWidthArray.push(thisWidth);
-										this.remove();
-					});
+				svgInput.append('g')
+								.selectAll('.dummyText')
+								.data([textInput])
+								.enter().append('text')
+									.attr('pointer-events', 'none')
+									// .attr('font-family', 'sans-serif')
+									.attr('font-size', fontSize)
+									.text(function(d) { return d; })
+									.each(function(d,i) {
+											var thisWidth = this.getComputedTextLength();
+											textWidthArray.push(thisWidth);
+											this.remove();
+						});
 
-			{
-				var textWidth = textWidthArray.reduce((a, b) => a + b, 0);
-				return textWidth;
-			}
+				{
+					var textWidth = textWidthArray.reduce((a, b) => a + b, 0);
+					return textWidth;
+				}
 		};
 
 
 		function maxFromArray(array) {
 
-			var maxValue = array.reduce(function(a, b) { return Math.max(a, b) });
+				var maxValue = array.reduce(function(a, b) { return Math.max(a, b) });
 
-			return maxValue
-
+				return maxValue
 		};
 
 		// value for all numbers in an array.
@@ -147,31 +146,31 @@
 		// unique values from array part 1
 		Array.prototype.contains = function(v) {
 
-		  for (var i = 0; i < this.length; i++) {
-		    if (this[i] === v) return true;
-		  }
+			  for (var i = 0; i < this.length; i++) {
+			    if (this[i] === v) return true;
+			  }
 
-		  return false
+			  return false
 		};
 
 		// unique values from array part 2
 		Array.prototype.uniqueNonNull = function() {
 
-		  var array = [];
+			  var array = [];
 
-		  for (var i = 0; i < this.length; i++) {
-		    if (!array.contains(this[i])) {
-		      array.push(this[i]);
-		    }
-		  }
+			  for (var i = 0; i < this.length; i++) {
+			    if (!array.contains(this[i])) {
+			      array.push(this[i]);
+			    }
+			  }
 
-			// removing any null values in array
-			if ( array.includes(null) ) {
+				// removing any null values in array
+				if ( array.includes(null) ) {
 
-				nullIndex = array.indexOf(null);
-				array.splice(nullIndex, 1);
-			}
-		  return array
+					nullIndex = array.indexOf(null);
+					array.splice(nullIndex, 1);
+				}
+			  return array
 		}
 
 
@@ -191,68 +190,68 @@
 
 		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
 
-			svgInput.append('text')
-				.attr('class', classInput)
-				.attr('id', idInput)
-				.attr('x', textX)
-				.attr('y', textY)
-				.attr('pointer-events', 'none')
-				.text(textInput)
-					.style('fill', 'black')
-					.style('font-size', fontSize)
-					.style('stroke-width', strokeWidth)
-					.style('stroke', function(d) {
-						if ( strokeWidth==0 )
-						{ return 'transparent' }
-						else
-						 { return 'black' }
-					 });
+				svgInput.append('text')
+					.attr('class', classInput)
+					.attr('id', idInput)
+					.attr('x', textX)
+					.attr('y', textY)
+					.attr('pointer-events', 'none')
+					.text(textInput)
+						.style('fill', 'black')
+						.style('font-size', fontSize)
+						.style('stroke-width', strokeWidth)
+						.style('stroke', function(d) {
+							if ( strokeWidth==0 )
+							{ return 'transparent' }
+							else
+							 { return 'black' }
+						 });
 		};
 
 		function addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
 
-			svgInput.append('rect')
-						.attr('class', classInput)
-						.attr('id', idInput)
-						.attr('x', rectX)
-						.attr('y', rectY)
-						.attr('width', rectWidth)
-						.attr('height', rectHeight)
-						.style('stroke', rectStroke)
-						.style('stroke-width', rectStrokeWidth)
-						.attr('stroke-opacity', rectStrokeOpacity)
-						.style('fill', rectFill)
-						.attr('fill-opacity', rectFillOpacity)
-						.on('mouseover', rMO)
-						.on('mouseleave', rML)
-						.on('click', rClick);
+				svgInput.append('rect')
+							.attr('class', classInput)
+							.attr('id', idInput)
+							.attr('x', rectX)
+							.attr('y', rectY)
+							.attr('width', rectWidth)
+							.attr('height', rectHeight)
+							.style('stroke', rectStroke)
+							.style('stroke-width', rectStrokeWidth)
+							.attr('stroke-opacity', rectStrokeOpacity)
+							.style('fill', rectFill)
+							.attr('fill-opacity', rectFillOpacity)
+							.on('mouseover', rMO)
+							.on('mouseleave', rML)
+							.on('click', rClick);
 		};
 
 		function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
-			// adjusting text position when it does not fit inside the node
-			if ( nodeRadius * 2 > getTextWidth(svgInput, nameInput, textSize) + 12.5 )
-			{ return true }
-			else
-			{ return false };
 
+				// adjusting text position when it does not fit inside the node
+				if ( nodeRadius * 2 > getTextWidth(svgInput, nameInput, textSize) + 12.5 )
+				{ return true }
+				else
+				{ return false };
 		}
 
 		function nameVerticalShift(svgInput, nodeRadius, participantName, textSize) {
-			// adjusting text position when it does not fit inside the node
-			if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
-			{ return nodeRadius + 25 }
-			else
-			{ return 5 };
 
+				// adjusting text position when it does not fit inside the node
+				if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
+				{ return nodeRadius + 25 }
+				else
+				{ return 5 };
 		}
 
 		function nameHorizontalShift(svgInput, nodeRadius, participantName, textSize) {
-			// adjusting text position when it does not fit inside the node
-			if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
-			{ return 25 }
-			else
-			{ return 0 };
 
+				// adjusting text position when it does not fit inside the node
+				if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
+				{ return 25 }
+				else
+				{ return 0 };
 		};
 		// set the dimensions and margins of the graph
 		var margin = {top: 0, bottom: 15, left: 0, right: 0},
@@ -378,21 +377,21 @@
 							window.scrollTo(0, 325);
 				};
 
-				for ( var i = 0; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
+			for ( var i = 0; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
 
-					addStdRect(svg1, null, fileDic['file_name'][i], 0,  (30*(i+1))+10, width, 30, 'black', 1, 0.15, 'black', 0.075, mainMenuMouseOver, mainMenuMouseLeave, mainMenuClick);
-					addStdText(svg1, null, null, 10, 30*(i+2), '15px', 0, fileDic['war_name'][i]);
+				addStdRect(svg1, null, fileDic['file_name'][i], 0,  (30*(i+1))+10, width, 30, 'black', 1, 0.15, 'black', 0.075, mainMenuMouseOver, mainMenuMouseLeave, mainMenuClick);
+				addStdText(svg1, null, null, 10, 30*(i+2), '15px', 0, fileDic['war_name'][i]);
 
-					if ( fileDic['ongoing_war'][i]==1 )
-					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
-					else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
-					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i]); }
-					else
-					{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
+				if ( fileDic['ongoing_war'][i]==1 )
+				{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
+				else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
+				{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i]); }
+				else
+				{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
 
-					addStdText(svg1, null, null, warNameMaxLength + 220, 30*(i+2), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
-					addStdText(svg1, null, null, warNameMaxLength + 385, 30*(i+2), '15px', 0, fileDic['total_participants'][i].toLocaleString());
-				};
+				addStdText(svg1, null, null, warNameMaxLength + 220, 30*(i+2), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
+				addStdText(svg1, null, null, warNameMaxLength + 385, 30*(i+2), '15px', 0, fileDic['total_participants'][i].toLocaleString());
+			};
 		}
 		// calling the war menu function upon page load
 		createMenu();
@@ -412,11 +411,11 @@
 
 				var svg2BodyMO = function(d) {
 
-					svg2.selectAll('.link_descriptor_dropdowns').remove();
-					svg2.select('#link_dropdown_selected_text').style('opacity', 1);
+						svg2.selectAll('.link_descriptor_dropdowns').remove();
+						svg2.select('#link_dropdown_selected_text').style('opacity', 1);
 
-					svg2.selectAll('.part_descriptor_dropdowns').remove();
-					svg2.select('#part_dropdown_selected_text').style('opacity', 1);
+						svg2.selectAll('.part_descriptor_dropdowns').remove();
+						svg2.select('#part_dropdown_selected_text').style('opacity', 1);
 				};
 
 				addStdRect(svg2, null, null, 0, 0, width, 300, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
@@ -468,18 +467,18 @@
 							'dyad': []
 						},
 						nonDescriptivePartFields =
-								[
-									'id',
-									'war_type_code',
-									'c_code',
-									'participant',
-									'side',
-									'start_date',
-									'end_date',
-									'start_year',
-									'end_year',
-									'ongoing_participation'
-								];
+						[
+							'id',
+							'war_type_code',
+							'c_code',
+							'participant',
+							'side',
+							'start_date',
+							'end_date',
+							'start_year',
+							'end_year',
+							'ongoing_participation'
+						];
 
 				// console.log(allParticipantFields);
 				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
@@ -503,17 +502,17 @@
 
 				function getLinkDescriptiveValues(descriptorType, linkDescriptiveInput) {
 
-					// will need to return this array to make it global
-					var linkDescriptiveValues = [];
+						// will need to return this array to make it global
+						var linkDescriptiveValues = [];
 
-					graph.links.forEach(function(link) {
+						graph.links.forEach(function(link) {
 
-						if ( parseInt(link[descriptiveFields[descriptorType][linkDescriptiveInput]]) > 0 )
-						{ linkDescriptiveValues.push(1) }
-						else
-						{ linkDescriptiveValues.push(0) }
-					})
-					{ return linkDescriptiveValues }
+							if ( parseInt(link[descriptiveFields[descriptorType][linkDescriptiveInput]]) > 0 )
+							{ linkDescriptiveValues.push(1) }
+							else
+							{ linkDescriptiveValues.push(0) }
+						})
+						{ return linkDescriptiveValues }
 				};
 
 				var linkDropDownSelectedIndice = Math.floor(Math.random() * descriptiveFields['dyad'].length),
@@ -522,57 +521,57 @@
 
 				function nodeSizeSetup(sizeField) {
 
-					var	partDescriptiveValues = [],
-							// this will become the sum of all inputs to the radius function
-							maxDomain = 0,
-							// this will be used to count the total nodes with null radius sizes.
-							nullRadiusNodes = 0;
+						var	partDescriptiveValues = [],
+								// this will become the sum of all inputs to the radius function
+								maxDomain = 0,
+								// this will be used to count the total nodes with null radius sizes.
+								nullRadiusNodes = 0;
 
-					// first defining the data that will ifnnfluence how the svg is defnined
-					graph.nodes.forEach(function(d) {
-							// determining totalCasualties across all countries as maxRadius.
-							// this will make larger numbers proportional to the total across all countries.
-							if ( isNaN(parseFloat(d[sizeField])) )
-							 { nullRadiusNodes+=1; }
-							else
-							// cannot be a negative value
-							// the plus may need to be removed here
-							{ maxDomain+=Math.max(0, parseFloat(d[sizeField])); }
-							// cannot be a negative value
-							// the plus may need to be removed here
-							partDescriptiveValues.push(Math.max(0, parseFloat(d[sizeField])));
-					});
+						// first defining the data that will ifnnfluence how the svg is defnined
+						graph.nodes.forEach(function(d) {
+								// determining totalCasualties across all countries as maxRadius.
+								// this will make larger numbers proportional to the total across all countries.
+								if ( isNaN(parseFloat(d[sizeField])) )
+								 { nullRadiusNodes+=1; }
+								else
+								// cannot be a negative value
+								// the plus may need to be removed here
+								{ maxDomain+=Math.max(0, parseFloat(d[sizeField])); }
+								// cannot be a negative value
+								// the plus may need to be removed here
+								partDescriptiveValues.push(Math.max(0, parseFloat(d[sizeField])));
+						});
 
-					// accounting for when all values in array are zeros
-					// assuming that any network with all zeros should actually be all nulls
-					// could happen when descriptive data years do not cover war years
-					var uniquePartDescriptiveValues = partDescriptiveValues.uniqueNonNull();
+						// accounting for when all values in array are zeros
+						// assuming that any network with all zeros should actually be all nulls
+						// could happen when descriptive data years do not cover war years
+						var uniquePartDescriptiveValues = partDescriptiveValues.uniqueNonNull();
 
-					console.log('uniquePartDescriptiveValues.length', uniquePartDescriptiveValues.length)
-					console.log('uniquePartDescriptiveValues', uniquePartDescriptiveValues)
+						console.log('uniquePartDescriptiveValues.length', uniquePartDescriptiveValues.length)
+						console.log('uniquePartDescriptiveValues', uniquePartDescriptiveValues)
 
-					// need to fix this logic below
-					if ( uniquePartDescriptiveValues.length==0 || (uniquePartDescriptiveValues.length==1 && uniquePartDescriptiveValues[0]==0)  || (uniquePartDescriptiveValues.length==2 && uniquePartDescriptiveValues[0]==0  && isNaN(uniquePartDescriptiveValues[1])) ) {
-						for ( var i = 0; i <= partDescriptiveValues.length-1; i++ ) {
-						 	partDescriptiveValues[i] = NaN
- 							nullRadiusNodes+=1
-							maxDomain+=1
+						// need to fix this logic below
+						if ( uniquePartDescriptiveValues.length==0 || (uniquePartDescriptiveValues.length==1 && uniquePartDescriptiveValues[0]==0)  || (uniquePartDescriptiveValues.length==2 && uniquePartDescriptiveValues[0]==0  && isNaN(uniquePartDescriptiveValues[1])) ) {
+							for ( var i = 0; i <= partDescriptiveValues.length-1; i++ ) {
+							 	partDescriptiveValues[i] = NaN
+	 							nullRadiusNodes+=1
+								maxDomain+=1
+							}
 						}
-					}
+						var totalNodes = partDescriptiveValues.length;
 
-					console.log('totalNodes: ', totalNodes);
-					console.log('nullRadiusNodes: ', nullRadiusNodes);
+						console.log('totalNodes: ', totalNodes);
+						console.log('nullRadiusNodes: ', nullRadiusNodes);
 
-					var totalNodes = partDescriptiveValues.length;
 
-					if ( nullRadiusNodes!=totalNodes )
-					// stdNullRadiusSize is the average of non-null inputs for node size
-					{ stdNullRadiusSize = (maxDomain/(totalNodes - nullRadiusNodes));
-						maxDomain = maxDomain + (stdNullRadiusSize * nullRadiusNodes); }
-					else { maxDomain = 2;
-								stdNullRadiusSize = maxDomain/totalNodes; }
+						if ( nullRadiusNodes!=totalNodes )
+						// stdNullRadiusSize is the average of non-null inputs for node size
+						{ stdNullRadiusSize = (maxDomain/(totalNodes - nullRadiusNodes));
+							maxDomain = maxDomain + (stdNullRadiusSize * nullRadiusNodes); }
+						else { maxDomain = 2;
+									stdNullRadiusSize = maxDomain/totalNodes; }
 
-					return [partDescriptiveValues, maxDomain, stdNullRadiusSize];
+						return [partDescriptiveValues, maxDomain, stdNullRadiusSize];
 				};
 
 				var partDropDownSelectedIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
@@ -585,15 +584,15 @@
 
 				// the following functions are for both dyadic and participant descriptive fields
 				function fillNullDescriptiveFields(descriptiveFields, descriptorNameLengths, grouping, dropDownSelected) {
-					// creating a value for a default link descriptor
-					if ( descriptiveFields[grouping].length==0 )
-					{ descriptiveFields[grouping].push('None');
-						descriptorNameLengths[grouping].push(getTextWidth(svg2, 'None', '12px'));
-					}
+						// creating a value for a default link descriptor
+						if ( descriptiveFields[grouping].length==0 )
+						{ descriptiveFields[grouping].push('None');
+							descriptorNameLengths[grouping].push(getTextWidth(svg2, 'None', '12px'));
+						}
 
-					var descriptorMaxNameWidth = maxFromArray(descriptorNameLengths[grouping]);
+						var descriptorMaxNameWidth = maxFromArray(descriptorNameLengths[grouping]);
 
-					return 	[descriptorMaxNameWidth, descriptiveFields]
+						return 	[descriptorMaxNameWidth, descriptiveFields]
 				};
 
 				var linkNullDescriptiveOutput = fillNullDescriptiveFields(descriptiveFields, descriptorNameLengths, 'dyad', linkDropDownSelected),
@@ -608,71 +607,71 @@
 
 				function getNodeMargins(maxDomain, partDescriptiveValues, stdNullRadiusSize) {
 
-					var maxRadius = 150,
-							radius = d3.scaleLinear().domain([0, maxDomain]).range([1, maxRadius]),
-							addedMarginSize = 5 + linkNodeSize,
-							// dic for size of all the participant nodes, and size needed around them according to borders and text adjustments
-							nodeMargins = {
-								'name': [],
-								'radius_size': [],
-								// array for vertical distance each text label needs to be shifted
-								'vertical_name_shift': [],
-								'name_fits_in_node': [],
-								// array for horizontal distance each text label needs to be shifted
-								'horizontal_name_shift': [],
-								// array for the lengths of the names of all the participant names on the screen
-								'name_lengths': [],
-								// creating four arrays to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg3.
-								'added_top_margin': [],
-								'added_bottom_margin': [],
-								'added_left_margin': [],
-								'added_right_margin': []
-							},
-							// creating a dummy svg so that the gettextwidth function can be used before any 'real' svgs are defined
-							svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0),
-							minRadiusSize = 1.25;
+						var maxRadius = 150,
+								radius = d3.scaleLinear().domain([0, maxDomain]).range([1, maxRadius]),
+								addedMarginSize = 5 + linkNodeSize,
+								// dic for size of all the participant nodes, and size needed around them according to borders and text adjustments
+								nodeMargins = {
+									'name': [],
+									'radius_size': [],
+									// array for vertical distance each text label needs to be shifted
+									'vertical_name_shift': [],
+									'name_fits_in_node': [],
+									// array for horizontal distance each text label needs to be shifted
+									'horizontal_name_shift': [],
+									// array for the lengths of the names of all the participant names on the screen
+									'name_lengths': [],
+									// creating four arrays to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg3.
+									'added_top_margin': [],
+									'added_bottom_margin': [],
+									'added_left_margin': [],
+									'added_right_margin': []
+								},
+								// creating a dummy svg so that the gettextwidth function can be used before any 'real' svgs are defined
+								svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0),
+								minRadiusSize = 1.25;
 
-					// now going through the iterations that needed radius to already be defined
-					graph.nodes.forEach(function(d) {
-							// determining totalCasualties across all countries as maxRadius.
-							// this will make larger numbers proportional to the total across all countries.
-							// setting a minimum for radius so the node will never completely disappear.
-							if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
-							 { currentRadiusSize = Math.max(radius(stdNullRadiusSize), minRadiusSize); }
-							else
-							 { currentRadiusSize = Math.max(radius(partDescriptiveValues[d.id]), minRadiusSize); }
-							nodeMargins['radius_size'].push(currentRadiusSize),
-							nodeMargins['name'].push(d.participant),
-							currentNameLength = getTextWidth(svgDummy, d.participant, '15px'),
-							currentNameLengthHalf = currentNameLength/2,
-							nodeMargins['name_lengths'].push(currentNameLength),
-							currentVerticalShift = nameVerticalShift(svgDummy, currentRadiusSize, d.participant, '12px'),
-							currentHorizontalShift = nameHorizontalShift(svgDummy, currentRadiusSize, d.participant, '12px'),
-							nodeMargins['vertical_name_shift'].push(currentVerticalShift),
-							nodeMargins['name_fits_in_node'].push(nameFitsInNode(svgDummy, currentRadiusSize, d.participant, '12px')),
-							nodeMargins['horizontal_name_shift'].push(currentHorizontalShift),
-							// the node, plus vertical shift, plus a little extra (and a little extra more to account for text itself
-							// text is not a factor since it is always below or inside the node
-							nodeMargins['added_top_margin'].push(currentRadiusSize + currentVerticalShift + addedMarginSize),
-							// the node, plus the added space for the name shift, plus a little extra
-							nodeMargins['added_bottom_margin'].push(currentRadiusSize + currentVerticalShift + addedMarginSize);
-							if ( currentHorizontalShift > 0 )
-							// the distance from the middle of the node to the left, not including the radius because that's overlap
-							{ nodeMargins['added_left_margin'].push(currentNameLengthHalf + currentHorizontalShift + addedMarginSize); }
-							else
-							// the node, plus half the length of the name on the screen, plus a little extra
-							// text is not a factor on the left if the above does not apply
-							{ nodeMargins['added_left_margin'].push(currentRadiusSize + addedMarginSize); }
-							if ( currentHorizontalShift > 0 )
-							// half the length of the name on the screen, plus the amount shifted to the right, plus a little extra
-							 { nodeMargins['added_right_margin'].push(currentNameLengthHalf + currentHorizontalShift + addedMarginSize); }
-							else
-							// the node plus a little extra
-							// don't need to adjust for the name if it is inside the node
-							{ nodeMargins['added_right_margin'].push(currentRadiusSize + addedMarginSize); }
-					});
+						// now going through the iterations that needed radius to already be defined
+						graph.nodes.forEach(function(d) {
+								// determining totalCasualties across all countries as maxRadius.
+								// this will make larger numbers proportional to the total across all countries.
+								// setting a minimum for radius so the node will never completely disappear.
+								if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
+								 { currentRadiusSize = Math.max(radius(stdNullRadiusSize), minRadiusSize); }
+								else
+								 { currentRadiusSize = Math.max(radius(partDescriptiveValues[d.id]), minRadiusSize); }
+								nodeMargins['radius_size'].push(currentRadiusSize),
+								nodeMargins['name'].push(d.participant),
+								currentNameLength = getTextWidth(svgDummy, d.participant, '15px'),
+								currentNameLengthHalf = currentNameLength/2,
+								nodeMargins['name_lengths'].push(currentNameLength),
+								currentVerticalShift = nameVerticalShift(svgDummy, currentRadiusSize, d.participant, '12px'),
+								currentHorizontalShift = nameHorizontalShift(svgDummy, currentRadiusSize, d.participant, '12px'),
+								nodeMargins['vertical_name_shift'].push(currentVerticalShift),
+								nodeMargins['name_fits_in_node'].push(nameFitsInNode(svgDummy, currentRadiusSize, d.participant, '12px')),
+								nodeMargins['horizontal_name_shift'].push(currentHorizontalShift),
+								// the node, plus vertical shift, plus a little extra (and a little extra more to account for text itself
+								// text is not a factor since it is always below or inside the node
+								nodeMargins['added_top_margin'].push(currentRadiusSize + currentVerticalShift + addedMarginSize),
+								// the node, plus the added space for the name shift, plus a little extra
+								nodeMargins['added_bottom_margin'].push(currentRadiusSize + currentVerticalShift + addedMarginSize);
+								if ( currentHorizontalShift > 0 )
+								// the distance from the middle of the node to the left, not including the radius because that's overlap
+								{ nodeMargins['added_left_margin'].push(currentNameLengthHalf + currentHorizontalShift + addedMarginSize); }
+								else
+								// the node, plus half the length of the name on the screen, plus a little extra
+								// text is not a factor on the left if the above does not apply
+								{ nodeMargins['added_left_margin'].push(currentRadiusSize + addedMarginSize); }
+								if ( currentHorizontalShift > 0 )
+								// half the length of the name on the screen, plus the amount shifted to the right, plus a little extra
+								 { nodeMargins['added_right_margin'].push(currentNameLengthHalf + currentHorizontalShift + addedMarginSize); }
+								else
+								// the node plus a little extra
+								// don't need to adjust for the name if it is inside the node
+								{ nodeMargins['added_right_margin'].push(currentRadiusSize + addedMarginSize); }
+						});
 
-					return nodeMargins;
+						return nodeMargins;
 				};
 
 				// console.log('random part indice', randomPartIndice);
@@ -694,37 +693,37 @@
 
 				var svg3BodyMO = function(d) {
 
-					svg2.selectAll('.link_descriptor_dropdowns').remove();
-					svg2.select('#link_dropdown_selected_text').style('opacity', 1);
+						svg2.selectAll('.link_descriptor_dropdowns').remove();
+						svg2.select('#link_dropdown_selected_text').style('opacity', 1);
 
-					svg2.selectAll('.part_descriptor_dropdowns').remove();
-					svg2.select('#part_dropdown_selected_text').style('opacity', 1);
+						svg2.selectAll('.part_descriptor_dropdowns').remove();
+						svg2.select('#part_dropdown_selected_text').style('opacity', 1);
 				};
 
 				addStdRect(svg3, null, null, 0, 0, width, height, 'black', 1, null, 'transparent', null, svg3BodyMO, null, null);
 
 				function createGraphLayout(nodeMargins) {
 
-					var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
-					    .force('charge', d3.forceManyBody().strength(-3000))
-					    .force('center', d3.forceCenter(width/2, height/2))
-					    .force('x', d3.forceX(width/2).strength(0.90))
-					    .force('y', d3.forceY(height/2).strength(0.90))
-							.force('collision', d3.forceCollide().radius(function(d) { return Math.max((nodeMargins['radius_size'][d.id] * 2) + nodeMargins['horizontal_name_shift'][d.id] + linkNodeSize,
-																																												 (arrayAverage(nodeMargins['radius_size']) * 2)+ arrayAverage(nodeMargins['horizontal_name_shift']) + linkNodeSize,
-																																												 linkNodeSize + 25,
-																																												 30)}).strength(0.90))
-																																												 // creating conditional rules for defining link distance based on how many nodes are in the network.
-																																												 // link distance can be much greater if there are only two nodes.
-					    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( nodeMargins['radius_size'].length==2 )
-																																																												{ return ((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 5) + linkNodeSize + 30 }
-																																																												else
-																																																												{ return (Math.max((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + linkNodeSize + 30,
-					 																																																											 linkNodeSize + 30,
-																																																																 40)}}).strength(0.25))
-					    .on('tick', ticked);
+						var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
+						    .force('charge', d3.forceManyBody().strength(-3000))
+						    .force('center', d3.forceCenter(width/2, height/2))
+						    .force('x', d3.forceX(width/2).strength(0.90))
+						    .force('y', d3.forceY(height/2).strength(0.90))
+								.force('collision', d3.forceCollide().radius(function(d) { return Math.max((nodeMargins['radius_size'][d.id] * 2) + nodeMargins['horizontal_name_shift'][d.id] + linkNodeSize,
+																																													 (arrayAverage(nodeMargins['radius_size']) * 2)+ arrayAverage(nodeMargins['horizontal_name_shift']) + linkNodeSize,
+																																													 linkNodeSize + 25,
+																																													 30)}).strength(0.90))
+																																													 // creating conditional rules for defining link distance based on how many nodes are in the network.
+																																													 // link distance can be much greater if there are only two nodes.
+						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( nodeMargins['radius_size'].length==2 )
+																																																													{ return ((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 5) + linkNodeSize + 30 }
+																																																													else
+																																																													{ return (Math.max((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + linkNodeSize + 30,
+						 																																																											 linkNodeSize + 30,
+																																																																	 40)}}).strength(0.25))
+						    .on('tick', ticked);
 
-							return graphLayout
+								return graphLayout
 				}
 
 				// defining graph layout with nodeMargins dictionary
@@ -788,10 +787,58 @@
 						.attr('opacity', 0)
 			      .attr('r', linkNodeSize);
 
-				// var dragProcess = d3.drag()
-				// 		.on('start', dragStarted)
-				// 		.on('drag', dragged)
-				// 		.on('end', dragEnded);
+				// mouseover function for one specific node
+				var nodeMouseOver = function(d) {
+
+						d3.select(this).style('cursor', 'pointer');
+
+						var eventTargetIndex = d3.select(d3.event.target).datum().index;
+						// accenting first degree network for that node
+						// making all objects not associated with that node's first degree network opaque
+						node.style('opacity', function(d) {
+									// not a neighbor node, make it opaque
+									if ( firstDegreeCheck(eventTargetIndex, d.index)!=1 )
+										{ return 0.15 }
+								});
+
+						// increasing outline on hovered node.
+						svg3.selectAll('.nodes')
+								.style('stroke-width', function(d) {
+									// not a neighbor node, make it opaque
+									if ( eventTargetIndex==d.id )
+										{ return nodeStrokeWidth + 0.5 }
+								});
+
+						nodeMouseOverForLinks('.link', eventTargetIndex, linkStrokeWidth + 0.5);
+						nodeMouseOverForLinks('.link_dash', eventTargetIndex, linkDashStrokeWidth + 1.5);
+				},
+						// mouseover function for all links upon mouseover of one specific node
+						nodeMouseOverForLinks = function(linkInput, indexInput, strokeWidthInput) {
+						// accenting first degree links for that node
+						// making all links not associated with that node's first degree network opaque
+						svg3.selectAll(linkInput)
+								.style('opacity', function(d) {
+									// make non-neighbor links opaque
+									if ( d.source.index==indexInput || d.target.index==indexInput )
+										{ return 1 }
+									else
+									{ return 0.15 }
+								})
+								.style('stroke-width', function(d) {
+									// increase stroke width for neighbor links
+									if ( d.source.index==indexInput || d.target.index==indexInput )
+										{ return strokeWidthInput }
+								});
+				},
+						// mouseleave function for all items upon leaving a particular node
+						nodeMouseLeave = function() {
+							// reverting all changes in mouseover upon mouseleave
+						 // nodeLabel.attr('display', 'block');
+						 node.style('opacity', 1);
+						 svg3.selectAll('.nodes').style('opacity', 1).style('stroke-width', nodeStrokeWidth);
+						 svg3.selectAll('.link').style('opacity', 1).style('stroke-width', linkStrokeWidth);
+						 svg3.selectAll('.link_dash').style('opacity', 1).style('stroke-width', linkDashStrokeWidth);
+				};
 
 				var node = svg3.selectAll()
 			      .data(graph.nodes)
@@ -803,10 +850,12 @@
 								.on('drag', dragged)
 								.on('end', dragEnded));
 
+				var nodeStrokeWidth = 1;
+
 				node.append('circle')
 					.attr('class', 'nodes')
 					.attr('stroke', 'black')
-					.attr('stroke-width', 1)
+					.attr('stroke-width', nodeStrokeWidth)
 		      .attr('r', function(d) { return nodeMargins['radius_size'][d.id] })
 					// .attr('opacity', 0.5)
 		      .style('fill', function(d) {
@@ -843,32 +892,29 @@
 						})
 			      .text('?');
 
+				// the following two functions will be used for both links and participants
+				var descriptiveMenuMouseOver = function(groupingType, maxWidth, descriptiveArray, clickFunction, xLoc) {
 
-				// this will be used for both links and participants
-				function descriptiveMenuMouseOver(groupingType, maxWidth, descriptiveArray, clickFunction, xLoc) {
+						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
+						svg2.select('#' + groupingType + '_dropdown_selected_text').style('opacity', 0);
 
-					svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
-					svg2.select('#' + groupingType + '_dropdown_selected_text').style('opacity', 0);
+						for ( var i = 0; i <= descriptiveArray.length-1; i++ ) {
+							addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, clickFunction);
+							addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), '12px', 0, descriptiveArray[i]);
+						}
+				},
+						descriptiveMenuClick = function(groupingType, descriptorIndice, maxWidth, descriptiveArray, moFunction, xLoc) {
 
-					for ( var i = 0; i <= descriptiveArray.length-1; i++ ) {
-						addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, clickFunction);
-						addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), '12px', 0, descriptiveArray[i]);
-					}
-				}
+						dropDownSelected = descriptiveArray[descriptorIndice];
 
-				// this will be used for both links and participants
-				function descriptiveMenuClick(groupingType, descriptorIndice, maxWidth, descriptiveArray, moFunction, xLoc) {
+						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
+						svg2.select('#' + groupingType + '_dropdown_selected_text').remove();
 
-					dropDownSelected = descriptiveArray[descriptorIndice];
+						addStdRect(svg2, null, groupingType + '_dropdown_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'transparent', null, moFunction, generalRectML, null);
+						addStdText(svg2, null, groupingType + '_dropdown_selected_text', width-maxWidth-xLoc+5, 22.5, '12px', 0, dropDownSelected);
 
-					svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
-					svg2.select('#' + groupingType + '_dropdown_selected_text').remove();
-
-					addStdRect(svg2, null, groupingType + '_dropdown_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'transparent', null, moFunction, generalRectML, null);
-					addStdText(svg2, null, groupingType + '_dropdown_selected_text', width-maxWidth-xLoc+5, 22.5, '12px', 0, dropDownSelected);
-
-					return dropDownSelected
-				}
+						return dropDownSelected
+				};
 
 				// Two functions that change the the selection for link dash marks (based on interaction variables).
 				var linkMenuMouseOver = function(d) {
@@ -896,8 +942,8 @@
 								.transition().duration(1000)
 								.attr('stroke-width', linkDashStrokeWidth);
 				},
-					 // Two functions that change the the selection for participant node sizes
-					 partMenuMouseOver = function(d) {
+					 	// Two functions that change the the selection for participant node sizes
+					 	partMenuMouseOver = function(d) {
 
 						generalRectML;
 						descriptiveMenuMouseOver('part', partDescriptiveMaxNameWidth, descriptiveFields['participant'], partMenuClick, partXLoc);
@@ -959,123 +1005,75 @@
 				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptiveMaxNameWidth-linkXLoc, 1, linkDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
 				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, '12px', 0, linkDropDownSelected);
 
-				function nodeMouseOver(d) {
-
-						d3.select(this).style('cursor', 'pointer');
-						var eventTargetIndex = d3.select(d3.event.target).datum().index;
-						// accenting first degree network for that node
-						// making all objects not associated with that node's first degree network opaque
-						node.style('opacity', function(d) {
-							// not a neighbor node, make it opaque
-							if ( firstDegreeCheck(eventTargetIndex, d.index)!=1 )
-								{ return 0.15 }
-						});
-						// // not sure why line below did not work.
-						// .style('stroke-width', function(o) {
-						// 	// neighbor node, increase stroke width
-						// 	if ( firstDegreeCheck(index, o.index)==1 )
-						// 		return 10;
-						// 		// return 2;
-						// });
-
-						nodeMouseOverForLinks('.link', eventTargetIndex, linkStrokeWidth + 0.5);
-						nodeMouseOverForLinks('.link_dash', eventTargetIndex, linkDashStrokeWidth + 1.5);
-				};
-
-				function nodeMouseOverForLinks(linkInput, indexInput, strokeWidthInput) {
-					// accenting first degree links for that node
-					// making all links not associated with that node's first degree network opaque
-					svg3.selectAll(linkInput)
-							.style('opacity', function(d) {
-								// make non-neighbor links opaque
-								if ( d.source.index==indexInput || d.target.index==indexInput )
-									{ return 1 }
-								else
-								{ return 0.15 }
-							})
-							.style('stroke-width', function(d) {
-								// increase stroke width for neighbor links
-								if ( d.source.index==indexInput || d.target.index==indexInput )
-									{ return strokeWidthInput }
-							});
-				}
-
-				function nodeMouseLeave() {
-						// reverting all changes in mouseover upon mouseleave
-					 // nodeLabel.attr('display', 'block');
-					 node.style('opacity', 1);
-					 svg3.selectAll('.link').style('opacity', 1).style('stroke-width', linkStrokeWidth);
-					 svg3.selectAll('.link_dash').style('opacity', 1).style('stroke-width', linkDashStrokeWidth);
-				};
-
 			  function ticked() {
 
-					repositionNodeNames(5, 100);
+						repositionNodeNames(5, 100);
 
-					// transform statement below prevents nodes from going beyond the dimensions of the svg3.
-					// boundaries are then limited even further since when they get close to the edge of the svg3, items like text begin to be cut off.
-					// needs to also be adjusted for the participant name label since this could be positioned below the node
-					// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
-					// includes transformation for nodes and the text itself
-					node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][d.id], Math.min(width - nodeMargins['added_right_margin'][d.id], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][d.id], Math.min(height - nodeMargins['added_bottom_margin'][d.id], d.y)) + ')' })
+						// transform statement below prevents nodes from going beyond the dimensions of the svg3.
+						// boundaries are then limited even further since when they get close to the edge of the svg3, items like text begin to be cut off.
+						// needs to also be adjusted for the participant name label since this could be positioned below the node
+						// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
+						// includes transformation for nodes and the text itself
+						node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][d.id], Math.min(width - nodeMargins['added_right_margin'][d.id], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][d.id], Math.min(height - nodeMargins['added_bottom_margin'][d.id], d.y)) + ')' })
 
-					linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x))) * 0.5 })
-									.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y))) * 0.5 });
+						linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x))) * 0.5 })
+										.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y))) * 0.5 });
 
-					svg3.selectAll('.link,.link_dash')
-							.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) })
-			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) })
-			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x)) })
-			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y)) })
-			  }
+						svg3.selectAll('.link,.link_dash')
+								.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) })
+				        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) })
+				        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x)) })
+				        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y)) })
+			  };
 
 				function repositionNodeNames(delay, duration) {
 
-					node.each(function(d) {
+						node.each(function(d) {
 
-							if ( nodeMargins['name_fits_in_node'][d.id]==false )
-							{
-								// need to add two additional if statements,
-								// one for if the label is at max y, and one for if the label is at min y.
-								// some sort of randomization will need to determine what to do in these cases to prevent overlap.
-								if ( d.x < width * 0.5 && d.y < height * 0.5 )
-								{ d3.select('#label_' + d.id)
-										.transition().delay(delay).duration(duration)
-										.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
-										.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
-								}
-								else if ( d.x >= width * 0.5 && d.y < height * 0.5 )
-								{ d3.select('#label_' + d.id)
+								if ( nodeMargins['name_fits_in_node'][d.id]==false )
+								{
+									// need to add two additional if statements,
+									// one for if the label is at max y, and one for if the label is at min y.
+									// some sort of randomization will need to determine what to do in these cases to prevent overlap.
+									if ( d.x < width * 0.5 && d.y < height * 0.5 )
+									{ d3.select('#label_' + d.id)
+											.transition().delay(delay).duration(duration)
+											.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
+											.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
+									}
+									else if ( d.x >= width * 0.5 && d.y < height * 0.5 )
+									{ d3.select('#label_' + d.id)
+											.transition().delay(delay).duration(duration)
+											.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
+											.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
+									}
+									else if ( d.x < width * 0.5 && d.y >= height * 0.5 )
+									{ d3.select('#label_' + d.id)
+											.transition().delay(delay).duration(duration)
+											.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
+											.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
+									}
+									else
+									//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
+									{ d3.select('#label_' + d.id)
 										.transition().delay(delay).duration(duration)
 										.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-										.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
-								}
-								else if ( d.x < width * 0.5 && d.y >= height * 0.5 )
-								{ d3.select('#label_' + d.id)
-										.transition().delay(delay).duration(duration)
-										.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
 										.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
+									}
 								}
-								else
-								//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
-								{ d3.select('#label_' + d.id)
-									.transition().delay(delay).duration(duration)
-									.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-									.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
+								// repositioning for when name_fits_in_node==true
+								// applicable to node size transitions when name_fits_in_node changes.
+								else {
+									d3.select('#label_' + d.id)
+								 	.transition().delay(delay).duration(duration)
+									.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
+						      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] });
 								}
-							}
-							// repositioning for when name_fits_in_node==true
-							// applicable to node size transitions when name_fits_in_node changes.
-							else {
-								d3.select('#label_' + d.id)
-							 	.transition().delay(delay).duration(duration)
-								.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
-					      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] });
-							}
-					 });
+						 }
+					 );
+			 };
 
-				}
-				function dragStarted(d) {
+			 function dragStarted(d) {
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'grab');
 				    d3.event.sourceEvent.stopPropagation();
@@ -1084,14 +1082,14 @@
 					    d.fx = d.x;
 					    d.fy = d.y;
 						}
-				}
+				};
 
 				function dragged(d) {
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'grab');
 				    d.fx = d3.event.x;
 				    d.fy = d3.event.y;
-				}
+				};
 
 				function dragEnded(d) {
 						// need to figure out why cursor is being interfered when drag has not ended
@@ -1100,9 +1098,8 @@
 							graphLayout.alphaTarget(0);
 					    d.fx = null;
 					    d.fy = null;
-					}
-				}
-				});
+				};
+			}});
 		}})
 		</script>
 	</body>

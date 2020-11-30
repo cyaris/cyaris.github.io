@@ -531,16 +531,20 @@
 						console.log('partDescriptiveValues', partDescriptiveValues);
 						console.log('nodeMargins', nodeMargins['size']);
 
-						svg3.selectAll('.nodes').transition().delay(50).duration(3000)
-								.attr('r', function(d) { return nodeMargins['size'][d.id] });
+						var nodeTransitionDelay = 50,
+								textTransitionDelay = 500,
+								transitionDuration = 3000;
 
-						svg3.selectAll('.node_names').transition().delay(50).duration(3000)
-								.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
-								.attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] });
+						svg3.selectAll('.nodes').transition().delay(nodeTransitionDelay).duration(transitionDuration)
+								.attr('r', function(d) { return nodeMargins['size'][d.id] })
 
-						svg3.selectAll('.node_size_warning').transition().delay(50).duration(3000)
-								.attr('dx', function(d) { return nodeMargins['size'][d.id] * -1.5 })
-					      .attr('dy', function(d) { return nodeMargins['size'][d.id] * 0.75 })
+						// calling same function used on tick to reposition node names
+						repositionNodeNames(textTransitionDelay, transitionDuration);
+						// console.log(nodeMargins);
+						svg3.selectAll('.node_size_warning').transition().delay(textTransitionDelay).duration(transitionDuration)
+								// need a better solution for when text comes too close to node because nodesize is small
+								.attr('dx', function(d) { return  Math.min(nodeMargins['size'][d.id] * -1.5, -20) })
+								.attr('dy', function(d) { return Math.max(nodeMargins['size'][d.id], 20) })
 								.style('opacity', function(d) {
 									if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
 										{ return 1 }
@@ -552,7 +556,7 @@
 				};
 
 				// new code section: start of code for svg3
-				var color = d3.scaleLinear().domain([1,2]).range(['lightgreen', 'violet']);
+				var color = d3.scaleLinear().domain([1, 2]).range(['lightgreen', 'violet']);
 
 				var linkNodes = [];
 
@@ -592,8 +596,8 @@
 					// assuming that any network with all zeros should actually be all nulls
 					// could happen when descriptive data years do not cover war years
 					var uniquePartDescriptiveValues = partDescriptiveValues.unique();
-					console.log('uniquePartDescriptiveValues.length', uniquePartDescriptiveValues.length)
-					console.log('uniquePartDescriptiveValues', uniquePartDescriptiveValues)
+					// console.log('uniquePartDescriptiveValues.length', uniquePartDescriptiveValues.length)
+					// console.log('uniquePartDescriptiveValues', uniquePartDescriptiveValues)
 					// need to fix this logic below
 					if ( uniquePartDescriptiveValues.length==0 || (uniquePartDescriptiveValues.length==1 && uniquePartDescriptiveValues[0]==0)  || (uniquePartDescriptiveValues.length==2 && uniquePartDescriptiveValues[0]==0  && isNaN(uniquePartDescriptiveValues[1])) ) {
 						for ( var i = 0; i <= partDescriptiveValues.length-1; i++ ) {
@@ -621,7 +625,7 @@
 
 					var maxRadius = 150,
 							radius = d3.scaleLinear().domain([0, maxDomain]).range([1, maxRadius]),
-							addedMarginSize = 2.5 + linkNodeSize,
+							addedMarginSize = 5 + linkNodeSize,
 							// dic for size of all the participant nodes, and size needed around them according to borders and text adjustments
 							nodeMargins = {
 								'name': [],
@@ -641,7 +645,7 @@
 							},
 							// creating a dummy svg so that the gettextwidth function can be used before any 'real' svgs are defined
 							svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0),
-							minRadiusSize = 0;
+							minRadiusSize = 1.25;
 
 					// now going through the iterations that needed radius to already be defined
 					graph.nodes.forEach(function(d) {
@@ -749,8 +753,8 @@
 				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptiveMaxNameWidth-linkXLoc, 1, linkDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
 				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, '12px', 0, linkDropDownSelected);
 
-				// var randomPartIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
-				var randomPartIndice =  descriptiveFields['participant'].indexOf('total_population_x'),
+				var randomPartIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
+				// var randomPartIndice =  descriptiveFields['participant'].indexOf('total_population_x'),
 						randomPartField = participantFields[randomPartIndice],
 						nodeSizeSetupOutput = nodeSizeSetup(randomPartField),
 						partDescriptiveValues = nodeSizeSetupOutput[0],
@@ -896,8 +900,9 @@
 
 				node.append('text')
 						.attr('class', 'node_size_warning')
-						.attr('dx', function(d) { return nodeMargins['size'][d.id] * -1.5 })
-			      .attr('dy', function(d) { return nodeMargins['size'][d.id] * 0.75 })
+						// need a better solution for when text comes too close to node because nodesize is small
+						.attr('dx', function(d) { return  Math.min(nodeMargins['size'][d.id] * -1.5, -20) })
+						.attr('dy', function(d) { return Math.max(nodeMargins['size'][d.id], 20) })
 						.attr('font-size', '15px')
 			      .attr('text-anchor', 'middle')
 						.style('opacity', function(d) {
@@ -977,40 +982,7 @@
 
 			  function ticked() {
 
-					node.each(function(d) {
-
-						if ( nodeMargins['name_fits_in_node'][d.id]==false )
-						{
-							// need to add two additional if statements,
-							// one for if the label is at max y, and one for if the label is at min y.
-							// some sort of randomization will need to determine what to do in these cases to prevent overlap.
-							if ( d.x < width * 0.5 && d.y < height * 0.5 )
-							{ d3.select('#label_' + d.id)
-									.transition().duration(100)
-									.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
-									.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
-						}
-							else if ( d.x >= width * 0.5 && d.y < height * 0.5 )
-							{ d3.select('#label_' + d.id)
-									.transition().duration(100)
-									.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-									.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
-						}
-							else if ( d.x < width * 0.5 && d.y >= height * 0.5 )
-							{ d3.select('#label_' + d.id)
-									.transition().duration(100)
-									.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
-									.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
-						}
-							else
-							//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
-							{ d3.select('#label_' + d.id)
-								.transition().duration(100)
-								.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-								.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
-							}
-						}
-				 });
+					repositionNodeNames(0, 100);
 
 					// transform statement below prevents nodes from going beyond the dimensions of the svg3.
 					// boundaries are then limited even further since when they get close to the edge of the svg3, items like text begin to be cut off.
@@ -1029,6 +1001,52 @@
 			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y)) })
 			  }
 
+				function repositionNodeNames(delay, duration) {
+
+					node.each(function(d) {
+
+							if ( nodeMargins['name_fits_in_node'][d.id]==false )
+							{
+								// need to add two additional if statements,
+								// one for if the label is at max y, and one for if the label is at min y.
+								// some sort of randomization will need to determine what to do in these cases to prevent overlap.
+								if ( d.x < width * 0.5 && d.y < height * 0.5 )
+								{ d3.select('#label_' + d.id)
+										.transition().delay(delay).duration(duration)
+										.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
+										.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
+								}
+								else if ( d.x >= width * 0.5 && d.y < height * 0.5 )
+								{ d3.select('#label_' + d.id)
+										.transition().delay(delay).duration(duration)
+										.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
+										.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
+								}
+								else if ( d.x < width * 0.5 && d.y >= height * 0.5 )
+								{ d3.select('#label_' + d.id)
+										.transition().delay(delay).duration(duration)
+										.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
+										.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
+								}
+								else
+								//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
+								{ d3.select('#label_' + d.id)
+									.transition().delay(delay).duration(duration)
+									.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
+									.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
+								}
+							}
+							// repositioning for when name_fits_in_node==true
+							// applicable to node size transitions when name_fits_in_node changes.
+							else {
+								d3.select('#label_' + d.id)
+							 	.transition().delay(delay).duration(duration)
+								.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
+					      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] })
+							}
+					 });
+
+				}
 				function dragstarted(d) {
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'grab');

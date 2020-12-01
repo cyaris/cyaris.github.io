@@ -442,15 +442,15 @@
 				// new code section: start of code for svg3
 				var color = d3.scaleLinear().domain([1, 2]).range(['lightgreen', 'violet']);
 
-				var linkNodes = [];
-
-				graph.links.forEach(function(link) {
-
-					linkNodes.push({
-						source: graph.nodes[link.source],
-						target: graph.nodes[link.target]
-					});
-				});
+				// var linkNodes = [];
+				//
+				// graph.links.forEach(function(link) {
+				//
+				// 	linkNodes.push({
+				// 		source: graph.nodes[link.source],
+				// 		target: graph.nodes[link.target]
+				// 	});
+				// });
 
 				// console.log(document.getElementById('#link_dropdown_selected_text').toString().split('>')[1]);
 
@@ -609,7 +609,8 @@
 
 						var maxRadius = 150,
 								radius = d3.scaleLinear().domain([0, maxDomain]).range([1, maxRadius]),
-								addedMarginSize = 5 + linkNodeSize,
+								// addedMarginSize = 5 + linkNodeSize,
+								addedMarginSize = 15,
 								// dic for size of all the participant nodes, and size needed around them according to borders and text adjustments
 								nodeMargins = {
 									'name': [],
@@ -676,9 +677,9 @@
 
 				// console.log('random part indice', randomPartIndice);
 				// base value that will be used to calculate the values appended to the arrays above.
-				// including linkNodeSize inside of addedMarginSize.
-				var linkNodeSize = 10,
-						nodeMargins = getNodeMargins(maxDomain, partDescriptiveValues, stdNullRadiusSize);
+				// // including linkNodeSize inside of addedMarginSize.
+				// var linkNodeSize = 10;
+				var nodeMargins = getNodeMargins(maxDomain, partDescriptiveValues, stdNullRadiusSize);
 
 				console.log('partDescriptiveValues', partDescriptiveValues);
 				console.log('nodeMargins', nodeMargins['radius_size']);
@@ -704,23 +705,26 @@
 
 				function createGraphLayout(nodeMargins) {
 
-						var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
-						    .force('charge', d3.forceManyBody().strength(-3500))
+						// var graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
+						var graphLayout = d3.forceSimulation(graph.nodes)
+						    .force('charge', d3.forceManyBody().strength(-5000))
 						    .force('center', d3.forceCenter(width/2, height/2))
-						    .force('x', d3.forceX(width/2).strength(0.95))
-						    .force('y', d3.forceY(height/2).strength(0.95))
-								.force('collision', d3.forceCollide().radius(function(d) { return Math.max((nodeMargins['radius_size'][d.id] * 2) + nodeMargins['horizontal_name_shift'][d.id],
-																																													 (arrayAverage(nodeMargins['radius_size']) * 2)+ arrayAverage(nodeMargins['horizontal_name_shift']),
-																																													 linkNodeSize,
+						    .force('x', d3.forceX(width/2).strength(0.50))
+						    .force('y', d3.forceY(height/2).strength(0.50))
+								.force('collision', d3.forceCollide().radius(function(d) { return Math.max((nodeMargins['radius_size'][d.id] * 2) + nodeMargins['horizontal_name_shift'][d.id] + 5,
+																																													 (arrayAverage(nodeMargins['radius_size']) * 2) + arrayAverage(nodeMargins['horizontal_name_shift']),
+																																													 // linkNodeSize,
 																																													 10)}).strength(1))
 																																													 // creating conditional rules for defining link distance based on how many nodes are in the network.
 																																													 // link distance can be much greater if there are only two nodes.
 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( nodeMargins['radius_size'].length==2 )
-																																																													{ return ((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 5) + linkNodeSize + 30 }
+																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 5) + 70,
+																																																																	 100)}
 																																																													else
-																																																													{ return (Math.max((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + linkNodeSize,
-						 																																																											 linkNodeSize + 20,
-																																																																	 75)}}).strength(0.50))
+																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + 70,
+																																																																	 // linkNodeSize + 20,
+																																																																	 100)}
+																																																													}).strength(0.25))
 						    .on('tick', ticked);
 
 								return graphLayout
@@ -780,12 +784,13 @@
 						.attr('stroke-dashoffset', -7.5)
 						.attr('stroke-width', linkDashStrokeWidth);
 
-				// appending invisible circle to decrease possibility of overlap
-				var linkNode = svg3.selectAll()
-			      .data(linkNodes)
-					.enter().append('circle')
-						.attr('opacity', 0)
-			      .attr('r', linkNodeSize);
+
+				// // appending invisible circle to decrease possibility of overlap
+				// var linkNode = svg3.selectAll()
+			  //     .data(linkNodes)
+				// 	.enter().append('circle')
+				// 		// .attr('opacity', 0)
+			  //     .attr('r', linkNodeSize);
 
 				// mouseover function for one specific node
 				var nodeMouseOver = function(d) {
@@ -965,9 +970,6 @@
 						console.log('partDescriptiveValues', partDescriptiveValues);
 						console.log('nodeMargins', nodeMargins['radius_size']);
 
-						// redefining graph layout with updated nodeMargins
-						graphLayout = createGraphLayout(nodeMargins);
-
 						var nodeTransitionDelay = 50,
 								textTransitionDelay = 1000,
 								transitionDuration = 3000;
@@ -990,6 +992,9 @@
 									else
 									{ return 0 }
 								});
+
+						// redefining graph layout with updated nodeMargins
+						graphLayout = createGraphLayout(nodeMargins);
 
 						// adjusting alpha for a set number of miliseconds
 						// var alphaMiliseconds = transitionDuration + 2500;
@@ -1016,8 +1021,8 @@
 						// includes transformation for nodes and the text itself
 						node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][d.id], Math.min(width - nodeMargins['added_right_margin'][d.id], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][d.id], Math.min(height - nodeMargins['added_bottom_margin'][d.id], d.y)) + ')' })
 
-						linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x))) * 0.5 })
-										.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y))) * 0.5 });
+						// linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x))) * 0.5 })
+						// 				.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y))) * 0.5 });
 
 						svg3.selectAll('.link,.link_dash')
 								.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) })

@@ -676,30 +676,30 @@
 								currentVerticalShift = nameVerticalShift(svgDummy, currentRadiusSize, d.participant, textSize),
 								currentHorizontalShift = nameHorizontalShift(svgDummy, currentRadiusSize, d.participant, textSize),
 								nodeMargins['vertical_name_shift'].push(currentVerticalShift),
-								nameFirstInNodeBoolean = nameFitsInNode(svgDummy, currentRadiusSize, d.participant, textSize),
-								nodeMargins['name_fits_in_node'].push(nameFirstInNodeBoolean),
+								nameFirstInNodeBool = nameFitsInNode(svgDummy, currentRadiusSize, d.participant, textSize),
+								nodeMargins['name_fits_in_node'].push(nameFirstInNodeBool),
 								nodeMargins['horizontal_name_shift'].push(currentHorizontalShift);
 
-								if ( nameFirstInNodeBoolean==false )
+								if ( nameFirstInNodeBool==false )
 								{
-									// the node, plus vertical shift, plus a little extra (and a little extra more to account for text itself
+									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
 									// text is only a factor for the literal height of the letters
-									// subtracting currentRadiusSize because it is included in currentVerticalShift
-									nodeMargins['added_top_margin'].push(currentRadiusSize + Math.max(currentVerticalShift - currentRadiusSize, 0) + parseInt(textSize) + addedMarginSize);
-									// the node, plus the added space for the name shift, plus the height of the text, plus a little extra
-									// subtracting currentRadiusSize because it is included in currentVerticalShift
-									nodeMargins['added_bottom_margin'].push(currentRadiusSize + Math.max(currentVerticalShift - currentRadiusSize, 0) + parseInt(textSize) + addedMarginSize);
-									// the node, plus half the length of the name on the screen
-									// text is not a factor on the left if the above does not apply
-									// the distance from the middle of the node to the left, not including the radius because that's overlap, , plus a little extra
+									nodeMargins['added_top_margin'].push(currentVerticalShift + parseInt(textSize) + addedMarginSize);
+									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
+									// don't need to add the text size for bottom margin
+									nodeMargins['added_bottom_margin'].push(currentVerticalShift + parseInt(textSize) + addedMarginSize);
+									// plus half the length of the name on the screen, plus horizontal shift, plus a little extra
+									// without the addedMarginSize, this is the distance from the middle of the node to the left
+									// not including the radius because that's overlap
 									nodeMargins['added_left_margin'].push(currentNameLengthHalf + currentHorizontalShift + addedMarginSize);
-									// the node, plus half the length of the name on the screen
-									// text is not a factor on the right if the above does not apply
-									// the distance from the middle of the node to the right, not including the radius because that's overlap, , plus a little extra
+									// plus half the length of the name on the screen, plus horizontal shift, plus a little extra
+									// without the addedMarginSize, this is the distance from the middle of the node to the right
+									// not including the radius because that's overlap
 									nodeMargins['added_right_margin'].push(currentNameLengthHalf + currentHorizontalShift + addedMarginSize);
 								}
 								else
-								{ // the node plusd a little extra
+								// text is not a factor on the right if the above does not apply
+								{ // the node plus a little extra
 									nodeMargins['added_top_margin'].push(currentRadiusSize + addedMarginSize);
 								  // the node plusd a little extra
 									nodeMargins['added_bottom_margin'].push(currentRadiusSize + addedMarginSize);

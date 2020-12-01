@@ -281,19 +281,22 @@ def format_part_df_from_dyadic_data(dy_df):
     return part_dataframe, dy_df
 
 
-def add_missing_dyads(pa_df_copy, dy_df, war_input, side_input, opposition_type):
+def add_missing_dyads(pa_df_copy, dy_df, war_input, side_input, single_side):
 
     opposing_side_dic = {1: 2, 2: 1}
     ## part_df is already filtered to war_input.
     ## dy_df is not because the master dataframe needs to be edited.
     ## filtering to war_input here to simplify statements below.
     dy_df_copy = deepcopy(dy_df[dy_df['war_num']==war_input].reset_index(drop=True))
-    if opposition_type=='all_participants':
+    if single_side=='all_participants':
         c_code_a = pa_df_copy[pa_df_copy['side']==side_input]['c_code'].values[0]
         participant_a = pa_df_copy[pa_df_copy['side']==side_input]['participant'].values[0]
-    elif opposition_type=='non-state':
+    elif single_side=='non-state':
         c_code_a = pa_df_copy[(pa_df_copy['side']==side_input) & (pa_df_copy['c_code']==-8)]['c_code'].values[0]
         participant_a = pa_df_copy[(pa_df_copy['side']==side_input) & (pa_df_copy['c_code']==-8)]['participant'].values[0]
+    elif single_side=='state':
+        c_code_a = pa_df_copy[(pa_df_copy['side']==side_input) & (pa_df_copy['c_code']!=-8)]['c_code'].values[0]
+        participant_a = pa_df_copy[(pa_df_copy['side']==side_input) & (pa_df_copy['c_code']!=-8)]['participant'].values[0]
     opposing_participants = sorted(list(pa_df_copy[pa_df_copy['side']==opposing_side_dic[side_input]]['participant'].unique()))
     dyadic_parties = sorted(list(set(list(dy_df_copy['participant_a']) + list(dy_df_copy['participant_b']))))
     for i, party_b in enumerate(opposing_participants):
@@ -386,3 +389,35 @@ def print_new_fields(descriptive_df, initial_columns, descriptive_columns):
         print(print_df.to_string(index=False, header=False))
 
     return
+
+def adjustParticipantNames(dataframe, grouping_type):
+
+
+    if grouping_type=='participant':
+        print('Adjusting and consolidating participant names for part_df.')
+        columns = ['participant']
+    elif grouping_type=='dyad':
+        print('Adjusting and consolidating participant names for dyad_df.')
+        columns = ['participant_a', 'participant_b']
+
+    for column in columns:
+        dataframe.loc[dataframe[column]=='United States', column] = 'United States of America'
+        dataframe.loc[dataframe[column]=='Baron von Ungern-Sternberg\x92s White army', column] = 'Baron von Ungern-Sternberg\'s White army'
+        dataframe.loc[dataframe[column]==' Janissaries', column] = 'Janissaries'
+        dataframe.loc[dataframe[column]=='Turkey/Ottoman Empire/Egypt', column] = 'Turkey, Ottoman Empire & Egypt'
+        for i, participant in enumerate(dataframe[column]):
+            if  ' and ' in participant:
+                dataframe.loc[i, column] = dataframe.loc[i, column].replace(' and ', ' & ')
+            if  ' rebels' in participant:
+                dataframe.loc[i, column] = dataframe.loc[i, column].replace(' rebels', ' Rebels')
+            if  ' tribe' in participant:
+                dataframe.loc[i, column] = dataframe.loc[i, column].replace(' tribe', ' Tribe')
+            if  ' sultanate' in participant:
+                dataframe.loc[i, column] = dataframe.loc[i, column].replace(' sultanate', ' Sultanate')
+            if  ' resistance' in participant:
+                dataframe.loc[i, column] = dataframe.loc[i, column].replace(' resistance', ' Resistance')
+            ## fixing type of 'Resistance'
+            if  ' resistence' in participant:
+                dataframe.loc[i, column] = dataframe.loc[i, column].replace(' resistence', ' Resistance')
+
+    return dataframe

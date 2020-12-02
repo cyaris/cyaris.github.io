@@ -50,20 +50,20 @@
 	</head>
 	<body>
 
-		<div id='hidden_project_explained' align='left' style='margin-bottom:15px;'>
+		<div id='hidden_project_explained' align='left' style='margin-bottom:14px;'>
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
 		<div id='message'>
 		  <p>Hey there! I'm developing a tool to analyze the networks between countries at war, using data provided by <a href='https://correlatesofwar.org/' target='_blank'>The Correlates of War Project</a>. This project is currently in progress. Stay tuned soon for more updates.</p>
 		</div>
 		<!-- Create a div where overall metrics will be -->
-		<div id='war_menu' align='center' style='margin-bottom:15px;'></div>
+		<div id='war_menu' align='center' style='margin-bottom:14px;'></div>
 		<!-- Create a div where overall metrics will be -->
 		<div id='hover_statistics' align='center' style='margin-bottom:10px;'></div>
 		<!-- <div id='hover_statistics' align='center' style='margin-bottom:-7.5px;'></div> -->
 		<!-- Create a div where the graph will take place -->
-		<div id='war_network_analysis' align='center' style='margin-bottom:15px;'></div>
-		<div id='list_of_data_sources' align='left' style='margin-bottom:15px;'>
+		<div id='war_network_analysis' align='center' style='margin-bottom:14px;'></div>
+		<div id='list_of_data_sources' align='left' style='margin-bottom:14px;'>
 			<p>All data has been obtained from the <a href='https://correlatesofwar.org/' target='_blank'>Correlates of War Project</a>, using all of the following files in some capacity:
 				<ul>
 					<li>COW Country Codes: COW country codes.csv</li>
@@ -107,20 +107,19 @@
 									.attr('pointer-events', 'none')
 									// .attr('font-family', 'sans-serif')
 									.attr('font-size', fontSize)
-									.text(function(d) { return d; })
+									.text(function(d) { return d })
 									.each(function(d,i) {
 											var thisWidth = this.getComputedTextLength();
 											textWidthArray.push(thisWidth);
 											this.remove();
 						});
 
-				{
 					var textWidth = textWidthArray.reduce((a, b) => a + b, 0);
-					return textWidth;
-				}
+
+					return textWidth
 		};
 
-
+		// returning the max value from any array
 		function maxFromArray(array) {
 
 				var maxValue = array.reduce(function(a, b) { return Math.max(a, b) });
@@ -128,65 +127,51 @@
 				return maxValue
 		};
 
-		// value for all numbers in an array.
+		// returning average overall value across all numbers in an array.
 		function arrayAverage(array) {
 
 				// Find the sum
 		    var sumOfAllItems = 0;
 
-		    for( var i in array ) {
+		    for ( var i in array ) {
 		        sumOfAllItems+=array[i];
 		    }
 		    //Get the length of the array
 		    var totalItems = array.length;
+
 		    //Return the average / mean.
-		    return (sumOfAllItems/totalItems)
+		    return sumOfAllItems/totalItems
 		}
 
 		// unique values from array part 1
 		Array.prototype.contains = function(v) {
 
 			  for (var i = 0; i < this.length; i++) {
-			    if (this[i] === v) return true;
+			    if ( this[i]===v )
+					{ return true }
 			  }
-
 			  return false
 		};
 
 		// unique values from array part 2
+		// returning all non null values from an array with no duplicates
 		Array.prototype.uniqueNonNull = function() {
 
 			  var array = [];
 
 			  for (var i = 0; i < this.length; i++) {
-			    if (!array.contains(this[i])) {
+			    if ( !array.contains(this[i]) ) {
 			      array.push(this[i]);
 			    }
 			  }
-
 				// removing any null values in array
 				if ( array.includes(null) ) {
-
 					nullIndex = array.indexOf(null);
 					array.splice(nullIndex, 1);
 				}
+
 			  return array
 		}
-
-
-
-		// non-null unique values values from array
-		// function nonNullUniqueValues(array) {
-		//
-		// 	 nonNullUniqueValues = array.reduce(function (r, a) {
-		//
-		// 			return r ++(Object.values(a).indexOf(null) == -1);
-	  //   }, 0);
-
-		// 	return nonNullUniqueValues
-		// }
-		// var duplicates = [1, 3, 4, 2, 1, 2, 3, 8];
-		// var uniques = duplicates.unique(); // result = [1,3,4,2,8]
 
 		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
 
@@ -227,31 +212,14 @@
 							.on('click', rClick);
 		};
 
-		function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
+		function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
 
-				// adjusting text position when it does not fit inside the node
-				if ( nodeRadius * 2 > getTextWidth(svgInput, nameInput, textSize) + 12.5 )
-				{ return true }
-				else
-				{ return false };
-		}
-
-		function nameVerticalShift(svgInput, nodeRadius, participantName, textSize) {
-
-				// adjusting text position when it does not fit inside the node
-				if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
-				{ return nodeRadius + 25 }
-				else
-				{ return 5 };
-		}
-
-		function nameHorizontalShift(svgInput, nodeRadius, participantName, textSize) {
-
-				// adjusting text position when it does not fit inside the node
-				if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
-				{ return 20 }
-				else
-				{ return 0 };
+				window[svgName] = d3.select('#' + divInput)
+														.append('svg')
+															.attr('width', widthInput)
+															.attr('height', heightInput)
+															.attr('transform', 'translate(' + marginLeftInput + ',' + marginTopInput + ')')
+															.style('cursor', cursorInput);
 		};
 
 		var generalRectMO = function(d) {
@@ -268,6 +236,8 @@
 
 		// reading in the data to create the war menu
 		d3.csv('../assets/the_networks_of_war/war_file_list.csv').then(function(data) {
+
+			var parseTime = d3.timeParse('%Y-%m-%d');
 
 			var warPageURL = window.location.href,
 					warPageType = warPageURL.split('the_networks_of_war_')[1].split('s/')[0],
@@ -290,14 +260,12 @@
 						'total_participants': []
 				};
 
-			var parseTime = d3.timeParse('%Y-%m-%d');
-
 			data.forEach(function(d) {
 				// determining the war type for each row in the file.
 				var fileWarType = d.war_type.toLowerCase().replace('-', '_').replace(' ', '_');
 				// performing the following actions if the war type in the file matches the war type for the page.
 				if ( warPageType==fileWarType )
-				{ warNameLengths.push(getTextWidth(svgDummy, d.war_name, '15px'));
+				{ warNameLengths.push(getTextWidth(svgDummy, d.war_name, '14px'));
 					fileDic['file_name'].push(d.file_name),
 					fileDic['war_name'].push(d.war_name),
 					fileDic['start_year'].push(parseInt(d.start_year)),
@@ -326,33 +294,32 @@
 
 			var warNameMaxLength = maxFromArray(warNameLengths);
 
+			// set the dimensions and margins of the menu
+			var margin = {top: 0, bottom: 15, left: 0, right: 0},
+					width = warNameMaxLength + 500,
+					height = (Object.keys(fileDic['file_name']).length+2) * 30;
+
+			// setting a text sizes for all menu items
+			var menuTextSize = '14px';
+
 			// new code section: start of code for svg1
 			// adding createMenu function here so that the as much can be pre-defined as possible.
 			// this will reduce runtime needed to re-execute the menu upon returning
 			var createMenu = function() {
 
-				// set the dimensions and margins of the menu
-				var margin = {top: 0, bottom: 15, left: 0, right: 0},
-						width = 700,
-						height = (Object.keys(fileDic['file_name']).length+2) * 30;
 
-				var svg1 = d3.select('#war_menu')
-						.append('svg')
-							.attr('width', width)
-							.attr('height', height)
-							.attr('transform',
-						        'translate(' + margin.left + ',' + margin.top + ')')
-							.style('cursor', 'pointer');
+				addStdSVG('svg1', 'war_menu', width, height, margin.left, margin.top, 'pointer');
 
 				// first rect is an outline for the entire menu
 				// shifting width (width-2) to allow for stroke to be seen (same reason for adjusting the height)
 				addStdRect(svg1, null, null, 1,  1, width-2, ((Object.keys(fileDic['file_name']).length+1) * 30) + 10 - 1, 'black', 1, null, 'transparent', null, null, null, null);
+
 				// creating the labels for the menu (everything in the top row)
 				addStdRect(svg1, null, null, 0,  0, width, 40, 'black', 1, 0.15, 'black', 0.075, null, null, null);
-				addStdText(svg1, null, null, 10, 25, '15px', 0.75, 'Name');
-				addStdText(svg1, null, null, warNameMaxLength + 55, 25, '15px', 0.75, 'Timeframe');
-				addStdText(svg1, null, null, warNameMaxLength + 190, 25, '15px', 0.75, 'Length in Days');
-				addStdText(svg1, null, null, warNameMaxLength + 330, 25, '15px', 0.75, 'Total Participants');
+				addStdText(svg1, null, null, 10, 25, '14px', 0.75, 'Name');
+				addStdText(svg1, null, null, warNameMaxLength + 65, 25, menuTextSize, 0.75, 'Timeframe');
+				addStdText(svg1, null, null, warNameMaxLength + 200, 25, menuTextSize, 0.75, 'Length in Days');
+				addStdText(svg1, null, null, warNameMaxLength + 340, 25, menuTextSize, 0.75, 'Total Participants');
 
 				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
 				var mainMenuMouseOver = function(d) {
@@ -373,26 +340,28 @@
 				},
 						mainMenuClick = function(d) {
 							// removing all current svgs
+							// the manue is no longer needed once a selection has been made.
 							d3.selectAll('svg').remove();
 							createNetworkGraph(d3.select(this).attr('id'));
 							window.scrollTo(0, 325);
 				};
 
-			for ( var i = 0; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
+				for ( var i = 0; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
 
-				addStdRect(svg1, null, fileDic['file_name'][i], 0,  (30*(i+1))+10, width, 30, 'black', 1, 0.15, 'black', 0.075, mainMenuMouseOver, mainMenuMouseLeave, mainMenuClick);
-				addStdText(svg1, null, null, 10, 30*(i+2), '15px', 0, fileDic['war_name'][i]);
+					addStdRect(svg1, null, fileDic['file_name'][i], 0,  (30*(i+1))+10, width, 30, 'black', 1, 0.15, 'black', 0.075, mainMenuMouseOver, mainMenuMouseLeave, mainMenuClick);
+					addStdText(svg1, null, null, 10, 30*(i+2), menuTextSize, 0, fileDic['war_name'][i]);
 
-				if ( fileDic['ongoing_war'][i]==1 )
-				{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i] + ' - Present'); }
-				else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
-				{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i]); }
-				else
-				{ addStdText(svg1, null, null, warNameMaxLength + 45, 30*(i+2), '15px', 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
+					// calculating days since war began if the war is ongoing
+					if ( fileDic['ongoing_war'][i]==1 )
+					{ addStdText(svg1, null, null, warNameMaxLength + 55, 30*(i+2), menuTextSize, 0, fileDic['start_year'][i] + ' - Present'); }
+					else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
+					{ addStdText(svg1, null, null, warNameMaxLength + 55, 30*(i+2), menuTextSize, 0, fileDic['start_year'][i]); }
+					else
+					{ addStdText(svg1, null, null, warNameMaxLength + 55, 30*(i+2), menuTextSize, 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
 
-				addStdText(svg1, null, null, warNameMaxLength + 220, 30*(i+2), '15px', 0, fileDic['total_days_in_war'][i].toLocaleString());
-				addStdText(svg1, null, null, warNameMaxLength + 385, 30*(i+2), '15px', 0, fileDic['total_participants'][i].toLocaleString());
-			};
+					addStdText(svg1, null, null, warNameMaxLength + 230, 30*(i+2), menuTextSize, 0, fileDic['total_days_in_war'][i].toLocaleString());
+					addStdText(svg1, null, null, warNameMaxLength + 395, 30*(i+2), menuTextSize, 0, fileDic['total_participants'][i].toLocaleString());
+				};
 		}
 		// calling the war menu function upon page load
 		createMenu();
@@ -402,33 +371,28 @@
 			// reading in the data to create the network graph
 			d3.json('../assets/the_networks_of_war/json_files_by_war/' + fileName).then(function(graph) {
 
+				// creating a color scale to color the side of each war.
+				var color = d3.scaleLinear().domain([1, 2]).range(['lightgreen', 'violet']);
+
+
 				// set the dimensions and margins of the graph
 				var margin = {top: 0, bottom: 15, left: 0, right: 0},
 						width = 750,
 						height = 550,
-						hoverStatisticsHeight = 300;
+						svg2Height = 300;
 
-				// creating a color scale to color the side of each war.
-				var color = d3.scaleLinear().domain([1, 2]).range(['lightgreen', 'violet']);
+				// setting a text sizes for all graph items
+				var graphTextSize = '14px',
+						graphMenuTextSize = '15px';
 
 				// defining all svgs for the graph,
 				// adding area for descriptive statistics to be activated upon hovering nodes.
-				var svg2 = d3.select('#hover_statistics')
-						.append('svg')
-							.attr('width', width)
-							.attr('height', hoverStatisticsHeight)
-							.attr('transform',
-						        'translate(' + margin.left + ',' + margin.top + ')');
-
+				addStdSVG('svg2', 'hover_statistics', width, svg2Height, margin.left, margin.top, null);
 				// append the svg3 object to the body of the page
-				var	svg3 = d3.select('#war_network_analysis')
-						.append('svg')
-						  .attr('width', width)
-						  .attr('height', height)
-						  .attr('transform',
-						        'translate(' + margin.left + ',' + margin.top + ')');
+				addStdSVG('svg3', 'war_network_analysis', width, height, margin.left, margin.top, null);
 
-
+				// defining mouseover functions for each svg
+				// these will serve to remove items that are non-applicable to that particular svg
 				var svg2BodyMO = function(d) {
 
 						svg2.selectAll('.link_descriptor_dropdowns').remove();
@@ -446,27 +410,8 @@
 						svg2.select('#part_dropdown_selected_text').style('opacity', 1);
 				};
 
-				addStdRect(svg2, null, null, 0, 0, width, hoverStatisticsHeight, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
+				addStdRect(svg2, null, null, 0, 0, width, svg2Height, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
 				addStdRect(svg3, null, null, 0, 0, width, height, 'black', 1, null, 'transparent', null, svg3BodyMO, null, null);
-
-				var warDic = {},
-						warFields = Object.keys(graph.war[0]);
-
-				for ( var i = 0; i <= warFields.length-1; i++ ) {
-					// obtaining all values from war json dictionary (originally war_df)
-					warDic[warFields[i]] = graph.war[0][warFields[i]];
-				};
-
-				// this will send you back to choose a new war (of the same type)
-				var backToMenuClick = function(d) {
-						// removing all current svgs
-						d3.selectAll('svg').remove();
-						createMenu();
-				};
-				// creating a rect for a back to menu button
-				addStdRect(svg2, null, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, backToMenuClick);
-				addStdText(svg2, null, null, 6, 22.5, '15px', 0, '↖ Menu');
-				addStdText(svg2, null, null, 0, 92.5, '15px', 0, warDic['war_name']);
 
 				// var linkNodes = [];
 				//
@@ -478,9 +423,19 @@
 				// 	});
 				// });
 
-				// console.log(document.getElementById('#link_dropdown_selected_text').toString().split('>')[1]);
+				// obtaining array for all war fields in the json file
+				// these will be iterated through to fill the warDic dictionary
+				var warFields = Object.keys(graph.war[0]).sort();
+						warDic = {};
 
-				// obtaining arrays of all participant/link fields in json files.
+				for ( var i = 0; i <= warFields.length-1; i++ ) {
+					// obtaining all values from war json dictionary (originally war_df)
+					warDic[warFields[i]] = graph.war[0][warFields[i]];
+				};
+
+				console.log(warDic);
+
+				// obtaining arrays of all participant/link fields in the json file.
 				// these will be used to fill the descriptiveFields and descriptorNameLengths arrays.
 				var allParticipantFields = Object.keys(graph.nodes[0]).sort(),
 						allLinkFields = Object.keys(graph.links[0]).sort(),
@@ -506,14 +461,12 @@
 							'ongoing_participation'
 						];
 
-				// console.log(allParticipantFields);
 				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
 					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
-					if ( allLinkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[allLinkFields[i]] }) > 0 )
-					// { descriptiveFields['dyad'].push(allLinkFields[i].split('_z')[0]); }
-					{ descriptiveFields['dyad'].push(allLinkFields[i]);
+					if ( allLinkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[allLinkFields[i]] }) > 0 ) {
+					 	descriptiveFields['dyad'].push(allLinkFields[i]);
 						// getting an array of name lengths for all items added
-						descriptorNameLengths['dyad'].push(getTextWidth(svg2, allLinkFields[i], '12px'));
+						descriptorNameLengths['dyad'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
 					 }
 				};
 
@@ -522,7 +475,7 @@
 						if ( nonDescriptivePartFields.includes(allParticipantFields[i])==false ) {
 							descriptiveFields['participant'].push(allParticipantFields[i]);
 							// getting an array of name lengths for all items added
-							descriptorNameLengths['participant'].push(getTextWidth(svg2, allParticipantFields[i], '12px'));
+							descriptorNameLengths['participant'].push(getTextWidth(svg2, allParticipantFields[i], graphMenuTextSize));
 						}
 				};
 
@@ -558,11 +511,11 @@
 								// determining totalCasualties across all countries as maxRadius.
 								// this will make larger numbers proportional to the total across all countries.
 								if ( isNaN(parseFloat(d[sizeField])) )
-								 { nullRadiusNodes+=1; }
+								{ nullRadiusNodes+=1 }
 								else
 								// cannot be a negative value
 								// the plus may need to be removed here
-								{ maxDomain+=Math.max(0, parseFloat(d[sizeField])); }
+								{ maxDomain+=Math.max(0, parseFloat(d[sizeField])) }
 								// cannot be a negative value
 								// the plus may need to be removed here
 								partDescriptiveValues.push(Math.max(0, parseFloat(d[sizeField])));
@@ -589,19 +542,21 @@
 						console.log('totalNodes: ', totalNodes);
 						console.log('nullRadiusNodes: ', nullRadiusNodes);
 
-						if ( nullRadiusNodes!=totalNodes )
+						if ( nullRadiusNodes!=totalNodes ) {
 						// stdNullRadiusSize is the average of non-null inputs for node size
-						{ stdNullRadiusSize = maxDomain/(totalNodes - nullRadiusNodes);
+							stdNullRadiusSize = maxDomain/(totalNodes - nullRadiusNodes);
 							maxDomain+=(stdNullRadiusSize * nullRadiusNodes);
 						}
-						else { maxDomain = 2;
-									stdNullRadiusSize = maxDomain/totalNodes; }
+						else {
+							maxDomain = 2;
+							stdNullRadiusSize = maxDomain/totalNodes;
+						}
 
 						return [partDescriptiveValues, maxDomain, stdNullRadiusSize];
 				};
 
+				// var partDropDownSelectedIndice = descriptiveFields['participant'].indexOf('neutrality_alliances_x'),
 				var partDropDownSelectedIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
-				// var partDropDownSelectedIndice =  allParticipantFields.indexOf('total_population_x'),
 						partDropDownSelected = descriptiveFields['participant'][partDropDownSelectedIndice],
 						nodeSizeSetupOutput = nodeSizeSetup(partDropDownSelected),
 						partDescriptiveValues = nodeSizeSetupOutput[0],
@@ -611,9 +566,9 @@
 				// the following functions are for both dyadic and participant descriptive fields
 				function fillNullDescriptiveFields(descriptiveFields, descriptorNameLengths, grouping, dropDownSelected) {
 						// creating a value for a default link descriptor
-						if ( descriptiveFields[grouping].length==0 )
-						{ descriptiveFields[grouping].push('None');
-							descriptorNameLengths[grouping].push(getTextWidth(svg2, 'None', '12px'));
+						if ( descriptiveFields[grouping].length==0 ) {
+							descriptiveFields[grouping].push('None');
+							descriptorNameLengths[grouping].push(getTextWidth(svg2, 'None', graphMenuTextSize));
 						}
 
 						var descriptorMaxNameWidth = maxFromArray(descriptorNameLengths[grouping]);
@@ -630,6 +585,33 @@
 						partDescriptiveMaxNameWidth = partNullDescriptiveOutput[0],
 						descriptiveFields = partNullDescriptiveOutput[1],
 						partXLoc = 300;
+
+				function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
+
+						// adjusting text position when it does not fit inside the node
+						if ( nodeRadius * 2 > getTextWidth(svgInput, nameInput, textSize) + 15 )
+						{ return true }
+						else
+						{ return false }
+				}
+
+				function nameVerticalShift(svgInput, nodeRadius, participantName, textSize) {
+
+						// adjusting text position when it does not fit inside the node
+						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
+						{ return nodeRadius + 25 }
+						else
+						{ return 5 }
+				}
+
+				function nameHorizontalShift(svgInput, nodeRadius, participantName, textSize) {
+
+						// adjusting text position when it does not fit inside the node
+						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
+						{ return 20 }
+						else
+						{ return 0 }
+				}
 
 				function getNodeMargins(maxDomain, partDescriptiveValues, stdNullRadiusSize) {
 
@@ -656,8 +638,7 @@
 									'added_right_margin': []
 								},
 								// creating a dummy svg so that the gettextwidth function can be used before any 'real' svgs are defined
-								svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0),
-								textSize = '12px';
+								svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0);
 
 						// now going through the iterations that needed radius to already be defined
 						graph.nodes.forEach(function(d) {
@@ -670,24 +651,23 @@
 								 { currentRadiusSize = radius(partDescriptiveValues[d.id]); }
 								nodeMargins['radius_size'].push(currentRadiusSize),
 								nodeMargins['name'].push(d.participant),
-								currentNameLength = getTextWidth(svgDummy, d.participant, textSize),
+								currentNameLength = getTextWidth(svgDummy, d.participant, graphTextSize),
 								currentNameLengthHalf = currentNameLength/2,
 								nodeMargins['name_lengths'].push(currentNameLength),
-								currentVerticalShift = nameVerticalShift(svgDummy, currentRadiusSize, d.participant, textSize),
-								currentHorizontalShift = nameHorizontalShift(svgDummy, currentRadiusSize, d.participant, textSize),
+								currentVerticalShift = nameVerticalShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
+								currentHorizontalShift = nameHorizontalShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
 								nodeMargins['vertical_name_shift'].push(currentVerticalShift),
-								nameFirstInNodeBool = nameFitsInNode(svgDummy, currentRadiusSize, d.participant, textSize),
+								nameFirstInNodeBool = nameFitsInNode(svgDummy, currentRadiusSize, d.participant, graphTextSize),
 								nodeMargins['name_fits_in_node'].push(nameFirstInNodeBool),
 								nodeMargins['horizontal_name_shift'].push(currentHorizontalShift);
 
-								if ( nameFirstInNodeBool==false )
-								{
+								if ( nameFirstInNodeBool==false ) {
 									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
 									// text is only a factor for the literal height of the letters
-									nodeMargins['added_top_margin'].push(currentVerticalShift + parseInt(textSize) + addedMarginSize);
+									nodeMargins['added_top_margin'].push(currentVerticalShift + parseInt(graphTextSize) + addedMarginSize);
 									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
 									// don't need to add the text size for bottom margin
-									nodeMargins['added_bottom_margin'].push(currentVerticalShift + parseInt(textSize) + addedMarginSize);
+									nodeMargins['added_bottom_margin'].push(currentVerticalShift + parseInt(graphTextSize) + addedMarginSize);
 									// plus half the length of the name on the screen, plus horizontal shift, plus a little extra
 									// without the addedMarginSize, this is the distance from the middle of the node to the left
 									// not including the radius because that's overlap
@@ -697,9 +677,9 @@
 									// not including the radius because that's overlap
 									nodeMargins['added_right_margin'].push(currentNameLengthHalf + currentHorizontalShift + addedMarginSize);
 								}
-								else
-								// text is not a factor on the right if the above does not apply
-								{ // the node plus a little extra
+								else {
+									// text is not a factor on the right if the above does not apply
+									// the node plus a little extra
 									nodeMargins['added_top_margin'].push(currentRadiusSize + addedMarginSize);
 								  // the node plusd a little extra
 									nodeMargins['added_bottom_margin'].push(currentRadiusSize + addedMarginSize);
@@ -717,14 +697,50 @@
 						return nodeMargins;
 				};
 
-				// console.log('random part indice', randomPartIndice);
-				// base value that will be used to calculate the values appended to the arrays above.
+				// // base value that will be used to calculate the values appended to the arrays above.
 				// // including linkNodeSize inside of addedMarginSize.
 				// var linkNodeSize = 10;
+
+				// base value that will be used to calculate the values appended to the arrays above.
 				var nodeMargins = getNodeMargins(maxDomain, partDescriptiveValues, stdNullRadiusSize);
 
 				console.log('partDescriptiveValues', partDescriptiveValues);
 				console.log('nodeMargins', nodeMargins['radius_size']);
+
+				function OnlyOnePrimaryNodeCheck() {
+						// creating an array of all links by node id
+						// determining if all links involve the same node.
+						// using this to evaluate whether there is one, or more than one center node in the network
+						var linkCombinations = [];
+
+						graph.links.forEach(function(link) {
+
+							linkCombinations.push(Array(parseInt(graph.nodes[link.source].id), parseInt(graph.nodes[link.target].id)).sort());
+						});
+						// evaluating all links, starting with the first link defined (could be any)
+						// this affect aggect the graph layout
+						var nodeID1 = linkCombinations[0][0],
+								nodeID2 = linkCombinations[0][1],
+								nodeID1Count = 0,
+								nodeID2Count = 0,
+								totalLinks = linkCombinations.length;
+						// iterating over the first link in the network.
+						// checking to see if all links contain the same node.
+						for ( var i = 0; i <= totalLinks-1; i++ ) {
+							if ( linkCombinations[i].includes(nodeID1) )
+							{ nodeID1Count+=1 }
+							if ( linkCombinations[i].includes(nodeID2) )
+							{ nodeID2Count+=1 }
+						};
+
+						if ( nodeID1Count==totalLinks | nodeID2Count==totalLinks )
+						{ return true }
+						else
+						{ return false }
+				}
+
+				var onlyOnePrimaryNode = OnlyOnePrimaryNodeCheck();
+				console.log('onlyOnePrimaryNode', onlyOnePrimaryNode);
 
 				function createGraphLayout(nodeMargins) {
 
@@ -738,12 +754,12 @@
 																																													 arrayAverage(nodeMargins['radius_size']) + arrayAverage(nodeMargins['horizontal_name_shift']) + 20,
 																																													 // linkNodeSize,
 																																													 30)}).strength(1))
-																																													 // creating conditional rules for defining link distance based on how many nodes are in the network.
-																																													 // link distance can be much greater if there are only two nodes.
- 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( nodeMargins['radius_size'].length<=3 )
-																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + 150, 300) }
+																																													 // creating conditional rules for defining link distance based on how many primary nodes are in the network.
+																																													 // link distance can be much greater if there is only one primary node.
+ 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( onlyOnePrimaryNode==true )
+																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + 125, 200) }
 																																																													else
-																																																													{ return Math.max(nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id] + 90, 100) }
+																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2), 100) }
 																																																												}).strength(0.25))
  																																																													// linkNodeSize + 20,
 
@@ -806,7 +822,6 @@
 						.attr('stroke-dashoffset', -7.5)
 						.attr('stroke-width', linkDashStrokeWidth);
 
-
 				// // appending invisible circle to decrease possibility of overlap
 				// var linkNode = svg3.selectAll()
 			  //     .data(linkNodes)
@@ -828,13 +843,13 @@
 										{ return 0.15 }
 								});
 
-						// increasing outline on hovered node.
-						svg3.selectAll('.nodes')
-								.style('stroke-width', function(d) {
-									// not a neighbor node, make it opaque
-									if ( eventTargetIndex==d.id )
-										{ return nodeStrokeWidth + 0.75 }
-								});
+						// increasing outline of hovered node.
+						svg3.select('#node_' + eventTargetIndex).style('stroke-width', nodeStrokeWidth + 0.75);
+
+						// increasing outline of text on hovered node.
+						// this will create a bolded text effect.
+						svg3.select('#node_name_' + eventTargetIndex).style('stroke-width', 0.35);
+						svg3.select('#node_size_warning_' + eventTargetIndex).style('stroke-width', 0.35);
 
 						nodeMouseOverForLinks('.link', eventTargetIndex, linkStrokeWidth + 0.5);
 						nodeMouseOverForLinks('.link_dash', eventTargetIndex, linkDashStrokeWidth + 1.5);
@@ -859,10 +874,12 @@
 				},
 						// mouseleave function for all items upon leaving a particular node
 						nodeMouseLeave = function() {
-							// reverting all changes in mouseover upon mouseleave
+						 // reverting all changes in mouseover upon mouseleave
 						 // nodeLabel.attr('display', 'block');
 						 node.style('opacity', 1);
 						 svg3.selectAll('.nodes').style('opacity', 1).style('stroke-width', nodeStrokeWidth);
+						 svg3.selectAll('.node_names').style('stroke-width', 0);
+						 svg3.selectAll('.node_size_warnings').style('stroke-width', 0);
 						 svg3.selectAll('.link').style('opacity', 1).style('stroke-width', linkStrokeWidth);
 						 svg3.selectAll('.link_dash').style('opacity', 1).style('stroke-width', linkDashStrokeWidth);
 				};
@@ -881,6 +898,7 @@
 
 				node.append('circle')
 					.attr('class', 'nodes')
+					.attr('id', function(d) { return 'node_' + d.id })
 					.attr('stroke', 'black')
 					.attr('stroke-width', nodeStrokeWidth)
 		      .attr('r', function(d) { return nodeMargins['radius_size'][d.id] })
@@ -896,21 +914,25 @@
 
 				node.append('text')
 						.attr('class', 'node_names')
-						.attr('id', function(d) { return 'label_' + d.id })
+						.attr('id', function(d) { return 'node_name_' + d.id })
 						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
 			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] })
-						.attr('font-size', '12px')
 			      .attr('text-anchor', 'middle')
-			      .text(function(d)
-						{ return d.participant; });
+						.style('font-size', graphTextSize)
+						.style('stroke', 'black')
+						.style('stroke-width', 0)
+			      .text(function(d) { return d.participant; });
 
 				node.append('text')
-						.attr('class', 'node_size_warning')
+						.attr('class', 'node_size_warnings')
+						.attr('id', function(d) { return 'node_size_warning_' + d.id })
 						// need a better solution for when text comes too close to node because nodesize is small
-						.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -20) })
-						.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 20) })
-						.attr('font-size', '15px')
-			      .attr('text-anchor', 'middle')
+						.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30) })
+						.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10) })
+						.attr('text-anchor', 'middle')
+						.style('font-size', graphTextSize)
+						.style('stroke', 'black')
+						.style('stroke-width', 0)
 						.style('opacity', function(d) {
 							if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
 								{ return 1 }
@@ -918,6 +940,19 @@
 							{ return 0 }
 						})
 			      .text('?');
+
+				// this will send you back to choose a new war (of the same type)
+				var backToMenuClick = function(d) {
+						// removing all current svgs
+						// the graph is no longer needed once the user chooses to leave it.
+						d3.selectAll('svg').remove();
+						createMenu();
+				};
+
+				// creating a rect for a back to menu button
+				addStdRect(svg2, null, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, backToMenuClick);
+				addStdText(svg2, null, null, 6, 22.5, graphMenuTextSize, 0, '↖ Menu');
+				addStdText(svg2, null, null, 0, 92.5, graphMenuTextSize, 0, warDic['war_name']);
 
 				// the following two functions will be used for both links and participants
 				var descriptiveMenuMouseOver = function(groupingType, maxWidth, descriptiveArray, clickFunction, xLoc) {
@@ -927,7 +962,7 @@
 
 						for ( var i = 0; i <= descriptiveArray.length-1; i++ ) {
 							addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, clickFunction);
-							addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), '12px', 0, descriptiveArray[i]);
+							addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), graphMenuTextSize, 0, descriptiveArray[i]);
 						}
 				},
 						descriptiveMenuClick = function(groupingType, descriptorIndice, maxWidth, descriptiveArray, moFunction, xLoc) {
@@ -938,7 +973,7 @@
 						svg2.select('#' + groupingType + '_dropdown_selected_text').remove();
 
 						addStdRect(svg2, null, groupingType + '_dropdown_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'transparent', null, moFunction, generalRectML, null);
-						addStdText(svg2, null, groupingType + '_dropdown_selected_text', width-maxWidth-xLoc+5, 22.5, '12px', 0, dropDownSelected);
+						addStdText(svg2, null, groupingType + '_dropdown_selected_text', width-maxWidth-xLoc+5, 22.5, graphMenuTextSize, 0, dropDownSelected);
 
 						return dropDownSelected
 				};
@@ -999,24 +1034,27 @@
 						// redefining graph layout with updated nodeMargins
 						graphLayout = createGraphLayout(nodeMargins);
 
-						svg3.selectAll('.nodes').transition().delay(nodeTransitionDelay).duration(transitionDuration)
+						svg3.selectAll('.nodes')
+								.transition().delay(nodeTransitionDelay).duration(transitionDuration)
 								.attr('r', function(d) { return nodeMargins['radius_size'][d.id] });
-								// .end(dragProcess);
 
 						// calling same function used on tick to reposition node names
 						repositionNodeNames(textTransitionDelay, transitionDuration);
 
 						// console.log(nodeMargins);
-						svg3.selectAll('.node_size_warning').transition().delay(textTransitionDelay).duration(transitionDuration)
-								// need a better solution for when text comes too close to node because nodesize is small
-								.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -20) })
-								.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 20) })
+						svg3.selectAll('.node_size_warnings')
+								// adjusting opacity will be a shorter transition than repositioning the label.
+								.transition().delay(nodeTransitionDelay).duration(textTransitionDelay)
 								.style('opacity', function(d) {
 									if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
 										{ return 1 }
 									else
 									{ return 0 }
-								});
+								})
+								.transition().delay(nodeTransitionDelay).duration(textTransitionDelay)
+								// need a better solution for when text comes too close to node because nodesize is small
+								.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30) })
+								.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10) });
 
 						// adjusting alpha for a set number of miliseconds
 						// var alphaMiliseconds = transitionDuration + 2500;
@@ -1025,12 +1063,12 @@
 				};
 
 				addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptiveMaxNameWidth-partXLoc, 1, partDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
-				addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptiveMaxNameWidth-partXLoc+5, 22.5, '12px', 0, partDropDownSelected);
+				addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, partDropDownSelected);
 
 				// console.log('random link indice', randomLinkDescriptorIndice);
 				// console.log('linkDropDownSelected', linkDropDownSelected);
 				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptiveMaxNameWidth-linkXLoc, 1, linkDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
-				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, '12px', 0, linkDropDownSelected);
+				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkDropDownSelected);
 
 			  function ticked() {
 
@@ -1063,38 +1101,38 @@
 									// one for if the label is at max y, and one for if the label is at min y.
 									// some sort of randomization will need to determine what to do in these cases to prevent overlap.
 									if ( d.x < width * 0.5 && d.y < height * 0.5 )
-									{ d3.select('#label_' + d.id)
+									{ d3.select('#node_name_' + d.id)
 											.transition().delay(delay).duration(duration)
 											.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
 											.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
 									}
 									else if ( d.x >= width * 0.5 && d.y < height * 0.5 )
-									{ d3.select('#label_' + d.id)
+									{ d3.select('#node_name_' + d.id)
 											.transition().delay(delay).duration(duration)
 											.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
 											.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
 									}
 									else if ( d.x < width * 0.5 && d.y >= height * 0.5 )
-									{ d3.select('#label_' + d.id)
+									{ d3.select('#node_name_' + d.id)
 											.transition().delay(delay).duration(duration)
 											.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
 											.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
 									}
 									else
 									//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
-									{ d3.select('#label_' + d.id)
-										.transition().delay(delay).duration(duration)
-										.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-										.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
+									{ d3.select('#node_name_' + d.id)
+											.transition().delay(delay).duration(duration)
+											.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
+											.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
 									}
 								}
 								// repositioning for when name_fits_in_node==true
 								// applicable to node size transitions when name_fits_in_node changes.
 								else {
-									d3.select('#label_' + d.id)
-								 	.transition().delay(delay).duration(duration)
-									.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
-						      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] });
+									d3.select('#node_name_' + d.id)
+									 	.transition().delay(delay).duration(duration)
+										.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
+							      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] });
 								}
 						 }
 					 );

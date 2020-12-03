@@ -127,7 +127,7 @@
 									.attr('pointer-events', 'none')
 									// .attr('font-family', 'sans-serif')
 									.attr('font-size', fontSize)
-									.text(function(d) { return d })
+									.text(function(d) { return d; })
 									.each(function(d, i) {
 											var thisWidth = this.getComputedTextLength();
 											textWidthArray.push(thisWidth);
@@ -136,15 +136,15 @@
 
 					var textWidth = textWidthArray.reduce((a, b) => a + b, 0);
 
-					return textWidth
+					return textWidth;
 		};
 
 		// returning the max value from any array
 		function maxFromArray(array) {
 
-				var maxValue = array.reduce(function(a, b) { return Math.max(a, b) });
+				var maxValue = array.reduce(function(a, b) { return Math.max(a, b); });
 
-				return maxValue
+				return maxValue;
 		};
 
 		// returning average overall value across all numbers in an array.
@@ -160,7 +160,7 @@
 		    var totalItems = array.length;
 
 		    //Return the average / mean.
-		    return sumOfAllItems/totalItems
+		    return sumOfAllItems/totalItems;
 		}
 
 		// unique values from array part 1
@@ -168,9 +168,9 @@
 
 			  for (var i = 0; i < this.length; i++) {
 			    if ( this[i]===v )
-					{ return true }
+					{ return true; }
 					else
-					{ return false }
+					{ return false; }
 			  }
 		};
 
@@ -187,7 +187,7 @@
 					{ array.push(this[i]) }
 			  }
 
-			  return array
+			  return array;
 		}
 
 		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
@@ -204,9 +204,9 @@
 						.style('stroke-width', strokeWidth)
 						.style('stroke', function(d) {
 							if ( strokeWidth==0 )
-							{ return 'transparent' }
+							{ return 'transparent'; }
 							else
-							 { return 'black' }
+							 { return 'black'; }
 						 });
 		};
 
@@ -496,7 +496,7 @@
 
 				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
 					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
-					if ( allLinkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[allLinkFields[i]] }) > 0 ) {
+					if ( allLinkFields[i].slice(-2)=='_z' && d3.max(graph.links, function(d) { return d[allLinkFields[i]]; }) > 0 ) {
 					 	descriptiveFields['dyad'].push(allLinkFields[i]);
 						// getting an array of name lengths for all items added
 						descriptorNameLengths['dyad'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
@@ -522,15 +522,15 @@
 
 						// returning an empty array if the selected input is 'None'
 						if ( linkDescriptiveInput=='None' )
-						{ return linkDescriptiveValues }
+						{ return linkDescriptiveValues; }
 						else {
 							graph.links.forEach(function(link) {
 								if ( parseInt(link[descriptiveFields[descriptorType][linkDescriptiveInput]]) > 0 )
-								{ linkDescriptiveValues.push(1) }
+								{ linkDescriptiveValues.push(1); }
 								else
-								{ linkDescriptiveValues.push(0) }
+								{ linkDescriptiveValues.push(0); }
 							})
-							{ return linkDescriptiveValues }
+							{ return linkDescriptiveValues; }
 					}
 				};
 
@@ -632,7 +632,7 @@
 
 						var descriptorMaxNameWidth = maxFromArray(descriptorNameLengths[grouping]);
 
-						return 	[descriptorMaxNameWidth, descriptiveFields, dropDownSelected]
+						return 	[descriptorMaxNameWidth, descriptiveFields, dropDownSelected];
 				};
 
 				var linkNullDescriptiveOutput = fillNullDescriptiveFields(descriptiveFields, descriptorNameLengths, 'dyad', linkDropDownSelected),
@@ -651,27 +651,27 @@
 
 						// adjusting text position when it does not fit inside the node
 						if ( nodeRadius * 2 > getTextWidth(svgInput, nameInput, textSize) + 15 )
-						{ return true }
+						{ return true; }
 						else
-						{ return false }
+						{ return false; }
 				}
 
 				function nameVerticalShift(svgInput, nodeRadius, participantName, textSize) {
 
 						// adjusting text position when it does not fit inside the node
 						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
-						{ return nodeRadius + 25 }
+						{ return nodeRadius + 25; }
 						else
-						{ return 5 }
+						{ return 5; }
 				}
 
 				function nameHorizontalShift(svgInput, nodeRadius, participantName, textSize) {
 
 						// adjusting text position when it does not fit inside the node
 						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
-						{ return 20 }
+						{ return 20; }
 						else
-						{ return 0 }
+						{ return 0; }
 				}
 
 				function getNodeMargins(maxDomain, partDescriptiveValues, stdNullRadiusSize) {
@@ -795,9 +795,9 @@
 						};
 
 						if ( nodeID1Count==totalLinks | nodeID2Count==totalLinks )
-						{ return true }
+						{ return true; }
 						else
-						{ return false }
+						{ return false; }
 				}
 
 				var onlyOnePrimaryNode = OnlyOnePrimaryNodeCheck();
@@ -815,19 +815,19 @@
 								.force('collision', d3.forceCollide().radius(function(d) { return Math.max(nodeMargins['radius_size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + 20,
 																																													 arrayAverage(Object.values(nodeMargins['radius_size'])) + arrayAverage(Object.values(nodeMargins['horizontal_name_shift'])) + 20,
 																																													 // linkNodeSize,
-																																													 30)}).strength(1))
+																																													 30); }).strength(1))
 																																													 // creating conditional rules for defining link distance based on how many primary nodes are in the network.
 																																													 // link distance can be much greater if there is only one primary node.
- 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id) }).distance(function(d) { if ( onlyOnePrimaryNode==true )
-																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + 125, 200) }
+ 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { if ( onlyOnePrimaryNode==true )
+																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + 125, 200); }
 																																																													else
-																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2), 100) }
+																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2), 100); }
 																																																												}).strength(0.25))
  																																																													// linkNodeSize + 20,
 
 						    .on('tick', ticked);
 
-								return graphLayout
+								return graphLayout;
 				}
 
 				// defining graph layout with nodeMargins dictionary
@@ -836,6 +836,7 @@
 				var link = svg3.selectAll().append('g')
 						.data(graph.links)
 						.enter();
+
 				console.log(graph.links);
 
 				function getFirsDegreeLinks() {
@@ -848,13 +849,13 @@
 							firstDegreeLinks[d.target.index + '-' + d.source.index] = true;
 					});
 
-					return firstDegreeLinks
+					return firstDegreeLinks;
 				};
 
 				// this function will be used to check if a given link is in the array returned in getFirstDegreeLinks()
 				function firstDegreeCheck(a, b) {
 
-						return a==b || firstDegreeLinks[a + '-' + b]
+						return a==b || firstDegreeLinks[a + '-' + b];
 				};
 
 				var firstDegreeLinks = getFirsDegreeLinks();
@@ -878,10 +879,12 @@
 						.attr('class', 'link_dash')
 						.attr('stroke', 'blue')
 						.attr('stroke', function(d) {
-							if ( descriptiveFields['dyad'][0]=='None' || linkDescriptiveValues[d.index] <= 0 )
-							{ return 'transparent' }
+							if ( descriptiveFields['dyad'][0]=='None' )
+							{ return 'transparent'; }
+							else if ( linkDescriptiveValues[d.index] <= 0 )
+							{ return 'transparent'; }
 							else
-							{ return 'blue' }
+							{ return 'blue'; }
 						})
 						.attr('stroke-dasharray', ('2.5, 15'))
 						.attr('stroke-dashoffset', -7.5)
@@ -894,33 +897,21 @@
 				// 		// .attr('opacity', 0)
 			  //     .attr('r', linkNodeSize);
 
-
-				// determining coordinates for the node (relative to the svg in which the element exists).
-				function getRelativeScreenCoords(x, y, ctm) {
-						var xPosition = ctm.e + x*ctm.a + y*ctm.c,
-								yPosition = ctm.f + x*ctm.b + y*ctm.d;
-
-						return { x: xPosition, y: yPosition }
-				}
-
-				// calculating the new position for the node tooltip based on the current position of the node
+				// determining coordinates for the node
+				// then calculating the new position for the node tooltip based on the current position of the node
 				function repositionNodeTooltip(nodeTarget) {
 
 						// combining methods of getBox and element coordinates.
-						var nodeBox = svg3.select('#node_' + nodeTarget).node().getBBox(),
-								nodeElem = document.getElementById('node_' + nodeTarget),
-								cx = +nodeElem.getAttribute('dx'),
-								cy = +nodeElem.getAttribute('dy'),
-								r = +nodeElem.getAttribute('r'),
-								ctm = nodeElem.getCTM(),
-								relativeCoordinates = getRelativeScreenCoords(cx, cy, ctm);
+						var nodeElem = document.getElementById('node_' + nodeTarget),
+								nodeRadius = +nodeElem.getAttribute('r'),
+								nodeCTM = nodeElem.getCTM();
 
 								// calculating the position of the middle of the node, and then shifting the tooltip to the left.
-						var leftPosition = relativeCoordinates.x + nodeBox.x + (nodeBox.width/2) - r - parseInt(toolTipWidth),
-								// needed to add an arbitrary value (450) to the top in order to make this work.
-								topPosition = 450 + relativeCoordinates.y + nodeBox.y + (nodeBox.height/2);
+						var leftPosition = nodeCTM.e - nodeRadius - parseInt(toolTipWidth) - 25,
+								// needed to add an arbitrary value (425) to the top in order to make this work.
+								topPosition = nodeCTM.f + 425;
 
-						return {'left': leftPosition, 'top': topPosition}
+						return {'left': leftPosition, 'top': topPosition};
 				}
 
 				// mouseover function for one specific node
@@ -941,7 +932,7 @@
 						node.style('opacity', function(d) {
 									// not a neighbor node, make it opaque
 									if ( firstDegreeCheck(eventTargetIndex, d.index)!=1 )
-										{ return 0.15 }
+										{ return 0.15; }
 								});
 
 						// increasing outline of hovered node.
@@ -964,14 +955,14 @@
 								.style('opacity', function(d) {
 									// make non-neighbor links opaque
 									if ( d.source.index==indexInput || d.target.index==indexInput )
-										{ return 1 }
+										{ return 1; }
 									else
-									{ return 0.15 }
+									{ return 0.15; }
 								})
 								.style('stroke-width', function(d) {
 									// increase stroke width for neighbor links
 									if ( d.source.index==indexInput || d.target.index==indexInput )
-										{ return strokeWidthInput }
+										{ return strokeWidthInput; }
 								});
 				},
 						// mouseleave function for all items upon leaving a particular node
@@ -1001,46 +992,48 @@
 
 				node.append('circle')
 					.attr('class', 'nodes')
-					.attr('id', function(d) { return 'node_' + d.id })
+					.attr('id', function(d) { return 'node_' + d.id; })
 					.attr('stroke', 'black')
 					.attr('stroke-width', nodeStrokeWidth)
-		      .attr('r', function(d) { return nodeMargins['radius_size'][d.id] })
+		      .attr('r', function(d) { return nodeMargins['radius_size'][d.id]; })
 					// .attr('opacity', 0.5)
 		      .style('fill', function(d) {
 						if ( parseInt(d.side)==3 )
 						// returning a color in the middle of the spectrum if the side is 3
 						// this would mean they were on side 1 and side 2 (1 + 2)
-						{ return color(1.5) }
+						{ return color(1.5); }
 						else
-						{ return color(parseInt(d.side)) }
+						{ return color(parseInt(d.side)); }
 					});
 
 				node.append('text')
 						.attr('class', 'node_names')
-						.attr('id', function(d) { return 'node_name_' + d.id })
-						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id] })
-			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id] })
+						.attr('id', function(d) { return 'node_name_' + d.id; })
+						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id]; })
+			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id]; })
 			      .attr('text-anchor', 'middle')
 						.style('font-size', graphTextSize)
 						.style('stroke', 'black')
 						.style('stroke-width', 0)
-			      .text(function(d) { return d.participant });
+			      .text(function(d) { return d.participant; });
 
 				node.append('text')
 						.attr('class', 'node_size_warnings')
-						.attr('id', function(d) { return 'node_size_warning_' + d.id })
+						.attr('id', function(d) { return 'node_size_warning_' + d.id; })
 						// need a better solution for when text comes too close to node because nodesize is small
-						.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30) })
-						.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10) })
+						.attr('dx', function(d) { return Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
+						.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); })
 						.attr('text-anchor', 'middle')
 						.style('font-size', graphTextSize)
 						.style('stroke', 'black')
 						.style('stroke-width', 0)
 						.style('opacity', function(d) {
-							if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
-								{ return 1 }
+							if ( descriptiveFields['participant'][0]=='None' )
+							{ return 1; }
+							else if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
+								{ return 1; }
 							else
-							{ return 0 }
+							{ return 0; }
 						})
 			      .text('?');
 
@@ -1048,7 +1041,7 @@
 						toolTipWidth = '150px',
 						toolTipHeight = '125px';
 
-				defineTooltip('war_network_analysis_graph', 'node_tooltip', 700, '50px', toolTipWidth, toolTipHeight, textInput);
+				defineTooltip('hover_statistics', 'node_tooltip', 700, '50px', toolTipWidth, toolTipHeight, textInput);
 
 				// this will send you back to choose a new war (of the same type)
 				var backToMenuClick = function(d) {
@@ -1084,7 +1077,7 @@
 						addStdRect(svg2, null, groupingType + '_dropdown_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'transparent', null, moFunction, generalRectML, null);
 						addStdText(svg2, null, groupingType + '_dropdown_selected_text', width-maxWidth-xLoc+5, 22.5, graphMenuTextSize, 0, dropDownSelected);
 
-						return dropDownSelected
+						return dropDownSelected;
 				};
 
 				// Two functions that change the the selection for link dash marks (based on interaction variables).
@@ -1105,9 +1098,9 @@
 								.transition().delay(100).duration(500)
 								.attr('stroke', function(d) {
 									if ( descriptiveFields['dyad'][0]=='None' || linkDescriptiveValues[d.index] <= 0 )
-									{ return 'transparent' }
+									{ return 'transparent'; }
 									else
-									{ return 'blue' }
+									{ return 'blue'; }
 								})
 								.attr('stroke-width', linkDashStrokeWidth + 4)
 								.transition().duration(1000)
@@ -1147,7 +1140,7 @@
 
 						svg3.selectAll('.nodes')
 								.transition().delay(nodeTransitionDelay).duration(transitionDuration)
-								.attr('r', function(d) { return nodeMargins['radius_size'][d.id] });
+								.attr('r', function(d) { return nodeMargins['radius_size'][d.id]; });
 
 						// calling same function used on tick to reposition node names
 						repositionNodeNames(textTransitionDelay, transitionDuration, true);
@@ -1159,14 +1152,14 @@
 								.transition().delay(nodeTransitionDelay).duration(nodeTransitionDelay)
 								.style('opacity', function(d) {
 									if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
-										{ return 1 }
+										{ return 1; }
 									else
-									{ return 0 }
+									{ return 0; }
 								})
 								.transition().delay(nodeTransitionDelay).duration(transitionDuration)
 								// need a better solution for when text comes too close to node because nodesize is small
-								.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30) })
-								.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10) });
+								.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
+								.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); });
 
 						// adjusting alpha for a set number of miliseconds
 						// var alphaMiliseconds = transitionDuration + 2500;
@@ -1189,18 +1182,18 @@
 						// needs to also be adjusted for the participant name label since this could be positioned below the node
 						// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
 						// includes transformation for nodes and the text itself
-						node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][d.id], Math.min(width - nodeMargins['added_right_margin'][d.id], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][d.id], Math.min(height - nodeMargins['added_bottom_margin'][d.id], d.y)) + ')' });
+						node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][d.id], Math.min(width - nodeMargins['added_right_margin'][d.id], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][d.id], Math.min(height - nodeMargins['added_bottom_margin'][d.id], d.y)) + ')'; });
 
 						// linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x))) * 0.5 })
 						// 				.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y))) * 0.5 });
 
 						svg3.selectAll('.link,.link_dash')
-								.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) })
-				        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) })
-				        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x)) })
-				        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y)) });
+								.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)); })
+				        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)); })
+				        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x)); })
+				        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y)); });
 
-						repositionNodeNames(5, 100, false);
+						repositionNodeNames(5, 50, false);
 			  };
 
 				function repositionNodeNames(delay, duration, nodeSizeTransition) {

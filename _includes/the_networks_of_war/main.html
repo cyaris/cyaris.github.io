@@ -871,11 +871,6 @@
 
 		    link.append('line')
 						.attr('class', 'link')
-						// // setting defaults for page load to prevent null position errors in initial tick()
-						// .attr('x1', 0)
-						// .attr('y1', 0)
-						// .attr('x2', 0)
-						// .attr('y2', 0)
 				    .attr('stroke', '#aaa')
 				    .attr('stroke-width', linkStrokeWidth);
 
@@ -890,15 +885,8 @@
 
 				link.append('line')
 						.attr('class', 'link_dash')
-						// // setting defaults for page load to prevent null position errors in initial tick()
-						// .attr('x1', 0)
-						// .attr('y1', 0)
-						// .attr('x2', 0)
-						// .attr('y2', 0)
 						.attr('stroke', 'blue')
 						.attr('stroke', function(d) {
-							// if ( linkDescriptiveValues.length==0 )
-							// { return 'transparent'; }
 							if ( linkDescriptiveValues[d.index]==0 )
 							{ return 'transparent'; }
 							else
@@ -1014,9 +1002,6 @@
 					.attr('stroke', 'black')
 					.attr('stroke-width', nodeStrokeWidth)
 		      .attr('r', function(d) { return nodeMargins['radius_size'][d.id]; })
-					// // setting defaults for page load to prevent null position errors in initial tick()
-					// .attr('dx', function(d) { return nodeMargins['added_left_margin'][d.id]; })
-					// .attr('dy', function(d) { return nodeMargins['added_top_margin'][d.id]; })
 					// .attr('opacity', 0.5)
 		      .style('fill', function(d) {
 						if ( parseInt(d.side)==3 )
@@ -1060,11 +1045,6 @@
 						})
 			      .text('?');
 
-				// // restarting simulation now that all graph elements have been added
-				// graphLayout.restart();
-				// // forcing tick upon restart
-				// ticked();
-
 				textInput = 'Node tooltip test.',
 				toolTipWidth = '150px',
 				toolTipHeight = '125px';
@@ -1078,10 +1058,6 @@
 						// this needs to be fixed for redefining all variables.
 						d3.selectAll('svg').remove();
 						createMenu();
-
-						// refreshing current page
-						// this will restart the script for the same war type
-						// window.location.reload();
 				};
 
 				// creating a rect for a back to menu button
@@ -1133,8 +1109,6 @@
 						link.selectAll('.link_dash')
 								.transition().delay(100).duration(500)
 								.attr('stroke', function(d) {
-									// if ( linkDescriptiveValues.length==0 )
-									// { return 'transparent'; }
 									if ( linkDescriptiveValues[d.index]==0 )
 									{ return 'transparent'; }
 									else
@@ -1199,10 +1173,6 @@
 								.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
 								.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); });
 
-						// adjusting alpha for a set number of miliseconds
-						// var alphaMiliseconds = transitionDuration + 2500;
-						// setInterval( function() { graphLayout.alpha(1) }, alphaMiliseconds);
-						// setTimeout( function() { graphLayout.alpha(0) }, alphaMiliseconds);
 				};
 
 				addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptiveMaxNameWidth-partXLoc, 1, partDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
@@ -1277,13 +1247,13 @@
 										.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
 							      .attr('dy', nodeMargins['vertical_name_shift'][d.id]);
 								}
-								// final else statement will take care of the event where something failed on page load
-								// not sure why this occurs.
-								else {
-									d3.select('#node_name_' + d.id)
-										.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-							      .attr('dy', nodeMargins['vertical_name_shift'][d.id]);
-								}
+								// // final else statement will take care of the event where something failed on page load
+								// // not sure why this occurs.
+								// else {
+								// 	d3.select('#node_name_' + d.id)
+								// 		.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
+							  //     .attr('dy', nodeMargins['vertical_name_shift'][d.id]);
+								// }
 						 }
 					 );
 			 };
@@ -1292,11 +1262,11 @@
 
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'grab');
-
 						// not displaying tooltips during drag
 						d3.select('#node_tooltip').style('opacity', 0);
 
 						d3.event.sourceEvent.stopPropagation();
+
 				    if ( !d3.event.active ) {
 							graphLayout.alphaTarget(0.3).restart();
 					    d.fx = d.x;

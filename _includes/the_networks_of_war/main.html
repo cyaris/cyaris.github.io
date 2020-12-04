@@ -89,8 +89,8 @@
 		  text-align: left;
 			align: left;
 		  padding: 10px;
-			/* font-family: 'Lora', 'Times New Roman', serif; */
-			font-size: 14px;
+			font-family: 'Libre Franklin', sans-serif;
+			font-size: 15px;
 			stroke: black;
 		  background: white;
 		  border: solid;
@@ -987,7 +987,7 @@
 						eventTargetIndex = d3.select(d3.event.target).datum().index,
 						nodeToolTipPosition = repositionNodeTooltip(eventTargetIndex);
 
-						d3.select('#node_tooltip')
+						d3.select('#node_tooltip_' + eventTargetIndex)
 							.style('left', nodeToolTipPosition['left'] + 'px')
 							.style('top', nodeToolTipPosition['top'] + 'px')
 							.style('opacity', 1);
@@ -1040,7 +1040,7 @@
 						 svg3.selectAll('.node_size_warnings').style('stroke-width', 0);
 						 svg3.selectAll('.link').style('opacity', 1).style('stroke-width', linkStrokeWidth);
 						 svg3.selectAll('.link_dash').style('opacity', 1).style('stroke-width', linkDashStrokeWidth);
-						 d3.select('#node_tooltip').style('opacity', 0);
+						 d3.selectAll('.tooltip').style('opacity', 0);
 				};
 
 				node = svg3.selectAll()
@@ -1104,11 +1104,18 @@
 						})
 			      .text('?');
 
-				textInput = 'Node tooltip test.',
-				toolTipWidth = '150px',
-				toolTipHeight = '125px';
+				function defineNodeTooltips(nodeMargins, partDropDownSelected) {
 
-				defineTooltip('hover_statistics', 'node_tooltip', 700, '50px', toolTipWidth, toolTipHeight, textInput);
+					for ( var i = 0; i <= Object.values(nodeMargins['radius_size']).length-1; i++ ) {
+
+						 	textInput = partDropDownSelected + ': ' + partDescriptiveValues[i].toLocaleString();
+							defineTooltip('hover_statistics', 'node_tooltip_' + i, 700, '50px', toolTipWidth, toolTipHeight, textInput);
+					};
+				};
+
+				toolTipWidth = '250px',
+				toolTipHeight = '75px';
+				defineNodeTooltips(nodeMargins, partDropDownSelected);
 
 				// this will send you back to choose a new war (of the same type)
 				var backToMenuClick = function(d) {
@@ -1134,6 +1141,7 @@
 							addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), graphMenuTextSize, 0, descriptiveArray[i]);
 						}
 				};
+
 				function descriptiveMenuClick(groupingType, descriptorIndice, maxWidth, descriptiveArray, moFunction, xLoc) {
 
 						dropDownSelected = descriptiveArray[descriptorIndice];
@@ -1200,6 +1208,9 @@
 
 						console.log('partDescriptiveValues', partDescriptiveValues);
 						console.log('nodeMargins', nodeMargins);
+
+						d3.selectAll('.tooltip').remove();
+						defineNodeTooltips(nodeMargins, partDropDownSelected);
 
 						nodeTransitionDelay = 50,
 						nodeTransitionDuration = 3000;
@@ -1321,8 +1332,8 @@
 
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'grab');
-						// not displaying tooltips during drag
-						d3.select('#node_tooltip').style('opacity', 0);
+						// // not displaying tooltips during drag
+						d3.selectAll('.tooltip').style('opacity', 0);
 
 						d3.event.sourceEvent.stopPropagation();
 
@@ -1338,8 +1349,8 @@
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'grab');
 
-						// not displaying tooltips during drag
-						d3.select('#node_tooltip').style('opacity', 0);
+						// // not displaying tooltips during drag
+						d3.selectAll('.tooltip').style('opacity', 0);
 
 						d.fx = d3.event.x;
 				    d.fy = d3.event.y;

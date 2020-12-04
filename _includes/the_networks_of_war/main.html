@@ -1122,6 +1122,8 @@
 						// removing all current svgs
 						// the graph is no longer needed once the user chooses to leave it.
 						d3.selectAll('svg').remove();
+						// removing all current tooltips
+						d3.selectAll('.tooltip').remove();
 						createMenu();
 				};
 

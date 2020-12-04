@@ -8,6 +8,37 @@
 		<link href='https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;400&display=swap' rel='stylesheet'>
 		<style>
 
+		.center {
+			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			/* width: 50px; */
+		}
+
+		.btn-group button {
+			background-color: #4CAF50; /* Green background */
+			border: 1px solid green; /* Green border */
+			color: white; /* White text */
+			padding: 10px 16px; /* Some padding */
+			cursor: pointer; /* Pointer/hand icon */
+			float: center; /* Float the buttons side by side */
+		}
+
+		.btn-group button:not(:last-child) {
+			border-right: none; /* Prevent double borders */
+		}
+		/* Clear floats (clearfix hack) */
+		.btn-group:after {
+			content: '';
+			clear: both;
+			display: table;
+		}
+		/* Add a background color on hover */
+		.btn-group button:hover {
+			background-color: #3e8e41;
+		}
+
 		@media (max-width:750px){
 	      #war_network_analysis_graph {
 						display: none;
@@ -70,7 +101,23 @@
 		</style>
 	</head>
 	<body>
-
+		<!-- <div id='war_choice_menu'>
+			document.getElementById('war_choice_menu').style.display = 'none';
+			document.getElementById('war_choice_menu').style.display = 'block';
+			<p align='center'>Choose a War Type</p>
+			<div class='center'>
+				<div class='btn-group'>
+					<a onclick=''><button class='button'>Inter-State</button></a>
+					<a onclick='' ><button class='button'>Intra-State</button></a>
+				</div>
+			</div>
+		<div class='center' style='margin-top:20px; margin-bottom:40px;'>
+			<div class='btn-group'>
+				<a onclick='' ><button class='button'>Extra-State</button></a>
+				<a onclick='' ><button class='button'>Non-State</button></a>
+			</div>
+		</div>
+		</div> -->
 		<div id='hidden_project_explained' align='left' style='margin-bottom:14px;'>
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
@@ -106,15 +153,12 @@
 					<li>Trade: Dyadic_COW_4.0.csv</li>
 				</ul>
 			</p>
-			</div>
+		</div>
 		<!-- Load d3.js -->
 		<script src='https://d3js.org/d3.v5.min.js'></script>
 		<script src='https://d3js.org/d3-time.v2.min.js'></script>
-		<!-- <script src='../js/node_modules/lodash/lodash.js'></script> -->
 		<script>
 
-		// import _ from '../js/lodash'
-		// new code section: functions with non-built-in parameters (functions not of d or something like that).
 		function getTextWidth(svgInput, textInput, fontSize) {
 
 				// obtaining length of any textinput (based on default font size and font family)
@@ -166,7 +210,7 @@
 		// unique values from array part 1
 		Array.prototype.contains = function(v) {
 
-			  for (var i = 0; i < this.length; i++) {
+			  for ( var i = 0; i < this.length; i++ ) {
 			    if ( this[i]===v )
 					{ return true; }
 					else
@@ -180,7 +224,7 @@
 
 			  array = [];
 
-			  for (var i = 0; i < this.length; i++) {
+			  for ( var i = 0; i < this.length; i++ ) {
 					// not adding any values to the array that have already been added
  					// not adding any null values to the array
 			    if ( !array.contains(this[i]) && isNaN(this[i])==false )
@@ -373,10 +417,10 @@
 						mainMenuClick = function(d) {
 							// removing all current svgs
 							// the manue is no longer needed once a selection has been made.
-							var selectedWar = d3.select(this).attr('id');
+							selectedWarID = d3.select(this).attr('id');
 
 							d3.selectAll('svg').remove();
-							createNetworkGraph(selectedWar);
+							createNetworkGraph(selectedWarID);
 							window.scrollTo(0, 325);
 				};
 
@@ -592,6 +636,10 @@
 						// all participants were in the war for the same number of days.
 						// nothing to compare if all the values are the same (for the same reason).
 						else if ( sizeField=='days_at_war' && uniquePartDescriptiveValues.length==1 )
+							{ incompleteDescriptor = true }
+						// the war was only one year, so star year metrics equal end year metrics
+						// removing end_year metrics
+						else if ( warDic['start_year']==warDic['end_year'] && sizeField.slice(-2)=='_y' )
 							{ incompleteDescriptor = true }
 						else
 							{ incompleteDescriptor = false }
@@ -912,8 +960,12 @@
 						nodeRadius = +nodeElem.getAttribute('r'),
 						nodeCTM = nodeElem.getCTM();
 
-								// calculating the position of the middle of the node, and then shifting the tooltip to the left.
-						leftPosition = nodeCTM.e - nodeRadius - parseInt(toolTipWidth) - 25,
+						// calculating the position of the middle of the node, and then shifting the tooltip to the left.
+						// adjusting for when the node is on the left vs right side of the svg.
+						if ( nodeCTM.e >= width * 0.5 )
+						{ leftPosition = nodeCTM.e + nodeRadius + 50; }
+						else
+						{ leftPosition = nodeCTM.e - nodeRadius - parseInt(toolTipWidth) - 25; }
 						// needed to add an arbitrary value (425) to the top in order to make this work.
 						topPosition = nodeCTM.f + 425;
 
@@ -929,8 +981,8 @@
 						nodeToolTipPosition = repositionNodeTooltip(eventTargetIndex);
 
 						d3.select('#node_tooltip')
-							.style("left", nodeToolTipPosition['left'] + 'px')
-							.style("top", nodeToolTipPosition['top'] + 'px')
+							.style('left', nodeToolTipPosition['left'] + 'px')
+							.style('top', nodeToolTipPosition['top'] + 'px')
 							.style('opacity', 1);
 
 						// accenting first degree network for that node
@@ -1055,7 +1107,6 @@
 				var backToMenuClick = function(d) {
 						// removing all current svgs
 						// the graph is no longer needed once the user chooses to leave it.
-						// this needs to be fixed for redefining all variables.
 						d3.selectAll('svg').remove();
 						createMenu();
 				};
@@ -1144,18 +1195,19 @@
 						console.log('nodeMargins', nodeMargins);
 
 						nodeTransitionDelay = 50,
-						textTransitionDelay = 1000,
-						transitionDuration = 3000;
+						nodeTransitionDuration = 3000;
+						textTransitionDelay = 1000;
+						textTransitionDuration = nodeTransitionDuration - textTransitionDelay;
 
 						// redefining graph layout with updated nodeMargins
 						graphLayout = createGraphLayout(nodeMargins);
 
 						svg3.selectAll('.nodes')
-								.transition().delay(nodeTransitionDelay).duration(transitionDuration)
+								.transition().delay(nodeTransitionDelay).duration(nodeTransitionDuration)
 								.attr('r', function(d) { return nodeMargins['radius_size'][d.id]; });
 
 						// calling same function used on tick to reposition node names
-						repositionNodeNames(textTransitionDelay, transitionDuration, true);
+						repositionNodeNames(textTransitionDelay, textTransitionDuration, true);
 
 						// console.log(nodeMargins);
 
@@ -1168,7 +1220,7 @@
 									else
 									{ return 0; }
 								})
-								.transition().delay(nodeTransitionDelay).duration(transitionDuration)
+								.transition().delay(textTransitionDelay).duration(textTransitionDuration)
 								// need a better solution for when text comes too close to node because nodesize is small
 								.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
 								.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); });
@@ -1278,6 +1330,9 @@
 
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'grab');
+
+						// not displaying tooltips during drag
+						d3.select('#node_tooltip').style('opacity', 0);
 
 						d.fx = d3.event.x;
 				    d.fy = d3.event.y;

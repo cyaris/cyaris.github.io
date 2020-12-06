@@ -198,6 +198,14 @@
 				return maxValue;
 		};
 
+		// returning the min value from any array
+		function minFromArray(array) {
+
+				minValue = array.reduce(function(a, b) { return Math.min(a, b); });
+
+				return minValue;
+		};
+
 		// returning average overall value across all numbers in an array.
 		function arrayAverage(array) {
 
@@ -464,7 +472,7 @@
 				margin = {top: 0, bottom: 15, left: 0, right: 0},
 				width = 750,
 				height = 550,
-				svg2Height = 300;
+				svg2Height = 550;
 
 				// setting a text sizes for all graph items
 				graphTextSize = '14px',
@@ -599,7 +607,7 @@
 
 						// first defining the data that will ifnnfluence how the svg is defnined
 						graph.nodes.forEach(function(d) {
-								// determining totalCasualties across all countries as maxRadius.
+								// determining totalCasualties across all countries as maxRadiusSize.
 								// this will make larger numbers proportional to the total across all countries.
 								if ( isNaN(parseFloat(d[sizeField])) )
 								{ nullRadiusNodes+=1 }
@@ -735,9 +743,10 @@
 
 				function getNodeMargins(maxDomain, partDescriptiveValues, stdNullRadiusSize) {
 
-						maxRadius = 150,
 						minRadiusSize = 2,
-						radius = d3.scaleLinear().domain([0, maxDomain]).range([minRadiusSize, maxRadius]),
+						maxRadiusSize = 150,
+						// negative inputs could mean  max is greater than the sum of everything (and create a min below zero)
+						radius = d3.scaleLinear().domain([Math.min(0, minFromArray(partDescriptiveValues.uniqueNonNull())), Math.max(maxDomain, maxFromArray(partDescriptiveValues.uniqueNonNull()))]).range([minRadiusSize, maxRadiusSize]),
 						// addedMarginSize = 5 + linkNodeSize,
 						addedMarginSize = 5,
 						// dic for size of all the participant nodes, and size needed around them according to borders and text adjustments
@@ -762,7 +771,7 @@
 
 						// now going through the iterations that needed radius to already be defined
 						graph.nodes.forEach(function(d) {
-								// determining totalCasualties across all countries as maxRadius.
+								// determining totalCasualties across all countries as maxRadiusSize.
 								// this will make larger numbers proportional to the total across all countries.
 								// setting a minimum for radius so the node will never completely disappear.
 								if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )

@@ -1174,7 +1174,9 @@
 				},
 						linkMenuClick = function(d) {
 
-						linkDropDownSelectedIndice = parseInt(d3.select(this).attr('id').slice(-1));
+						// obtaining the indice part of the id
+						linkIndicePieces = d3.select(this).attr('id').split('_');
+						linkDropDownSelectedIndice = parseInt(linkIndicePieces[linkIndicePieces.length-1]),
 						linkDropDownSelected = descriptiveMenuClick('link', linkDropDownSelectedIndice, linkDescriptiveMaxNameWidth, descriptiveFields['dyad'], linkMenuMouseOver, linkXLoc);
 						linkDescriptiveValues = getLinkDescriptiveValues('dyad', linkDropDownSelectedIndice);
 
@@ -1203,7 +1205,9 @@
 				},
 						partMenuClick = function(d) {
 
-						partDropDownSelectedIndice = parseInt(d3.select(this).attr('id').slice(-1));
+						// obtaining the indice part of the id
+						partIndicePieces = d3.select(this).attr('id').split('_');
+						partDropDownSelectedIndice = parseInt(partIndicePieces[partIndicePieces.length-1]),
 						partDropDownSelected = descriptiveMenuClick('part', partDropDownSelectedIndice, partDescriptiveMaxNameWidth, descriptiveFields['participant'], partMenuMouseOver, partXLoc);
 
 						// console.log(partDropDownSelected);

@@ -29,6 +29,24 @@ def define_c_code_dic():
     return c_code_dic
 
 
+def define_country_abbreviation_dic():
+
+    c_abb_df = pd.read_csv('/Users/the_networks_of_war/data_sources/csvs/COW country codes.csv', encoding='utf8')
+    c_abb_df.rename({'StateNme': 'country',
+                      'StateAbb': 'country_abbrev'}, axis=1, inplace=True)
+    c_abb_df.drop(['CCode'], axis=1, inplace=True)
+
+    duplicate_list = ['country', 'country_abbrev']
+    c_abb_df.drop_duplicates(subset=duplicate_list, keep='first', inplace=True)
+    c_abb_df = deepcopy(c_abb_df.reset_index(drop=True))
+
+    c_abb_df = deepcopy(dictionary_from_field(c_abb_df, 'country_abbrev', 'country'))
+
+    print('Total Abbreviated Names: {}'.format(format(len(c_abb_df.keys()), ',d')))
+
+    return c_abb_df
+
+
 def start_and_end_dates(dataframe):
 
     start_date_fields = ['start_day', 'start_month', 'start_year']

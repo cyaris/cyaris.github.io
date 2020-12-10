@@ -418,8 +418,62 @@ def print_new_fields(descriptive_df, initial_columns, descriptive_columns):
 
     return
 
-def adjustParticipantNames(dataframe, grouping_type):
 
+def descriptive_participant_from_dyad(file_input, df_part_renaming_dic):
+
+    ## dyadic data that needs to be adjusted to be non-dyadic (by country, by year)
+    df_part = pd.read_csv(file_input, encoding='utf8')
+    df_part.rename(df_part_renaming_dic, axis = 1, inplace= True)
+    df_part = deepcopy(df_part[list(df_part_renaming_dic.values())].reset_index(drop=True))
+
+    ## need to union to take summations but won't need to dedupe because there are no duplicates between a and b.
+    ## this means a can be summed on its own when it's combined with b.
+    df_part = deepcopy(union_opposite_columns(df_part))
+
+    ## using c_code_a as actual c_code.
+    ## c_code_b will become a count of total allies (after duplicates are removed)
+    ## removing duplicates from concat
+    df_part.drop_duplicates(subset=list(df_part_renaming_dic.values()), keep='first', inplace=True)
+    df_part.rename({'c_code_a': 'c_code'}, axis=1, inplace=True)
+
+    return df_part
+
+
+def descriptive_participant_aggregation(initial_part_df, df_part, renaming_input, aggregations_input):
+
+    if renaming_input==None:
+        pass
+    else:
+        df_part.rename(renaming_input, axis=1, inplace=True)
+
+    df_part = deepcopy(df_part[list(renaming_input.values())].reset_index(drop=True))
+    ## replacing unknowns with null before summation
+    for field in aggregations_input.keys():
+        if aggregations_input[field]=='sum':
+            df_part.loc[df_part[field]==-9, field] = None
+            df_part[field] = df_part[field].astype(float)
+
+    df_part = deepcopy(df_part.groupby(['c_code', 'year']).agg(aggregations_input).reset_index())
+
+    ## inner join to only include participants found in participants war data
+    ## this will limit runtime significantly
+    df_part = deepcopy(pd.merge(initial_part_df, df_part, how='inner', on=['c_code', 'year']))
+
+    return df_part
+
+
+def get_summation_aggregation_dic(df_renaming_dic, non_aggregation_values_input):
+
+    aggregations = {}
+
+    ## iterating over the dictionary values that will be aggregated
+    for value in list(df_renaming_dic.values()):
+        if value not in non_aggregation_values_input:
+            aggregations[value] = 'sum'
+
+    return aggregations
+
+def adjustParticipantNames(dataframe, grouping_type):
 
     if grouping_type=='participant':
         print('Adjusting and consolidating participant names for part_df.')

@@ -493,18 +493,18 @@
 				var svg2BodyMO = function(d) {
 
 						svg2.selectAll('.link_descriptor_dropdowns').remove();
-						svg2.select('#link_dropdown_selected_text').style('opacity', 1);
+						svg2.select('#link_selected_text').style('opacity', 1);
 
-						svg2.selectAll('.part_descriptor_dropdowns').remove();
-						svg2.select('#part_dropdown_selected_text').style('opacity', 1);
+						svg2.selectAll('.node_descriptor_dropdowns').remove();
+						svg2.select('#node_selected_text').style('opacity', 1);
 				},
 						svg3BodyMO = function(d) {
 
 						svg2.selectAll('.link_descriptor_dropdowns').remove();
-						svg2.select('#link_dropdown_selected_text').style('opacity', 1);
+						svg2.select('#link_selected_text').style('opacity', 1);
 
 						svg2.selectAll('.part_descriptor_dropdowns').remove();
-						svg2.select('#part_dropdown_selected_text').style('opacity', 1);
+						svg2.select('#part_selected_text').style('opacity', 1);
 				};
 
 				addStdRect(svg2, null, 'svg2_rect_outline', 0, 0, width, svg2Height, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
@@ -525,21 +525,40 @@
 				addStdRect(svg2, null, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, backToMenuClick);
 				addStdText(svg2, null, null, 6, 22.5, graphMenuTextSize, 0, '↖ Menu');
 
-				// obtaining array for all war fields in the json file
-				// these will be iterated through to fill the warDic dictionary
-				warFields = Object.keys(graph.war[0]).sort();
-				warDic = {};
+				function getWarDic() {
 
-				for ( var i = 0; i <= warFields.length-1; i++ ) {
-					// obtaining all values from war json dictionary (originally war_df)
-					warDic[warFields[i]] = graph.war[0][warFields[i]];
+					// obtaining array for all war fields in the json file
+					// these will be iterated through to fill the warDic dictionary
+					warFields = Object.keys(graph.war[0]).sort();
+					warDic = {};
+
+					for ( var i = 0; i <= warFields.length-1; i++ ) {
+						// obtaining all values from war json dictionary (originally war_df)
+						warDic[warFields[i]] = graph.war[0][warFields[i]];
+					};
+
+
+					if ( warDic['start_year']==warDic['end_year'] ) {
+						warDic['single_year_war'] = true,
+						warDic['timeFrame'] = warDic['start_year'];
+					}
+					else {
+						warDic['single_year_war'] = false,
+						warDic['timeFrame'] = warDic['start_year'] + '-' + warDic['end_year'];
+					}
+
+
+					return warDic;
 				};
 
-				console.log('warDic', warDic);
+				warDic = getWarDic();
+					console.log('warDic', warDic);
 
 				addStdText(svg2, null, null, 0, 92.5, graphMenuTextSize, 0, warDic['war_name']);
+				addStdText(svg2, null, null, 0, 110, graphMenuTextSize, 0, warDic['timeFrame']);
 
-				if ( warDic['start_year']!=warDic['end_year'] ) {
+				if ( warDic['single_year_war']==false ) {
+
 					sliderDefined = true,
 					sliderData = [0, 1, 2],
 					sliderDataLabels = {0: 'First Year', 1: 'Last Year', 2: 'All Years'},
@@ -553,32 +572,35 @@
 											.tickValues(sliderData)
 											.tickFormat(function(d, i) { return sliderDataLabels[i]; })
 											.on('onchange', val => {
-															console.log('sliderDataLabels', sliderDataLabels[val]);
-															d3.select('#link_dropdown_selected_text').remove();
-															d3.select('#part_dropdown_selected_text').remove();
-															currentTimeFrame = val,
-															partDropDownSelected = defaultValues['participant'][currentTimeFrame],
-															linkDropDownSelected = defaultValues['dyad'][currentTimeFrame];
 
-															getPartDescriptiveValuesAndMoreOutput = getPartDescriptiveValuesAndMore(null),
-															partDescriptiveValues = getPartDescriptiveValuesAndMoreOutput[0],
-															maxDomain = getPartDescriptiveValuesAndMoreOutput[1],
-															stdNullRadiusSize = getPartDescriptiveValuesAndMoreOutput[2];
-															updateNodeSizes(partDropDownSelected, partDescriptiveValues, maxDomain, stdNullRadiusSize);
+															// console.log('sliderDataLabels', sliderDataLabels[val]);
 
-															addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, partDropDownSelected);
-															addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkDropDownSelected);
+															d3.select('#link_selected_text').remove();
+															d3.select('#part_selected_text').remove();
+
+															timeFrame = val,
+															nodeSelected = defaultValues['node'][timeFrame],
+															linkSelected = defaultValues['link'][timeFrame];
+
+															getNodeDescriptiveValuesOutput = getNodeDescriptiveValues(null),
+															nodeDescriptiveValues = getNodeDescriptiveValuesOutput[0],
+															maxDomain = getNodeDescriptiveValuesOutput[1],
+															stdNullRadiusSize = getNodeDescriptiveValuesOutput[2];
+															updateNodeSizes(nodeSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
+
+															addStdText(svg2, null, 'part_selected_text', width-nodeDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, nodeSelected);
+															addStdText(svg2, null, 'link_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkSelected);
 											});
 
 					svg2.append('g')
 							.attr('transform', 'translate(200,200)')
 							.call(yearSlider);
 
-					currentTimeFrame = yearSlider.value();
+					timeFrame = yearSlider.value();
 				}
 				else {
 					sliderDefined = false;
-					currentTimeFrame = 2;
+					timeFrame = 2;
 					console.log('Start Year==End Year');
 					console.log('No slider needed.');
 				};
@@ -603,20 +625,20 @@
 				allPartFields = Object.keys(graph.nodes[0]).sort(),
 				allLinkFields = Object.keys(graph.links[0]).sort(),
 				descriptiveFields = {
-					'participant': {
+					'node': {
 						0: {}, 1: {}, 2: {}
 					},
-					'dyad': {
+					'link': {
 						0: {}, 1: {}, 2: {}
 					}
 				},
 				descriptorNameLengths = {
-					'participant': [],
-					'dyad': []
+					'node': [],
+					'link': []
 				},
 				defaultValues = {
-					'participant': {},
-					'dyad': {}
+					'node': {},
+					'link': {}
 				},
 				descriptiveTags = {
 					'_x': 0,
@@ -624,9 +646,9 @@
 					'_z': 2
 				};
 
-				function getPartDescriptiveValuesAndMore(sizeField) {
+				function getNodeDescriptiveValues(sizeField) {
 
-						partDescriptiveValues = [],
+						nodeDescriptiveValues = [],
 						// this will become the sum of all inputs to the radius function
 						maxDomain = 0,
 						// this will be used to count the total nodes with null radius sizes.
@@ -639,7 +661,7 @@
 								// checking for null input or null value in field
 								if ( isNaN(parseFloat(d[sizeField])) ) {
 									nullRadiusNodes+=1
-									partDescriptiveValues.push(NaN);
+									nodeDescriptiveValues.push(NaN);
 								}
 								else {
 									// cannot be a negative value
@@ -647,28 +669,28 @@
 									{ maxDomain+=Math.max(0, parseFloat(d[sizeField])) }
 									// cannot be a negative value
 									// the plus may need to be removed here
-									partDescriptiveValues.push(Math.max(0, parseFloat(d[sizeField])));
+									nodeDescriptiveValues.push(Math.max(0, parseFloat(d[sizeField])));
 							}
 						});
 
 						// accounting for when all values in array are zeros
 						// assuming that any network with all zeros should actually be all nulls
 						// could happen when descriptive data years do not cover war years
-						uniquePartDescriptiveValues = partDescriptiveValues.uniqueNonNull();
+						uniqueNodeDescriptiveValues = nodeDescriptiveValues.uniqueNonNull();
 
 						// flagging all fields that will be removed from analysis due to incomplete or non-applicable data
-						if ( uniquePartDescriptiveValues.length==0 )
+						if ( uniqueNodeDescriptiveValues.length==0 )
 							{ incompleteDescriptor = true }
-						// partDescriptiveValues only contains zeros
-						else if ( uniquePartDescriptiveValues.length==1 && uniquePartDescriptiveValues[0]==0 )
+						// nodeDescriptiveValues only contains zeros
+						else if ( uniqueNodeDescriptiveValues.length==1 && uniqueNodeDescriptiveValues[0]==0 )
 							{ incompleteDescriptor = true }
 						// must have greater than 50% non-null nodes
 						// this will prevent improper size comparisons
-						else if ( nullRadiusNodes/(partDescriptiveValues.length - nullRadiusNodes) >= 0.5 )
+						else if ( nullRadiusNodes/(nodeDescriptiveValues.length - nullRadiusNodes) >= 0.5 )
 							{ incompleteDescriptor = true }
 						// all participants were in the war for the same number of days.
 						// nothing to compare if all the values are the same (for the same reason).
-						else if ( sizeField=='days_at_war_z' && uniquePartDescriptiveValues.length==1 )
+						else if ( sizeField=='days_at_war_z' && uniqueNodeDescriptiveValues.length==1 )
 							{ incompleteDescriptor = true }
 						// the war was only one year, so star year metrics equal end year metrics
 						// keeping overall metrics only
@@ -677,7 +699,7 @@
 						else
 							{ incompleteDescriptor = false }
 
-						totalNodes = partDescriptiveValues.length;
+						totalNodes = nodeDescriptiveValues.length;
 
 						if ( nullRadiusNodes!=totalNodes ) {
 							// stdNullRadiusSize is the average of non-null inputs for node size
@@ -689,7 +711,7 @@
 							stdNullRadiusSize = maxDomain/totalNodes;
 						}
 
-						return [partDescriptiveValues, maxDomain, stdNullRadiusSize, incompleteDescriptor];
+						return [nodeDescriptiveValues, maxDomain, stdNullRadiusSize, incompleteDescriptor];
 				};
 
 				function getLinkDescriptiveValues(descriptorName) {
@@ -702,8 +724,6 @@
 								// returning an array filled with zeros if the selection is 'None'
 								if ( isNaN(descriptorName) )
 								{ linkDescriptiveValues.push(0); }
-								// else if ( descriptiveFields['dyad'].length==0 )
-								// { linkDescriptiveValues.push(0); }
 								else if ( parseInt(link[descriptorName]) > 0 )
 								{ linkDescriptiveValues.push(1); }
 								else
@@ -719,31 +739,30 @@
 						// creating a value for a default descriptor for when no descriptive fields exist
 						if ( Object.keys(descriptiveFields[grouping][timeFrame]).length==0 ) {
 							// filling no selection with the default empty value ('None')
-							textLabel = 'None available';
+							textLabel = 'None available',
 							defaultValues[grouping][timeFrame] = textLabel;
-							// descriptiveFields[grouping].push('None');
 							descriptorNameLengths[grouping].push(getTextWidth(svg2, textLabel, graphMenuTextSize));
 						}
 						else {
-								// filling no selection with the default empty value ('None')
-								textLabel = 'None Selected';
-								defaultValues[grouping][timeFrame] = textLabel;
-								descriptorNameLengths[grouping].push(getTextWidth(svg2, textLabel, graphMenuTextSize));
-							}
+							// filling no selection with the default empty value ('None')
+							textLabel = 'None Selected',
+							defaultValues[grouping][timeFrame] = textLabel;
+							descriptorNameLengths[grouping].push(getTextWidth(svg2, textLabel, graphMenuTextSize));
+						}
 
 						descriptorMaxNameWidth = maxFromArray(descriptorNameLengths[grouping]);
 
-						return 	[descriptorMaxNameWidth, defaultValues];
+						return 	[defaultValues, descriptorMaxNameWidth];
 				};
 
 				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
 					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
 					// only pushing first year links if the start year equals the end year
 					if ( Object.keys(descriptiveTags).includes(allLinkFields[i].slice(-2)) && d3.max(graph.links, function(d) { return d[allLinkFields[i]]; }) > 0  && ( sliderDefined==true || allLinkFields[i].slice(-2)=='_x' ) ) {
-						timeframeInt = descriptiveTags[allLinkFields[i].slice(-2)];
-						descriptiveFields['dyad'][timeframeInt][allLinkFields[i]] = {'values': getLinkDescriptiveValues(allLinkFields[i]) };
+						timeFrameInt = descriptiveTags[allLinkFields[i].slice(-2)];
+						descriptiveFields['link'][timeFrameInt][allLinkFields[i]] = {'values': getLinkDescriptiveValues(allLinkFields[i]) };
 						// getting an array of name lengths for all items added
-						descriptorNameLengths['dyad'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
+						descriptorNameLengths['link'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
 					 }
 				};
 
@@ -751,61 +770,50 @@
 				for ( var i = 0; i <= allPartFields.length-1; i++ ) {
 						// not including any field in nonDescriptivePartFields (text fields or just fields that don't need to be filtered on)
 						// not including any field with incomplete data (only zeros or null values)
-						// getPartDescriptiveValuesAndMore will need to be called twice to weed out the incompleteDescriptor tag
-						if ( Object.keys(descriptiveTags).includes(allPartFields[i].slice(-2)) && getPartDescriptiveValuesAndMore(allPartFields[i])[3]==false ) {
+						// getNodeDescriptiveValues will need to be called twice to weed out the incompleteDescriptor tag
+						if ( Object.keys(descriptiveTags).includes(allPartFields[i].slice(-2)) && getNodeDescriptiveValues(allPartFields[i])[3]==false ) {
 
-							timeframeInt = descriptiveTags[allPartFields[i].slice(-2)];
-							partDescriptiveValuesAndMoreOutput = getPartDescriptiveValuesAndMore(allPartFields[i]);
-							descriptiveFields['participant'][timeframeInt][allPartFields[i]] = {
-								'values': partDescriptiveValuesAndMoreOutput[0],
-								'max_domain': partDescriptiveValuesAndMoreOutput[1],
-								'std_node_size': partDescriptiveValuesAndMoreOutput[2]
+							timeFrameInt = descriptiveTags[allPartFields[i].slice(-2)];
+							nodeDescriptiveValuesOutput = getNodeDescriptiveValues(allPartFields[i]);
+							descriptiveFields['node'][timeFrameInt][allPartFields[i]] = {
+								'values': nodeDescriptiveValuesOutput[0],
+								'max_domain': nodeDescriptiveValuesOutput[1],
+								'std_node_size': nodeDescriptiveValuesOutput[2]
 							};
-							// descriptiveFields['participant'][timeframeInt][allPartFields[i]]['values'] = ;
-							// descriptiveFields['participant'][timeframeInt][allPartFields[i]]['std_node_size'] = ;
 							// getting an array of name lengths for all items added
-							descriptorNameLengths['participant'].push(getTextWidth(svg2, allPartFields[i], graphMenuTextSize));
+							descriptorNameLengths['node'].push(getTextWidth(svg2, allPartFields[i], graphMenuTextSize));
 						}
 				};
 
 				console.log('descriptiveFields', descriptiveFields);
-				// linkDropDownSelected = linkNullDescriptiveOutput[2],
-				// linkDropDownSelectedIndice = Math.floor(Math.random() * descriptiveFields['dyad'].length),
-				// currentDescriptiveIndices = getFilteredDescriptiveIndices(2, descriptiveFields, 'dyad')
-				// linkDropDownSelectedIndice = currentDescriptiveIndices[0],
-
 
 				for ( var i = 0; i <= Object.keys(descriptiveTags).length-1; i++ ) {
 
-					linkNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'dyad'),
-					linkDescriptiveMaxNameWidth = linkNullDescriptiveOutput[0],
-					defaultValues = linkNullDescriptiveOutput[1];
+					linkNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'link'),
+					defaultValues = linkNullDescriptiveOutput[0],
+					linkDescriptiveMaxNameWidth = linkNullDescriptiveOutput[1];
 
-
-					partNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'participant'),
-					partDescriptiveMaxNameWidth = partNullDescriptiveOutput[0],
-					defaultValues = partNullDescriptiveOutput[1];
-
+					partNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'node'),
+					defaultValues = partNullDescriptiveOutput[0],
+					nodeDescriptiveMaxNameWidth = partNullDescriptiveOutput[1];
 				};
 
 				console.log(defaultValues);
 
-				linkDropDownSelected = defaultValues['dyad'][currentTimeFrame],
+
+				// linkselectedDescriptor = Math.floor(Math.random() * descriptiveFields['link'].length),
+				linkSelected = defaultValues['link'][timeFrame],
 				linkDescriptiveValues = getLinkDescriptiveValues(null),
 				linkXLoc = 10;
 
-				// var partDropDownSelectedIndice = descriptiveFields['participant'].indexOf('neutrality_alliances_x'),
-				// partDropDownSelectedIndice = Math.floor(Math.random() * descriptiveFields['participant'].length),
-				// currentDescriptiveIndices = getFilteredDescriptiveIndices(2, descriptiveFields, 'participant'),
-				// partDropDownSelectedIndice = currentDescriptiveIndices[0],
-				// partDropDownSelected = descriptiveFields['participant'][partDropDownSelectedIndice],
+				// nodeselectedDescriptor = descriptiveFields['node'].indexOf('neutrality_alliances_x'),
+				// nodeselectedDescriptor = Math.floor(Math.random() * descriptiveFields['node'].length),
 
-
-				partDropDownSelected = defaultValues['participant'][currentTimeFrame],
-				getPartDescriptiveValuesAndMoreOutput = getPartDescriptiveValuesAndMore(null),
-				partDescriptiveValues = getPartDescriptiveValuesAndMoreOutput[0],
-				maxDomain = getPartDescriptiveValuesAndMoreOutput[1],
-				stdNullRadiusSize = getPartDescriptiveValuesAndMoreOutput[2],
+				nodeSelected = defaultValues['node'][timeFrame],
+				getNodeDescriptiveValuesOutput = getNodeDescriptiveValues(null),
+				nodeDescriptiveValues = getNodeDescriptiveValuesOutput[0],
+				maxDomain = getNodeDescriptiveValuesOutput[1],
+				stdNullRadiusSize = getNodeDescriptiveValuesOutput[2],
 				partXLoc = 350;
 
 				function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
@@ -835,7 +843,7 @@
 						{ return 0; }
 				};
 
-				function getNodeMargins(partDescriptiveValues, maxDomain, stdNullRadiusSize) {
+				function getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize) {
 
 						minRadiusSize = 2,
 						maxRadiusSize = 150,
@@ -867,10 +875,10 @@
 								// determining totalCasualties across all countries as maxRadiusSize.
 								// this will make larger numbers proportional to the total across all countries.
 								// setting a minimum for radius so the node will never completely disappear.
-								if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
+								if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
 								 { currentRadiusSize = radius(stdNullRadiusSize); }
 								else
-								 { currentRadiusSize = radius(partDescriptiveValues[d.id]); }
+								 { currentRadiusSize = radius(nodeDescriptiveValues[d.id]); }
 								nodeMargins['radius_size'][d.id] = currentRadiusSize,
 								nodeMargins['name'][d.id] = d.participant,
 								currentNameLength = getTextWidth(svgDummy, d.participant, graphTextSize),
@@ -924,9 +932,9 @@
 				// var linkNodeSize = 10;
 
 				// base value that will be used to calculate the values appended to the arrays above.
-				nodeMargins = getNodeMargins(partDescriptiveValues, maxDomain, stdNullRadiusSize);
+				nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 
-				console.log('partDescriptiveValues', partDescriptiveValues);
+				console.log('nodeDescriptiveValues', nodeDescriptiveValues);
 				console.log('nodeMargins', nodeMargins);
 
 				function OnlyOnePrimaryNodeCheck() {
@@ -1194,29 +1202,29 @@
 						.style('stroke', 'black')
 						.style('stroke-width', 0)
 						.style('opacity', function(d) {
-							if ( uniquePartDescriptiveValues.length==0 )
+							if ( uniqueNodeDescriptiveValues.length==0 )
 							{ return 0; }
-							else if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
+							else if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
 								{ return 1; }
 							else
 							{ return 0; }
 						})
 			      .text('?');
 
-				function defineNodeTooltips(nodeMargins, partDropDownSelected, partDescriptiveValues) {
+				function defineNodeTooltips(nodeMargins, nodeSelected, nodeDescriptiveValues) {
 
-					console.log(partDescriptiveValues);
+					console.log(nodeDescriptiveValues);
 
 					for ( var i = 0; i <= Object.values(nodeMargins['radius_size']).length-1; i++ ) {
 
-						 	textInput = partDropDownSelected + ': ' + partDescriptiveValues[i].toLocaleString();
+						 	textInput = nodeSelected + ': ' + nodeDescriptiveValues[i].toLocaleString();
 							defineTooltip('hover_statistics', 'node_tooltip_' + i, 700, '50px', toolTipWidth, toolTipHeight, textInput);
 					};
 				};
 
 				toolTipWidth = '250px',
 				toolTipHeight = '75px';
-				defineNodeTooltips(nodeMargins, partDropDownSelected, partDescriptiveValues);
+				defineNodeTooltips(nodeMargins, nodeSelected, nodeDescriptiveValues);
 
 				// the following two functions will be used for both links and participants
 				function descriptiveMenuMouseOver(groupingType, maxWidth, descriptiveArray, clickFunction, xLoc) {
@@ -1224,7 +1232,7 @@
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 
 						if ( Object.keys(descriptiveArray).length > 0)
-						{ svg2.select('#' + groupingType + '_dropdown_selected_text').style('opacity', 0);
+						{ svg2.select('#' + groupingType + '_selected_text').style('opacity', 0);
 
 							for ( var i = 0; i <= Object.keys(descriptiveArray).length-1; i++ ) {
 								addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
@@ -1232,34 +1240,30 @@
 							}
 						}
 						else
-						{ svg2.select('#' + groupingType + '_dropdown_selected_rect').style('stroke-width', 2); }
+						{ svg2.select('#' + groupingType + '_selected_rect').style('stroke-width', 2); }
 
 				};
 
 				function descriptiveMenuClick(groupingType, descriptorIndice, maxWidth, descriptiveFieldsDic, moFunction, xLoc) {
 
-						dropDownSelected = Object.keys(descriptiveFieldsDic)[descriptorIndice];
+						menuSelectedItem = Object.keys(descriptiveFieldsDic)[descriptorIndice];
 
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
-						svg2.select('#' + groupingType + '_dropdown_selected_text').remove();
+						svg2.select('#' + groupingType + '_selected_text').remove();
 
-						addStdRect(svg2, null, groupingType + '_dropdown_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'white', null, moFunction, generalRectML, null);
-						addStdText(svg2, null, groupingType + '_dropdown_selected_text', width-maxWidth-xLoc+5, 22.5, graphMenuTextSize, 0, dropDownSelected);
+						addStdRect(svg2, null, groupingType + '_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'white', null, moFunction, generalRectML, null);
+						addStdText(svg2, null, groupingType + '_selected_text', width-maxWidth-xLoc+5, 22.5, graphMenuTextSize, 0, menuSelectedItem);
 
-						return dropDownSelected;
 				};
 
-				function updateNodeSizes(partDropDownSelected, partDescriptiveValues, maxDomain, stdNullRadiusSize) {
+				function updateNodeSizes(nodeSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize) {
 
 					// base value that will be used to calculate the values appended to the arrays above.
 					// including linkNodeSize inside of addedMarginSize.
-					nodeMargins = getNodeMargins(partDescriptiveValues, maxDomain, stdNullRadiusSize);
-
-					console.log('partDescriptiveValues', partDescriptiveValues);
-					console.log('nodeMargins', nodeMargins);
+					nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 					d3.selectAll('.tooltip').remove();
-					defineNodeTooltips(nodeMargins, partDropDownSelected, partDescriptiveValues);
+					defineNodeTooltips(nodeMargins, nodeSelected, nodeDescriptiveValues);
 
 					nodeTransitionDelay = 50,
 					nodeTransitionDuration = 3000;
@@ -1282,9 +1286,9 @@
 							// adjusting opacity will be a shorter transition than repositioning the label.
 							.transition().delay(nodeTransitionDelay).duration(nodeTransitionDelay)
 							.style('opacity', function(d) {
-								if ( uniquePartDescriptiveValues.length==0 )
+								if ( uniqueNodeDescriptiveValues.length==0 )
 								{ return 0; }
-								else if ( isNaN(parseFloat(partDescriptiveValues[d.id])) )
+								else if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
 									{ return 1; }
 								else
 								{ return 0; }
@@ -1300,21 +1304,19 @@
 				var linkMenuMouseOver = function(d) {
 
 						generalRectML;
-						descriptiveMenuMouseOver('link', linkDescriptiveMaxNameWidth, descriptiveFields['dyad'][currentTimeFrame], linkMenuClick, linkXLoc);
+						descriptiveMenuMouseOver('link', linkDescriptiveMaxNameWidth, descriptiveFields['link'][timeFrame], linkMenuClick, linkXLoc);
 				},
 						linkMenuClick = function(d) {
 
 						// obtaining the indice part of the id
-						linkIndicePieces = d3.select(this).attr('id').split('_'),
-						linkDropDownSelectedIndice = parseInt(linkIndicePieces[linkIndicePieces.length-1]),
-						linkDropDownSelected = descriptiveMenuClick('link', linkDropDownSelectedIndice, linkDescriptiveMaxNameWidth, descriptiveFields['dyad'][currentTimeFrame], linkMenuMouseOver, linkXLoc),
-						linkDescriptiveValues = descriptiveFields['dyad'][currentTimeFrame][linkDropDownSelected]['values'];
+						selectedDescriptorPieces = d3.select(this).attr('id').split('_'),
+						selectedDescriptorIndice = parseInt(selectedDescriptorPieces[selectedDescriptorPieces.length-1]),
+						selectedDescriptor = Object.keys(descriptiveFields['link'][timeFrame])[selectedDescriptorIndice],
+						linkDescriptiveValues = descriptiveFields['link'][timeFrame][selectedDescriptor]['values'];
 
-						console.log('linkDropDownSelectedIndice', linkDropDownSelectedIndice);
-						console.log('linkDropDownSelected', linkDropDownSelected);
-						console.log('linkDescriptiveValues', linkDescriptiveValues);
+						descriptiveMenuClick('link', selectedDescriptor, linkDescriptiveMaxNameWidth, descriptiveFields['link'][timeFrame], linkMenuMouseOver, linkXLoc),
 
-						// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
+						// svg2.select('#link_selected_rect').attr('pointer-events', 'none');
 
 						link.selectAll('.link_dash')
 								.transition().delay(100).duration(500)
@@ -1332,30 +1334,32 @@
 					 	partMenuMouseOver = function(d) {
 
 						generalRectML;
-						descriptiveMenuMouseOver('part', partDescriptiveMaxNameWidth, descriptiveFields['participant'][currentTimeFrame], partMenuClick, partXLoc);
+						descriptiveMenuMouseOver('node', nodeDescriptiveMaxNameWidth, descriptiveFields['node'][timeFrame], nodeMenuCLick, partXLoc);
 				},
-						partMenuClick = function(d) {
+						nodeMenuCLick = function(d) {
 
 						// obtaining the indice part of the id
-						partIndicePieces = d3.select(this).attr('id').split('_');
-						partDropDownSelectedIndice = parseInt(partIndicePieces[partIndicePieces.length-1]),
-						partDropDownSelected = descriptiveMenuClick('part', partDropDownSelectedIndice, partDescriptiveMaxNameWidth, descriptiveFields['participant'][currentTimeFrame], partMenuMouseOver, partXLoc);
-						partDescriptiveValues = descriptiveFields['participant'][currentTimeFrame][partDropDownSelected]['values'],
-						maxDomain = descriptiveFields['participant'][currentTimeFrame][partDropDownSelected]['max_domain'],
-						stdNullRadiusSize = descriptiveFields['participant'][currentTimeFrame][partDropDownSelected]['std_node_size'];
+						selectedDescriptorPieces = d3.select(this).attr('id').split('_'),
+						selectedDescriptorIndice = parseInt(selectedDescriptorPieces[selectedDescriptorPieces.length-1]),
+						selectedDescriptor = Object.keys(descriptiveFields['node'][timeFrame])[selectedDescriptorIndice],
+						nodeDescriptiveValues = descriptiveFields['node'][timeFrame][selectedDescriptor]['values'],
+						maxDomain = descriptiveFields['node'][timeFrame][selectedDescriptor]['max_domain'],
+						stdNullRadiusSize = descriptiveFields['node'][timeFrame][selectedDescriptor]['std_node_size'];
 
-						// console.log('nodesizeupdateinputs', partDropDownSelected, partDescriptiveValues, stdNullRadiusSize);
-						updateNodeSizes(partDropDownSelected, partDescriptiveValues, maxDomain, stdNullRadiusSize);
+						descriptiveMenuClick('node', selectedDescriptorIndice, nodeDescriptiveMaxNameWidth, descriptiveFields['node'][timeFrame], partMenuMouseOver, partXLoc);
+
+						// console.log('nodesizeupdateinputs', nodeSelected, nodeDescriptiveValues, stdNullRadiusSize);
+						updateNodeSizes(nodeSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 				};
 
-				addStdRect(svg2, null, 'part_dropdown_selected_rect', width-partDescriptiveMaxNameWidth-partXLoc, 1, partDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
-				addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, partDropDownSelected);
+				addStdRect(svg2, null, 'part_selected_rect', width-nodeDescriptiveMaxNameWidth-partXLoc, 1, nodeDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
+				addStdText(svg2, null, 'part_selected_text', width-nodeDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, nodeSelected);
 
 				// console.log('random link indice', randomLinkDescriptorIndice);
-				// console.log('linkDropDownSelected', linkDropDownSelected);
-				addStdRect(svg2, null, 'link_dropdown_selected_rect', width-linkDescriptiveMaxNameWidth-linkXLoc, 1, linkDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
-				addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkDropDownSelected);
+				// console.log('linkSelected', linkSelected);
+				addStdRect(svg2, null, 'link_selected_rect', width-linkDescriptiveMaxNameWidth-linkXLoc, 1, linkDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
+				addStdText(svg2, null, 'link_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkSelected);
 
 			  function ticked() {
 

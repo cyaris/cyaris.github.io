@@ -535,7 +535,7 @@
 					warDic[warFields[i]] = graph.war[0][warFields[i]];
 				};
 
-				console.log(warDic);
+				console.log('warDic', warDic);
 
 				addStdText(svg2, null, null, 0, 92.5, graphMenuTextSize, 0, warDic['war_name']);
 
@@ -553,17 +553,18 @@
 											.tickValues(sliderData)
 											.tickFormat(function(d, i) { return sliderDataLabels[i]; })
 											.on('onchange', val => {
-															console.log(sliderDataLabels[val]);
+															console.log('sliderDataLabels', sliderDataLabels[val]);
 															d3.select('#link_dropdown_selected_text').remove();
 															d3.select('#part_dropdown_selected_text').remove();
+															currentTimeFrame = val,
+															partDropDownSelected = defaultValues['participant'][currentTimeFrame],
+															linkDropDownSelected = defaultValues['dyad'][currentTimeFrame];
 
-															partDropDownSelected = defaultValues['participant'],
-															linkDropDownSelected = defaultValues['dyad'];
-
-															nodeSizeSetupOutput = nodeSizeSetup(null),
-															partDescriptiveValues = nodeSizeSetupOutput[0],
-															stdNullRadiusSize = nodeSizeSetupOutput[1];
-															updateNodeSizes(partDropDownSelected, partDescriptiveValues, stdNullRadiusSize);
+															getPartDescriptiveValuesAndMoreOutput = getPartDescriptiveValuesAndMore(null),
+															partDescriptiveValues = getPartDescriptiveValuesAndMoreOutput[0],
+															maxDomain = getPartDescriptiveValuesAndMoreOutput[1],
+															stdNullRadiusSize = getPartDescriptiveValuesAndMoreOutput[2];
+															updateNodeSizes(partDropDownSelected, partDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 															addStdText(svg2, null, 'part_dropdown_selected_text', width-partDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, partDropDownSelected);
 															addStdText(svg2, null, 'link_dropdown_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkDropDownSelected);
@@ -572,9 +573,12 @@
 					svg2.append('g')
 							.attr('transform', 'translate(200,200)')
 							.call(yearSlider);
+
+					currentTimeFrame = yearSlider.value();
 				}
 				else {
 					sliderDefined = false;
+					currentTimeFrame = 2;
 					console.log('Start Year==End Year');
 					console.log('No slider needed.');
 				};
@@ -596,46 +600,31 @@
 
 				// obtaining arrays of all participant/link fields in the json file.
 				// these will be used to fill the descriptiveFields and descriptorNameLengths arrays.
-				allParticipantFields = Object.keys(graph.nodes[0]).sort(),
+				allPartFields = Object.keys(graph.nodes[0]).sort(),
 				allLinkFields = Object.keys(graph.links[0]).sort(),
 				descriptiveFields = {
-					'participant': [],
-					'dyad': []
+					'participant': {
+						0: {}, 1: {}, 2: {}
+					},
+					'dyad': {
+						0: {}, 1: {}, 2: {}
+					}
 				},
 				descriptorNameLengths = {
 					'participant': [],
 					'dyad': []
 				},
 				defaultValues = {
+					'participant': {},
+					'dyad': {}
 				},
-				descriptiveSlices = [
-					'_x',
-					'_y',
-					'_z'
-				];
-
-				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
-					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
-					// only pushing first year links if the start year equals the end year
-					if ( descriptiveSlices.includes(allLinkFields[i].slice(-2)) && d3.max(graph.links, function(d) { return d[allLinkFields[i]]; }) > 0 && ( sliderDefined==true || allLinkFields[i].slice(-2)=='_x' )) {
-					 	descriptiveFields['dyad'].push(allLinkFields[i]);
-						// getting an array of name lengths for all items added
-						descriptorNameLengths['dyad'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
-					 }
+				descriptiveTags = {
+					'_x': 0,
+					'_y': 1,
+					'_z': 2
 				};
 
-				for ( var i = 0; i <= allParticipantFields.length-1; i++ ) {
-						// not including any field in nonDescriptivePartFields (text fields or just fields that don't need to be filtered on)
-						// not including any field with incomplete data (only zeros or null values)
-						if ( descriptiveSlices.includes(allParticipantFields[i].slice(-2)) && nodeSizeSetup(allParticipantFields[i])[2]==false ) {
-
-							descriptiveFields['participant'].push(allParticipantFields[i]);
-							// getting an array of name lengths for all items added
-							descriptorNameLengths['participant'].push(getTextWidth(svg2, allParticipantFields[i], graphMenuTextSize));
-						}
-				};
-
-				function nodeSizeSetup(sizeField) {
+				function getPartDescriptiveValuesAndMore(sizeField) {
 
 						partDescriptiveValues = [],
 						// this will become the sum of all inputs to the radius function
@@ -700,30 +689,10 @@
 							stdNullRadiusSize = maxDomain/totalNodes;
 						}
 
-						return [partDescriptiveValues, stdNullRadiusSize, incompleteDescriptor];
+						return [partDescriptiveValues, maxDomain, stdNullRadiusSize, incompleteDescriptor];
 				};
 
-				// function getFilteredDescriptiveIndices(sliderValue, descriptiveArray, groupingType) {
-				//
-				//
-				// 			fieldMarkers = { 0: '_x', 1: '_y', 2: '_z'},
-				// 			descriptiveIndices = [];
-				// 			valueCount = 0
-				//
-				// 			for ( var i = 0; i <= descriptiveArray.length-1; i++ ) {
-				// 				if ( sliderDefined==false ) {
-				// 					descriptiveIndices.push(i);
-				// 				}
-				// 				else if ( fieldMarkers[sliderValue]==descriptiveArray[i].slice(-2) ) {
-				// 					descriptiveIndices.push(i);
-				// 				}
-				// 			};
-				//
-				// 			return descriptiveIndices
-				//
-				// }
-
-				function getLinkDescriptiveValues(descriptorType, descriptorIndice) {
+				function getLinkDescriptiveValues(descriptorName) {
 
 						// will need to return this array to make it global
 						linkDescriptiveValues = [];
@@ -731,11 +700,11 @@
 						graph.links.forEach(function(link) {
 
 								// returning an array filled with zeros if the selection is 'None'
-								if ( isNaN(descriptorIndice) )
+								if ( isNaN(descriptorName) )
 								{ linkDescriptiveValues.push(0); }
-								else if ( descriptiveFields['dyad'].length==0 )
-								{ linkDescriptiveValues.push(0); }
-								else if ( parseInt(link[descriptiveFields[descriptorType][descriptorIndice]]) > 0 )
+								// else if ( descriptiveFields['dyad'].length==0 )
+								// { linkDescriptiveValues.push(0); }
+								else if ( parseInt(link[descriptorName]) > 0 )
 								{ linkDescriptiveValues.push(1); }
 								else
 								{ linkDescriptiveValues.push(0); }
@@ -744,23 +713,21 @@
 						return linkDescriptiveValues;
 				};
 
-
-
 				// the following functions are for both dyadic and participant descriptive fields
-				function getDefaultSelectors(defaultValues, grouping) {
+				function getDefaultSelectors(defaultValues, timeFrame, grouping) {
 
 						// creating a value for a default descriptor for when no descriptive fields exist
-						if ( descriptiveFields[grouping].length==0 ) {
+						if ( Object.keys(descriptiveFields[grouping][timeFrame]).length==0 ) {
 							// filling no selection with the default empty value ('None')
 							textLabel = 'None available';
-							defaultValues[grouping] = textLabel;
+							defaultValues[grouping][timeFrame] = textLabel;
 							// descriptiveFields[grouping].push('None');
 							descriptorNameLengths[grouping].push(getTextWidth(svg2, textLabel, graphMenuTextSize));
 						}
 						else {
 								// filling no selection with the default empty value ('None')
-								textLabel = 'None Selected'
-								defaultValues[grouping] = textLabel
+								textLabel = 'None Selected';
+								defaultValues[grouping][timeFrame] = textLabel;
 								descriptorNameLengths[grouping].push(getTextWidth(svg2, textLabel, graphMenuTextSize));
 							}
 
@@ -769,18 +736,62 @@
 						return 	[descriptorMaxNameWidth, defaultValues];
 				};
 
+				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
+					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
+					// only pushing first year links if the start year equals the end year
+					if ( Object.keys(descriptiveTags).includes(allLinkFields[i].slice(-2)) && d3.max(graph.links, function(d) { return d[allLinkFields[i]]; }) > 0  && ( sliderDefined==true || allLinkFields[i].slice(-2)=='_x' ) ) {
+						timeframeInt = descriptiveTags[allLinkFields[i].slice(-2)];
+						descriptiveFields['dyad'][timeframeInt][allLinkFields[i]] = {'values': getLinkDescriptiveValues(allLinkFields[i]) };
+						// getting an array of name lengths for all items added
+						descriptorNameLengths['dyad'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
+					 }
+				};
 
 
+				for ( var i = 0; i <= allPartFields.length-1; i++ ) {
+						// not including any field in nonDescriptivePartFields (text fields or just fields that don't need to be filtered on)
+						// not including any field with incomplete data (only zeros or null values)
+						// getPartDescriptiveValuesAndMore will need to be called twice to weed out the incompleteDescriptor tag
+						if ( Object.keys(descriptiveTags).includes(allPartFields[i].slice(-2)) && getPartDescriptiveValuesAndMore(allPartFields[i])[3]==false ) {
+
+							timeframeInt = descriptiveTags[allPartFields[i].slice(-2)];
+							partDescriptiveValuesAndMoreOutput = getPartDescriptiveValuesAndMore(allPartFields[i]);
+							descriptiveFields['participant'][timeframeInt][allPartFields[i]] = {
+								'values': partDescriptiveValuesAndMoreOutput[0],
+								'max_domain': partDescriptiveValuesAndMoreOutput[1],
+								'std_node_size': partDescriptiveValuesAndMoreOutput[2]
+							};
+							// descriptiveFields['participant'][timeframeInt][allPartFields[i]]['values'] = ;
+							// descriptiveFields['participant'][timeframeInt][allPartFields[i]]['std_node_size'] = ;
+							// getting an array of name lengths for all items added
+							descriptorNameLengths['participant'].push(getTextWidth(svg2, allPartFields[i], graphMenuTextSize));
+						}
+				};
+
+				console.log('descriptiveFields', descriptiveFields);
 				// linkDropDownSelected = linkNullDescriptiveOutput[2],
 				// linkDropDownSelectedIndice = Math.floor(Math.random() * descriptiveFields['dyad'].length),
 				// currentDescriptiveIndices = getFilteredDescriptiveIndices(2, descriptiveFields, 'dyad')
 				// linkDropDownSelectedIndice = currentDescriptiveIndices[0],
 
-				linkNullDescriptiveOutput = getDefaultSelectors(defaultValues, 'dyad'),
-				linkDescriptiveMaxNameWidth = linkNullDescriptiveOutput[0],
-				defaultValues = linkNullDescriptiveOutput[1],
-				linkDropDownSelected = defaultValues['dyad'],
-				linkDescriptiveValues = getLinkDescriptiveValues('dyad', null),
+
+				for ( var i = 0; i <= Object.keys(descriptiveTags).length-1; i++ ) {
+
+					linkNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'dyad'),
+					linkDescriptiveMaxNameWidth = linkNullDescriptiveOutput[0],
+					defaultValues = linkNullDescriptiveOutput[1];
+
+
+					partNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'participant'),
+					partDescriptiveMaxNameWidth = partNullDescriptiveOutput[0],
+					defaultValues = partNullDescriptiveOutput[1];
+
+				};
+
+				console.log(defaultValues);
+
+				linkDropDownSelected = defaultValues['dyad'][currentTimeFrame],
+				linkDescriptiveValues = getLinkDescriptiveValues(null),
 				linkXLoc = 10;
 
 				// var partDropDownSelectedIndice = descriptiveFields['participant'].indexOf('neutrality_alliances_x'),
@@ -789,13 +800,12 @@
 				// partDropDownSelectedIndice = currentDescriptiveIndices[0],
 				// partDropDownSelected = descriptiveFields['participant'][partDropDownSelectedIndice],
 
-				partNullDescriptiveOutput = getDefaultSelectors(defaultValues, 'participant'),
-				partDescriptiveMaxNameWidth = partNullDescriptiveOutput[0],
-				defaultValues = partNullDescriptiveOutput[1],
-				partDropDownSelected = defaultValues['participant'],
-				nodeSizeSetupOutput = nodeSizeSetup(null),
-				partDescriptiveValues = nodeSizeSetupOutput[0],
-				stdNullRadiusSize = nodeSizeSetupOutput[1],
+
+				partDropDownSelected = defaultValues['participant'][currentTimeFrame],
+				getPartDescriptiveValuesAndMoreOutput = getPartDescriptiveValuesAndMore(null),
+				partDescriptiveValues = getPartDescriptiveValuesAndMoreOutput[0],
+				maxDomain = getPartDescriptiveValuesAndMoreOutput[1],
+				stdNullRadiusSize = getPartDescriptiveValuesAndMoreOutput[2],
 				partXLoc = 350;
 
 				function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
@@ -825,7 +835,7 @@
 						{ return 0; }
 				};
 
-				function getNodeMargins(partDescriptiveValues, stdNullRadiusSize) {
+				function getNodeMargins(partDescriptiveValues, maxDomain, stdNullRadiusSize) {
 
 						minRadiusSize = 2,
 						maxRadiusSize = 150,
@@ -914,7 +924,7 @@
 				// var linkNodeSize = 10;
 
 				// base value that will be used to calculate the values appended to the arrays above.
-				nodeMargins = getNodeMargins(partDescriptiveValues, stdNullRadiusSize);
+				nodeMargins = getNodeMargins(partDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 				console.log('partDescriptiveValues', partDescriptiveValues);
 				console.log('nodeMargins', nodeMargins);
@@ -1026,9 +1036,6 @@
 				// identifying all dyads that shouldn't be included with a class assignment.
 				// these will be removed immediately after creation.
 				linkDashStrokeWidth = 3;
-
-				console.log('descriptiveFields', descriptiveFields);
-				console.log('linkDescriptiveValues', linkDescriptiveValues);
 
 				link.append('line')
 						.attr('class', 'link_dash')
@@ -1166,9 +1173,9 @@
 				node.append('text')
 						.attr('class', 'node_names')
 						.attr('id', function(d) { return 'node_name_' + d.id; })
-						// this setup will need to be updated for each tick
-						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id]; })
-			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id]; })
+						// // this setup will need to be updated for each tick
+						// .attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id]; })
+			      // .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id]; })
 			      .attr('text-anchor', 'middle')
 						.style('font-size', graphTextSize)
 						.style('stroke', 'black')
@@ -1178,10 +1185,10 @@
 				node.append('text')
 						.attr('class', 'node_size_warnings')
 						.attr('id', function(d) { return 'node_size_warning_' + d.id; })
-						// need a better solution for when text comes too close to node because nodesize is small
-						// this setup will need to be updated for each tick
-						.attr('dx', function(d) { return Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
-						.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); })
+						// // need a better solution for when text comes too close to node because nodesize is small
+						// // this setup will need to be updated for each tick
+						// .attr('dx', function(d) { return Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
+						// .attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); })
 						.attr('text-anchor', 'middle')
 						.style('font-size', graphTextSize)
 						.style('stroke', 'black')
@@ -1196,7 +1203,9 @@
 						})
 			      .text('?');
 
-				function defineNodeTooltips(nodeMargins, partDropDownSelected) {
+				function defineNodeTooltips(nodeMargins, partDropDownSelected, partDescriptiveValues) {
+
+					console.log(partDescriptiveValues);
 
 					for ( var i = 0; i <= Object.values(nodeMargins['radius_size']).length-1; i++ ) {
 
@@ -1207,38 +1216,29 @@
 
 				toolTipWidth = '250px',
 				toolTipHeight = '75px';
-				defineNodeTooltips(nodeMargins, partDropDownSelected);
+				defineNodeTooltips(nodeMargins, partDropDownSelected, partDescriptiveValues);
 
 				// the following two functions will be used for both links and participants
 				function descriptiveMenuMouseOver(groupingType, maxWidth, descriptiveArray, clickFunction, xLoc) {
 
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 
-						if ( descriptiveArray.length > 0)
-						{ svg2.select('#' + groupingType + '_dropdown_selected_text').style('opacity', 0); }
+						if ( Object.keys(descriptiveArray).length > 0)
+						{ svg2.select('#' + groupingType + '_dropdown_selected_text').style('opacity', 0);
+
+							for ( var i = 0; i <= Object.keys(descriptiveArray).length-1; i++ ) {
+								addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
+								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), graphMenuTextSize, 0, Object.keys(descriptiveArray)[i]);
+							}
+						}
 						else
 						{ svg2.select('#' + groupingType + '_dropdown_selected_rect').style('stroke-width', 2); }
 
-						fieldMarkers = { 0: '_x', 1: '_y', 2: '_z'},
-						currentDescriptiveArray = [];
-						valueCount = 0
-
-						for ( var i = 0; i <= descriptiveArray.length-1; i++ ) {
-							if ( sliderDefined==false ) {
-								addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
-								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), graphMenuTextSize, 0, descriptiveArray[i]);
-							}
-							else if ( fieldMarkers[yearSlider.value()]==descriptiveArray[i].slice(-2) ) {
-								addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((valueCount+1)*30), maxWidth+10, 30, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
-								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((valueCount+1)*30), graphMenuTextSize, 0, descriptiveArray[i]);
-								valueCount+=1
-							}
-						}
 				};
 
-				function descriptiveMenuClick(groupingType, descriptorIndice, maxWidth, descriptiveArray, moFunction, xLoc) {
+				function descriptiveMenuClick(groupingType, descriptorIndice, maxWidth, descriptiveFieldsDic, moFunction, xLoc) {
 
-						dropDownSelected = descriptiveArray[descriptorIndice];
+						dropDownSelected = Object.keys(descriptiveFieldsDic)[descriptorIndice];
 
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 						svg2.select('#' + groupingType + '_dropdown_selected_text').remove();
@@ -1249,17 +1249,17 @@
 						return dropDownSelected;
 				};
 
-				function updateNodeSizes(partDropDownSelected, partDescriptiveValues, stdNullRadiusSize) {
+				function updateNodeSizes(partDropDownSelected, partDescriptiveValues, maxDomain, stdNullRadiusSize) {
 
 					// base value that will be used to calculate the values appended to the arrays above.
 					// including linkNodeSize inside of addedMarginSize.
-					nodeMargins = getNodeMargins(partDescriptiveValues, stdNullRadiusSize);
+					nodeMargins = getNodeMargins(partDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 					console.log('partDescriptiveValues', partDescriptiveValues);
 					console.log('nodeMargins', nodeMargins);
 
 					d3.selectAll('.tooltip').remove();
-					defineNodeTooltips(nodeMargins, partDropDownSelected);
+					defineNodeTooltips(nodeMargins, partDropDownSelected, partDescriptiveValues);
 
 					nodeTransitionDelay = 50,
 					nodeTransitionDuration = 3000;
@@ -1300,22 +1300,21 @@
 				var linkMenuMouseOver = function(d) {
 
 						generalRectML;
-						descriptiveMenuMouseOver('link', linkDescriptiveMaxNameWidth, descriptiveFields['dyad'], linkMenuClick, linkXLoc);
+						descriptiveMenuMouseOver('link', linkDescriptiveMaxNameWidth, descriptiveFields['dyad'][currentTimeFrame], linkMenuClick, linkXLoc);
 				},
 						linkMenuClick = function(d) {
 
 						// obtaining the indice part of the id
-						linkIndicePieces = d3.select(this).attr('id').split('_');
+						linkIndicePieces = d3.select(this).attr('id').split('_'),
 						linkDropDownSelectedIndice = parseInt(linkIndicePieces[linkIndicePieces.length-1]),
-						linkDropDownSelected = descriptiveMenuClick('link', linkDropDownSelectedIndice, linkDescriptiveMaxNameWidth, descriptiveFields['dyad'], linkMenuMouseOver, linkXLoc);
-						linkDescriptiveValues = getLinkDescriptiveValues('dyad', linkDropDownSelectedIndice);
-						console.log(linkDropDownSelectedIndice);
-						console.log(linkDescriptiveValues);
+						linkDropDownSelected = descriptiveMenuClick('link', linkDropDownSelectedIndice, linkDescriptiveMaxNameWidth, descriptiveFields['dyad'][currentTimeFrame], linkMenuMouseOver, linkXLoc),
+						linkDescriptiveValues = descriptiveFields['dyad'][currentTimeFrame][linkDropDownSelected]['values'];
+
+						console.log('linkDropDownSelectedIndice', linkDropDownSelectedIndice);
+						console.log('linkDropDownSelected', linkDropDownSelected);
+						console.log('linkDescriptiveValues', linkDescriptiveValues);
 
 						// svg2.select('#link_dropdown_selected_rect').attr('pointer-events', 'none');
-
-						console.log('descriptiveFields', descriptiveFields);
-						console.log('linkDescriptiveValues', linkDescriptiveValues);
 
 						link.selectAll('.link_dash')
 								.transition().delay(100).duration(500)
@@ -1333,20 +1332,20 @@
 					 	partMenuMouseOver = function(d) {
 
 						generalRectML;
-						descriptiveMenuMouseOver('part', partDescriptiveMaxNameWidth, descriptiveFields['participant'], partMenuClick, partXLoc);
+						descriptiveMenuMouseOver('part', partDescriptiveMaxNameWidth, descriptiveFields['participant'][currentTimeFrame], partMenuClick, partXLoc);
 				},
 						partMenuClick = function(d) {
 
 						// obtaining the indice part of the id
 						partIndicePieces = d3.select(this).attr('id').split('_');
 						partDropDownSelectedIndice = parseInt(partIndicePieces[partIndicePieces.length-1]),
-						partDropDownSelected = descriptiveMenuClick('part', partDropDownSelectedIndice, partDescriptiveMaxNameWidth, descriptiveFields['participant'], partMenuMouseOver, partXLoc);
+						partDropDownSelected = descriptiveMenuClick('part', partDropDownSelectedIndice, partDescriptiveMaxNameWidth, descriptiveFields['participant'][currentTimeFrame], partMenuMouseOver, partXLoc);
+						partDescriptiveValues = descriptiveFields['participant'][currentTimeFrame][partDropDownSelected]['values'],
+						maxDomain = descriptiveFields['participant'][currentTimeFrame][partDropDownSelected]['max_domain'],
+						stdNullRadiusSize = descriptiveFields['participant'][currentTimeFrame][partDropDownSelected]['std_node_size'];
 
-						nodeSizeSetupOutput = nodeSizeSetup(partDropDownSelected),
-						partDescriptiveValues = nodeSizeSetupOutput[0],
-						stdNullRadiusSize = nodeSizeSetupOutput[1];
-
-						updateNodeSizes(partDropDownSelected, partDescriptiveValues, stdNullRadiusSize);
+						// console.log('nodesizeupdateinputs', partDropDownSelected, partDescriptiveValues, stdNullRadiusSize);
+						updateNodeSizes(partDropDownSelected, partDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 				};
 

@@ -577,6 +577,7 @@
 
 															d3.select('#link_descriptor_selected_text').remove();
 															d3.select('#node_descriptor_selected_text').remove();
+															svg3.selectAll('.link_dash').attr('stroke', 'transparent');
 
 															timeFrame = val,
 															nodeDescriptorSelected = defaultValues['node'][timeFrame],
@@ -696,7 +697,7 @@
 
 						graph.links.forEach(function(d) {
 								// returning an array filled with zeros if the selection is 'None'
-								if ( isNaN(parseFloat(d[linkDescriptorName])) ) {
+								if ( isNaN(parseFloat(d[linkDescriptorName])) )
 								{ linkDescriptiveValues.push(0); }
 								else if ( parseFloat(d[linkDescriptorName]) > 0 )
 								{ linkDescriptiveValues.push(1); }
@@ -1082,7 +1083,7 @@
 
 				link.append('line')
 						.attr('class', 'link_dash')
-						.attr('stroke', 'blue')
+						// .attr('stroke', 'blue')
 						.attr('stroke', function(d) {
 							if ( linkDescriptiveValues[d.index]==0 )
 							{ return 'transparent'; }
@@ -1340,7 +1341,7 @@
 						descriptiveMenuClick('link', selectedDescriptorIndice, linkDescriptiveMaxNameWidth, descriptiveFields['link'][timeFrame], linkMenuMouseOver, linkXLoc);
 
 						link.selectAll('.link_dash')
-								.transition().delay(100).duration(500)
+								.transition().delay(50).duration(50)
 								.attr('stroke', function(d) {
 									if ( linkDescriptiveValues[d.index]==0 )
 									{ return 'transparent'; }

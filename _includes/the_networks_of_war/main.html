@@ -493,18 +493,18 @@
 				var svg2BodyMO = function(d) {
 
 						svg2.selectAll('.link_descriptor_dropdowns').remove();
-						svg2.select('#link_selected_text').style('opacity', 1);
+						svg2.select('#link_descriptor_selected_text').style('opacity', 1);
 
 						svg2.selectAll('.node_descriptor_dropdowns').remove();
-						svg2.select('#node_selected_text').style('opacity', 1);
+						svg2.select('#node_descriptor_selected_text').style('opacity', 1);
 				},
 						svg3BodyMO = function(d) {
 
 						svg2.selectAll('.link_descriptor_dropdowns').remove();
-						svg2.select('#link_selected_text').style('opacity', 1);
+						svg2.select('#link_descriptor_selected_text').style('opacity', 1);
 
-						svg2.selectAll('.part_descriptor_dropdowns').remove();
-						svg2.select('#part_selected_text').style('opacity', 1);
+						svg2.selectAll('.node_descriptor_dropdowns').remove();
+						svg2.select('#node_descriptor_selected_text').style('opacity', 1);
 				};
 
 				addStdRect(svg2, null, 'svg2_rect_outline', 0, 0, width, svg2Height, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
@@ -575,21 +575,21 @@
 
 															// console.log('sliderDataLabels', sliderDataLabels[val]);
 
-															d3.select('#link_selected_text').remove();
-															d3.select('#part_selected_text').remove();
+															d3.select('#link_descriptor_selected_text').remove();
+															d3.select('#node_descriptor_selected_text').remove();
 
 															timeFrame = val,
-															nodeSelected = defaultValues['node'][timeFrame],
-															linkSelected = defaultValues['link'][timeFrame];
+															nodeDescriptorSelected = defaultValues['node'][timeFrame],
+															linkDescriptorSelected = defaultValues['link'][timeFrame];
 
 															getNodeDescriptiveValuesOutput = getNodeDescriptiveValues(null),
 															nodeDescriptiveValues = getNodeDescriptiveValuesOutput[0],
 															maxDomain = getNodeDescriptiveValuesOutput[1],
 															stdNullRadiusSize = getNodeDescriptiveValuesOutput[2];
-															updateNodeSizes(nodeSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
+															updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 
-															addStdText(svg2, null, 'part_selected_text', width-nodeDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, nodeSelected);
-															addStdText(svg2, null, 'link_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkSelected);
+															addStdText(svg2, null, 'node_descriptor_selected_text', width-nodeDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, nodeDescriptorSelected);
+															addStdText(svg2, null, 'link_descriptor_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkDescriptorSelected);
 											});
 
 					svg2.append('g')
@@ -673,32 +673,6 @@
 							}
 						});
 
-						// accounting for when all values in array are zeros
-						// assuming that any network with all zeros should actually be all nulls
-						// could happen when descriptive data years do not cover war years
-						uniqueNodeDescriptiveValues = nodeDescriptiveValues.uniqueNonNull();
-
-						// flagging all fields that will be removed from analysis due to incomplete or non-applicable data
-						if ( uniqueNodeDescriptiveValues.length==0 )
-							{ incompleteDescriptor = true }
-						// nodeDescriptiveValues only contains zeros
-						else if ( uniqueNodeDescriptiveValues.length==1 && uniqueNodeDescriptiveValues[0]==0 )
-							{ incompleteDescriptor = true }
-						// must have greater than 50% non-null nodes
-						// this will prevent improper size comparisons
-						else if ( nullRadiusNodes/(nodeDescriptiveValues.length - nullRadiusNodes) >= 0.5 )
-							{ incompleteDescriptor = true }
-						// all participants were in the war for the same number of days.
-						// nothing to compare if all the values are the same (for the same reason).
-						else if ( sizeField=='days_at_war_z' && uniqueNodeDescriptiveValues.length==1 )
-							{ incompleteDescriptor = true }
-						// the war was only one year, so star year metrics equal end year metrics
-						// keeping overall metrics only
-						else if ( sliderDefined==false && sizeField.slice(-2)!='_z' )
-							{ incompleteDescriptor = true }
-						else
-							{ incompleteDescriptor = false }
-
 						totalNodes = nodeDescriptiveValues.length;
 
 						if ( nullRadiusNodes!=totalNodes ) {
@@ -711,7 +685,7 @@
 							stdNullRadiusSize = maxDomain/totalNodes;
 						}
 
-						return [nodeDescriptiveValues, maxDomain, stdNullRadiusSize, incompleteDescriptor];
+						return [nodeDescriptiveValues, maxDomain, stdNullRadiusSize, nullRadiusNodes];
 				};
 
 				function getLinkDescriptiveValues(descriptorName) {
@@ -758,31 +732,72 @@
 				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
 					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
 					// only pushing first year links if the start year equals the end year
-					if ( Object.keys(descriptiveTags).includes(allLinkFields[i].slice(-2)) && d3.max(graph.links, function(d) { return d[allLinkFields[i]]; }) > 0  && ( sliderDefined==true || allLinkFields[i].slice(-2)=='_x' ) ) {
+					if ( Object.keys(descriptiveTags).includes(allLinkFields[i].slice(-2))==false )
+					{}
+					else if ( d3.max(graph.links, function(d) { return d[allLinkFields[i]]; })==0 )
+					{}
+					else if ( sliderDefined==false && allLinkFields[i].slice(-2)!='_x' )
+					{}
+					else {
+
 						timeFrameInt = descriptiveTags[allLinkFields[i].slice(-2)];
 						descriptiveFields['link'][timeFrameInt][allLinkFields[i]] = {'values': getLinkDescriptiveValues(allLinkFields[i]) };
 						// getting an array of name lengths for all items added
 						descriptorNameLengths['link'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
-					 }
+					}
 				};
 
 
 				for ( var i = 0; i <= allPartFields.length-1; i++ ) {
-						// not including any field in nonDescriptivePartFields (text fields or just fields that don't need to be filtered on)
-						// not including any field with incomplete data (only zeros or null values)
-						// getNodeDescriptiveValues will need to be called twice to weed out the incompleteDescriptor tag
-						if ( Object.keys(descriptiveTags).includes(allPartFields[i].slice(-2)) && getNodeDescriptiveValues(allPartFields[i])[3]==false ) {
+					// not including any field in nonDescriptivePartFields (text fields or just fields that don't need to be filtered on)
+					// not including any field with incomplete data (only zeros or null values)
+					// getNodeDescriptiveValues will need to be called twice to weed out the incompleteDescriptor tag
+					if ( Object.keys(descriptiveTags).includes(allPartFields[i].slice(-2))==false )
+					{ nonDescriptiveField = true; }
+					else {
 
-							timeFrameInt = descriptiveTags[allPartFields[i].slice(-2)];
-							nodeDescriptiveValuesOutput = getNodeDescriptiveValues(allPartFields[i]);
-							descriptiveFields['node'][timeFrameInt][allPartFields[i]] = {
-								'values': nodeDescriptiveValuesOutput[0],
-								'max_domain': nodeDescriptiveValuesOutput[1],
-								'std_node_size': nodeDescriptiveValuesOutput[2]
-							};
-							// getting an array of name lengths for all items added
-							descriptorNameLengths['node'].push(getTextWidth(svg2, allPartFields[i], graphMenuTextSize));
-						}
+						nonDescriptiveField = false;
+						nodeDescriptiveValuesOutput = getNodeDescriptiveValues(allPartFields[i]);
+						nodeDescriptiveValues = nodeDescriptiveValuesOutput[0];
+						nullRadiusNodes = nodeDescriptiveValuesOutput[3];
+						// accounting for when all values in array are zeros
+						// assuming that any network with all zeros should actually be all nulls
+						// could happen when descriptive data years do not cover war years
+						uniqueNodeDescriptiveValues = nodeDescriptiveValues.uniqueNonNull();
+					}
+					// flagging all fields that will be removed from analysis due to incomplete or non-applicable data
+					// flagging all fields that will be removed from analysis due to incomplete or non-applicable data
+					if ( nonDescriptiveField )
+					{}
+					else if ( uniqueNodeDescriptiveValues.length==0 )
+					{}
+					// nodeDescriptiveValues only contains zeros
+					else if ( uniqueNodeDescriptiveValues.length==1 && uniqueNodeDescriptiveValues[0]==0 )
+					{}
+					// must have greater than 50% non-null nodes
+					// this will prevent improper size comparisons
+					else if ( nullRadiusNodes/(nodeDescriptiveValues.length - nullRadiusNodes) >= 0.5 )
+					{}
+					// all participants were in the war for the same number of days.
+					// nothing to compare if all the values are the same (for the same reason).
+					else if ( allPartFields[i]=='days_at_war_z' && uniqueNodeDescriptiveValues.length==1 )
+					{}
+					// the war was only one year, so star year metrics equal end year metrics
+					// keeping overall metrics only
+					else if ( sliderDefined==false && allPartFields[i].slice(-2)!='_z' )
+					{}
+					else {
+						incompleteDescriptor = false;
+						timeFrameInt = descriptiveTags[allPartFields[i].slice(-2)];
+
+						descriptiveFields['node'][timeFrameInt][allPartFields[i]] = {
+							'values': nodeDescriptiveValues,
+							'max_domain': nodeDescriptiveValuesOutput[1],
+							'std_node_size': nodeDescriptiveValuesOutput[2]
+						};
+						// getting an array of name lengths for all items added
+						descriptorNameLengths['node'].push(getTextWidth(svg2, allPartFields[i], graphMenuTextSize));
+					}
 				};
 
 				console.log('descriptiveFields', descriptiveFields);
@@ -798,18 +813,17 @@
 					nodeDescriptiveMaxNameWidth = partNullDescriptiveOutput[1];
 				};
 
-				console.log(defaultValues);
+				console.log('defaultValues', defaultValues);
 
-
-				// linkselectedDescriptor = Math.floor(Math.random() * descriptiveFields['link'].length),
-				linkSelected = defaultValues['link'][timeFrame],
+				// linkDescriptorSelectedDescriptor = Math.floor(Math.random() * descriptiveFields['link'].length),
+				linkDescriptorSelected = defaultValues['link'][timeFrame],
 				linkDescriptiveValues = getLinkDescriptiveValues(null),
 				linkXLoc = 10;
 
-				// nodeselectedDescriptor = descriptiveFields['node'].indexOf('neutrality_alliances_x'),
-				// nodeselectedDescriptor = Math.floor(Math.random() * descriptiveFields['node'].length),
+				// nodeDescriptorSelectedDescriptor = descriptiveFields['node'].indexOf('neutrality_alliances_x'),
+				// nodeDescriptorSelectedDescriptor = Math.floor(Math.random() * descriptiveFields['node'].length),
 
-				nodeSelected = defaultValues['node'][timeFrame],
+				nodeDescriptorSelected = defaultValues['node'][timeFrame],
 				getNodeDescriptiveValuesOutput = getNodeDescriptiveValues(null),
 				nodeDescriptiveValues = getNodeDescriptiveValuesOutput[0],
 				maxDomain = getNodeDescriptiveValuesOutput[1],
@@ -933,9 +947,6 @@
 
 				// base value that will be used to calculate the values appended to the arrays above.
 				nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
-
-				console.log('nodeDescriptiveValues', nodeDescriptiveValues);
-				console.log('nodeMargins', nodeMargins);
 
 				function OnlyOnePrimaryNodeCheck() {
 						// creating an array of all links by node id
@@ -1181,9 +1192,9 @@
 				node.append('text')
 						.attr('class', 'node_names')
 						.attr('id', function(d) { return 'node_name_' + d.id; })
-						// // this setup will need to be updated for each tick
-						// .attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id]; })
-			      // .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id]; })
+						// this setup will need to be updated for each tick
+						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id]; })
+			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id]; })
 			      .attr('text-anchor', 'middle')
 						.style('font-size', graphTextSize)
 						.style('stroke', 'black')
@@ -1193,16 +1204,16 @@
 				node.append('text')
 						.attr('class', 'node_size_warnings')
 						.attr('id', function(d) { return 'node_size_warning_' + d.id; })
-						// // need a better solution for when text comes too close to node because nodesize is small
-						// // this setup will need to be updated for each tick
-						// .attr('dx', function(d) { return Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
-						// .attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); })
+						// need a better solution for when text comes too close to node because nodesize is small
+						// this setup will need to be updated for each tick
+						.attr('dx', function(d) { return Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
+						.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); })
 						.attr('text-anchor', 'middle')
 						.style('font-size', graphTextSize)
 						.style('stroke', 'black')
 						.style('stroke-width', 0)
 						.style('opacity', function(d) {
-							if ( uniqueNodeDescriptiveValues.length==0 )
+							if ( nodeDescriptiveValues.uniqueNonNull().length==0 )
 							{ return 0; }
 							else if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
 								{ return 1; }
@@ -1211,20 +1222,19 @@
 						})
 			      .text('?');
 
-				function defineNodeTooltips(nodeMargins, nodeSelected, nodeDescriptiveValues) {
-
-					console.log(nodeDescriptiveValues);
+				function defineNodeTooltips(nodeMargins, nodeDescriptorSelected, nodeDescriptiveValues) {
 
 					for ( var i = 0; i <= Object.values(nodeMargins['radius_size']).length-1; i++ ) {
 
-						 	textInput = nodeSelected + ': ' + nodeDescriptiveValues[i].toLocaleString();
+						 	textInput = nodeDescriptorSelected + ': ' + nodeDescriptiveValues[i].toLocaleString();
 							defineTooltip('hover_statistics', 'node_tooltip_' + i, 700, '50px', toolTipWidth, toolTipHeight, textInput);
 					};
 				};
 
 				toolTipWidth = '250px',
 				toolTipHeight = '75px';
-				defineNodeTooltips(nodeMargins, nodeSelected, nodeDescriptiveValues);
+
+				defineNodeTooltips(nodeMargins, nodeDescriptorSelected, nodeDescriptiveValues);
 
 				// the following two functions will be used for both links and participants
 				function descriptiveMenuMouseOver(groupingType, maxWidth, descriptiveArray, clickFunction, xLoc) {
@@ -1232,7 +1242,7 @@
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 
 						if ( Object.keys(descriptiveArray).length > 0)
-						{ svg2.select('#' + groupingType + '_selected_text').style('opacity', 0);
+						{ svg2.select('#' + groupingType + '_descriptor_selected_text').style('opacity', 0);
 
 							for ( var i = 0; i <= Object.keys(descriptiveArray).length-1; i++ ) {
 								addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
@@ -1240,7 +1250,7 @@
 							}
 						}
 						else
-						{ svg2.select('#' + groupingType + '_selected_rect').style('stroke-width', 2); }
+						{ svg2.select('#' + groupingType + '_descriptor_selected_rect').style('stroke-width', 2); }
 
 				};
 
@@ -1249,21 +1259,21 @@
 						menuSelectedItem = Object.keys(descriptiveFieldsDic)[descriptorIndice];
 
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
-						svg2.select('#' + groupingType + '_selected_text').remove();
+						svg2.select('#' + groupingType + '_descrpiptor_selected_text').remove();
 
-						addStdRect(svg2, null, groupingType + '_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'white', null, moFunction, generalRectML, null);
-						addStdText(svg2, null, groupingType + '_selected_text', width-maxWidth-xLoc+5, 22.5, graphMenuTextSize, 0, menuSelectedItem);
+						addStdRect(svg2, null, groupingType + 'descrpiptor_selected_rect', width-maxWidth-xLoc, 1, maxWidth+10, 30, 'black', 1, null, 'white', null, moFunction, generalRectML, null);
+						addStdText(svg2, null, groupingType + 'descrpiptor_selected_text', width-maxWidth-xLoc+5, 22.5, graphMenuTextSize, 0, menuSelectedItem);
 
 				};
 
-				function updateNodeSizes(nodeSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize) {
+				function updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize) {
 
 					// base value that will be used to calculate the values appended to the arrays above.
 					// including linkNodeSize inside of addedMarginSize.
 					nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 					d3.selectAll('.tooltip').remove();
-					defineNodeTooltips(nodeMargins, nodeSelected, nodeDescriptiveValues);
+					defineNodeTooltips(nodeMargins, nodeDescriptorSelected, nodeDescriptiveValues);
 
 					nodeTransitionDelay = 50,
 					nodeTransitionDuration = 3000;
@@ -1286,7 +1296,7 @@
 							// adjusting opacity will be a shorter transition than repositioning the label.
 							.transition().delay(nodeTransitionDelay).duration(nodeTransitionDelay)
 							.style('opacity', function(d) {
-								if ( uniqueNodeDescriptiveValues.length==0 )
+								if ( nodeDescriptiveValues.uniqueNonNull().length==0 )
 								{ return 0; }
 								else if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
 									{ return 1; }
@@ -1348,18 +1358,18 @@
 
 						descriptiveMenuClick('node', selectedDescriptorIndice, nodeDescriptiveMaxNameWidth, descriptiveFields['node'][timeFrame], partMenuMouseOver, partXLoc);
 
-						// console.log('nodesizeupdateinputs', nodeSelected, nodeDescriptiveValues, stdNullRadiusSize);
-						updateNodeSizes(nodeSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
+						// console.log('nodesizeupdateinputs', nodeDescriptorSelected, nodeDescriptiveValues, stdNullRadiusSize);
+						updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 				};
 
-				addStdRect(svg2, null, 'part_selected_rect', width-nodeDescriptiveMaxNameWidth-partXLoc, 1, nodeDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
-				addStdText(svg2, null, 'part_selected_text', width-nodeDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, nodeSelected);
+				addStdRect(svg2, null, 'node_descriptor_selected_rect', width-nodeDescriptiveMaxNameWidth-partXLoc, 1, nodeDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, partMenuMouseOver, generalRectML, null);
+				addStdText(svg2, null, 'node_descriptor_selected_text', width-nodeDescriptiveMaxNameWidth-partXLoc+5, 22.5, graphMenuTextSize, 0, nodeDescriptorSelected);
 
 				// console.log('random link indice', randomLinkDescriptorIndice);
-				// console.log('linkSelected', linkSelected);
-				addStdRect(svg2, null, 'link_selected_rect', width-linkDescriptiveMaxNameWidth-linkXLoc, 1, linkDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
-				addStdText(svg2, null, 'link_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkSelected);
+				// console.log('linkDescriptorSelected', linkDescriptorSelected);
+				addStdRect(svg2, null, 'link_descriptor_selected_rect', width-linkDescriptiveMaxNameWidth-linkXLoc, 1, linkDescriptiveMaxNameWidth+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
+				addStdText(svg2, null, 'link_descriptor_selected_text', width-linkDescriptiveMaxNameWidth-linkXLoc+5, 22.5, graphMenuTextSize, 0, linkDescriptorSelected);
 
 			  function ticked() {
 

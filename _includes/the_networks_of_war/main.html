@@ -552,7 +552,7 @@
 				};
 
 				warDic = getWarDic();
-					console.log('warDic', warDic);
+				console.log('warDic', warDic);
 
 				addStdText(svg2, null, null, 0, 92.5, graphMenuTextSize, 0, warDic['war_name']);
 				addStdText(svg2, null, null, 0, 110, graphMenuTextSize, 0, warDic['timeFrame']);
@@ -689,17 +689,16 @@
 						return [nodeDescriptiveValues, maxDomain, stdNullRadiusSize, nullRadiusNodes];
 				};
 
-				function getLinkDescriptiveValues(descriptorName) {
+				function getLinkDescriptiveValues(linkDescriptorName) {
 
 						// will need to return this array to make it global
 						linkDescriptiveValues = [];
 
-						graph.links.forEach(function(link) {
-
+						graph.links.forEach(function(d) {
 								// returning an array filled with zeros if the selection is 'None'
-								if ( isNaN(descriptorName) )
+								if ( isNaN(parseFloat(d[linkDescriptorName])) ) {
 								{ linkDescriptiveValues.push(0); }
-								else if ( parseInt(link[descriptorName]) > 0 )
+								else if ( parseFloat(d[linkDescriptorName]) > 0 )
 								{ linkDescriptiveValues.push(1); }
 								else
 								{ linkDescriptiveValues.push(0); }
@@ -801,8 +800,6 @@
 
 					if ( overAllFields.includes(newFieldName)==false ) {
 
-						console.log('oldFieldName', fieldName);
-						console.log('newFieldName', newFieldName);
 						descriptiveFields[groupingType][descriptiveTags['_z']][newFieldName] = descriptiveFields[groupingType][descriptiveTags['_x']][fieldName]
 						// getting an array of name lengths for all items added
 						descriptorNameLengths[groupingType].push(getTextWidth(svg2, newFieldName, graphMenuTextSize));
@@ -810,9 +807,8 @@
 						return [descriptiveFields, descriptorNameLengths]
 				};
 
-				console.log('descriptiveFields1', descriptiveFields);
-
 				if ( warDic['single_year_war'] ) {
+
 					for ( var i = 0; i <= Object.keys(descriptiveFields['node'][0]).length-1; i++ ) {
 
 						adjustForOneYearWarsOutput = adjustForOneYearWars('node', Object.keys(descriptiveFields['node'][0])[i], Object.keys(descriptiveFields['node'][2]));
@@ -828,7 +824,7 @@
 					};
 				};
 
-				console.log('descriptiveFields2', descriptiveFields);
+				console.log('descriptiveFields', descriptiveFields);
 
 				for ( var i = 0; i <= Object.keys(descriptiveTags).length-1; i++ ) {
 
@@ -844,12 +840,12 @@
 				console.log('defaultValues', defaultValues);
 
 				// linkDescriptorSelectedDescriptor = Math.floor(Math.random() * descriptiveFields['link'].length),
+				// nodeDescriptorSelectedDescriptor = descriptiveFields['node'].indexOf('neutrality_alliances_x'),
+				// nodeDescriptorSelectedDescriptor = Math.floor(Math.random() * descriptiveFields['node'].length),
+
 				linkDescriptorSelected = defaultValues['link'][timeFrame],
 				linkDescriptiveValues = getLinkDescriptiveValues(null),
 				linkXLoc = 10;
-
-				// nodeDescriptorSelectedDescriptor = descriptiveFields['node'].indexOf('neutrality_alliances_x'),
-				// nodeDescriptorSelectedDescriptor = Math.floor(Math.random() * descriptiveFields['node'].length),
 
 				nodeDescriptorSelected = defaultValues['node'][timeFrame],
 				getNodeDescriptiveValuesOutput = getNodeDescriptiveValues(null),
@@ -1278,8 +1274,6 @@
 						svg2.select('#' + groupingType + '_descriptor_selected_text').remove();
 
 						addStdText(svg2, null, groupingType + '_descriptor_selected_text', width-maxWidth-xLoc+5, 22.5, graphMenuTextSize, 0, window[groupingType + 'DescriptorSelected']);
-
-						// return descriptiveMenuClick
 				};
 
 				function updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize) {
@@ -1339,8 +1333,11 @@
 						selectedDescriptorIndice = parseInt(selectedDescriptorPieces[selectedDescriptorPieces.length-1]),
 						selectedDescriptor = Object.keys(descriptiveFields['link'][timeFrame])[selectedDescriptorIndice],
 						linkDescriptiveValues = descriptiveFields['link'][timeFrame][selectedDescriptor]['values'];
+						// console.log(timeFrame);
+						// console.log(selectedDescriptor);
+						// console.log(linkDescriptiveValues);
 
-						descriptiveMenuClick('link', selectedDescriptor, linkDescriptiveMaxNameWidth, descriptiveFields['link'][timeFrame], linkMenuMouseOver, linkXLoc);
+						descriptiveMenuClick('link', selectedDescriptorIndice, linkDescriptiveMaxNameWidth, descriptiveFields['link'][timeFrame], linkMenuMouseOver, linkXLoc);
 
 						link.selectAll('.link_dash')
 								.transition().delay(100).duration(500)

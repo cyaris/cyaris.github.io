@@ -257,8 +257,9 @@ def column_fills_and_converions(dataframe, grouping_type, conversion_dic):
         print('Total Columns Adjusted for Conversion: 0')
     else:
         print('Total Columns Adjusted for Conversion: {}'.format(format(len(list(conversion_dic.keys())) * 2, ',d')))
-        print('Total Null Values Notated: {}'.format(format(null_values, ',d')))
-        print('Total Unknown Values Notated: {}'.format(format(unknown_values, ',d')))
+
+    print('Total Null Values Notated: {}'.format(format(null_values, ',d')))
+    print('Total Unknown Values Notated: {}'.format(format(unknown_values, ',d')))
 
     return dataframe
 

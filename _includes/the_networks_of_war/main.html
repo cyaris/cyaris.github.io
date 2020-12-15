@@ -1257,8 +1257,9 @@
 						{ svg2.select('#' + groupingType + '_descriptor_selected_text').style('opacity', 0);
 
 							for ( var i = 0; i <= Object.keys(descriptiveArray).length-1; i++ ) {
-								addStdRect(svg2, groupingType + '_descriptor_dropdowns', groupingType + '_descriptor_dropdown_' + i, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
-								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), graphMenuTextSize, 0, Object.keys(descriptiveArray)[i]);
+								dropDownName = Object.keys(descriptiveArray)[i];
+								addStdRect(svg2, groupingType + '_descriptor_dropdowns', dropDownName, width-maxWidth-xLoc, 1 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
+								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, 22.5 + ((i+1)*30), graphMenuTextSize, 0, dropDownName);
 							}
 						}
 						else
@@ -1266,15 +1267,12 @@
 
 				};
 
-				function descriptiveMenuClick(groupingType, descriptorIndice, maxWidth, descriptiveFieldsDic, moFunction, xLoc) {
-
-						// using window to create new fields for nodeDescriptorSelected and linkDescriptorSelected
-						window[groupingType + 'DescriptorSelected'] = Object.keys(descriptiveFieldsDic)[descriptorIndice];
+				function descriptiveMenuClick(groupingType, descriptorName, maxWidth, descriptiveFieldsDic, moFunction, xLoc) {
 
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 						svg2.select('#' + groupingType + '_descriptor_selected_text').remove();
 
-						addStdText(svg2, null, groupingType + '_descriptor_selected_text', width-maxWidth-xLoc+5, 22.5, graphMenuTextSize, 0, window[groupingType + 'DescriptorSelected']);
+						addStdText(svg2, null, groupingType + '_descriptor_selected_text', width-maxWidth-xLoc+5, 22.5, graphMenuTextSize, 0, descriptorName);
 				};
 
 				function updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize) {
@@ -1329,19 +1327,13 @@
 				},
 						linkMenuClick = function(d) {
 
-						// obtaining the indice part of the id
-						selectedDescriptorPieces = d3.select(this).attr('id').split('_'),
-						selectedDescriptorIndice = parseInt(selectedDescriptorPieces[selectedDescriptorPieces.length-1]),
-						selectedDescriptor = Object.keys(descriptiveFields['link'][timeFrame])[selectedDescriptorIndice],
+						selectedDescriptor = d3.select(this).attr('id'),
 						linkDescriptiveValues = descriptiveFields['link'][timeFrame][selectedDescriptor]['values'];
-						// console.log(timeFrame);
-						// console.log(selectedDescriptor);
-						// console.log(linkDescriptiveValues);
-
-						descriptiveMenuClick('link', selectedDescriptorIndice, linkDescriptiveMaxNameWidth, descriptiveFields['link'][timeFrame], linkMenuMouseOver, linkXLoc);
+						
+						descriptiveMenuClick('link', selectedDescriptor, linkDescriptiveMaxNameWidth, descriptiveFields['link'][timeFrame], linkMenuMouseOver, linkXLoc);
 
 						link.selectAll('.link_dash')
-								.transition().delay(50).duration(50)
+								.transition().delay(50).duration(500)
 								.attr('stroke', function(d) {
 									if ( linkDescriptiveValues[d.index]==0 )
 									{ return 'transparent'; }
@@ -1360,19 +1352,13 @@
 				},
 						nodeMenuCLick = function(d) {
 
-						// obtaining the indice part of the id
-						selectedDescriptorPieces = d3.select(this).attr('id').split('_'),
-						selectedDescriptorIndice = parseInt(selectedDescriptorPieces[selectedDescriptorPieces.length-1]),
-						selectedDescriptor = Object.keys(descriptiveFields['node'][timeFrame])[selectedDescriptorIndice],
+						selectedDescriptor = d3.select(this).attr('id'),
 						nodeDescriptiveValues = descriptiveFields['node'][timeFrame][selectedDescriptor]['values'],
 						maxDomain = descriptiveFields['node'][timeFrame][selectedDescriptor]['max_domain'],
 						stdNullRadiusSize = descriptiveFields['node'][timeFrame][selectedDescriptor]['std_node_size'];
 
-						descriptiveMenuClick('node', selectedDescriptorIndice, nodeDescriptiveMaxNameWidth, descriptiveFields['node'][timeFrame], partMenuMouseOver, partXLoc);
-
-						// console.log('nodesizeupdateinputs', nodeDescriptorSelected, nodeDescriptiveValues, stdNullRadiusSize);
+						descriptiveMenuClick('node', selectedDescriptor, nodeDescriptiveMaxNameWidth, descriptiveFields['node'][timeFrame], partMenuMouseOver, partXLoc);
 						updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
-
 				};
 
 

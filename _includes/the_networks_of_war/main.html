@@ -713,18 +713,16 @@
 
 						// creating a value for a default descriptor for when no descriptive fields exist
 						if ( Object.keys(descriptiveFields[grouping][timeFrame]).length==0 ) {
-							// filling no selection with the default empty value ('None')
-							textLabel = 'None available',
-							defaultValues[grouping][timeFrame] = textLabel;
-							descriptorNameLengths[grouping].push(getTextWidth(svg2, textLabel, graphMenuTextSize));
+							// filling no selection with the default empty value ('None available') if there are none to choose from.
+							textLabel = 'None available';
 						}
 						else {
-							// filling no selection with the default empty value ('None')
-							textLabel = 'None Selected',
-							defaultValues[grouping][timeFrame] = textLabel;
-							descriptorNameLengths[grouping].push(getTextWidth(svg2, textLabel, graphMenuTextSize));
+							// filling no selection with the default empty value ('None selected') if none have been chosen.
+							textLabel = 'None Selected';
 						}
 
+						defaultValues[grouping][timeFrame] = textLabel;
+						descriptorNameLengths[grouping].push(getTextWidth(svg2, textLabel, graphMenuTextSize));
 						descriptorMaxNameWidth = maxFromArray(descriptorNameLengths[grouping]);
 
 						return 	[defaultValues, descriptorMaxNameWidth];
@@ -733,10 +731,8 @@
 				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
 					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
 					// only pushing first year links if the start year equals the end year
-					if ( Object.keys(descriptiveTags).includes(allLinkFields[i].slice(-2))==false )
-					{}
-					else if ( d3.max(graph.links, function(d) { return d[allLinkFields[i]]; })==0 )
-					{}
+					if ( Object.keys(descriptiveTags).includes(allLinkFields[i].slice(-2))==false ) {}
+					else if ( d3.max(graph.links, function(d) { return d[allLinkFields[i]]; })!=1 ) {}
 					else {
 						// nonDescriptiveField = false;
 						timeFrameInt = descriptiveTags[allLinkFields[i].slice(-2)];
@@ -766,21 +762,16 @@
 					}
 					// flagging all fields that will be removed from analysis due to incomplete or non-applicable data
 					// flagging all fields that will be removed from analysis due to incomplete or non-applicable data
-					if ( nonDescriptiveField )
-					{}
-					else if ( uniqueNodeDescriptiveValues.length==0 )
-					{}
+					if ( nonDescriptiveField ) {}
+					else if ( uniqueNodeDescriptiveValues.length==0 ) {}
 					// nodeDescriptiveValues only contains zeros
-					else if ( uniqueNodeDescriptiveValues.length==1 && uniqueNodeDescriptiveValues[0]==0 )
-					{}
+					else if ( uniqueNodeDescriptiveValues.length==1 && uniqueNodeDescriptiveValues[0]==0 ) {}
 					// must have greater than 50% non-null nodes
 					// this will prevent improper size comparisons
-					else if ( nullRadiusNodes/(nodeDescriptiveValues.length - nullRadiusNodes) >= 0.5 )
-					{}
+					else if ( nullRadiusNodes/(nodeDescriptiveValues.length - nullRadiusNodes) >= 0.5 ) {}
 					// all participants were in the war for the same number of days.
 					// nothing to compare if all the values are the same (for the same reason).
-					else if ( allPartFields[i]=='days_at_war_z' && uniqueNodeDescriptiveValues.length==1 )
-					{}
+					else if ( allPartFields[i]=='days_at_war_z' && uniqueNodeDescriptiveValues.length==1 ) {}
 					else {
 						timeFrameInt = descriptiveTags[allPartFields[i].slice(-2)];
 
@@ -1038,14 +1029,9 @@
 				// defining graph layout with nodeMargins dictionary
 				graphLayout = createGraphLayout(nodeMargins);
 
-				// // stopping simulation while graph elements are being added
-				// graphLayout.stop();
-
 				link = svg3.selectAll().append('g')
 							.data(graph.links)
 							.enter();
-
-				// console.log(graph.links);
 
 				function getFirsDegreeLinks() {
 					// creating inputs for the function to check whether each node is part of the selected node's primary network.
@@ -1109,7 +1095,6 @@
 						nodeElem = document.getElementById('node_' + nodeTarget),
 						nodeRadius = +nodeElem.getAttribute('r'),
 						nodeCTM = nodeElem.getCTM();
-
 						// calculating the position of the middle of the node, and then shifting the tooltip to the left.
 						// adjusting for when the node is on the left vs right side of the svg.
 						if ( nodeCTM.e >= width * 0.5 )
@@ -1177,13 +1162,13 @@
 						nodeMouseLeave = function() {
 						 // reverting all changes in mouseover upon mouseleave
 						 // nodeLabel.attr('display', 'block');
+						 d3.selectAll('.tooltip').style('opacity', 0);
 						 node.style('opacity', 1);
 						 svg3.selectAll('.nodes').style('opacity', 1).style('stroke-width', nodeStrokeWidth);
 						 svg3.selectAll('.node_names').style('stroke-width', 0);
 						 svg3.selectAll('.node_size_warnings').style('stroke-width', 0);
 						 svg3.selectAll('.link').style('opacity', 1).style('stroke-width', linkStrokeWidth);
 						 svg3.selectAll('.link_dash').style('opacity', 1).style('stroke-width', linkDashStrokeWidth);
-						 d3.selectAll('.tooltip').style('opacity', 0);
 				};
 
 				node = svg3.selectAll()
@@ -1253,8 +1238,9 @@
 
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 
-						if ( Object.keys(descriptiveArray).length > 0)
-						{ svg2.select('#' + groupingType + '_descriptor_selected_text').style('opacity', 0);
+						if ( Object.keys(descriptiveArray).length > 0) {
+
+							svg2.select('#' + groupingType + '_descriptor_selected_text').style('opacity', 0);
 
 							for ( var i = 0; i <= Object.keys(descriptiveArray).length-1; i++ ) {
 								dropDownName = Object.keys(descriptiveArray)[i];
@@ -1280,6 +1266,8 @@
 					// base value that will be used to calculate the values appended to the arrays above.
 					// including linkNodeSize inside of addedMarginSize.
 					nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
+					// redefining graph layout with updated nodeMargins
+					graphLayout = createGraphLayout(nodeMargins);
 
 					d3.selectAll('.tooltip').remove();
 					defineNodeTooltips(nodeMargins, nodeDescriptorSelected, nodeDescriptiveValues);
@@ -1289,17 +1277,12 @@
 					textTransitionDelay = 1000;
 					textTransitionDuration = nodeTransitionDuration - textTransitionDelay;
 
-					// redefining graph layout with updated nodeMargins
-					graphLayout = createGraphLayout(nodeMargins);
-
 					svg3.selectAll('.nodes')
 							.transition().delay(nodeTransitionDelay).duration(nodeTransitionDuration)
 							.attr('r', function(d) { return nodeMargins['radius_size'][d.id]; });
 
 					// calling same function used on tick to reposition node names
 					repositionNodeNames(textTransitionDelay, textTransitionDuration, true);
-
-					// console.log(nodeMargins);
 
 					svg3.selectAll('.node_size_warnings')
 							// adjusting opacity will be a shorter transition than repositioning the label.
@@ -1316,8 +1299,6 @@
 							// need a better solution for when text comes too close to node because nodesize is small
 							.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
 							.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); });
-
-
 				};
 				// Two functions that change the the selection for link dash marks (based on interaction variables).
 				var linkMenuMouseOver = function(d) {
@@ -1329,11 +1310,11 @@
 
 						selectedDescriptor = d3.select(this).attr('id'),
 						linkDescriptiveValues = descriptiveFields['link'][timeFrame][selectedDescriptor]['values'];
-						
+
 						descriptiveMenuClick('link', selectedDescriptor, linkDescriptiveMaxNameWidth, descriptiveFields['link'][timeFrame], linkMenuMouseOver, linkXLoc);
 
 						link.selectAll('.link_dash')
-								.transition().delay(50).duration(500)
+								.transition().delay(50).duration(1000)
 								.attr('stroke', function(d) {
 									if ( linkDescriptiveValues[d.index]==0 )
 									{ return 'transparent'; }
@@ -1408,35 +1389,34 @@
 
 						node.each(function(d) {
 
-								if ( nodeMargins['name_fits_in_node'][d.id]==false )
-								{
+								if ( nodeMargins['name_fits_in_node'][d.id]==false ) {
 									// need to add two additional if statements,
 									// one for if the label is at max y, and one for if the label is at min y.
 									// some sort of randomization will need to determine what to do in these cases to prevent overlap.
 									if ( d.x < width * 0.5 && d.y < height * 0.5 ) {
-										d3.select('#node_name_' + d.id)
+										svg3.select('#node_name_' + d.id)
 											.transition().delay(delay).duration(duration)
 											.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
 											.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
 									}
 									else if ( d.x >= width * 0.5 && d.y < height * 0.5 ) {
-										d3.select('#node_name_' + d.id)
+										svg3.select('#node_name_' + d.id)
 											.transition().delay(delay).duration(duration)
 											.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
 											.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
 									}
 									else if ( d.x < width * 0.5 && d.y >= height * 0.5 ) {
-										d3.select('#node_name_' + d.id)
+										svg3.select('#node_name_' + d.id)
 											.transition().delay(delay).duration(duration)
 											.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
 											.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
 									}
 									else {
-									//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
-									d3.select('#node_name_' + d.id)
-											.transition().delay(delay).duration(duration)
-											.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-											.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
+										//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
+										svg3.select('#node_name_' + d.id)
+												.transition().delay(delay).duration(duration)
+												.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
+												.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
 									}
 								}
 								// repositioning for when name_fits_in_node==true
@@ -1447,13 +1427,6 @@
 										.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
 							      .attr('dy', nodeMargins['vertical_name_shift'][d.id]);
 								}
-								// // final else statement will take care of the event where something failed on page load
-								// // not sure why this occurs.
-								// else {
-								// 	d3.select('#node_name_' + d.id)
-								// 		.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-							  //    .attr('dy', nodeMargins['vertical_name_shift'][d.id]);
-								// }
 						 }
 					 );
 			 };

@@ -11,5 +11,5 @@ Hi there!<br><br>My name is Charlie. I live in Chicago and I work for CreditNinj
 
 ### Contact
 
-- email:[ charlieyaris@gmail.com](mailto:charlieyaris@gmail.com)
+- email: [charlieyaris@gmail.com](mailto:charlieyaris@gmail.com)
 - phone: (973)-747-5068

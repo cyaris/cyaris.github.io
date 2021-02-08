@@ -16,9 +16,6 @@
 				#transition_settings {
 						display: none;
 	      }
-				#profile_photo_hover_instructions {
-						display: none;
-	      }
 			}
 
 	 	/* #profile_photo {
@@ -34,8 +31,7 @@
 		<div id='profile_photo' align='center' style='margin-bottom:10px;'></div>
 		<script src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
 		<!-- Create a div where the slider will be -->
-		<div id='transition_settings' align='center' style='margin-bottom:0px;'></div>
-		<div id='profile_photo_hover_instructions' align='center' style='margin-top:-15px;'><p style='font-style: italic;'>Hover on my face!</p></div>
+		<div id='transition_settings' align='center'></div>
 		<script>
 
 
@@ -50,7 +46,7 @@
 		};
 
 
-		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
+		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, fontStyle, opacity, strokeWidth, textInput) {
 
 				svgInput.append('text')
 					.attr('class', classInput)
@@ -61,6 +57,8 @@
 					.text(textInput)
 						.style('fill', 'black')
 						.style('font-size', fontSize)
+						.style('font-style', fontStyle)
+						.style('opacity', opacity)
 						.style('stroke-width', strokeWidth)
 						.style('stroke', function(d) {
 							if ( strokeWidth==0 )
@@ -70,16 +68,37 @@
 						 });
 		};
 
+		function addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
+
+				svgInput.append('rect')
+							.attr('class', classInput)
+							.attr('id', idInput)
+							.attr('x', rectX)
+							.attr('y', rectY)
+							.attr('width', rectWidth)
+							.attr('height', rectHeight)
+							.style('stroke', rectStroke)
+							.style('stroke-width', rectStrokeWidth)
+							.attr('stroke-opacity', rectStrokeOpacity)
+							.style('fill', rectFill)
+							.attr('fill-opacity', rectFillOpacity)
+							.on('mouseover', rMO)
+							.on('mouseleave', rML)
+							.on('click', rClick);
+		};
 
 		// set the dimensions and margins of the graph
 		margin = {top: 0, bottom: 15, left: 0, right: 0},
     width = 405,
     height = 405,
-		svg2Height = 50;
+		svg2Height = 110;
 
 		// append the svg object to the body of the page
 		addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
 		addStdSVG('svg2', 'transition_settings', width, svg2Height, margin.left, margin.top, null);
+
+		addStdText(svg2, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
+
 		// appending the original version of the photo, invisible upon page load.
 		// x,y coordinates are relative to the transform translate above.
 		svg1.append('svg:image')
@@ -98,6 +117,7 @@
 			transDuration = 750,
 			transLength = (transDelay * 2) + (transDuration * 2);
 
+			// determining input for selectAll based on valid pixels
 			function getTransitionSelect(idInput) {
 
 				currentPixel = '#' + idInput,
@@ -126,7 +146,7 @@
 				thisID = d3.select(this).attr('id'),
 				transitionSelect = getTransitionSelect(thisID);
 
-				d3.selectAll(transitionSelect)
+				svg1.selectAll(transitionSelect)
 					.style('stroke-width', 0.3)
 					.transition()
 						.delay(transDelay)
@@ -150,7 +170,7 @@
 
 				if ( transitionSliderMode==1 ) {
 
-					d3.selectAll(transitionSelect)
+					svg1.selectAll(transitionSelect)
 						.transition()
 							.delay(transLength + 500)
 							.duration(transDuration)

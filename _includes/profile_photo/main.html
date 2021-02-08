@@ -1,8 +1,8 @@
 <!-- <!DOCTYPE html> -->
 <html>
 	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset='utf-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<style>
 
 		/* svg {
@@ -29,13 +29,13 @@
 	</head>
 	<body>
 		<!-- Load d3.js -->
-		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src='https://d3js.org/d3.v4.min.js'></script>
 		<!-- Create a div where the graph will take place -->
-		<div id="profile_photo" align="center" style='margin-bottom:10px;'></div>
+		<div id='profile_photo' align='center' style='margin-bottom:10px;'></div>
 		<script src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
 		<!-- Create a div where the slider will be -->
 		<div id='transition_settings' align='center' style='margin-bottom:0px;'></div>
-		<div id="profile_photo_hover_instructions" align="center" style="margin-top:-15px;"><p style="font-style: italic;">Hover on my face!</p></div>
+		<div id='profile_photo_hover_instructions' align='center' style='margin-top:-15px;'><p style='font-style: italic;'>Hover on my face!</p></div>
 		<script>
 
 
@@ -50,132 +50,153 @@
 		};
 
 
+		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
+
+				svgInput.append('text')
+					.attr('class', classInput)
+					.attr('id', idInput)
+					.attr('x', textX)
+					.attr('y', textY)
+					.attr('pointer-events', 'none')
+					.text(textInput)
+						.style('fill', 'black')
+						.style('font-size', fontSize)
+						.style('stroke-width', strokeWidth)
+						.style('stroke', function(d) {
+							if ( strokeWidth==0 )
+							{ return 'transparent'; }
+							else
+							 { return 'black'; }
+						 });
+		};
+
+
 		// set the dimensions and margins of the graph
-		var margin = {top: 0, bottom: 15, left: 0, right: 0},
-		    width = 405,
-		    height = 405,
-				svg2Height = 50;
+		margin = {top: 0, bottom: 15, left: 0, right: 0},
+    width = 405,
+    height = 405,
+		svg2Height = 50;
 
 		// append the svg object to the body of the page
 		addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
 		addStdSVG('svg2', 'transition_settings', width, svg2Height, margin.left, margin.top, null);
 		// appending the original version of the photo, invisible upon page load.
 		// x,y coordinates are relative to the transform translate above.
-		svg1.append("svg:image")
-			// .attr("id", "full_resolution_photo")
-			.attr("x", 0)
-			.attr("y", 0)
-			.attr("width", width)
-			.attr("height", height)
-			.attr("xlink:href", "../img/profile_photo.png")
-			.attr("pointer-events", "none");
+		svg1.append('svg:image')
+			// .attr('id', 'full_resolution_photo')
+			.attr('x', 0)
+			.attr('y', 0)
+			.attr('width', width)
+			.attr('height', height)
+			.attr('xlink:href', '../img/profile_photo.png')
+			.attr('pointer-events', 'none');
 
 		//Read the data
-		d3.csv("/assets/profile_photo/proile_photo_pixel_rgb_codes.csv", function(data) {
+		d3.csv('/assets/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
 			// defining time variables as inputs for pMO and pML tansitions.
-			var transDelay = 100,
-					transDuration = 750,
-					transLength = (transDelay * 2) + (transDuration * 2);
+			transDelay = 100,
+			transDuration = 750,
+			transLength = (transDelay * 2) + (transDuration * 2);
+
+			function getTransitionSelect(idInput) {
+
+				currentPixel = '#' + idInput,
+				xInput = parseInt(idInput.replace('x', '').split('y', 2)[0]),
+				yInput = parseInt(idInput.replace('x', '').split('y', 2)[1]),
+				// defining neighbors so they'll activate a 3x3 box area of pixels in all directions
+				// these each need to be evaluated to confirm that the pixel exists
+				neighborPixel1 = '#x' + String(xInput-1) + 'y' + String(yInput-1),
+				neighborPixel2 = '#x' + String(xInput-1) + 'y' + String(yInput+1),
+				neighborPixel3 = '#x' + String(xInput+1) + 'y' + String(yInput-1),
+				neighborPixel4 = '#x' + String(xInput+1) + 'y' + String(yInput+1),
+				evaluatingPixels = Array(currentPixel, neighborPixel1, neighborPixel2, neighborPixel3, neighborPixel4);
+				transitionSelect = currentPixel;
+
+				for ( var i = 0; i <= evaluatingPixels.length-1; i++ ) {
+					if ( d3.select(evaluatingPixels[i]).empty()==false )
+					{ transitionSelect+=', ' + evaluatingPixels[i]; }
+				}
+
+				return transitionSelect;
+			};
 
 			pMO = function(d) {
 
-				var thisID = d3.select(this).attr("id"),
-					currentPixel = "#" + String(thisID),
-					xInput = parseInt(thisID.replace("x", "").split("y", 2)[0]),
-					yInput = parseInt(thisID.replace("x", "").split("y", 2)[1]),
-					// defining neighbors so they'll activate a 3x3 box area of pixels in all directions
-					neighborPixel1 = "#x" + String(xInput-1) + "y" + String(yInput-1),
-					neighborPixel2 = "#x" + String(xInput-1) + "y" + String(yInput+1),
-					neighborPixel3 = "#x" + String(xInput+1) + "y" + String(yInput-1),
-					neighborPixel4 = "#x" + String(xInput+1) + "y" + String(yInput+1);
+				transitionSliderMode = transitionSlider.value(),
+				thisID = d3.select(this).attr('id'),
+				transitionSelect = getTransitionSelect(thisID);
 
-				d3.selectAll(currentPixel + ", " + neighborPixel1 + ", " + neighborPixel2 + ", " + neighborPixel3 + ", " + neighborPixel4)
-					.style("stroke-width", 0.3)
+				d3.selectAll(transitionSelect)
+					.style('stroke-width', 0.3)
 					.transition()
 						.delay(transDelay)
 						.duration(transDuration)
-						.attr("x", function(d) { return x(d.x_coordinate) + 1.5})
-						.attr("y", function(d) { return y(d.y_coordinate) - 1})
-						.attr("width", x.bandwidth()/1.5)
-						.attr("height", y.bandwidth()/1.5)
-						.attr("transform", function(d) { return "rotate(45," + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + "," + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ")"})
+						.attr('x', function(d) { return x(d.x_coordinate) + 1.5})
+						.attr('y', function(d) { return y(d.y_coordinate) - 1})
+						.attr('width', x.bandwidth()/1.5)
+						.attr('height', y.bandwidth()/1.5)
+						.attr('transform', function(d) { return 'rotate(45,' + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + ',' + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ')'})
 					.transition()
 						.delay(transDelay)
 						.duration(transDuration)
-						.style("opacity", 0);
-
+						.style('opacity', 0);
 			},
 
 			pML = function(d) {
 
-				var transitionSliderMode = transitionSlider.value(),
-						thisID = d3.select(this).attr("id"),
-						currentPixel = "#" + thisID,
-						xInput = parseInt(thisID.replace("x", "").split("y", 2)[0]),
-						yInput = parseInt(thisID.replace("x", "").split("y", 2)[1]),
-						// defining neighbors so they'll activate a 3x3 box area of pixels in all directions
-						neighborPixel1 = "#x" + String(xInput-1) + "y" + String(yInput-1),
-						neighborPixel2 = "#x" + String(xInput-1) + "y" + String(yInput+1),
-						neighborPixel3 = "#x" + String(xInput+1) + "y" + String(yInput-1),
-						neighborPixel4 = "#x" + String(xInput+1) + "y" + String(yInput+1);
+				transitionSliderMode = transitionSlider.value(),
+				thisID = d3.select(this).attr('id'),
+				transitionSelect = getTransitionSelect(thisID);
 
 				if ( transitionSliderMode==1 ) {
 
-					d3.selectAll(currentPixel + ", " + neighborPixel1 + ", " + neighborPixel2 + ", " + neighborPixel3 + ", " + neighborPixel4)
+					d3.selectAll(transitionSelect)
 						.transition()
 							.delay(transLength + 500)
 							.duration(transDuration)
-							.attr("x", function(d) { return x(d.x_coordinate) })
-							.attr("y", function(d) { return y(d.y_coordinate) })
-							.attr("width", x.bandwidth())
-							.attr("height", y.bandwidth())
-							.attr("transform", function(d) { return "rotate(0,"  + ( (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2))) + "," + ( (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5))/2))) + ")"})
-							.style("stroke-width", 0.3)
-							.style("opacity", 1)
+							.attr('x', function(d) { return x(d.x_coordinate) })
+							.attr('y', function(d) { return y(d.y_coordinate) })
+							.attr('width', x.bandwidth())
+							.attr('height', y.bandwidth())
+							.attr('transform', function(d) { return 'rotate(0,'  + ( (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2))) + ',' + ( (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5))/2))) + ')'})
+							.style('stroke-width', 0.3)
+							.style('opacity', 1)
 						.transition()
 							.delay(transDelay)
 							.duration(transDuration)
-							.style("stroke-width", 0.075);
+							.style('stroke-width', 0.075);
 				};
-
 			};
 			// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
-			var pixelX = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
-					pixelY = d3.map(data, function(d){ return d.y_coordinate; }).keys();
+			pixelX = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
+			pixelY = d3.map(data, function(d){ return d.y_coordinate; }).keys();
 
 			// Build X and Y scales and axis:
 			// Scaling the pixels within the space of the svg.
-			var	x = d3.scaleBand()
-								.range([0, width])
-								.domain(pixelX)
-								.padding(0),
-					y = d3.scaleBand()
-								.range([0, height])
-								.domain(pixelY)
-								.padding(0);
+			x = d3.scaleBand().range([0, width]).domain(pixelX).padding(0),
+			y = d3.scaleBand().range([0, height]).domain(pixelY).padding(0);
 
 			function addPixelRects() {
 
 				// adding the 48x48 pixels that will make up the profile photo
-			  var rect = svg1.selectAll()
+			  rect = svg1.selectAll()
 				    .data(data, function(d) { return d.x_coordinate+':'+d.y_coordinate; })
 				    .enter();
 
-				rect.append("rect")
-							.attr("class", "photo_pixels")
-							.attr("id", function(d) { return "x" + String(parseInt(d.x_coordinate)) + "y" + String(parseInt(d.y_coordinate))})
-							.attr("x", function(d) { return x(d.x_coordinate) })
-				      .attr("y", function(d) { return y(d.y_coordinate) })
-				      .attr("rx", 0)
-				      .attr("ry", 0)
-				      .attr("width", x.bandwidth())
-				      .attr("height", y.bandwidth())
-							.style("stroke", "white")
-							.style("stroke-width", 0.075)
-				      .style("fill", function(d) { return "rgb(" + String(parseInt(d.r)) + "," + String(parseInt(d.g)) + "," + String(parseInt(d.b)) + ")"})
-							.on("mouseover", pMO)
-							.on("mouseleave", pML);
-
+				rect.append('rect')
+							.attr('class', 'photo_pixels')
+							.attr('id', function(d) { return 'x' + String(parseInt(d.x_coordinate)) + 'y' + String(parseInt(d.y_coordinate))})
+							.attr('x', function(d) { return x(d.x_coordinate) })
+				      .attr('y', function(d) { return y(d.y_coordinate) })
+				      .attr('rx', 0)
+				      .attr('ry', 0)
+				      .attr('width', x.bandwidth())
+				      .attr('height', y.bandwidth())
+							.style('stroke', 'white')
+							.style('stroke-width', 0.075)
+				      .style('fill', function(d) { return 'rgb(' + String(parseInt(d.r)) + ',' + String(parseInt(d.g)) + ',' + String(parseInt(d.b)) + ')'})
+							.on('mouseover', pMO)
+							.on('mouseleave', pML);
 			};
 
 			addPixelRects();
@@ -203,7 +224,7 @@
 					.call(transitionSlider);
 
 			// overriding feature in built-in function that makes current selection invisible
-			d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', '11px').attr('fill', 'black').style('opacity', 0.80);
+			d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', '12px').attr('fill', 'black').style('opacity', 0.75);
 			// making ticks on axis black
 			d3.selectAll('.axis line').style('stroke', 'black');
 

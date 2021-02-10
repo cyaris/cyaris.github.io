@@ -99,37 +99,39 @@
 
 		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
 
-		laserEye = function(d) {
+		laserEyes = function(d) {
 
 			for (var i = 1; i < 5; ++i) {
 
-					svg1.append('circle')
-							.attr('cx', 177.25)
-							.attr('cy', 201)
-							.attr('r', 0.25)
-							.style('stroke-width', 7.5/i)
-							.transition()
-									.delay(Math.pow(i, 2.5) * 22)
-									.duration(2000)
-							.attr('r', 200)
-							.style('stroke-opacity', 0)
-							.on('end', function() {
-								d3.select(this).remove();
-							});
+				// first laser eye
+				svg1.append('circle')
+						.attr('cx', 177.25)
+						.attr('cy', 201.25)
+						.attr('r', 0.25)
+						.style('stroke-width', 7.5/i)
+						.transition()
+								.delay(Math.pow(i, 2.5) * 22)
+								.duration(2000)
+						.attr('r', 200)
+						.style('stroke-opacity', 0)
+						.on('end', function() {
+							d3.select(this).remove();
+						});
 
-					svg1.append('circle')
-							.attr('cx', 246.75)
-							.attr('cy', 197.5)
-							.attr('r', 0.25)
-							.style('stroke-width', 7.5/i)
-							.transition()
-									.delay(Math.pow(i, 2.5) * 22)
-									.duration(2000)
-							.attr('r', 200)
-							.style('stroke-opacity', 0)
-							.on('end', function() {
-								d3.select(this).remove();
-							});
+				// second laser eye
+				svg1.append('circle')
+						.attr('cx', 246.75)
+						.attr('cy', 197.75)
+						.attr('r', 0.25)
+						.style('stroke-width', 7.5/i)
+						.transition()
+								.delay(Math.pow(i, 2.5) * 22)
+								.duration(2000)
+						.attr('r', 200)
+						.style('stroke-opacity', 0)
+						.on('end', function() {
+							d3.select(this).remove();
+						});
 			}
 		}
 
@@ -141,9 +143,8 @@
 			.attr('y', 0)
 			.attr('width', width)
 			.attr('height', height)
-			.attr('xlink:href', '../img/profile_photo.png');
-			// .attr('pointer-events', 'none');
-			// .on('mouseover', lMO);
+			.attr('xlink:href', '../img/profile_photo.png')
+			.attr('pointer-events', 'none');
 
 		//Read the data
 		d3.csv('/assets/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
@@ -272,7 +273,7 @@
 												d3.selectAll('.photo_pixels').remove();
 												addPixelRects();
 												if ( val==1 )
-												{ d3.interval(laserEye, 2500); }
+												{ timer = d3.interval(laserEyes, 2500); }
 												else
 												{ timer.stop(); }
 									});

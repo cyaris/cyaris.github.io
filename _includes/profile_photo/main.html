@@ -13,7 +13,10 @@
 	      #profile_photo {
 						display: none;
 	      }
-				#transition_settings {
+				#profile_photo_pixels {
+						display: none;
+	      }
+				#transition_menu {
 						display: none;
 	      }
 			}
@@ -46,7 +49,7 @@
 		<div id='profile_photo_pixels' align='center' style='margin-bottom:10px;'></div>
 		<script src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
 		<!-- Create a div where the slider will be -->
-		<div id='transition_settings' align='center'></div>
+		<div id='transition_menu' align='center'></div>
 		<script>
 
 
@@ -89,10 +92,10 @@
     height = 405,
 		svg3Height = 110;
 
-		// append the svg object to the body of the page
+		// append the svg object to the body of the pageC
 		addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
 		addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, null);
-		addStdSVG('svg3', 'transition_settings', width, svg3Height, margin.left, margin.top, null);
+		addStdSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, null);
 
 		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
 

@@ -105,7 +105,7 @@
 			for (var i=1; i<5; ++i) {
 
 				createLaserEye = function(i, cxInput, cyInput) {
-					// first laser eye
+
 					svg1.append('circle')
 							.attr('cx', cxInput)
 							.attr('cy', cyInput)
@@ -123,9 +123,9 @@
 							});
 					}
 
-					// first laser eye
+					// appending first laser eye
 					createLaserEye(i, 177.5, 201.25);
-					// second laser eye
+					// appending second laser eye
 					createLaserEye(i, 246.75, 197.75);
 			}
 		}
@@ -268,9 +268,9 @@
 												d3.selectAll('.photo_pixels').remove();
 												addPixelRects();
 												if ( val==1 )
-												// manually inputting the number of miliseconds until the final laser eye circle will finish transitioning.
-												// this was calculated by adding the delay from the highest i value with the duration seconds.
-												{ timer = d3.interval(executeLaserEyes, 2781.25); }
+												// manually inputting a number slightly larger the how long it will take for final laser eye circle will finish transition (delay included).
+												// the final transition was calculated by adding the delay from the highest i value with the duration seconds.
+												{ timer = d3.interval(executeLaserEyes, 3000); }
 												else
 												{ timer.stop(); }
 									});

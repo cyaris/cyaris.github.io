@@ -22,6 +22,11 @@
 			cursor: url(../img/pizza_cursor.png), auto;
 		} */
 
+		circle {
+		  fill: none;
+		  stroke: #cc0000;
+		}
+
 		svg text {
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;
@@ -37,7 +42,8 @@
 		<!-- Load d3.js -->
 		<script src='https://d3js.org/d3.v4.min.js'></script>
 		<!-- Create a div where the graph will take place -->
-		<div id='profile_photo' align='center' style='margin-bottom:10px;'></div>
+		<div id='profile_photo' align='center' style='margin-bottom:-415px;'></div>
+		<div id='profile_photo_pixels' align='center' style='margin-bottom:10px;'></div>
 		<script src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
 		<!-- Create a div where the slider will be -->
 		<div id='transition_settings' align='center'></div>
@@ -77,36 +83,52 @@
 						 });
 		};
 
-		function addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
-
-				svgInput.append('rect')
-							.attr('class', classInput)
-							.attr('id', idInput)
-							.attr('x', rectX)
-							.attr('y', rectY)
-							.attr('width', rectWidth)
-							.attr('height', rectHeight)
-							.style('stroke', rectStroke)
-							.style('stroke-width', rectStrokeWidth)
-							.attr('stroke-opacity', rectStrokeOpacity)
-							.style('fill', rectFill)
-							.attr('fill-opacity', rectFillOpacity)
-							.on('mouseover', rMO)
-							.on('mouseleave', rML)
-							.on('click', rClick);
-		};
-
 		// set the dimensions and margins of the graph
 		margin = {top: 0, bottom: 15, left: 0, right: 0},
     width = 405,
     height = 405,
-		svg2Height = 110;
+		svg3Height = 110;
 
 		// append the svg object to the body of the page
 		addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
-		addStdSVG('svg2', 'transition_settings', width, svg2Height, margin.left, margin.top, null);
+		addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, null);
+		addStdSVG('svg3', 'transition_settings', width, svg3Height, margin.left, margin.top, null);
 
-		addStdText(svg2, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
+		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
+
+		laserEye = function(d) {
+
+			for (var i = 1; i < 5; ++i) {
+
+					svg1.append('circle')
+							.attr('cx', 177.25)
+							.attr('cy', 201)
+							.attr('r', 0.25)
+							.style('stroke-width', 7.5/i)
+							.transition()
+									.delay(Math.pow(i, 2.5) * 22)
+									.duration(2000)
+							.attr('r', 200)
+							.style('stroke-opacity', 0)
+							.on('end', function() {
+								d3.select(this).remove();
+							});
+
+					svg1.append('circle')
+							.attr('cx', 246.75)
+							.attr('cy', 197.5)
+							.attr('r', 0.25)
+							.style('stroke-width', 7.5/i)
+							.transition()
+									.delay(Math.pow(i, 2.5) * 22)
+									.duration(2000)
+							.attr('r', 200)
+							.style('stroke-opacity', 0)
+							.on('end', function() {
+								d3.select(this).remove();
+							});
+			}
+		}
 
 		// appending the original version of the photo, invisible upon page load.
 		// x,y coordinates are relative to the transform translate above.
@@ -116,8 +138,9 @@
 			.attr('y', 0)
 			.attr('width', width)
 			.attr('height', height)
-			.attr('xlink:href', '../img/profile_photo.png')
-			.attr('pointer-events', 'none');
+			.attr('xlink:href', '../img/profile_photo.png');
+			// .attr('pointer-events', 'none');
+			// .on('mouseover', lMO);
 
 		//Read the data
 		d3.csv('/assets/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
@@ -155,7 +178,7 @@
 				thisID = d3.select(this).attr('id'),
 				transitionSelect = getTransitionSelect(thisID);
 
-				svg1.selectAll(transitionSelect)
+				svg2.selectAll(transitionSelect)
 					.style('stroke-width', 0.3)
 					.transition()
 						.delay(transDelay)
@@ -177,9 +200,9 @@
 				thisID = d3.select(this).attr('id'),
 				transitionSelect = getTransitionSelect(thisID);
 
-				if ( transitionSliderMode==1 ) {
+				if ( transitionSliderMode==2 ) {
 
-					svg1.selectAll(transitionSelect)
+					svg2.selectAll(transitionSelect)
 						.transition()
 							.delay(transLength + 500)
 							.duration(transDuration)
@@ -208,7 +231,7 @@
 			function addPixelRects() {
 
 				// adding the 48x48 pixels that will make up the profile photo
-			  rect = svg1.selectAll()
+			  rect = svg2.selectAll()
 				    .data(data, function(d) { return d.x_coordinate+':'+d.y_coordinate; })
 				    .enter();
 
@@ -230,14 +253,14 @@
 
 			addPixelRects();
 
-			sliderData = [0, 1],
-			sliderDataLabels = {0: 'Reveal Mode', 1: 'Transition Mode'},
+			sliderData = [0, 1, 2],
+			sliderDataLabels = {0: 'Reveal Mode', 1: 'Reveal My Laser Vision Mode', 2: 'Transition Mode'},
 			transitionSlider = d3.sliderBottom()
 									.min(d3.min(sliderData))
 		    					.max(d3.max(sliderData))
-		    					.width(100)
+		    					.width(300)
 									.step(1)
-									.ticks(2)
+									.ticks(3)
 									.default(d3.min(sliderData))
 									.tickValues(sliderData)
 									.tickFormat(function(d, i) { return sliderDataLabels[i]; })
@@ -245,11 +268,16 @@
 
 												d3.selectAll('.photo_pixels').remove();
 												addPixelRects();
+												if ( val==1 )
+												{ d3.interval(laserEye, 2500); }
+												else
+												{ timer.stop(); }
 									});
 
-			svg2.append('g')
+
+			svg3.append('g')
 					.attr('id', 'transition_slider')
-					.attr('transform', 'translate(150,10)')
+					.attr('transform', 'translate(50,10)')
 					.call(transitionSlider);
 
 			// overriding feature in built-in function that makes current selection invisible

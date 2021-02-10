@@ -99,39 +99,32 @@
 
 		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
 
-		laserEyes = function(d) {
+		executeLaserEyes = function(d) {
 
 			for (var i = 1; i < 5; ++i) {
 
+				createLaserEye = function(i, cxInput, cyInput) {
 				// first laser eye
 				svg1.append('circle')
-						.attr('cx', 177.25)
-						.attr('cy', 201.25)
+						.attr('cx', cxInput)
+						.attr('cy', cyInput)
 						.attr('r', 0.25)
 						.style('stroke-width', 7.5/i)
 						.transition()
-								.delay(Math.pow(i, 2.5) * 22)
+								.delay(Math.pow(i, 2.5) * 22.5)
 								.duration(2000)
 						.attr('r', 200)
 						.style('stroke-opacity', 0)
 						.on('end', function() {
 							d3.select(this).remove();
 						});
+					}
 
-				// second laser eye
-				svg1.append('circle')
-						.attr('cx', 246.75)
-						.attr('cy', 197.75)
-						.attr('r', 0.25)
-						.style('stroke-width', 7.5/i)
-						.transition()
-								.delay(Math.pow(i, 2.5) * 22)
-								.duration(2000)
-						.attr('r', 200)
-						.style('stroke-opacity', 0)
-						.on('end', function() {
-							d3.select(this).remove();
-						});
+					// first laser eye
+					createLaserEye(i, 177.25, 201.25);
+
+					// second laser eye
+					createLaserEye(i, 246.75, 197.75);
 			}
 		}
 
@@ -273,7 +266,7 @@
 												d3.selectAll('.photo_pixels').remove();
 												addPixelRects();
 												if ( val==1 )
-												{ timer = d3.interval(laserEyes, 2500); }
+												{ timer = d3.interval(executeLaserEyes, 2500); }
 												else
 												{ timer.stop(); }
 									});

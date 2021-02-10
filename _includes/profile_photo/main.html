@@ -94,6 +94,7 @@
 
 		// append the svg object to the body of the pageC
 		addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
+		// a separate svg is needed for the pixels so that they will always be on top, even while objects are appended to the original image (laser eyes).
 		addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, null);
 		addStdSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, null);
 
@@ -101,28 +102,29 @@
 
 		executeLaserEyes = function(d) {
 
-			for (var i = 1; i < 5; ++i) {
+			for (var i=1; i<5; ++i) {
 
 				createLaserEye = function(i, cxInput, cyInput) {
-				// first laser eye
-				svg1.append('circle')
-						.attr('cx', cxInput)
-						.attr('cy', cyInput)
-						.attr('r', 0.25)
-						.style('stroke-width', 7.5/i)
-						.transition()
-								.delay(Math.pow(i, 2.5) * 22.5)
-								.duration(2000)
-						.attr('r', 200)
-						.style('stroke-opacity', 0)
-						.on('end', function() {
-							d3.select(this).remove();
-						});
+					// first laser eye
+					svg1.append('circle')
+							.attr('cx', cxInput)
+							.attr('cy', cyInput)
+							.attr('r', 0.25)
+							.style('stroke-width', 7.5/i)
+							.transition()
+									// this delay is increasingly long for each circle
+									// additional seconds are added so that the eyes are stay red for a few seconds before transitioning
+									.delay((Math.pow(i, 2.5) * 22.5) + 500)
+									.duration(2000)
+							.attr('r', 200)
+							.style('stroke-opacity', 0)
+							.on('end', function() {
+								d3.select(this).remove();
+							});
 					}
 
 					// first laser eye
-					createLaserEye(i, 177.25, 201.25);
-
+					createLaserEye(i, 177.5, 201.25);
 					// second laser eye
 					createLaserEye(i, 246.75, 197.75);
 			}
@@ -141,10 +143,10 @@
 
 		//Read the data
 		d3.csv('/assets/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
-			// defining time variables as inputs for pMO and pML tansitions.
-			transDelay = 100,
-			transDuration = 750,
-			transLength = (transDelay * 2) + (transDuration * 2);
+			// defining time variables as inputs for pixelMO and pixelML tansitions.
+			pixelTransDelay = 100,
+			pixelTransDuration = 750,
+			pixelTransLength = (pixelTransDelay * 2) + (pixelTransDuration * 2);
 
 			// determining input for selectAll based on valid pixels
 			function getTransitionSelect(idInput) {
@@ -169,7 +171,7 @@
 				return transitionSelect;
 			};
 
-			pMO = function(d) {
+			pixelMO = function(d) {
 
 				transitionSliderMode = transitionSlider.value(),
 				thisID = d3.select(this).attr('id'),
@@ -178,20 +180,20 @@
 				svg2.selectAll(transitionSelect)
 					.style('stroke-width', 0.3)
 					.transition()
-						.delay(transDelay)
-						.duration(transDuration)
+						.delay(pixelTransDelay)
+						.duration(pixelTransDuration)
 						.attr('x', function(d) { return x(d.x_coordinate) + 1.5})
 						.attr('y', function(d) { return y(d.y_coordinate) - 1})
 						.attr('width', x.bandwidth()/1.5)
 						.attr('height', y.bandwidth()/1.5)
 						.attr('transform', function(d) { return 'rotate(45,' + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + ',' + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ')'})
 					.transition()
-						.delay(transDelay)
-						.duration(transDuration)
+						.delay(pixelTransDelay)
+						.duration(pixelTransDuration)
 						.style('opacity', 0);
 			},
 
-			pML = function(d) {
+			pixelML = function(d) {
 
 				transitionSliderMode = transitionSlider.value(),
 				thisID = d3.select(this).attr('id'),
@@ -201,8 +203,8 @@
 
 					svg2.selectAll(transitionSelect)
 						.transition()
-							.delay(transLength + 500)
-							.duration(transDuration)
+							.delay(pixelTransLength + 500)
+							.duration(pixelTransDuration)
 							.attr('x', function(d) { return x(d.x_coordinate) })
 							.attr('y', function(d) { return y(d.y_coordinate) })
 							.attr('width', x.bandwidth())
@@ -211,8 +213,8 @@
 							.style('stroke-width', 0.3)
 							.style('opacity', 1)
 						.transition()
-							.delay(transDelay)
-							.duration(transDuration)
+							.delay(pixelTransDelay)
+							.duration(pixelTransDuration)
 							.style('stroke-width', 0.075);
 				};
 			};
@@ -244,8 +246,8 @@
 							.style('stroke', 'white')
 							.style('stroke-width', 0.075)
 				      .style('fill', function(d) { return 'rgb(' + String(parseInt(d.r)) + ',' + String(parseInt(d.g)) + ',' + String(parseInt(d.b)) + ')'})
-							.on('mouseover', pMO)
-							.on('mouseleave', pML);
+							.on('mouseover', pixelMO)
+							.on('mouseleave', pixelML);
 			};
 
 			addPixelRects();
@@ -266,7 +268,9 @@
 												d3.selectAll('.photo_pixels').remove();
 												addPixelRects();
 												if ( val==1 )
-												{ timer = d3.interval(executeLaserEyes, 2500); }
+												// manually inputting the number of miliseconds until the final laser eye circle will finish transitioning.
+												// this was calculated by adding the delay from the highest i value with the duration seconds.
+												{ timer = d3.interval(executeLaserEyes, 2781.25); }
 												else
 												{ timer.stop(); }
 									});

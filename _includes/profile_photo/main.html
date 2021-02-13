@@ -19,16 +19,14 @@
 				#transition_menu {
 						display: none;
 	      }
+				#fireworks {
+						display: none;
+	      }
 			}
 
 	 	/* #profile_photo {
 			cursor: url(../img/pizza_cursor.png), auto;
 		} */
-
-		circle {
-		  fill: none;
-		  stroke: #cc0000;
-		}
 
 		svg text {
 			-webkit-touch-callout: none;
@@ -50,7 +48,18 @@
 		<script src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
 		<!-- Create a div where the slider will be -->
 		<div id='transition_menu' align='center'></div>
+		<div id='fireworks' align='center' style='margin-bottom:-650px;'></div>
 		<script>
+
+
+		function getRandomInt(min, max) {
+
+			min = Math.ceil(min);
+			max = Math.floor(max);
+
+			// the maximum is exclusive and the minimum is inclusive
+			return Math.floor(Math.random() * (max - min) + min);
+		}
 
 
 		function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
@@ -90,7 +99,9 @@
 		margin = {top: 0, bottom: 15, left: 0, right: 0},
     width = 405,
     height = 405,
-		svg3Height = 110;
+		svg3Height = 120,
+		svg4Width = width*2,
+		svg4Height = height+svg3Height+125,
 
 		// append the svg object to the body of the pageC
 		addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
@@ -98,8 +109,13 @@
 		addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, null);
 		addStdSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, null);
 
+		addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*.10, -height*1.6, null);
+		svg4.attr('pointer-events', 'none');
+
 		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
 
+		// credit is due to this blocks page for the process defined below: http://bl.ocks.org/mrtriangle/11222485
+		// I took what was there and made adjustments based on preference and version differences, but the basic foundation was all set up on that page.
 		executeLaserEyes = function(d) {
 
 			for (var i=1; i<5; ++i) {
@@ -110,6 +126,8 @@
 							.attr('cx', cxInput)
 							.attr('cy', cyInput)
 							.attr('r', 0.25)
+							.style('fill', 'transparent')
+							.style('stroke', '#cc0000')
 							.style('stroke-width', 7.5/i)
 							.transition()
 									// this delay is increasingly long for each circle
@@ -174,7 +192,90 @@
 				return transitionSelect;
 			};
 
+			// credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5
+			// I took what was there and made adjustments based on preference and version differences, but the basic foundation was all set up on that page.
+			function launchFireworks() {
+
+				// since multiple rockets could be active at once, grabbing a random integer to dynamically name the classes
+				randomInt = getRandomInt(0, 1000000),
+				classInput = 'fireworks_' + randomInt;
+
+				// defining y parameter for the height of the launch
+				launchHeight = getRandomInt(svg4Height*0.1, svg4Height*0.4),
+				// defining adjusted y parameter for delay preceding explosion
+				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
+				explosionHeight = launchHeight + 25;
+
+				// defining values for the launch of the firework
+				// function below will be used to determine the x location for launching the rocket
+				randomXStart = d3.randomNormal(svg4Width/2, 125),
+				// x coordinate for the ascending rocket
+				base = randomXStart(),
+				randomX = function(b){ return d3.randomNormal(b, 80)()},
+				randomY = d3.randomNormal(explosionHeight, 80),
+				launchData = d3.range(100).map(function() { return { x: randomX(base), y: randomY() }; });
+
+				// creating an array of separate color palletes for each firework
+				fireWorksColorPallettes = [
+					['#DFFF00', '#FFBF00', '#FF7F50', '#DE3163'],
+					['#9FE2BF', '#40E0D0', '#6495ED', '#CCCCFF'],
+					['#9c2ea1', '#ff5f58', '#ffdd23', '#fd9301'],
+					['#ff0055', '#d578ff', '#625df0', '#59e7f2'],
+					['#f259a6', '#67eebb', '#0fba7c']
+				]
+
+				color = d3.scaleOrdinal().domain([0, Math.max(launchData['x'])]).range(fireWorksColorPallettes[getRandomInt(0, fireWorksColorPallettes.length-1)]);
+
+				svg4.selectAll()
+						.data(launchData).enter()
+							.append('circle')
+							.attr('class', classInput);
+
+				svg4.selectAll('.' + classInput)
+						.attr('r', 2)
+						.attr('cx', base)
+						.attr('cy', svg4Height)
+						.style('fill', '#f7df1e')
+						.transition()
+								.ease(d3.easeCircle)
+								.duration(1500)
+								.attr('cy', launchHeight)
+						.transition()
+								.ease(d3.easeCircle)
+								.duration(750)
+								.attr('r', 7)
+								.attr('cy', explosionHeight)
+						.transition()
+								.ease(d3.easeExp)
+								.duration(500)
+								.attr('cx', function(d) { return d.x; })
+								.attr('cy', function(d) { return d.y; })
+								.attr('r', 10)
+								.style('fill', function(d) { return color(d.x); })
+								.transition()
+								.ease(d3.easeCircle)
+								.duration(2500)
+								.style('opacity', 0)
+								.attr('cx', function(d) {
+									if ( d.x > base )
+									{ return d.x + (d.x - base) }
+									else
+									{ return d.x - (-d.x + base) }
+								})
+								.attr('cy', function(d) {
+									if ( d.y > explosionHeight )
+									{ return d.y + (d.y - explosionHeight ) }
+									else
+									{ return d.y - (-d.y + explosionHeight ) }
+								})
+								.attr('r', 0)
+								.on('end', function() {
+									d3.select(this).remove();
+								});
+			}
+
 			function countInvisiblePixels() {
+
 				// iterating over all pixels to check the current opacity, and get a percent of total pixels that are invisible.
 				totalPixels = svg2.selectAll('.photo_pixels').size(),
 				invisiblePixels = 0;
@@ -186,17 +287,33 @@
 						{ invisiblePixels+=1 }
 				  });
 
-
+				// labelling dynamically the percent of the non-pixelated photo that's fully visible.
 				svg3.select('#percent_revealed').remove();
 				percentFormat = d3.format('.2f');
-				numberInput = percentFormat((invisiblePixels/totalPixels)*100) + '%'
-				textInput = 'Percent Revealed: ' + numberInput
+				numberInput = percentFormat((invisiblePixels/totalPixels)*100)
+				textInput = 'Percent Revealed: ' + numberInput + '%'
 				addStdText(svg3, null, 'percent_revealed', 120, 110, '15px', 'normal', 0.80, 0, textInput);
 
-				return
+				return numberInput
 			}
 
-			d3.interval(countInvisiblePixels, 1500);
+			// the percent of total pixels revealed will be continuously updated every x (see limit) seconds
+			// this will stop once the percent reaches 100, and a new timer will be initiated to launch the fireworks (with a timeout provided)
+			pixelCountTimer = d3.interval(function() {
+
+				percentRevealed = countInvisiblePixels();
+			  if ( percentRevealed==100 ) {
+
+					pixelCountTimer.stop();
+					fireWorksDelayTime = 1750;
+					fireWorksTimer = d3.interval(launchFireworks, fireWorksDelayTime);
+					// this will set an end to the interval function called above after x iterations
+					d3.timer(function(elapsed) {
+					  if (elapsed > fireWorksDelayTime*10)
+						{ fireWorksTimer.stop(); }
+					}, fireWorksDelayTime*10);
+				}
+			}, 1000);
 
 			pixelMO = function(d) {
 

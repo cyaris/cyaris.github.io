@@ -143,6 +143,7 @@
 
 		//Read the data
 		d3.csv('/assets/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
+
 			// defining time variables as inputs for pixelMO and pixelML tansitions.
 			pixelTransDelay = 100,
 			pixelTransDuration = 750,
@@ -164,12 +165,38 @@
 				transitionSelect = currentPixel;
 
 				for ( var i = 0; i <= evaluatingPixels.length-1; i++ ) {
-					if ( d3.select(evaluatingPixels[i]).empty()==false )
-					{ transitionSelect+=', ' + evaluatingPixels[i]; }
+					if ( d3.select(evaluatingPixels[i]).empty()==false ) {
+
+						transitionSelect+=', ' + evaluatingPixels[i];
+					}
 				}
 
 				return transitionSelect;
 			};
+
+			function countInvisiblePixels() {
+				// iterating over all pixels to check the current opacity, and get a percent of total pixels that are invisible.
+				totalPixels = svg2.selectAll('.photo_pixels').size(),
+				invisiblePixels = 0;
+
+				svg2.selectAll('.photo_pixels')
+				  .each(function(d) {
+
+						if ( d3.select(this).style('opacity')==0 )
+						{ invisiblePixels+=1 }
+				  });
+
+
+				svg3.select('#percent_revealed').remove();
+				percentFormat = d3.format('.2f');
+				numberInput = percentFormat((invisiblePixels/totalPixels)*100) + '%'
+				textInput = 'Percent Revealed: ' + numberInput
+				addStdText(svg3, null, 'percent_revealed', 120, 110, '15px', 'normal', 0.80, 0, textInput);
+
+				return
+			}
+
+			d3.interval(countInvisiblePixels, 1500);
 
 			pixelMO = function(d) {
 
@@ -218,6 +245,7 @@
 							.style('stroke-width', 0.075);
 				};
 			};
+
 			// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
 			pixelX = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
 			pixelY = d3.map(data, function(d){ return d.y_coordinate; }).keys();
@@ -274,7 +302,6 @@
 												else
 												{ timer.stop(); }
 									});
-
 
 			svg3.append('g')
 					.attr('id', 'transition_slider')

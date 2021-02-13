@@ -215,16 +215,41 @@
 				randomY = d3.randomNormal(explosionHeight, 80),
 				launchData = d3.range(100).map(function() { return { x: randomX(base), y: randomY() }; });
 
-				// creating an array of separate color palletes for each firework
-				fireWorksColorPallettes = [
-					['#DFFF00', '#FFBF00', '#FF7F50', '#DE3163'],
-					['#9FE2BF', '#40E0D0', '#6495ED', '#CCCCFF'],
-					['#9c2ea1', '#ff5f58', '#ffdd23', '#fd9301'],
-					['#ff0055', '#d578ff', '#625df0', '#59e7f2'],
-					['#f259a6', '#67eebb', '#0fba7c']
+				// creating an array of separate color palettes for each firework
+				fireWorksColorPalettes = [
+					// Astrid Gen Wyatt Shyla Cynthia Color Palette
+					['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6']
+					// Bohemian sunset Color Palette
+					['#9c2ea1', '#ff5f58', '#ffdd23', '#fd9301', '#ff0055'],
+					// KINDA BRIGHT Color Palette
+					['#d578ff', '#625df0', '#59e7f2', '#f259a6', '#67eebb'],
+					// P a s t e l R a i n b o w Color Palette
+					['#ffc5c5', '#bcffa7', '#feffb6', '#98e5e7', '#ffaef3'],
+					// pastel colors of the rainbow Color Palette
+					['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'],
+					// Beach Color Palette
+					['#96ceb4', '#ffeead', '#ff6f69', '#ffcc5c', '#88d8b0'],
+					// VaporWave Color Palette
+					['#ff71ce', '#01cdfe', '#05ffa1', '#b967ff', '#fffb96'],
+					// 80s Color Palette
+					['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9', '#ff3f3f'],
+					// Metro UI Colors Color Palette
+					['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'],
+					// neon colors Color Palette
+					['#4deeea', '#74ee15', '#ffe700', '#f000ff', '#001eff'],
+					// Instagram gradient Color Palette
+					['#feda75', '#fa7e1e', '#d62976', '#962fbf', '#4f5bd5'],
+					// Rainbow Dash Color Palette
+					['#ee4035', '#f37736', '#fdf498', '#7bc043', '#0392cf'],
+					// Cyberpunk Color Palette
+					['#00ff9f', '#00b8ff', '#001eff', '#bd00ff', '#d600ff'],
+					// Metro Style Color Palette
+					['#00aedb', '#a200ff', '#f47835', '#d41243', '#8ec127'],
+					// ESO MOTD Color Text Color Palette
+					['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f']
 				]
 
-				color = d3.scaleOrdinal().domain([0, Math.max(launchData['x'])]).range(fireWorksColorPallettes[getRandomInt(0, fireWorksColorPallettes.length-1)]);
+				color = d3.scaleOrdinal().domain([0, Math.max(launchData['x'])]).range(fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)]);
 
 				svg4.selectAll()
 						.data(launchData).enter()
@@ -302,7 +327,7 @@
 			pixelCountTimer = d3.interval(function() {
 
 				percentRevealed = countInvisiblePixels();
-			  if ( percentRevealed==100 ) {
+			  if ( percentRevealed>=10 ) {
 
 					pixelCountTimer.stop();
 					fireWorksDelayTime = 1750;

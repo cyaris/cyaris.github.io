@@ -42,6 +42,7 @@
 	<body>
 		<!-- Load d3.js -->
 		<script src='https://d3js.org/d3.v4.min.js'></script>
+		<script src="http://chancejs.com/chance.min.js"></script>
 		<!-- Create a div where the graph will take place -->
 		<div id='profile_photo' align='center' style='margin-bottom:-411.25px;'></div>
 		<div id='profile_photo_pixels' align='center' style='margin-bottom:10px;'></div>
@@ -250,10 +251,12 @@
 
 				// defining y parameter for the height of the launch
 				// the is the distance from the top of the pange
-				launchHeight = getRandomInt(svg4Height*0.05, svg4Height*0.30),
+				launchHeight = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.30 }),
 				// defining adjusted y parameter for delay preceding explosion
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-				explosionHeight = launchHeight + getRandomInt(25, 100);
+				explosionHeight = launchHeight + chance.floating({ min: 25, max: 100 }),
+				// total circles for the explosion
+				explosionSize = 125;
 
 				// defining values for the launch of the firework
 				// function below will be used to determine the x location for launching the rocket
@@ -262,7 +265,7 @@
 				base = randomXStart(),
 				randomX = function(b){ return d3.randomNormal(b, 80)(); },
 				randomY = d3.randomNormal(explosionHeight, 80),
-				launchData = d3.range(100).map(function() { return { x: randomX(base), y: randomY() }; });
+				launchData = d3.range(explosionSize).map(function() { return { x: randomX(base), y: randomY() }; });
 
 				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],
 				launchColor = randomPallete[getRandomInt(0, randomPallete.length-1)],
@@ -284,19 +287,19 @@
 								.attr('cy', launchHeight)
 						.transition()
 								.ease(d3.easeCircleOut)
-								.duration(getRandomInt(750, 1500))
-								// .attr('r', 7)
+								.duration(chance.floating({ min: 750, max: 1750 }))
+								.attr('r', 3)
 								.attr('cy', explosionHeight)
 						.transition()
 								.ease(d3.easeExp)
-								.duration(500)
+								.duration(500 + chance.floating({ min: -250, max: 250 }))
 								.attr('cx', function(d) { return d.x; })
 								.attr('cy', function(d) { return d.y; })
-								.attr('r', 10)
+								.attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
 								.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
 								.transition()
 								.ease(d3.easeCircle)
-								.duration(2500)
+								.duration(2500 + chance.floating({ min: -250, max: 250 }))
 								.style('opacity', 0)
 								.attr('cx', function(d) {
 									if ( d.x > base )
@@ -345,8 +348,8 @@
 			pixelCountTimer = d3.interval(function() {
 
 			percentRevealed = countInvisiblePixels();
-			  if ( percentRevealed==100 && launchedAlready==false ) {
-				// if ( percentRevealed>=10 && launchedAlready==false ) {
+			  // if ( percentRevealed==100 && launchedAlready==false ) {
+				if ( percentRevealed>=10 && launchedAlready==false ) {
 					launchedAlready = true
 					totalFireworks = 200
 					for ( var i = 1; i <= totalFireworks; i++ ) {

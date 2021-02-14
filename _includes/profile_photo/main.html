@@ -354,7 +354,7 @@
 					totalFireworks = 200
 					for ( var i = 1; i <= totalFireworks; i++ ) {
 
-						d3.timeout(launchFireworks, Math.max(1500, (1500*i) + getRandomInt(-2500, 2500)));
+						d3.timeout(launchFireworks, Math.max(1500, (1500*i) + chance.floating({ min: -2500, max: 2500 })));
 					}
 				}
 			}, 1000);

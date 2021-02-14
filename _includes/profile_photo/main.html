@@ -250,10 +250,10 @@
 
 				// defining y parameter for the height of the launch
 				// the is the distance from the top of the pange
-				launchHeight = getRandomInt(svg4Height*0.10, svg4Height*0.30),
+				launchHeight = getRandomInt(svg4Height*0.05, svg4Height*0.30),
 				// defining adjusted y parameter for delay preceding explosion
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-				explosionHeight = launchHeight + 25;
+				explosionHeight = launchHeight + getRandomInt(25, 100);
 
 				// defining values for the launch of the firework
 				// function below will be used to determine the x location for launching the rocket
@@ -265,7 +265,7 @@
 				launchData = d3.range(100).map(function() { return { x: randomX(base), y: randomY() }; });
 
 				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],
-				launchColor = randomPallete[0],
+				launchColor = randomPallete[getRandomInt(0, randomPallete.length-1)],
 				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(launchData['x']), Math.max(launchData['x'])]).range(randomPallete);
 
 				svg4.selectAll()
@@ -283,9 +283,9 @@
 								.duration(1500)
 								.attr('cy', launchHeight)
 						.transition()
-								.ease(d3.easeCircle)
-								.duration(750)
-								.attr('r', 7)
+								.ease(d3.easeCircleOut)
+								.duration(getRandomInt(750, 1500))
+								// .attr('r', 7)
 								.attr('cy', explosionHeight)
 						.transition()
 								.ease(d3.easeExp)
@@ -345,8 +345,8 @@
 			pixelCountTimer = d3.interval(function() {
 
 			percentRevealed = countInvisiblePixels();
-			  if ( percentRevealed==100 && launchedAlready==false ) {
-				// if ( percentRevealed>=10 && launchedAlready==false ) {
+			  // if ( percentRevealed==100 && launchedAlready==false ) {
+				if ( percentRevealed>=10 && launchedAlready==false ) {
 					launchedAlready = true
 					totalFireworks = 200
 					for ( var i = 1; i <= totalFireworks; i++ ) {

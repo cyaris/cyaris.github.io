@@ -48,7 +48,7 @@
 		<script src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
 		<!-- Create a div where the slider will be -->
 		<div id='transition_menu' align='center'></div>
-		<div id='fireworks' align='center' style='margin-bottom:-650px;'></div>
+		<div id='fireworks' align='center' style='margin-bottom:-655px;'></div>
 		<script>
 
 
@@ -100,8 +100,8 @@
     width = 405,
     height = 405,
 		svg3Height = 120,
-		svg4Width = width*2,
-		svg4Height = height+svg3Height+125,
+		svg4Width = width*3,
+		svg4Height = height+svg3Height+175,
 
 		// append the svg object to the body of the pageC
 		addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
@@ -109,7 +109,7 @@
 		addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, null);
 		addStdSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, null);
 
-		addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*.10, -height*1.6, null);
+		addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*.575, -height*1.725, null);
 		svg4.attr('pointer-events', 'none');
 
 		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
@@ -211,14 +211,14 @@
 				randomXStart = d3.randomNormal(svg4Width/2, 125),
 				// x coordinate for the ascending rocket
 				base = randomXStart(),
-				randomX = function(b){ return d3.randomNormal(b, 80)()},
+				randomX = function(b){ return d3.randomNormal(b, 80)(); },
 				randomY = d3.randomNormal(explosionHeight, 80),
 				launchData = d3.range(100).map(function() { return { x: randomX(base), y: randomY() }; });
 
 				// creating an array of separate color palettes for each firework
 				fireWorksColorPalettes = [
 					// Astrid Gen Wyatt Shyla Cynthia Color Palette
-					['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6']
+					['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6'],
 					// Bohemian sunset Color Palette
 					['#9c2ea1', '#ff5f58', '#ffdd23', '#fd9301', '#ff0055'],
 					// KINDA BRIGHT Color Palette
@@ -249,10 +249,9 @@
 					['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f']
 				]
 
-				// launchColor = '#f7df1e',
 				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],
 				launchColor = randomPallete[0],
-				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(launchData['x']), Math.max(launchData['x'])]).range(fireWorkPallete);
+				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(launchData['x']), Math.max(launchData['x'])]).range(randomPallete);
 
 				svg4.selectAll()
 						.data(launchData).enter()
@@ -331,8 +330,7 @@
 			pixelCountTimer = d3.interval(function() {
 
 				percentRevealed = countInvisiblePixels();
-			  if ( percentRevealed>10 && launchedAlready==false ) {
-					// pixelCountTimer.stop();
+			  if ( percentRevealed==100 && launchedAlready==false ) {
 					launchedAlready = true
 					totalFireworks = 30
 					for ( var i = 0; i <= totalFireworks-1; i++ ) {

@@ -196,25 +196,6 @@
 			// I took what was there and made adjustments based on preference and version differences, but the basic foundation was all set up on that page.
 			function launchFireworks() {
 
-				// since multiple rockets could be active at once, grabbing a random integer to dynamically name the classes
-				randomInt = getRandomInt(0, 1000000),
-				classInput = 'fireworks_' + randomInt;
-
-				// defining y parameter for the height of the launch
-				launchHeight = getRandomInt(svg4Height*0.1, svg4Height*0.4),
-				// defining adjusted y parameter for delay preceding explosion
-				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-				explosionHeight = launchHeight + 25;
-
-				// defining values for the launch of the firework
-				// function below will be used to determine the x location for launching the rocket
-				randomXStart = d3.randomNormal(svg4Width/2, 125),
-				// x coordinate for the ascending rocket
-				base = randomXStart(),
-				randomX = function(b){ return d3.randomNormal(b, 80)(); },
-				randomY = d3.randomNormal(explosionHeight, 80),
-				launchData = d3.range(100).map(function() { return { x: randomX(base), y: randomY() }; });
-
 				// creating an array of separate color palettes for each firework
 				fireWorksColorPalettes = [
 					// Astrid Gen Wyatt Shyla Cynthia Color Palette
@@ -248,6 +229,26 @@
 					// ESO MOTD Color Text Color Palette
 					['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f']
 				]
+
+				// since multiple rockets could be active at once, grabbing a random integer to dynamically name the classes
+				randomInt = getRandomInt(0, 1000000),
+				classInput = 'fireworks_' + randomInt;
+
+				// defining y parameter for the height of the launch
+				// the is the distance from the top of the pange
+				launchHeight = getRandomInt(svg4Height*0.10, svg4Height*0.30),
+				// defining adjusted y parameter for delay preceding explosion
+				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
+				explosionHeight = launchHeight + 25;
+
+				// defining values for the launch of the firework
+				// function below will be used to determine the x location for launching the rocket
+				randomXStart = d3.randomNormal(svg4Width/2, 125),
+				// x coordinate for the ascending rocket
+				base = randomXStart(),
+				randomX = function(b){ return d3.randomNormal(b, 80)(); },
+				randomY = d3.randomNormal(explosionHeight, 80),
+				launchData = d3.range(100).map(function() { return { x: randomX(base), y: randomY() }; });
 
 				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],
 				launchColor = randomPallete[0],
@@ -331,11 +332,12 @@
 
 				percentRevealed = countInvisiblePixels();
 			  if ( percentRevealed==100 && launchedAlready==false ) {
+				// if ( percentRevealed>=10 && launchedAlready==false ) {
 					launchedAlready = true
-					totalFireworks = 30
-					for ( var i = 0; i <= totalFireworks-1; i++ ) {
+					totalFireworks = 100
+					for ( var i = 1; i <= totalFireworks; i++ ) {
 
-						d3.timeout(launchFireworks, 1500*i);
+						d3.timeout(launchFireworks, (1500*i) + getRandomInt(-100, 100));
 					}
 				}
 			}, 1000);

@@ -198,11 +198,11 @@
 
 				// creating an array of separate color palettes for each firework
 				fireWorksColorPalettes = [
-					// Astrid Gen Wyatt Shyla Cynthia Color Palette
+					// Astrid Gen Wyatt Shyla Cynthia Color Palette: https://www.color-hex.com/color-palette/104729
 					['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6'],
-					// Bohemian sunset Color Palette
+					// Bohemian sunset Color Palette: https://www.color-hex.com/color-palette/104833
 					['#9c2ea1', '#ff5f58', '#ffdd23', '#fd9301', '#ff0055'],
-					// KINDA BRIGHT Color Palette
+					// KINDA BRIGHT Color Palette: https://www.color-hex.com/color-palette/104792
 					['#d578ff', '#625df0', '#59e7f2', '#f259a6', '#67eebb'],
 					// P a s t e l R a i n b o w Color Palette
 					['#ffc5c5', '#bcffa7', '#feffb6', '#98e5e7', '#ffaef3'],
@@ -226,8 +226,22 @@
 					['#00ff9f', '#00b8ff', '#001eff', '#bd00ff', '#d600ff'],
 					// Metro Style Color Palette
 					['#00aedb', '#a200ff', '#f47835', '#d41243', '#8ec127'],
-					// ESO MOTD Color Text Color Palette
-					['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f']
+					// ESO MOTD Color Text Color Palette: https://www.color-hex.com/color-palette/20452
+					['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f'],
+					// Retro Color Palette: https://www.color-hex.com/color-palette/165
+					['#666547', '#fb2e01', '#6fcb9f', '#ffe28a', '#fffeb3'],
+					// Neon 0908 Color Palette: https://www.color-hex.com/color-palette/1131
+					['#fe0000', '#fdfe02', '#0bff01', '#011efe', '#fe00f6'],
+					// cool blue Color Palette: https://www.color-hex.com/color-palette/30415
+					['#005073', '#107dac', '#189ad3', '#1ebbd7', '#71c7ec'],
+					// Shades of Turquoise Color Palette: https://www.color-hex.com/color-palette/1836
+					['#b3ecec', '#89ecda', '#43e8d8', '#40e0d0', '#3bd6c6'],
+					// Red-Orange Color Palette: https://www.color-hex.com/color-palette/4699
+					['#ffc100', '#ff9a00', '#ff7400', '#ff4d00', '#ff0000'],
+					// I Loved In Shades of Green Color Palette: https://www.color-hex.com/color-palette/1325
+					['#adff00', '#74d600', '#028900', '#00d27f', '#00ff83'],
+					// Facebook Messenger 1 Color Palette: https://www.color-hex.com/color-palette/15945
+					['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb']
 				]
 
 				// since multiple rockets could be active at once, grabbing a random integer to dynamically name the classes
@@ -330,14 +344,14 @@
 			launchedAlready = false
 			pixelCountTimer = d3.interval(function() {
 
-				percentRevealed = countInvisiblePixels();
+			percentRevealed = countInvisiblePixels();
 			  if ( percentRevealed==100 && launchedAlready==false ) {
 				// if ( percentRevealed>=10 && launchedAlready==false ) {
 					launchedAlready = true
-					totalFireworks = 100
+					totalFireworks = 200
 					for ( var i = 1; i <= totalFireworks; i++ ) {
 
-						d3.timeout(launchFireworks, (1500*i) + getRandomInt(-100, 100));
+						d3.timeout(launchFireworks, Math.max(1500, (1500*i) + getRandomInt(-2500, 2500)));
 					}
 				}
 			}, 1000);

@@ -345,8 +345,8 @@
 			pixelCountTimer = d3.interval(function() {
 
 			percentRevealed = countInvisiblePixels();
-			  // if ( percentRevealed==100 && launchedAlready==false ) {
-				if ( percentRevealed>=10 && launchedAlready==false ) {
+			  if ( percentRevealed==100 && launchedAlready==false ) {
+				// if ( percentRevealed>=10 && launchedAlready==false ) {
 					launchedAlready = true
 					totalFireworks = 200
 					for ( var i = 1; i <= totalFireworks; i++ ) {

@@ -42,7 +42,7 @@
 	<body>
 		<!-- Load d3.js -->
 		<script src='https://d3js.org/d3.v4.min.js'></script>
-		<script src="http://chancejs.com/chance.min.js"></script>
+		<script src='http://chancejs.com/chance.min.js'></script>
 		<!-- Create a div where the graph will take place -->
 		<div id='profile_photo' align='center' style='margin-bottom:-411.25px;'></div>
 		<div id='profile_photo_pixels' align='center' style='margin-bottom:10px;'></div>
@@ -61,6 +61,12 @@
 			// the maximum is exclusive and the minimum is inclusive
 			return Math.floor(Math.random() * (max - min) + min);
 		}
+
+
+		// function getRandomPositiveNegative() {
+		//
+		// 	return Math.ceil((Math.random() - 0.5) * 2) < 1 ? -1 : 1;
+		// }
 
 
 		function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
@@ -116,7 +122,7 @@
 		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
 
 		// credit is due to this blocks page for the process defined below: http://bl.ocks.org/mrtriangle/11222485
-		// I took what was there and made adjustments based on preference and version differences, but the basic foundation was all set up on that page.
+		// I took what was there and made adjustments launchXLocd on preference and version differences, but the basic foundation was all set up on that page.
 		executeLaserEyes = function(d) {
 
 			for (var i=1; i<5; ++i) {
@@ -135,6 +141,7 @@
 									// additional seconds are added so that the eyes are stay red for a few seconds before transitioning
 									.delay((Math.pow(i, 2.5) * 22.5) + 500)
 									.duration(2000)
+									// .ease(d3.easeCircleIn)
 							.attr('r', 200)
 							.style('stroke-opacity', 0)
 							.on('end', function() {
@@ -168,7 +175,7 @@
 			pixelTransDuration = 750,
 			pixelTransLength = (pixelTransDelay * 2) + (pixelTransDuration * 2);
 
-			// determining input for selectAll based on valid pixels
+			// determining input for selectAll launchXLocd on valid pixels
 			function getTransitionSelect(idInput) {
 
 				currentPixel = '#' + idInput,
@@ -194,7 +201,7 @@
 			};
 
 			// credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5
-			// I took what was there and made adjustments based on preference and version differences, but the basic foundation was all set up on that page.
+			// I took what was there and made adjustments launchXLocd on preference and version differences, but the basic foundation was all set up on that page.
 			function launchFireworks() {
 
 				// creating an array of separate color palettes for each firework
@@ -245,16 +252,14 @@
 					['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb']
 				]
 
-				// since multiple rockets could be active at once, grabbing a random integer to dynamically name the classes
-				randomInt = getRandomInt(0, 1000000),
-				classInput = 'fireworks_' + randomInt;
+
 
 				// defining y parameter for the height of the launch
 				// the is the distance from the top of the pange
-				launchHeight = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.30 }),
+				LaunchYLoc = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.30 }),
 				// defining adjusted y parameter for delay preceding explosion
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-				explosionHeight = launchHeight + chance.floating({ min: 25, max: 100 }),
+				explosionYLoc = LaunchYLoc + chance.floating({ min: 25, max: 100 }),
 				// total circles for the explosion
 				explosionSize = 100;
 
@@ -262,34 +267,34 @@
 				// function below will be used to determine the x location for launching the rocket
 				randomXStart = d3.randomNormal(svg4Width/2, 125),
 				// x coordinate for the ascending rocket
-				base = randomXStart(),
+				launchXLoc = randomXStart(),
+				// x coordinate for explosion after the rocket descends
+				// explosionXLoc = launchXLoc + (getRandomInt(-1, 1)*15),
 				randomX = function(b){ return d3.randomNormal(b, 80)(); },
-				randomY = d3.randomNormal(explosionHeight, 80),
-				launchData = d3.range(explosionSize).map(function() { return { x: randomX(base), y: randomY() }; });
+				randomY = d3.randomNormal(explosionYLoc, 80),
+				explosionData = d3.range(explosionSize).map(function() { return { x: randomX(launchXLoc), y: randomY() }; });
 
 				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],
 				launchColor = randomPallete[getRandomInt(0, randomPallete.length-1)],
-				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(launchData['x']), Math.max(launchData['x'])]).range(randomPallete);
+				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
 
 				svg4.selectAll()
-						.data(launchData).enter()
-							.append('circle')
-							.attr('class', classInput);
-
-				svg4.selectAll('.' + classInput)
-						.attr('r', 2)
-						.attr('cx', base)
-						.attr('cy', svg4Height)
-						.style('fill', launchColor)
+						.data(explosionData).enter()
+						.append('circle')
+							.attr('r', 2)
+							.attr('cx', launchXLoc)
+							.attr('cy', svg4Height)
+							.style('fill', launchColor)
 						.transition()
 								.ease(d3.easeCircle)
 								.duration(1500)
-								.attr('cy', launchHeight)
+								.attr('cy', LaunchYLoc)
 						.transition()
-								.ease(d3.easeCircleOut)
+								.ease(d3.easeQuad)
 								.duration(chance.floating({ min: 750, max: 1750 }))
 								.attr('r', 3)
-								.attr('cy', explosionHeight)
+								// .attr('cx', explosionXLoc)
+								.attr('cy', explosionYLoc)
 						.transition()
 								.ease(d3.easeExp)
 								.duration(500)
@@ -297,21 +302,21 @@
 								.attr('cy', function(d) { return d.y; })
 								.attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
 								.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
-								.transition()
+						.transition()
 								.ease(d3.easeCircle)
 								.duration(2250 + chance.floating({ min: -500, max: 500 }))
 								.style('opacity', 0)
 								.attr('cx', function(d) {
-									if ( d.x > base )
-									{ return d.x + (d.x - base) }
+									if ( d.x > launchXLoc )
+									{ return d.x + (d.x - launchXLoc) }
 									else
-									{ return d.x - (-d.x + base) }
+									{ return d.x - (-d.x + launchXLoc) }
 								})
 								.attr('cy', function(d) {
-									if ( d.y > explosionHeight )
-									{ return d.y + (d.y - explosionHeight ) }
+									if ( d.y > explosionYLoc )
+									{ return d.y + (d.y - explosionYLoc ) }
 									else
-									{ return d.y - (-d.y + explosionHeight ) }
+									{ return d.y - (-d.y + explosionYLoc ) }
 								})
 								.attr('r', 0)
 								.on('end', function() {
@@ -369,8 +374,8 @@
 					.style('stroke-width', 0.3)
 					.transition()
 						.delay(pixelTransDelay)
-						.ease(d3.easeExp)
 						.duration(pixelTransDuration)
+						// .ease(d3.easeQuad)
 						.attr('x', function(d) { return x(d.x_coordinate) + 1.5})
 						.attr('y', function(d) { return y(d.y_coordinate) - 1})
 						.attr('width', x.bandwidth()/1.5)
@@ -393,8 +398,8 @@
 					svg2.selectAll(transitionSelect)
 						.transition()
 							.delay(pixelTransLength + 500)
-							.ease(d3.easeExp)
 							.duration(pixelTransDuration)
+						// .ease(d3.easeQuad)
 							.attr('x', function(d) { return x(d.x_coordinate) })
 							.attr('y', function(d) { return y(d.y_coordinate) })
 							.attr('width', x.bandwidth())
@@ -455,7 +460,6 @@
 									.tickValues(sliderData)
 									.tickFormat(function(d, i) { return sliderDataLabels[i]; })
 									.on('onchange', val => {
-
 
 												d3.selectAll('.photo_pixels').remove();
 												addPixelRects();

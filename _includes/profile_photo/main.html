@@ -249,7 +249,10 @@
 					['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f']
 				]
 
-				color = d3.scaleOrdinal().domain([0, Math.max(launchData['x'])]).range(fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)]);
+				// launchColor = '#f7df1e',
+				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],
+				launchColor = randomPallete[0],
+				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(launchData['x']), Math.max(launchData['x'])]).range(fireWorkPallete);
 
 				svg4.selectAll()
 						.data(launchData).enter()
@@ -260,7 +263,7 @@
 						.attr('r', 2)
 						.attr('cx', base)
 						.attr('cy', svg4Height)
-						.style('fill', '#f7df1e')
+						.style('fill', launchColor)
 						.transition()
 								.ease(d3.easeCircle)
 								.duration(1500)
@@ -276,7 +279,7 @@
 								.attr('cx', function(d) { return d.x; })
 								.attr('cy', function(d) { return d.y; })
 								.attr('r', 10)
-								.style('fill', function(d) { return color(d.x); })
+								.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
 								.transition()
 								.ease(d3.easeCircle)
 								.duration(2500)
@@ -323,20 +326,19 @@
 			}
 
 			// the percent of total pixels revealed will be continuously updated every x (see limit) seconds
-			// this will stop once the percent reaches 100, and a new timer will be initiated to launch the fireworks (with a timeout provided)
+			// once the percent reaches 100, the fireworks will be launched, and not launched again unless the mode is changed (resetting the percentage to zero)
+			launchedAlready = false
 			pixelCountTimer = d3.interval(function() {
 
 				percentRevealed = countInvisiblePixels();
-			  if ( percentRevealed==100 ) {
+			  if ( percentRevealed>10 && launchedAlready==false ) {
+					// pixelCountTimer.stop();
+					launchedAlready = true
+					totalFireworks = 30
+					for ( var i = 0; i <= totalFireworks-1; i++ ) {
 
-					pixelCountTimer.stop();
-					fireWorksDelayTime = 1750;
-					fireWorksTimer = d3.interval(launchFireworks, fireWorksDelayTime);
-					// this will set an end to the interval function called above after x iterations
-					d3.timer(function(elapsed) {
-					  if (elapsed > fireWorksDelayTime*10)
-						{ fireWorksTimer.stop(); }
-					}, fireWorksDelayTime*10);
+						d3.timeout(launchFireworks, 1500*i);
+					}
 				}
 			}, 1000);
 
@@ -350,6 +352,7 @@
 					.style('stroke-width', 0.3)
 					.transition()
 						.delay(pixelTransDelay)
+						.ease(d3.easeExp)
 						.duration(pixelTransDuration)
 						.attr('x', function(d) { return x(d.x_coordinate) + 1.5})
 						.attr('y', function(d) { return y(d.y_coordinate) - 1})
@@ -373,6 +376,7 @@
 					svg2.selectAll(transitionSelect)
 						.transition()
 							.delay(pixelTransLength + 500)
+							.ease(d3.easeExp)
 							.duration(pixelTransDuration)
 							.attr('x', function(d) { return x(d.x_coordinate) })
 							.attr('y', function(d) { return y(d.y_coordinate) })
@@ -435,6 +439,7 @@
 									.tickFormat(function(d, i) { return sliderDataLabels[i]; })
 									.on('onchange', val => {
 
+
 												d3.selectAll('.photo_pixels').remove();
 												addPixelRects();
 												if ( val==1 )
@@ -443,6 +448,9 @@
 												{ timer = d3.interval(executeLaserEyes, 3000); }
 												else
 												{ timer.stop(); }
+
+												// fireworks can be launched again since the percent revealed will be back to zero.
+												launchedAlready = false
 									});
 
 			svg3.append('g')

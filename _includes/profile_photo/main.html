@@ -107,8 +107,9 @@
     width = 405,
     height = 405,
 		svg3Height = 120,
-		svg4Width = width*3,
-		svg4Height = height+svg3Height+175,
+		svg4Width = width*2.5,
+		// width*3,
+		svg4Height = height+svg3Height+175;
 
 		// append the svg object to the body of the pageC
 		addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
@@ -116,7 +117,7 @@
 		addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, null);
 		addStdSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, null);
 
-		addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*.575, -height*1.725, null);
+		addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*0.275, -height*1.725, null);
 		svg4.attr('pointer-events', 'none');
 
 		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');

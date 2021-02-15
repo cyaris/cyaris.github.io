@@ -184,17 +184,28 @@
 				yInput = parseInt(idInput.replace('x', '').split('y', 2)[1]),
 				// defining neighbors so they'll activate a 3x3 box area of pixels in all directions
 				// these each need to be evaluated to confirm that the pixel exists
-				neighborPixel1 = '#x' + String(xInput-1) + 'y' + String(yInput-1),
-				neighborPixel2 = '#x' + String(xInput-1) + 'y' + String(yInput+1),
-				neighborPixel3 = '#x' + String(xInput+1) + 'y' + String(yInput-1),
-				neighborPixel4 = '#x' + String(xInput+1) + 'y' + String(yInput+1),
-				evaluatingPixels = Array(currentPixel, neighborPixel1, neighborPixel2, neighborPixel3, neighborPixel4);
+
+				transitionPixels = Array(currentPixel);
+
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-1)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+1)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput));
+
 				transitionSelect = currentPixel;
 
-				for ( var i = 0; i <= evaluatingPixels.length-1; i++ ) {
-					if ( d3.select(evaluatingPixels[i]).empty()==false ) {
+				for ( var i = 1; i <= transitionPixels.length; i++ ) {
+					if ( d3.select(transitionPixels[i]).empty()==false ) {
 
-						transitionSelect+=', ' + evaluatingPixels[i];
+						transitionSelect+=', ' + transitionPixels[i];
 					}
 				}
 
@@ -282,7 +293,7 @@
 				svg4.selectAll()
 						.data(explosionData).enter()
 						.append('circle')
-							.attr('r', 2)
+							.attr('r', 3)
 							.attr('cx', launchXLoc)
 							.attr('cy', svg4Height)
 							.style('fill', launchColor)
@@ -293,8 +304,7 @@
 						.transition()
 								.ease(d3.easeQuad)
 								.duration(chance.floating({ min: 750, max: 1750 }))
-								.attr('r', 3)
-								// .attr('cx', explosionXLoc)
+								.attr('r', 5)
 								.attr('cy', explosionYLoc)
 						.transition()
 								.ease(d3.easeExp)
@@ -319,7 +329,6 @@
 									else
 									{ return d.y - (-d.y + explosionYLoc ) }
 								})
-								.attr('r', 0)
 								.on('end', function() {
 									d3.select(this).remove();
 								});
@@ -357,7 +366,7 @@
 			  if ( percentRevealed==100 && launchedAlready==false ) {
 				// if ( percentRevealed>=10 && launchedAlready==false ) {
 					launchedAlready = true
-					totalFireworks = 200
+					totalFireworks = 175
 					for ( var i = 1; i <= totalFireworks; i++ ) {
 
 						d3.timeout(launchFireworks, Math.max(1500, (1500*i) + chance.floating({ min: -2500, max: 2500 })));

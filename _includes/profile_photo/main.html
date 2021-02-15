@@ -206,7 +206,7 @@
 
 				transitionSelect = currentPixel;
 
-				for ( var i = 1; i <= transitionPixels.length; i++ ) {
+				for ( var i=1; i<=transitionPixels.length; i++ ) {
 					if ( d3.select(transitionPixels[i]).empty()==false ) {
 
 						transitionSelect+=', ' + transitionPixels[i];
@@ -232,30 +232,30 @@
 					['#d578ff', '#625df0', '#59e7f2', '#f259a6', '#67eebb'],
 					// P a s t e l R a i n b o w Color Palette
 					['#ffc5c5', '#bcffa7', '#feffb6', '#98e5e7', '#ffaef3'],
-					// pastel colors of the rainbow Color Palette
+					// pastel colors of the rainbow Color Palette: https://www.color-hex.com/color-palette/5361
 					['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'],
-					// Beach Color Palette
-					['#96ceb4', '#ffeead', '#ff6f69', '#ffcc5c', '#88d8b0'],
-					// VaporWave Color Palette
+					// Beach Color Palette: https://www.color-hex.com/color-palette/895
+					// ['#96ceb4', '#ffeead', '#ff6f69', '#ffcc5c', '#88d8b0'],
+					// VaporWave Color Palette: https://www.color-hex.com/color-palette/10221
 					['#ff71ce', '#01cdfe', '#05ffa1', '#b967ff', '#fffb96'],
-					// 80s Color Palette
+					// 80s Color Palette: https://www.color-hex.com/color-palette/25888
 					['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9', '#ff3f3f'],
-					// Metro UI Colors Color Palette
+					// Metro UI Colors Color Palette: https://www.color-hex.com/color-palette/700
 					['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'],
-					// neon colors Color Palette
+					// neon colors Color Palette: https://www.color-hex.com/color-palette/8618
 					['#4deeea', '#74ee15', '#ffe700', '#f000ff', '#001eff'],
-					// Instagram gradient Color Palette
+					// Instagram gradient Color Palette: https://www.color-hex.com/color-palette/44340
 					['#feda75', '#fa7e1e', '#d62976', '#962fbf', '#4f5bd5'],
-					// Rainbow Dash Color Palette
+					// Rainbow Dash Color Palette: https://www.color-hex.com/color-palette/807
 					['#ee4035', '#f37736', '#fdf498', '#7bc043', '#0392cf'],
-					// Cyberpunk Color Palette
+					// Cyberpunk Color Palette: https://www.color-hex.com/color-palette/14887
 					['#00ff9f', '#00b8ff', '#001eff', '#bd00ff', '#d600ff'],
-					// Metro Style Color Palette
-					['#00aedb', '#a200ff', '#f47835', '#d41243', '#8ec127'],
+					// Metro Style Color Palette: https://www.color-hex.com/color-palette/471
+					// ['#00aedb', '#a200ff', '#f47835', '#d41243', '#8ec127'],
 					// ESO MOTD Color Text Color Palette: https://www.color-hex.com/color-palette/20452
-					['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f'],
+					// ['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f'],
 					// Retro Color Palette: https://www.color-hex.com/color-palette/165
-					['#666547', '#fb2e01', '#6fcb9f', '#ffe28a', '#fffeb3'],
+					// ['#666547', '#fb2e01', '#6fcb9f', '#ffe28a', '#fffeb3'],
 					// Neon 0908 Color Palette: https://www.color-hex.com/color-palette/1131
 					['#fe0000', '#fdfe02', '#0bff01', '#011efe', '#fe00f6'],
 					// cool blue Color Palette: https://www.color-hex.com/color-palette/30415
@@ -269,9 +269,9 @@
 					// Facebook Messenger 1 Color Palette: https://www.color-hex.com/color-palette/15945
 					['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb'],
 					// BG colors Color Palette: https://www.color-hex.com/color-palette/105000
-					['#08a184', '#42d4b9', '#fdec40', '#1bd43a', '#dc143c'],
+					// ['#08a184', '#42d4b9', '#fdec40', '#1bd43a', '#dc143c'],
 					// original bg theme Color Palette: https://www.color-hex.com/color-palette/105004
-					['#fdca40', '#970b44', '#00cb9c', '#7ddf64', '#aaaaaa'],
+					// ['#fdca40', '#970b44', '#00cb9c', '#7ddf64', '#aaaaaa'],
 					// BGSS colors Color Palette: https://www.color-hex.com/color-palette/104999
 					['#fdf540', '#0cead9', '#00cb9c', '#8ddf64', '#dc143c'],
 					// Ice Cream Pastels Color Palette: https://www.color-hex.com/color-palette/104985
@@ -291,7 +291,7 @@
 					// Crystal Glacier Color Palette: https://www.color-hex.com/color-palette/104790
 					['#ebb6f9', '#7f8bf5', '#445bab', '#0fba7c', '#4b9cfc'],
 					// Midnight Mountain Color Palette: https://www.color-hex.com/color-palette/104789
-					['#d948c3', '#3227a5', '#0ed9c1', '#600571', '#1c024b'],
+					// ['#d948c3', '#3227a5', '#0ed9c1', '#600571', '#1c024b'],
 					// XuxaDiversidade Color Palette: https://www.color-hex.com/color-palette/104756
 					['#ff0000', '#ff5e00', '#f8d900', '#4b8b05', '#1771de'],
 					// Date Nite Color Palette: https://www.color-hex.com/color-palette/104742
@@ -397,13 +397,13 @@
 			pixelCountTimer = d3.interval(function() {
 
 			percentRevealed = countInvisiblePixels();
-			  // if ( percentRevealed==100 && launchedAlready==false ) {
 				if ( percentRevealed>=90 && launchedAlready==false ) {
 
+					// making all pixels invisible once the once has revealed 90% of the photo.
 					svg2.selectAll('.photo_pixels').style('opacity', 0);
 					launchedAlready = true
 					totalFireworks = 175
-					for ( var i = 1; i <= totalFireworks; i++ ) {
+					for ( var i=1; i<=totalFireworks; i++ ) {
 
 						d3.timeout(launchFireworks, Math.max(1500, (1500*i) + chance.floating({ min: -2500, max: 2500 })));
 					}

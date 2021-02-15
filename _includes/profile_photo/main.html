@@ -195,10 +195,14 @@
 				transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput+2)),
 				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput-2)),
 				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-1)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+1)),
 				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-1)),
 				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+1)),
 				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput)),
-				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput));
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput)),
+				transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput+2));
 
 				transitionSelect = currentPixel;
 
@@ -311,7 +315,8 @@
 								.duration(500)
 								.attr('cx', function(d) { return d.x; })
 								.attr('cy', function(d) { return d.y; })
-								.attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
+								.attr('r', 10)
+								// .attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
 								.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
 						.transition()
 								.ease(d3.easeCircle)

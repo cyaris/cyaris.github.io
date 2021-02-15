@@ -222,6 +222,8 @@
 
 				// creating an array of separate color palettes for each firework
 				fireWorksColorPalettes = [
+					// https://htmlcolorcodes.com/
+					['#DFFF00', '#FFBF00', '#FF7F50', '#DE3163', '#9FE2BF', '#40E0D0', '#6495ED', '#CCCCFF'],
 					// Astrid Gen Wyatt Shyla Cynthia Color Palette: https://www.color-hex.com/color-palette/104729
 					['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6'],
 					// Bohemian sunset Color Palette: https://www.color-hex.com/color-palette/104833
@@ -265,14 +267,40 @@
 					// I Loved In Shades of Green Color Palette: https://www.color-hex.com/color-palette/1325
 					['#adff00', '#74d600', '#028900', '#00d27f', '#00ff83'],
 					// Facebook Messenger 1 Color Palette: https://www.color-hex.com/color-palette/15945
-					['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb']
+					['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb'],
+					// BG colors Color Palette: https://www.color-hex.com/color-palette/105000
+					['#08a184', '#42d4b9', '#fdec40', '#1bd43a', '#dc143c'],
+					// original bg theme Color Palette: https://www.color-hex.com/color-palette/105004
+					['#fdca40', '#970b44', '#00cb9c', '#7ddf64', '#aaaaaa'],
+					// BGSS colors Color Palette: https://www.color-hex.com/color-palette/104999
+					['#fdf540', '#0cead9', '#00cb9c', '#8ddf64', '#dc143c'],
+					// Ice Cream Pastels Color Palette: https://www.color-hex.com/color-palette/104985
+					['#41d8ca', '#c7e3e5', '#f4f3d4', '#f9d7c5', '#f4a2a9'],
+					// Gryffindors Color Palette: https://www.color-hex.com/color-palette/104972
+					// ['#ae2825', '#fbcd14', '#b9282f', '#e5ba30', '#86162a'],
+					// fruit tree Color Palette: https://www.color-hex.com/color-palette/104883
+					['#38ad94', '#62a43d', '#ffb42b', '#ff493a', '#ff8bb6'],
+					// ESO Item Qualities Color Palette: https://www.color-hex.com/color-palette/104887
+					['#2dc50e', '#3a92ff', '#a02ef7', '#eeca2a', '#ff8200'],
+					// Pop Quiz Color Palette: https://www.color-hex.com/color-palette/104873
+					['#fe0879', '#ff82e2', '#fed715', '#0037b3', '#70baff'],
+					// indy Color Palette: https://www.color-hex.com/color-palette/104870
+					['#ff5454', '#ff7698', '#56dfd4', '#2497a7', '#2e0ff6'],
+					// Fire oranges Color Palette: https://www.color-hex.com/color-palette/104858
+					['#ffbf00', '#ffa500', '#ff8000', '#ff4000', '#ff1500'],
+					// Crystal Glacier Color Palette: https://www.color-hex.com/color-palette/104790
+					['#ebb6f9', '#7f8bf5', '#445bab', '#0fba7c', '#4b9cfc'],
+					// Midnight Mountain Color Palette: https://www.color-hex.com/color-palette/104789
+					['#d948c3', '#3227a5', '#0ed9c1', '#600571', '#1c024b'],
+					// XuxaDiversidade Color Palette: https://www.color-hex.com/color-palette/104756
+					['#ff0000', '#ff5e00', '#f8d900', '#4b8b05', '#1771de'],
+					// Date Nite Color Palette: https://www.color-hex.com/color-palette/104742
+					['#f53473', '#93135d', '#28357b', '#5595c1', '#77def1']
 				]
-
-
 
 				// defining y parameter for the height of the launch
 				// the is the distance from the top of the pange
-				LaunchYLoc = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.30 }),
+				LaunchYLoc = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.20 }),
 				// defining adjusted y parameter for delay preceding explosion
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
 				explosionYLoc = LaunchYLoc + chance.floating({ min: 25, max: 100 }),
@@ -281,7 +309,7 @@
 
 				// defining values for the launch of the firework
 				// function below will be used to determine the x location for launching the rocket
-				randomXStart = d3.randomNormal(svg4Width/2, 125),
+				randomXStart = d3.randomNormal(svg4Width/2, 130),
 				// x coordinate for the ascending rocket
 				launchXLoc = randomXStart(),
 				// x coordinate for explosion after the rocket descends
@@ -301,6 +329,7 @@
 							.attr('cx', launchXLoc)
 							.attr('cy', svg4Height)
 							.style('fill', launchColor)
+							.attr('pointer-events', 'none')
 						.transition()
 								.ease(d3.easeCircle)
 								.duration(1500)
@@ -368,8 +397,10 @@
 			pixelCountTimer = d3.interval(function() {
 
 			percentRevealed = countInvisiblePixels();
-			  if ( percentRevealed==100 && launchedAlready==false ) {
-				// if ( percentRevealed>=10 && launchedAlready==false ) {
+			  // if ( percentRevealed==100 && launchedAlready==false ) {
+				if ( percentRevealed>=90 && launchedAlready==false ) {
+
+					svg2.selectAll('.photo_pixels').style('opacity', 0);
 					launchedAlready = true
 					totalFireworks = 175
 					for ( var i = 1; i <= totalFireworks; i++ ) {

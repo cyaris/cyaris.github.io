@@ -160,13 +160,13 @@
 		// appending the original version of the photo, invisible upon page load.
 		// x,y coordinates are relative to the transform translate above.
 		svg1.append('svg:image')
-			// .attr('id', 'full_resolution_photo')
-			.attr('x', 0)
-			.attr('y', 0)
-			.attr('width', width)
-			.attr('height', height)
-			.attr('xlink:href', '../img/profile_photo.png')
-			.attr('pointer-events', 'none');
+				// .attr('id', 'full_resolution_photo')
+				.attr('x', 0)
+				.attr('y', 0)
+				.attr('width', width)
+				.attr('height', height)
+				.attr('xlink:href', '../img/profile_photo.png')
+				.attr('pointer-events', 'none');
 
 		//Read the data
 		d3.csv('/assets/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
@@ -292,7 +292,7 @@
 					// Cyberpunk Color Palette: https://www.color-hex.com/color-palette/14887
 					//		// ['#00ff9f', '#00b8ff', '#001eff', '#bd00ff', '#d600ff'],
 					//		// adjusted above to remove one or more colors
-					['#00ff9f', '#00b8ff', '#bd00ff', '#d600ff']
+					['#00ff9f', '#00b8ff', '#bd00ff', '#d600ff'],
 					// fruit tree Color Palette: https://www.color-hex.com/color-palette/104883
 					//		// ['#38ad94', '#62a43d', '#ffb42b', '#ff493a', '#ff8bb6'],
 					//		// adjusted above to remove one or more colors
@@ -338,15 +338,16 @@
 					// Date Nite Color Palette: https://www.color-hex.com/color-palette/104742
 					//		// ['#f53473', '#93135d', '#28357b', '#5595c1', '#77def1']
 					//		// adjusted above to remove one or more colors
-					['#f53473', '#93135d', '#5595c1', '#77def1']
-				]
+					['#f53473', '#93135d', '#5595c1', '#77def1'],
+				];
 
 				// defining y parameter for the height of the launch
 				// the is the distance from the top of the pange
 				LaunchYLoc = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.20 }),
 				// defining adjusted y parameter for delay preceding explosion
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-				explosionYLoc = LaunchYLoc + chance.floating({ min: 25, max: 100 }),
+				explosionDrop = chance.floating({ min: 25, max: 100 }),
+				explosionYLoc = LaunchYLoc + explosionDrop,
 				// total circles for the explosion
 				explosionSize = 100;
 
@@ -365,6 +366,9 @@
 				launchColor = randomPallete[getRandomInt(0, randomPallete.length-1)],
 				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
 
+				fireWorkTailSize = 90,
+				tailDelaySize = 2.5;
+
 				svg4.selectAll()
 						.data(explosionData).enter()
 						.append('circle')
@@ -372,43 +376,65 @@
 							.attr('cx', launchXLoc)
 							.attr('cy', svg4Height)
 							.style('fill', launchColor)
-							.attr('pointer-events', 'none')
+							.style('opacity', function(d, i) {
+								if ( i>0 && i<=fireWorkTailSize )
+								{ return 0.15; }
+								else
+								{ return 1; }
+							})
 						.transition()
-								.ease(d3.easeCircle)
-								.duration(1500)
-								.attr('cy', LaunchYLoc)
+							// delay here is to create the ascending tail
+							.delay(function(d, i) {
+								if ( i>0 && i<=fireWorkTailSize )
+								{ return i*tailDelaySize; }
+								else
+								{ return 0; }
+							})
+							.ease(d3.easeCircle)
+							.duration(1500)
+							.attr('cy', LaunchYLoc)
 						.transition()
-								.ease(d3.easeQuad)
-								.duration(chance.floating({ min: 750, max: 1750 }))
-								.attr('r', 5)
-								.attr('cy', explosionYLoc)
+							.duration(explosionDrop*10)
+							.ease(d3.easeQuad)
+							.attr('r', 5)
+							.attr('cy', explosionYLoc)
 						.transition()
-								.ease(d3.easeExp)
-								.duration(500)
-								.attr('cx', function(d) { return d.x; })
-								.attr('cy', function(d) { return d.y; })
-								.attr('r', 10)
-								// .attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
-								.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
+							// delay here is to allow all objects to catch up
+							.delay(function(d, i) {
+								if ( i>0 && i<=fireWorkTailSize )
+								{ return (fireWorkTailSize*tailDelaySize)-(i*tailDelaySize); }
+								else
+								{ return fireWorkTailSize*tailDelaySize; }
+							})
+							.duration(0)
+							.style('opacity', 1)
 						.transition()
-								.ease(d3.easeCircle)
-								.duration(2250 + chance.floating({ min: -500, max: 500 }))
-								.style('opacity', 0)
-								.attr('cx', function(d) {
-									if ( d.x > launchXLoc )
-									{ return d.x + (d.x - launchXLoc) }
-									else
-									{ return d.x - (-d.x + launchXLoc) }
-								})
-								.attr('cy', function(d) {
-									if ( d.y > explosionYLoc )
-									{ return d.y + (d.y - explosionYLoc ) }
-									else
-									{ return d.y - (-d.y + explosionYLoc ) }
-								})
-								.on('end', function() {
-									d3.select(this).remove();
-								});
+							.duration(500)
+							.ease(d3.easeExp)
+							.attr('cx', function(d) { return d.x; })
+							.attr('cy', function(d) { return d.y; })
+							.attr('r', 10)
+							// .attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
+							.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
+						.transition()
+							.duration(2250 + chance.floating({ min: -500, max: 500 }))
+							.ease(d3.easeCircle)
+							.style('opacity', 0)
+							.attr('cx', function(d) {
+								if ( d.x > launchXLoc )
+								{ return d.x + (d.x - launchXLoc) }
+								else
+								{ return d.x - (-d.x + launchXLoc) }
+							})
+							.attr('cy', function(d) {
+								if ( d.y > explosionYLoc )
+								{ return d.y + (d.y - explosionYLoc ) }
+								else
+								{ return d.y - (-d.y + explosionYLoc ) }
+							})
+							.on('end', function() {
+								d3.select(this).remove();
+							});
 			}
 
 			function countInvisiblePixels() {

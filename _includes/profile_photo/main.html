@@ -350,7 +350,7 @@
 				LaunchYLoc = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.20 }),
 				// defining adjusted y parameter for delay preceding explosion
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-				explosionDrop = chance.floating({ min: 20, max: 1000 }),
+				explosionDrop = chance.floating({ min: 20, max: 100 }),
 				explosionYLoc = LaunchYLoc + explosionDrop,
 				// total circles for the explosion
 				totalCircles = 100;

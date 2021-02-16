@@ -29,6 +29,10 @@
 		} */
 
 		svg text {
+			font-family: 'Libre Franklin', sans-serif;
+			stroke: black;
+			fill: black;
+		  background: white;
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;
 			-moz-user-select: none;
@@ -217,7 +221,7 @@
 			};
 
 			// credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5
-			// I took what was there and made adjustments launchXLocd on preference and version differences, but the basic foundation was all set up on that page.
+			// I took what was there, made adjustments on preference/version differences, and added to it.
 			function launchFireworks() {
 
 				////////////////////////////////////////////////////////////////////////////////////////////////
@@ -346,10 +350,10 @@
 				LaunchYLoc = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.20 }),
 				// defining adjusted y parameter for delay preceding explosion
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-				explosionDrop = chance.floating({ min: 25, max: 100 }),
+				explosionDrop = chance.floating({ min: 20, max: 1000 }),
 				explosionYLoc = LaunchYLoc + explosionDrop,
 				// total circles for the explosion
-				explosionSize = 100;
+				totalCircles = 100;
 
 				// defining values for the launch of the firework
 				// function below will be used to determine the x location for launching the rocket
@@ -360,7 +364,7 @@
 				// explosionXLoc = launchXLoc + (getRandomInt(-1, 1)*15),
 				randomX = function(b){ return d3.randomNormal(b, 80)(); },
 				randomY = d3.randomNormal(explosionYLoc, 80),
-				explosionData = d3.range(explosionSize).map(function() { return { x: randomX(launchXLoc), y: randomY() }; });
+				explosionData = d3.range(totalCircles).map(function() { return { x: randomX(launchXLoc), y: randomY() }; });
 
 				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],
 				launchColor = randomPallete[getRandomInt(0, randomPallete.length-1)],
@@ -368,9 +372,10 @@
 
 				launchRadius = 3,
 				launchDuration = 2500,
-				launchSpeed = launchDuration/(svg4Height - LaunchYLoc),
+				launchSpeed = launchDuration/((svg4Height+launchRadius)- LaunchYLoc),
 				dropDuration = launchSpeed*explosionDrop;
 
+				// these two variables will help create the tail effect with delay
 				fireWorkTailSize = 90,
 				tailDelaySize = 2.5;
 
@@ -472,7 +477,6 @@
 
 			percentRevealed = countInvisiblePixels();
 				if ( percentRevealed>=90 && launchedAlready==false ) {
-
 					// making all pixels invisible once the once has revealed 90% of the photo.
 					svg2.selectAll('.photo_pixels').style('opacity', 0);
 					launchedAlready = true
@@ -505,6 +509,12 @@
 						.delay(pixelTransDelay)
 						.duration(pixelTransDuration)
 						.style('opacity', 0);
+						// .on('end', function() {
+						// 	// // pixels will be recreated when the slider is used
+						// 	// // removing those that have been activated for reveal modes.
+						// 	if ( transitionSliderMode!=2 )
+						// 	{ svg2.selectAll(transitionSelect).remove(); }
+						// });
 			},
 
 			pixelML = function(d) {
@@ -531,7 +541,7 @@
 							.delay(pixelTransDelay)
 							.duration(pixelTransDuration)
 							.style('stroke-width', 0.075);
-				};
+				}
 			};
 
 			// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
@@ -589,7 +599,6 @@
 												{ timer = d3.interval(executeLaserEyes, 3000); }
 												else
 												{ timer.stop(); }
-
 												// fireworks can be launched again since the percent revealed will be back to zero.
 												launchedAlready = false
 									});

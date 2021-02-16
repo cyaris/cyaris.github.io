@@ -124,7 +124,7 @@
 		addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*0.275, -height*1.725, null);
 		svg4.attr('pointer-events', 'none');
 
-		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'italic', 0.80, 0, 'Hover on my face!');
+		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'normal', 0.80, 0, 'Hover on my face!');
 
 		// credit is due to this blocks page for the process defined below: http://bl.ocks.org/mrtriangle/11222485
 		// I took what was there and made adjustments launchXLocd on preference and version differences, but the basic foundation was all set up on that page.
@@ -358,10 +358,8 @@
 				// defining values for the launch of the firework
 				// function below will be used to determine the x location for launching the rocket
 				randomXStart = d3.randomNormal(svg4Width/2, 130),
-				// x coordinate for the ascending rocket
+				// x coordinate for the ascending (and descending) rocket
 				launchXLoc = randomXStart(),
-				// x coordinate for explosion after the rocket descends
-				// explosionXLoc = launchXLoc + (getRandomInt(-1, 1)*15),
 				randomX = function(b){ return d3.randomNormal(b, 80)(); },
 				randomY = d3.randomNormal(explosionYLoc, 80),
 				explosionData = d3.range(totalCircles).map(function() { return { x: randomX(launchXLoc), y: randomY() }; });
@@ -371,7 +369,7 @@
 				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
 
 				launchRadius = 3,
-				launchDuration = 2500,
+				launchDuration = 1250,
 				launchSpeed = launchDuration/((svg4Height+launchRadius)- LaunchYLoc),
 				dropDuration = launchSpeed*explosionDrop;
 
@@ -401,7 +399,7 @@
 								{ return 0; }
 							})
 							.ease(d3.easeCircle)
-							.duration(1500)
+							.duration(launchDuration)
 							.attr('cy', LaunchYLoc)
 						.transition()
 							.duration(dropDuration)
@@ -427,7 +425,7 @@
 							// .attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
 							.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
 						.transition()
-							.duration(launchDuration)
+							.duration(1750 + chance.floating({ min: -750, max: 750 }))
 							.ease(d3.easeCircle)
 							.style('opacity', 0)
 							.attr('cx', function(d) {
@@ -465,7 +463,7 @@
 				percentFormat = d3.format('.2f');
 				numberInput = percentFormat((invisiblePixels/totalPixels)*100)
 				textInput = 'Percent Revealed: ' + numberInput + '%'
-				addStdText(svg3, null, 'percent_revealed', 120, 110, '15px', 'normal', 0.80, 0, textInput);
+				addStdText(svg3, null, 'percent_revealed', 117.5, 110, '15px', 'normal', 0.80, 0, textInput);
 
 				return numberInput
 			}

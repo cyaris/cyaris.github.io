@@ -362,7 +362,7 @@
 				launchXLoc = randomXStart(),
 				// determining the size of the explosion (in height and width) at random
 				// it will be based off the launch location, but the standard deviation will be determined randomly.
-				explosionStdDevSize = chance.floating({ min: 50, max: 80 })),
+				explosionStdDevSize = chance.floating({ min: 50, max: 80 }),
 				// function to determine the x coordinates for all explosion pieces
 				randomX = function(b){ return d3.randomNormal(b, explosionStdDevSize)(); },
 				randomY = d3.randomNormal(explosionYLoc, explosionStdDevSize),
@@ -373,7 +373,7 @@
 				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
 
 				launchRadius = 3,
-				launchDuration = 1250,
+				launchDuration = 1000,
 				launchSpeed = launchDuration/((svg4Height+launchRadius)- LaunchYLoc),
 				dropDuration = launchSpeed*explosionDrop;
 

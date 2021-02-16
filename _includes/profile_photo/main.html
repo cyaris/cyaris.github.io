@@ -366,15 +366,20 @@
 				launchColor = randomPallete[getRandomInt(0, randomPallete.length-1)],
 				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
 
+				launchRadius = 3,
+				launchDuration = 2500,
+				launchSpeed = launchDuration/(svg4Height - LaunchYLoc),
+				dropDuration = launchSpeed*explosionDrop;
+
 				fireWorkTailSize = 90,
 				tailDelaySize = 2.5;
 
 				svg4.selectAll()
 						.data(explosionData).enter()
 						.append('circle')
-							.attr('r', 3)
+							.attr('r', launchRadius)
 							.attr('cx', launchXLoc)
-							.attr('cy', svg4Height)
+							.attr('cy', svg4Height+launchRadius)
 							.style('fill', launchColor)
 							.style('opacity', function(d, i) {
 								if ( i>0 && i<=fireWorkTailSize )
@@ -394,7 +399,7 @@
 							.duration(1500)
 							.attr('cy', LaunchYLoc)
 						.transition()
-							.duration(explosionDrop*10)
+							.duration(dropDuration)
 							.ease(d3.easeQuad)
 							.attr('r', 5)
 							.attr('cy', explosionYLoc)
@@ -417,7 +422,7 @@
 							// .attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
 							.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
 						.transition()
-							.duration(2250 + chance.floating({ min: -500, max: 500 }))
+							.duration(launchDuration)
 							.ease(d3.easeCircle)
 							.style('opacity', 0)
 							.attr('cx', function(d) {

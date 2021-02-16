@@ -360,8 +360,12 @@
 				randomXStart = d3.randomNormal(svg4Width/2, 130),
 				// x coordinate for the ascending (and descending) rocket
 				launchXLoc = randomXStart(),
-				randomX = function(b){ return d3.randomNormal(b, 80)(); },
-				randomY = d3.randomNormal(explosionYLoc, 80),
+				// determining the size of the explosion (in height and width) at random
+				// it will be based off the launch location, but the standard deviation will be determined randomly.
+				explosionStdDevSize = chance.floating({ min: 50, max: 80 })),
+				// function to determine the x coordinates for all explosion pieces
+				randomX = function(b){ return d3.randomNormal(b, explosionStdDevSize)(); },
+				randomY = d3.randomNormal(explosionYLoc, explosionStdDevSize),
 				explosionData = d3.range(totalCircles).map(function() { return { x: randomX(launchXLoc), y: randomY() }; });
 
 				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],

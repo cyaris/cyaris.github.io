@@ -352,25 +352,35 @@
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
 				explosionDrop = chance.floating({ min: 20, max: 100 }),
 				explosionYLoc = LaunchYLoc + explosionDrop,
-				// total circles for the explosion
-				totalCircles = 100;
 
+				// totalCircles = 100,
 				// defining values for the launch of the firework
 				// function below will be used to determine the x location for launching the rocket
 				randomXStart = d3.randomNormal(svg4Width/2, 130),
 				// x coordinate for the ascending (and descending) rocket
 				launchXLoc = randomXStart(),
-				// determining the size of the explosion (in height and width) at random
-				// it will be based off the launch location, but the standard deviation will be determined randomly.
-				explosionStdDevSize = chance.floating({ min: 50, max: 80 }),
+				// determining the magnitude of the explosion (value to be squared) at random
+				// the actual distance from the explosion will be a combination of this value and another random value determined for each piece
+				// this will also be used to decide the total circles for the explosion
+				explosionSize = chance.floating({ min: 130, max: 180 }),
+				totalCircles = Math.round(explosionSize*1.15),
 				// function to determine the x coordinates for all explosion pieces
-				randomX = function(b){ return d3.randomNormal(b, explosionStdDevSize)(); },
-				randomY = d3.randomNormal(explosionYLoc, explosionStdDevSize),
-				explosionData = d3.range(totalCircles).map(function() { return { x: randomX(launchXLoc), y: randomY() }; });
+				explosionData = d3.range(totalCircles).map(function() {
+						// distance fron the center of the explosion determined at random
+						// explosionSize (magnitude of the explosion) stays the same for each circle
+						explosionDistance = Math.sqrt(~~(Math.random() * explosionSize * explosionSize)),
+						// randomly determining the angle by which each circle will be relative to the center of the explosion
+						randomAngle = Math.random() * 2 * Math.PI;
 
+						return {
+						x: launchXLoc + explosionDistance * Math.cos(randomAngle),
+						y: explosionYLoc + explosionDistance * Math.sin(randomAngle)
+					};
+				}),
 				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],
 				launchColor = randomPallete[getRandomInt(0, randomPallete.length-1)],
 				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
+
 
 				launchRadius = 3,
 				launchDuration = 1000,
@@ -547,8 +557,8 @@
 			};
 
 			// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
-			pixelX = d3.map(data, function(d){ return d.x_coordinate; }).keys(),
-			pixelY = d3.map(data, function(d){ return d.y_coordinate; }).keys();
+			pixelX = d3.map(data, function(d) { return d.x_coordinate; }).keys(),
+			pixelY = d3.map(data, function(d) { return d.y_coordinate; }).keys();
 
 			// Build X and Y scales and axis:
 			// Scaling the pixels within the space of the svg.

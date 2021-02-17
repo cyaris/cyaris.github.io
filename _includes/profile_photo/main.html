@@ -352,7 +352,7 @@
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
 				explosionDrop = chance.floating({ min: 20, max: 100 }),
 				explosionYLoc = LaunchYLoc + explosionDrop,
-
+				// total circles for the explosion
 				// totalCircles = 100,
 				// defining values for the launch of the firework
 				// function below will be used to determine the x location for launching the rocket
@@ -362,13 +362,13 @@
 				// determining the magnitude of the explosion (value to be squared) at random
 				// the actual distance from the explosion will be a combination of this value and another random value determined for each piece
 				// this will also be used to decide the total circles for the explosion
-				explosionSize = chance.floating({ min: 130, max: 180 }),
-				totalCircles = Math.round(explosionSize*1.15),
+				explosionMagnitude = chance.floating({ min: 135, max: 175 }),
+				totalCircles = Math.round(explosionMagnitude*1.15),
 				// function to determine the x coordinates for all explosion pieces
 				explosionData = d3.range(totalCircles).map(function() {
 						// distance fron the center of the explosion determined at random
 						// explosionSize (magnitude of the explosion) stays the same for each circle
-						explosionDistance = Math.sqrt(~~(Math.random() * explosionSize * explosionSize)),
+						explosionDistance = Math.sqrt(~~(Math.random() * explosionMagnitude * explosionMagnitude)),
 						// randomly determining the angle by which each circle will be relative to the center of the explosion
 						randomAngle = Math.random() * 2 * Math.PI;
 

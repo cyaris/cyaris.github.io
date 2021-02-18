@@ -490,11 +490,24 @@
 				if ( percentRevealed>=90 && launchedAlready==false ) {
 					// making all pixels invisible once the once has revealed 90% of the photo.
 					svg2.selectAll('.photo_pixels').style('opacity', 0);
-					launchedAlready = true
-					totalFireworks = 175
-					for ( var i=1; i<=totalFireworks; i++ ) {
+					launchedAlready = true,
+					// total fireworks in the regular show
+					totalFireworks1 = 150,
+					// duration per firework of the regular show
+					fireWorkInterval1 = 1500,
+					// total fireworks in the grand finale
+					totalFireWorks2 = 25,
+					// duration per firework of the grand finale show
+					fireWorkInterval2 = 500;
 
-						d3.timeout(launchFireworks, Math.max(1500, (1500*i) + chance.floating({ min: -2500, max: 2500 })));
+					for ( var i=1; i<=totalFireworks1+totalFireWorks2; i++ ) {
+
+						// all fireworks for the regular show
+						if ( i<=totalFireworks1 )
+						{	d3.timeout(launchFireworks, Math.max(fireWorkInterval1, (fireWorkInterval1*i) + chance.floating({ min: -2500, max: 2500 }))); }
+						else
+						// time for the grand finale!!!
+						{	d3.timeout(launchFireworks, Math.max((fireWorkInterval1*totalFireworks1), (fireWorkInterval1*totalFireworks1) + (fireWorkInterval2*(i-totalFireworks1)) + chance.floating({ min: -2500, max: 2500 }))); }
 					}
 				}
 			}, 1000);

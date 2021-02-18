@@ -351,9 +351,8 @@
 				// defining adjusted y parameter for delay preceding explosion
 				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
 				explosionDrop = chance.floating({ min: 20, max: 100 }),
+				// height all the circles will be at after the drop (and just before exploding)
 				explosionYLoc = LaunchYLoc + explosionDrop,
-				// total circles for the explosion
-				// totalCircles = 100,
 				// defining values for the launch of the firework
 				// function below will be used to determine the x location for launching the rocket
 				randomXStart = d3.randomNormal(svg4Width/2, 130),
@@ -362,25 +361,25 @@
 				// determining the magnitude of the explosion (value to be squared) at random
 				// the actual distance from the explosion will be a combination of this value and another random value determined for each piece
 				// this will also be used to decide the total circles for the explosion
-				explosionMagnitude = chance.floating({ min: 135, max: 175 }),
-				totalCircles = Math.round(explosionMagnitude*1.15),
+				explosionMagnitude = chance.floating({ min: 140, max: 180 }),
+				// total circles for the explosion
+				totalCircles = Math.round(explosionMagnitude*1.5),
 				// function to determine the x coordinates for all explosion pieces
 				explosionData = d3.range(totalCircles).map(function() {
 						// distance fron the center of the explosion determined at random
 						// explosionSize (magnitude of the explosion) stays the same for each circle
-						explosionDistance = Math.sqrt(~~(Math.random() * explosionMagnitude * explosionMagnitude)),
+						explosionDistance = Math.sqrt(~~(chance.floating({ min: 0, max: 1 }) * explosionMagnitude * explosionMagnitude)),
 						// randomly determining the angle by which each circle will be relative to the center of the explosion
 						randomAngle = Math.random() * 2 * Math.PI;
 
 						return {
-						x: launchXLoc + explosionDistance * Math.cos(randomAngle),
-						y: explosionYLoc + explosionDistance * Math.sin(randomAngle)
+						x: launchXLoc + (explosionDistance * Math.cos(randomAngle)),
+						y: explosionYLoc + (explosionDistance * Math.sin(randomAngle))
 					};
 				}),
-				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length-1)],
-				launchColor = randomPallete[getRandomInt(0, randomPallete.length-1)],
+				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length)],
+				launchColor = randomPallete[getRandomInt(0, randomPallete.length)],
 				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
-
 
 				launchRadius = 3,
 				launchDuration = 1000,
@@ -432,7 +431,7 @@
 							.style('opacity', 1)
 						.transition()
 							.duration(500)
-							.ease(d3.easeExp)
+							.ease(d3.easeCircle)
 							.attr('cx', function(d) { return d.x; })
 							.attr('cy', function(d) { return d.y; })
 							.attr('r', 10)

@@ -130,7 +130,7 @@
 		// I took what was there and made adjustments launchXLocd on preference and version differences, but the basic foundation was all set up on that page.
 		executeLaserEyes = function(d) {
 
-			for (var i=1; i<5; ++i) {
+			for ( var i=1; i<=4; ++i ) {
 
 				createLaserEye = function(i, cxInput, cyInput) {
 
@@ -140,18 +140,18 @@
 							.attr('r', 0.25)
 							.style('fill', 'transparent')
 							.style('stroke', '#cc0000')
-							.style('stroke-width', 7.5/i)
+							.style('stroke-width', 7.5)
 							.transition()
-									// this delay is increasingly long for each circle
-									// additional seconds are added so that the eyes are stay red for a few seconds before transitioning
-									.delay((Math.pow(i, 2.5) * 22.5) + 500)
-									.duration(2000)
-									// .ease(d3.easeCircleIn)
-							.attr('r', 200)
-							.style('stroke-opacity', 0)
-							.on('end', function() {
-								d3.select(this).remove();
-							});
+								// this delay is increasingly long for each circle
+								// additional seconds are added so that the eyes are stay red for a few seconds before transitioning
+								.delay((i*225) + 500)
+								.duration(2000)
+								.attr('r', 200)
+								.style('stroke-width', 0)
+								.style('stroke-opacity', 0)
+								.on('end', function() {
+									d3.select(this).remove();
+								});
 					}
 
 					// appending first laser eye
@@ -181,39 +181,52 @@
 			pixelTransLength = (pixelTransDelay * 2) + (pixelTransDuration * 2);
 
 			// determining input for selectAll launchXLocd on valid pixels
-			function getTransitionSelect(idInput) {
+			function getTransitionSelect(idInput, mouseFunction) {
 
 				currentPixel = '#' + idInput,
 				xInput = parseInt(idInput.replace('x', '').split('y', 2)[0]),
-				yInput = parseInt(idInput.replace('x', '').split('y', 2)[1]),
+				yInput = parseInt(idInput.replace('x', '').split('y', 2)[1]);
+
 				// defining neighbors so they'll activate a 3x3 box area of pixels in all directions
 				// these each need to be evaluated to confirm that the pixel exists
-
+				// each of these will be checked individually to see their current opacity
+				// only those that are not invisible will be needed (since those are already fully transitioned)
 				transitionPixels = Array(currentPixel);
 
-				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-2)),
-				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+2)),
-				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-2)),
 				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+2)),
-				transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput-2)),
-				transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput+2)),
-				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput-2)),
-				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput+2)),
-				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-1)),
-				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+1)),
-				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-1)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-2)),
 				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+1)),
-				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-1)),
 				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput)),
-				transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput-2)),
-				transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput+2));
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+1)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-1)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput)),
+				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput-2));
 
-				transitionSelect = currentPixel;
+				transitionSelect = '';
 
+				// creating conditional for whether it's a mouseover or mouseleave
+				// goal here is to limit transitions that are unnecesarry (ex: transitioning an invisible object)
 				for ( var i=1; i<=transitionPixels.length; i++ ) {
-					if ( d3.select(transitionPixels[i]).empty()==false ) {
 
-						transitionSelect+=', ' + transitionPixels[i];
+					if ( d3.select(transitionPixels[i]).empty()==false && (
+						(mouseFunction=='pixelMO' && d3.select(transitionPixels[i]).style('opacity')!=0 )
+						// doing all possible transitions for mouseleave
+						// this will only apply to transition mode
+						|| mouseFunction=='pixelML'
+					)) {
+							// creating a string that will have all ids needed for transition select statements
+							if ( transitionSelect=='' )
+							{ transitionSelect = transitionPixels[i]; }
+							else
+							{ transitionSelect+=', ' + transitionPixels[i]; }
 					}
 				}
 
@@ -483,7 +496,8 @@
 
 			// the percent of total pixels revealed will be continuously updated every x (see limit) seconds
 			// once the percent reaches 100, the fireworks will be launched, and not launched again unless the mode is changed (resetting the percentage to zero)
-			launchedAlready = false
+			launchedAlready = false;
+
 			pixelCountTimer = d3.interval(function() {
 
 			percentRevealed = countInvisiblePixels();
@@ -516,36 +530,40 @@
 
 				transitionSliderMode = transitionSlider.value(),
 				thisID = d3.select(this).attr('id'),
-				transitionSelect = getTransitionSelect(thisID);
+				transitionSelect = getTransitionSelect(thisID, 'pixelMO');
 
-				svg2.selectAll(transitionSelect)
-					.style('stroke-width', 0.3)
-					.transition()
-						.delay(pixelTransDelay)
-						.duration(pixelTransDuration)
-						// .ease(d3.easeQuad)
-						.attr('x', function(d) { return x(d.x_coordinate) + 1.5})
-						.attr('y', function(d) { return y(d.y_coordinate) - 1})
-						.attr('width', x.bandwidth()/1.5)
-						.attr('height', y.bandwidth()/1.5)
-						.attr('transform', function(d) { return 'rotate(45,' + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + ',' + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ')'})
-					.transition()
-						.delay(pixelTransDelay)
-						.duration(pixelTransDuration)
-						.style('opacity', 0);
-						// .on('end', function() {
-						// 	// // pixels will be recreated when the slider is used
-						// 	// // removing those that have been activated for reveal modes.
-						// 	if ( transitionSliderMode!=2 )
-						// 	{ svg2.selectAll(transitionSelect).remove(); }
-						// });
+				// checking that the selector is not empty
+				if ( transitionSelect!='' ) {
+
+					svg2.selectAll(transitionSelect)
+						.style('stroke-width', 0.3)
+						.transition()
+							.delay(pixelTransDelay)
+							.duration(pixelTransDuration)
+							// .ease(d3.easeQuad)
+							.attr('x', function(d) { return x(d.x_coordinate) + 1.5})
+							.attr('y', function(d) { return y(d.y_coordinate) - 1})
+							.attr('width', x.bandwidth()/1.5)
+							.attr('height', y.bandwidth()/1.5)
+							.attr('transform', function(d) { return 'rotate(45,' + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + ',' + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ')'})
+						.transition()
+							.delay(pixelTransDelay)
+							.duration(pixelTransDuration)
+							.style('opacity', 0);
+							// .on('end', function() {
+							// 	// // pixels will be recreated when the slider is used
+							// 	// // removing those that have been activated for reveal modes.
+							// 	if ( transitionSliderMode!=2 )
+							// 	{ svg2.selectAll(transitionSelect).remove(); }
+							// });
+					}
 			},
 
 			pixelML = function(d) {
 
 				transitionSliderMode = transitionSlider.value(),
 				thisID = d3.select(this).attr('id'),
-				transitionSelect = getTransitionSelect(thisID);
+				transitionSelect = getTransitionSelect(thisID, 'pixelML');
 
 				if ( transitionSliderMode==2 ) {
 
@@ -624,7 +642,7 @@
 												else
 												{ timer.stop(); }
 												// fireworks can be launched again since the percent revealed will be back to zero.
-												launchedAlready = false
+												launchedAlready = false;
 									});
 
 			svg3.append('g')

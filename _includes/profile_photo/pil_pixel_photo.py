@@ -4,7 +4,7 @@ import pandas as pd
 from copy import deepcopy
 
 # Open Paddington
-img = Image.open("../../img/profile_photo.jpeg")
+img = Image.open("../../assets/img/profile_photo.jpeg")
 
 # Resize smoothly down to 48x48 pixels
 xMax = 48
@@ -15,7 +15,7 @@ imgSmall = img.resize((48,48),resample=Image.BILINEAR)
 result = imgSmall.resize(img.size,Image.NEAREST)
 
 # Save pixel photo
-result.save('../img/profile_photo_pixelated.png')
+result.save('../assets/img/profile_photo_pixelated.png')
 
 # creating a dataframe with rgb codes for each pixel.
 pixel_df = pd.DataFrame()

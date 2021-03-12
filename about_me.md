@@ -1,6 +1,7 @@
 ---
 layout: page
 title: About Me
+order: 1
 ---
 
 {% include profile_photo/main.html %}
@@ -13,3 +14,5 @@ Hi there!<br><br>My name is Charlie. I live in Chicago and work for Navarc as a 
 
 - email: [charlieyaris@gmail.com](mailto:charlieyaris@gmail.com)
 - phone: (973)-747-5068
+
+{% include buy_me_a_pizza/main.html %}

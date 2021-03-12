@@ -45,11 +45,12 @@ round-avatar: true
 # Select the social network links that you want to show in the footer.
 # Uncomment the links you want to show and add your information to each one.
 social-network-links:
-  email: "charlieyaris@gmail.com"
+  # email: "charlieyaris@gmail.com"
   linkedin: charlieyaris
   github: cyaris
   kaggle: cyaris
   tableau: charlie.yaris#!
+  buymeacoffee: charlieyaris
 #  patreon: DeanAttali
 #  medium: yourname
 #  reddit: yourname

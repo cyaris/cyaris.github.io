@@ -245,11 +245,11 @@ img {
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* custom edit: changed font-size for navbar dropdown items */
 .navbar-custom .nav-item.dropdown .dropdown-menu {
   min-width: 0;
   margin-top: 0;
-  font-size: 0.8em;
+  /* custom edit: changed font-size for navbar dropdown items */
+  font-size: 0.825em;
   border: 0;
   padding: 0;
   width: 100%;
@@ -993,4 +993,18 @@ pre {
 .center {
   display: block;
   margin: 0 auto;
+}
+
+/* custom edit: 404 image width */
+@media (max-width: 768px) {
+  .image_404 {
+    max-width: 60%;
+    max-height: 60%;
+  }
+}
+@media (min-width: 768px) {
+  .image_404 {
+    max-width: 40%;
+    max-height: 40%;
+  }
 }

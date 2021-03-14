@@ -1,7 +1,9 @@
 ---
 layout: page
 title: US Gun Violence Forecasting
-subtitle: <a href="https://github.com/cyaris/us_gun_violence_forecasting/blob/master/Web%20Interface/_includes/us_gun_violence_forecasting/main.html" target="_blank">Project Repository</a>
+subtitle: Applying D3.js to Time Series Modeling
+gh-repo: cyaris/us_gun_violence_forecasting/
+gh-badge: [follow, star]
 social-share: true
 ---
 

@@ -780,6 +780,8 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
 #header-gh-btns {
   margin-bottom: 0.9375rem;
 }
+
+/* custom edit: commented out max-width to make this true for any width */
 @media (max-width: 500px) {
   #header-gh-btns > iframe {
     display: block;

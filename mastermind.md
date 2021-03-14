@@ -1,7 +1,8 @@
 ---
 layout: page
 title: Mastermind
-subtitle: <a href="https://github.com/cyaris/mastermind/blob/master/Web%20Interface/_includes/mastermind/main.html" target="_blank">Project Repository</a>
+gh-repo: cyaris/mastermind/
+gh-badge: [follow, star]
 social-share: true
 ---
 

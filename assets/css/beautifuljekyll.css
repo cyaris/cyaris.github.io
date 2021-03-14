@@ -53,10 +53,6 @@ a:focus {
   color: {{ site.hover-col | default: "#0085A1" }};
 }
 
-/* .social_link a:hover,
-.social_link a:focus {
-  color: {{ site.social_hover-col | default: "#0085A1" }};
-} */
 blockquote {
   color: #808080;
   font-style: italic;
@@ -404,6 +400,11 @@ footer a {
 footer a:hover {
   color: {{ site.footer-hover-col | default: "#404040" }};
 }
+
+/* custom edit: changed color for social-hover */
+/* .social_link a:hover { */
+  /* color: {{ site.social-hover-col | default: "#0085A1" }}; */
+/* } */
 
 /* custom edit: added individual link color variable for author-site-link */
 .author-site a {

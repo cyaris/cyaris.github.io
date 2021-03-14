@@ -103,22 +103,22 @@ keywords: "charlieyaris,cyaris"
 
 # Personalize the colours in your website. Colour values can be any valid CSS colour
 
-navbar-col: "#247ba0"
+navbar-col: "#54bdca"
 # custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links
 navbar-link-col: "#ffffff"
-navbar-border-col: "#247ba0"
+navbar-border-col: "#4095aa"
 page-col: "#ffffff"
 text-col: "#404040"
-link-col: "#4ecdc4"
-hover-col: "#4ecdc4"
-footer-col: "#247ba0"
+link-col: "#54bdca"
+hover-col: "#54bdca"
+footer-col: "#54bdca"
 footer-text-col: "#ffffff"
-footer-link-col: "#ba324f"
+footer-link-col: "#f07b41"
 
 # custom edit: added individual color variables below
-navbar-hover-col: "#03cea4"
-footer-hover-col: "#03cea4"
-social-hover-col: "#03cea4"
+navbar-hover-col: "#022248"
+footer-hover-col: "#022248"
+# social-hover-col: "#992802"
 author-site-link-col: "#ffffff"
 theme-by-link-col: "#ffffff"
 

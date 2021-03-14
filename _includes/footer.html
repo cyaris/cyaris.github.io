@@ -21,10 +21,9 @@
         <!-- custom edit: removed bullet -->
         <!-- &nbsp;&bull;&nbsp; -->
         <span class="author-site">
-          <!-- custom edit: target _blank -->
           <!-- custom edit: added line break -->
           <br>
-          <a href="{% if site.url-canonical %}{{ site.url-canonical }}{% else %}{{ '' | absolute_url }}{% endif %}" target="_blank">{{ site.url-pretty }}</a>
+          <a href="{% if site.url-canonical %}{{ site.url-canonical }}{% else %}{{ '' | absolute_url }}{% endif %}">{{ site.url-pretty }}</a>
         </span>
       {% endif %}
 

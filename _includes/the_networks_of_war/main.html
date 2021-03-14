@@ -331,7 +331,7 @@
 		};
 
 		// reading in the data to create the war menu
-		d3.csv('../assets/the_networks_of_war/war_file_list.csv').then(function(data) {
+		d3.csv('../assets/csv/the_networks_of_war/war_file_list.csv').then(function(data) {
 
 			parseTime = d3.timeParse('%Y-%m-%d');
 
@@ -466,7 +466,7 @@
 		function createNetworkGraph(fileName) {
 			// new code section: start of code for svg2
 			// reading in the data to create the network graph
-			d3.json('../assets/the_networks_of_war/json_files_by_war/' + fileName).then(function(graph) {
+			d3.json('../assets/json/the_networks_of_war/json_files_by_war/' + fileName).then(function(graph) {
 
 				// creating a color scale to color the side of each war.
 				color = d3.scaleLinear().domain([1, 2]).range(['lightgreen', 'violet']);

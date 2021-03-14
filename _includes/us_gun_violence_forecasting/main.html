@@ -348,7 +348,7 @@
 						.attr("width", fullWidth)
 						.attr("height", 125);
 
-		d3.csv("/assets/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv", function(data) {
+		d3.csv("/assets/csv/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv", function(data) {
 
 			var tooltipMO = function(d) {
 						d3.select(this)
@@ -820,7 +820,7 @@
 /////////////////////////////////////////////
 
 			function updateGraph(hoverYear, highlightMaxOb, hoverUpdate, axisUpdate) {
-			  d3.csv("/assets/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv", function(data) {
+			  d3.csv("/assets/csv/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv", function(data) {
 
 					if ( highlightMaxOb=='yes' ) {
 						if ( obsSlider.value()>0 || (obsSlider.value()==0 && svg3.select("#obsCheckMark").style("fill")=="transparent") ) {

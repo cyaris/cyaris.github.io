@@ -305,7 +305,8 @@ img {
 .navbar-custom .navbar-nav .nav-link:focus,
 .navbar-custom .navbar-nav .dropdown-menu .dropdown-item:hover,
 .navbar-custom .navbar-nav .dropdown-menu .dropdown-item:focus {
-  color: {{ site.hover-col | default: "#0085A1" }};
+  /* custom edit: added individual hover color variable for navbar  */
+  color: {{ site.navbar-hover-col | default: "#0085A1" }};
 }
 
 .navbar-custom .avatar-container {
@@ -387,6 +388,11 @@ footer p.text-muted {
 
 footer a {
   color: {{ site.footer-link-col | default: "#404040" }};
+}
+
+/* custom edit: added individual hover color variable for footer  */
+footer a:hover {
+  color: {{ site.footer-hover-col | default: "#404040" }};
 }
 
 footer .list-inline {

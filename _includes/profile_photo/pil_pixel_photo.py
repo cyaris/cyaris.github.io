@@ -30,7 +30,7 @@ for x in np.arange(0, xMax):
         pixel_df.loc[row, 'b'] = pixel_rgb[2]
         row+=1
 
-pixel_df.to_csv('../../assets/profile_photo/proile_photo_pixel_rgb_codes.csv', sep = ',', index=None)
+pixel_df.to_csv('../../assets/csv/profile_photo/proile_photo_pixel_rgb_codes.csv', sep = ',', index=None)
 
 
 xMax = 12
@@ -43,4 +43,4 @@ for x in np.arange(0, xMax):
         hover_df.loc[row, 'y_coordinate'] = y + 1
         row+=1
 
-hover_df.to_csv('../../assets/profile_photo/proile_photo_hover_sections.csv', sep = ',', index=None)
+hover_df.to_csv('../../assets/csv/profile_photo/proile_photo_hover_sections.csv', sep = ',', index=None)

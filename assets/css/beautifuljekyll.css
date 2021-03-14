@@ -1060,7 +1060,7 @@ pre {
 .btn-group {
   background-color:#f07b41;
   border-radius:28px;
-  border:1px solid #18ab29;
+  /* border:1px solid #18ab29; */
   display:inline-block;
   cursor:pointer;
   color:#ffffff;

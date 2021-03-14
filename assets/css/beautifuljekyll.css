@@ -52,6 +52,11 @@ a:hover,
 a:focus {
   color: {{ site.hover-col | default: "#0085A1" }};
 }
+
+/* .social_link a:hover,
+.social_link a:focus {
+  color: {{ site.social_hover-col | default: "#0085A1" }};
+} */
 blockquote {
   color: #808080;
   font-style: italic;
@@ -145,7 +150,8 @@ img {
   line-height: 1.5;
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
-  font-size: 1.125rem;
+  /* custom edit: changed font-size for navbar links (not including title link or dropdown links) */
+  font-size: 1.25rem;
 }
 
 .navbar-custom .navbar-brand-logo {
@@ -174,8 +180,10 @@ img {
 }
 
 .navbar-custom .navbar-nav .nav-item {
-  text-transform: uppercase;
-  font-size: 0.8125rem;
+  /* custom edit: changed transform to capitalize */
+  text-transform: capitalize;
+  /* custom edit: changed font-size */
+  font-size: 0.9rem;
   letter-spacing: 0.0625rem;
 }
 
@@ -190,7 +198,8 @@ img {
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-nav .nav-link {
   font-weight: 800;
-  color: {{ site.navbar-text-col | default: "#404040" }};
+  /* custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links */
+  color: {{ site.navbar-link-col | default: "#404040" }};
 }
 
 .navbar-toggler {
@@ -262,7 +271,8 @@ img {
   text-decoration: none !important;
   border-width: 0 1px 1px 1px;
   font-weight: normal;
-  color: {{ site.navbar-text-col | default: "#404040" }};
+  /* custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links */
+  color: {{ site.navbar-link-col | default: "#404040" }};
 }
 
 @media (min-width: 1200px) {
@@ -393,6 +403,15 @@ footer a {
 /* custom edit: added individual hover color variable for footer  */
 footer a:hover {
   color: {{ site.footer-hover-col | default: "#404040" }};
+}
+
+/* custom edit: added individual link color variable for author-site-link */
+.author-site a {
+  color: {{ site.author-site-link-col | default: "#404040" }};
+}
+
+.theme-by a {
+  color: {{ site.theme-by-link-col | default: "#404040" }};
 }
 
 footer .list-inline {

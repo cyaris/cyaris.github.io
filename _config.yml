@@ -103,20 +103,24 @@ keywords: "charlieyaris,cyaris"
 
 # Personalize the colours in your website. Colour values can be any valid CSS colour
 
-navbar-col: "#175676"
-navbar-text-col: "#D59D49"
-navbar-border-col: "#175676"
-page-col: "#FFFFFF"
+navbar-col: "#247ba0"
+# custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links
+navbar-link-col: "#ffffff"
+navbar-border-col: "#247ba0"
+page-col: "#ffffff"
 text-col: "#404040"
-link-col: "#ba324f"
+link-col: "#03cea4"
 hover-col: "#ba324f"
-footer-col: "#175676"
-footer-text-col: "#EAB65C"
+footer-col: "#247ba0"
+footer-text-col: "#ffffff"
 footer-link-col: "#ba324f"
 
-# custom edit: added individual hover color variable for navbar and footer
-navbar-hover-col: "#ba324f"
-footer-hover-col: "#D59D49"
+# custom edit: added individual color variables below
+navbar-hover-col: "#03cea4"
+footer-hover-col: "#03cea4"
+social-hover-col: "#03cea4"
+author-site-link-col: "#ffffff"
+theme-by-link-col: "#ffffff"
 
 # Alternatively, the navbar, footer, and page background can be set to an image
 # instead of colour

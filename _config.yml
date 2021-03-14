@@ -121,6 +121,8 @@ footer-hover-col: "#022248"
 # social-hover-col: "#992802"
 author-site-link-col: "#ffffff"
 theme-by-link-col: "#ffffff"
+pagination-hover-col: "#54bdca"
+pagination-hover-background-col: "#022248"
 
 # Alternatively, the navbar, footer, and page background can be set to an image
 # instead of colour

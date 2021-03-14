@@ -91,37 +91,6 @@
       }
     }
 
-		.center {
-			text-align: center;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			/* width: 50px; */
-		}
-
-		.btn-group button {
-		  background-color: #4CAF50; /* Green background */
-		  border: 1px solid green; /* Green border */
-		  color: white; /* White text */
-		  padding: 10px 24px; /* Some padding */
-		  cursor: pointer; /* Pointer/hand icon */
-		  float: center; /* Float the buttons side by side */
-		}
-
-		.btn-group button:not(:last-child) {
-		  border-right: none; /* Prevent double borders */
-		}
-		/* Clear floats (clearfix hack) */
-		.btn-group:after {
-		  content: "";
-		  clear: both;
-		  display: table;
-		}
-		/* Add a background color on hover */
-		.btn-group button:hover {
-		  background-color: #3e8e41;
-		}
-
 		#hidden-button-win {
 			display: none;
 		}
@@ -155,7 +124,7 @@
 			/* position: absolute; */
 			text-align: left;
 			padding: 5px;
-			font-family: 'Lora', 'Times New Roman', serif;
+			font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 			font-size: 12px;
 			stroke: black;
 			background: white;
@@ -193,12 +162,10 @@
 				<span class="blinking"><p align="center" style="margin-left:-3.5px; margin-top:-25px; margin-bottom:5px;"><font size="5.5"><b>You win!</b></font></p></span>
 			</div>
 			<div class="center">
-				<div class="btn-group">
-					<a href="../play_mastermind/"><button class="button">Play Again</button></a>
-					<br>
-					<br>
-					<br>
-				</div>
+				<a href="../play_mastermind/" class="btn-group">Play Again</a>
+				<br>
+				<br>
+				<br>
 			</div>
 		</div>
 		<div id="hidden-button-lose">
@@ -207,12 +174,10 @@
 				<p align="center" style="margin-left:-158px; margin-top:-30px; margin-bottom:70px;">Here's the code:</p>
 			</div>
 			<div class="center">
-				<div class="btn-group">
-					<a href="../play_mastermind/"><button class="button">Play Again</button></a>
-					<br>
-					<br>
-					<br>
-				</div>
+				<a href="../play_mastermind/" class="btn-group">Play Again</a>
+				<br>
+				<br>
+				<br>
 			</div>
 		</div>
 		<!-- Create a div where the color selection will take place -->

@@ -11,7 +11,8 @@ html {
 }
 
 body {
-  font-family: 'Lora', 'Times New Roman', serif;
+  /* custom edit: changed font for body */
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1.125rem;
   color: {{ site.text-col | default: "#404040" }};
   position: relative;
@@ -496,7 +497,8 @@ footer .footer-custom-content {
   font-size: 1.125rem;
   font-style: italic;
   margin: 0 0 0.625rem;
-  font-family: 'Lora', 'Times New Roman', serif;
+  /* custom edit: changed font */
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .post-heading .post-meta {
   display: inline-block;
@@ -808,7 +810,8 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
 
 .pagination .page-item .page-link {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
+  /* custom edit: changed transform to capitalize */
+  text-transform: capitalize;
   font-size: 0.875rem;
   font-weight: 800;
   letter-spacing: 1px;
@@ -816,6 +819,10 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
   background-color: #FFF;
   border-radius: 0;
   color: {{ site.text-col | default: "#404040" }};
+  /* custom edit: changed pagination border radius to be consistent with other site buttons */
+  border-radius:28px;
+  /* custom edit: added border color */
+  border:1px solid {{ site.link-col | default: "#0085A1" }};
 }
 @media (min-width: 768px) {
   .pagination .page-item .page-link {
@@ -826,7 +833,10 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
 .pagination .page-item .page-link:focus {
   color: #FFF;
   border: 1px solid {{ site.hover-col | default: "#0085A1" }};
-  background-color: {{ site.hover-col | default: "#0085A1" }};
+  /* custom edit: changed pagination color on hover */
+  color: {{ site.pagination-hover-col | default: "#404040" }};
+  /* custom edit: changed pagination background color on hover */
+  background-color: {{ site.pagination-hover-background-col | default: "#0085A1" }};
 }
 
 /* --- Tables --- */
@@ -1033,4 +1043,35 @@ pre {
     max-width: 40%;
     max-height: 40%;
   }
+}
+
+/* custom edit: added center class css formatting */
+.center {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 50px; */
+}
+
+/* custom edit: added btn-group css formatting */
+.btn-group {
+  background-color:#f07b41;
+  border-radius:28px;
+  border:1px solid #18ab29;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-size:17px;
+  font-weight: bold;
+  padding:16px 31px;
+  text-decoration:none;
+  /* text-shadow:0px 1px 0px #2f6627; */
+}
+.btn-group:hover {
+  background-color:#022248;
+}
+.btn-group:active {
+  position:relative;
+  top:1px;
 }

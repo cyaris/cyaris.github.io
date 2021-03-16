@@ -18,7 +18,7 @@ navbar-links:
   Projects:
     # Draft project below
     # - Falling Pizza: "falling_pizza"
-    - Gun Violence Forecasting: "us_gun_violence_forecasting"
+    - US Gun Violence Forecasting: "us_gun_violence_forecasting"
     - Mastermind: "mastermind"
     - The Networks of War: "the_networks_of_war"
   Posts: "https://cyaris.github.io/"
@@ -88,13 +88,13 @@ share-links-active:
 url-pretty: "cyaris.github.io"
 
 # Excerpt word length - Truncate the excerpt of each post on the feed page to the specified number of words
-excerpt_length: 50
+excerpt_length: 0
 
 # Whether or not to show an excerpt for every blog post in the feed page
-feed_show_excerpt: false
+feed_show_excerpt: true
 
 # Whether or not to show a list of tags below each post preview in the feed page
-feed_show_tags: false
+feed_show_tags: true
 
 # The keywords to associate with your website, for SEO purposes
 keywords: "charlieyaris,cyaris"
@@ -103,26 +103,46 @@ keywords: "charlieyaris,cyaris"
 
 # Personalize the colours in your website. Colour values can be any valid CSS colour
 
-navbar-col: "#54bdca"
+
 # custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links
+# custom edit: added several individual color variables below
+navbar-col: "#54bdca"
+navbar-border-col: "#15F44D"
 navbar-link-col: "#ffffff"
-navbar-border-col: "#4095aa"
+navbar-link-border-col: "#9046cf"
+navbar-link-hover-col: "#9046cf"
+navbar-link-hover-border-col: "#95ffff"
+
 page-col: "#ffffff"
 text-col: "#404040"
-link-col: "#54bdca"
-hover-col: "#54bdca"
-footer-col: "#54bdca"
-footer-text-col: "#ffffff"
-footer-link-col: "#f07b41"
+link-col: "#f07b41"
+link-hover-col: "#9046cf"
+post-title-link-col: "#54bdca"
 
-# custom edit: added individual color variables below
-navbar-hover-col: "#022248"
-footer-hover-col: "#022248"
-# social-hover-col: "#992802"
-author-site-link-col: "#ffffff"
-theme-by-link-col: "#ffffff"
-pagination-hover-col: "#54bdca"
-pagination-hover-background-col: "#022248"
+footer-col: "#54bdca"
+footer-border-col: "#15F44D"
+footer-text-col: "#ffffff"
+footer-link-col: "#ffffff"
+footer-link-hover-col: "#9046cf"
+
+# social-links will have separate color variables from rest of footer
+social-link-col: "#f07b41"
+social-link-hover-col: "#9046cf"
+
+btn-link-col: "#ffffff"
+btn-background-col: "#f07b41"
+btn-link-hover-col: "#ffffff"
+btn-background-hover-col: "#9046cf"
+
+# pagination-border-col: "#9046cf"
+# pagination-link-hover-col: "#992802"
+# pagination-background-hover-col: "#95ffff"
+pagination-link-hover-col: "#ffffff"
+pagination-background-hover-col: "#9046cf"
+
+tag-link-hover-col: "#9046cf"
+tag-background-hover-col: "#95ffff"
+tag-border-hover-col: "#9046cf"
 
 # Alternatively, the navbar, footer, and page background can be set to an image
 # instead of colour

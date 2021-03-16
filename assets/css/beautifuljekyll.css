@@ -11,8 +11,7 @@ html {
 }
 
 body {
-  /* custom edit: changed font for body */
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Lora', 'Times New Roman', serif;
   font-size: 1.125rem;
   color: {{ site.text-col | default: "#404040" }};
   position: relative;
@@ -51,9 +50,9 @@ a {
 }
 a:hover,
 a:focus {
-  color: {{ site.hover-col | default: "#0085A1" }};
+  /* custom edit: changed hover-col to link-hover-col  */
+  color: {{ site.link-hover-col | default: "#0085A1" }};
 }
-
 blockquote {
   color: #808080;
   font-style: italic;
@@ -84,12 +83,14 @@ hr.small {
 ::-moz-selection {
   color: #fff;
   text-shadow: none;
-  background-color: {{ site.hover-col | default: "#0085A1" }};
+  /* custom edit: changed hover-col to link-hover-col  */
+  background-color: {{ site.link-hover-col | default: "#0085A1" }};
 }
 ::selection {
   color: #fff;
   text-shadow: none;
-  background-color: {{ site.hover-col | default: "#0085A1" }};
+  /* custom edit: changed hover-col to link-hover-col  */
+  background-color: {{ site.link-hover-col | default: "#0085A1" }};
 }
 img::selection {
   color: #fff;
@@ -147,8 +148,7 @@ img {
   line-height: 1.5;
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
-  /* custom edit: changed font-size for navbar links (not including title link or dropdown links) */
-  font-size: 1.25rem;
+  font-size: 1.125rem;
 }
 
 .navbar-custom .navbar-brand-logo {
@@ -177,10 +177,8 @@ img {
 }
 
 .navbar-custom .navbar-nav .nav-item {
-  /* custom edit: changed transform to capitalize */
-  text-transform: capitalize;
-  /* custom edit: changed font-size */
-  font-size: 0.9rem;
+  text-transform: uppercase;
+  font-size: 0.8125rem;
   letter-spacing: 0.0625rem;
 }
 
@@ -195,7 +193,7 @@ img {
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-nav .nav-link {
   font-weight: 800;
-  /* custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links */
+  /* custom edit: changed variable name navbar-text-col to navbar-link-col */
   color: {{ site.navbar-link-col | default: "#404040" }};
 }
 
@@ -241,21 +239,20 @@ img {
   }
 }
 
-@media (min-width: 1200px) {
+/* @media (min-width: 1200px) {
   .navbar-custom .nav-item.dropdown:hover {
     background: rgba(0, 0, 0, 0.1);
   }
-}
+} */
 
-.navbar-custom .nav-item.dropdown.show {
+/* .navbar-custom .nav-item.dropdown.show {
   background: rgba(0, 0, 0, 0.2);
-}
+} */
 
 .navbar-custom .nav-item.dropdown .dropdown-menu {
   min-width: 0;
   margin-top: 0;
-  /* custom edit: changed font-size for navbar dropdown items */
-  font-size: 0.825em;
+  font-size: 1em;
   border: 0;
   padding: 0;
   width: 100%;
@@ -268,7 +265,7 @@ img {
   text-decoration: none !important;
   border-width: 0 1px 1px 1px;
   font-weight: normal;
-  /* custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links */
+  /* custom edit: changed variable name navbar-text-col to navbar-link-col */
   color: {{ site.navbar-link-col | default: "#404040" }};
 }
 
@@ -312,8 +309,8 @@ img {
 .navbar-custom .navbar-nav .nav-link:focus,
 .navbar-custom .navbar-nav .dropdown-menu .dropdown-item:hover,
 .navbar-custom .navbar-nav .dropdown-menu .dropdown-item:focus {
-  /* custom edit: added individual hover color variable for navbar  */
-  color: {{ site.navbar-hover-col | default: "#0085A1" }};
+  /* custom edit: changed hover-col to link-hover-col  */
+  color: {{ site.link-hover-col | default: "#0085A1" }};
 }
 
 .navbar-custom .avatar-container {
@@ -397,25 +394,6 @@ footer a {
   color: {{ site.footer-link-col | default: "#404040" }};
 }
 
-/* custom edit: added individual hover color variable for footer  */
-footer a:hover {
-  color: {{ site.footer-hover-col | default: "#404040" }};
-}
-
-/* custom edit: changed color for social-hover */
-/* .social_link a:hover { */
-  /* color: {{ site.social-hover-col | default: "#0085A1" }}; */
-/* } */
-
-/* custom edit: added individual link color variable for author-site-link */
-.author-site a {
-  color: {{ site.author-site-link-col | default: "#404040" }};
-}
-
-.theme-by a {
-  color: {{ site.theme-by-link-col | default: "#404040" }};
-}
-
 footer .list-inline {
   margin: 0;
   padding: 0;
@@ -479,7 +457,8 @@ footer .footer-custom-content {
 .post-preview a:focus,
 .post-preview a:hover {
   text-decoration: none;
-  color: {{ site.hover-col | default: "#0085A1" }};
+  /* custom edit: changed hover-col to link-hover-col  */
+  color: {{ site.link-hover-col | default: "#0085A1" }};
 }
 
 .post-preview .post-title {
@@ -497,8 +476,7 @@ footer .footer-custom-content {
   font-size: 1.125rem;
   font-style: italic;
   margin: 0 0 0.625rem;
-  /* custom edit: changed font */
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Lora', 'Times New Roman', serif;
 }
 .post-heading .post-meta {
   display: inline-block;
@@ -780,8 +758,6 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
 #header-gh-btns {
   margin-bottom: 0.9375rem;
 }
-
-/* custom edit: commented out max-width to make this true for any width */
 @media (max-width: 500px) {
   #header-gh-btns > iframe {
     display: block;
@@ -812,8 +788,7 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
 
 .pagination .page-item .page-link {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  /* custom edit: changed transform to capitalize */
-  text-transform: capitalize;
+  text-transform: uppercase;
   font-size: 0.875rem;
   font-weight: 800;
   letter-spacing: 1px;
@@ -821,10 +796,6 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
   background-color: #FFF;
   border-radius: 0;
   color: {{ site.text-col | default: "#404040" }};
-  /* custom edit: changed pagination border radius to be consistent with other site buttons */
-  border-radius:28px;
-  /* custom edit: added border color */
-  border:1px solid {{ site.link-col | default: "#0085A1" }};
 }
 @media (min-width: 768px) {
   .pagination .page-item .page-link {
@@ -834,11 +805,10 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
 .pagination .page-item .page-link:hover,
 .pagination .page-item .page-link:focus {
   color: #FFF;
-  border: 1px solid {{ site.hover-col | default: "#0085A1" }};
-  /* custom edit: changed pagination color on hover */
-  color: {{ site.pagination-hover-col | default: "#404040" }};
-  /* custom edit: changed pagination background color on hover */
-  background-color: {{ site.pagination-hover-background-col | default: "#0085A1" }};
+  /* custom edit: changed hover-col to link-hover-col  */
+  border: 1px solid {{ site.link-hover-col | default: "#0085A1" }};
+  /* custom edit: changed hover-col to link-hover-col  */
+  background-color: {{ site.link-hover-col | default: "#0085A1" }};
 }
 
 /* --- Tables --- */
@@ -1031,49 +1001,4 @@ pre {
 .center {
   display: block;
   margin: 0 auto;
-}
-
-/* custom edit: 404 image width */
-@media (max-width: 768px) {
-  .image_404 {
-    max-width: 60%;
-    max-height: 60%;
-  }
-}
-@media (min-width: 768px) {
-  .image_404 {
-    max-width: 40%;
-    max-height: 40%;
-  }
-}
-
-/* custom edit: added center class css formatting */
-.center {
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* width: 50px; */
-}
-
-/* custom edit: added btn-group css formatting */
-.btn-group {
-  background-color:#f07b41;
-  border-radius:28px;
-  /* border:1px solid #18ab29; */
-  display:inline-block;
-  cursor:pointer;
-  color:#ffffff;
-  font-size:17px;
-  font-weight: bold;
-  padding:16px 31px;
-  text-decoration:none;
-  /* text-shadow:0px 1px 0px #2f6627; */
-}
-.btn-group:hover {
-  background-color:#022248;
-}
-.btn-group:active {
-  position:relative;
-  top:1px;
 }

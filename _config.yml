@@ -15,6 +15,7 @@ author: Charlie Yaris
 
 navbar-links:
   About Me: "about_me"
+  # Defaulting clickiing on projects tab to bringing the user to Mastermind.
   Projects:
     # Draft project below
     # - Falling Pizza: "falling_pizza"
@@ -72,7 +73,7 @@ social-network-links:
 
 # If you want to show a link to an RSS in the footer, add the site description here.
 # If you don't want to show an RSS link, remove the following line.
-rss-description: Welcome to my website! Hope you enjoy your stay!
+rss-description: Welcome to my website! I hope you enjoy your stay!
 
 # --- General options --- #
 
@@ -97,7 +98,7 @@ feed_show_excerpt: true
 feed_show_tags: true
 
 # The keywords to associate with your website, for SEO purposes
-keywords: "charlieyaris,cyaris"
+keywords: "charlieyaris, cyaris"
 
 # --- Colours / background image --- #
 
@@ -107,42 +108,48 @@ keywords: "charlieyaris,cyaris"
 # custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links
 # custom edit: added several individual color variables below
 navbar-col: "#54bdca"
-navbar-border-col: "#15F44D"
+navbar-border-col: "#f07b41"
 navbar-link-col: "#ffffff"
-navbar-link-border-col: "#9046cf"
-navbar-link-hover-col: "#9046cf"
-navbar-link-hover-border-col: "#95ffff"
+# navbar-link-border-col: "#69D1E3"
+navbar-link-hover-col: "#175676"
+# navbar-link-hover-border-col: "#95ffff"
 
 page-col: "#ffffff"
 text-col: "#404040"
-link-col: "#f07b41"
-link-hover-col: "#9046cf"
+link-col: "#33658a"
+link-hover-col: "#33658a"
 post-title-link-col: "#54bdca"
 
 footer-col: "#54bdca"
-footer-border-col: "#15F44D"
+footer-border-col: "#f07b41"
 footer-text-col: "#ffffff"
 footer-link-col: "#ffffff"
-footer-link-hover-col: "#9046cf"
+footer-link-hover-col: "#175676"
 
 # social-links will have separate color variables from rest of footer
 social-link-col: "#f07b41"
-social-link-hover-col: "#9046cf"
+social-link-hover-col: "#ffffff"
+social-icon-link-col: "#ffffff"
+social-icon-link-hover-col: "#f26419"
 
 btn-link-col: "#ffffff"
 btn-background-col: "#f07b41"
 btn-link-hover-col: "#ffffff"
-btn-background-hover-col: "#9046cf"
-
+btn-background-hover-col: "#f07b41"
+btn-border-hover-col: "#175676"
 # pagination-border-col: "#9046cf"
 # pagination-link-hover-col: "#992802"
 # pagination-background-hover-col: "#95ffff"
-pagination-link-hover-col: "#ffffff"
-pagination-background-hover-col: "#9046cf"
+pagination-link-col: "#404040"
+pagination-background-col: "#ffffff"
+pagination-border-col: "#175676"
+pagination-link-hover-col: "#404040"
+pagination-background-hover-col: "#ffffff"
+pagination-border-hover-col: "#175676"
 
-tag-link-hover-col: "#9046cf"
+tag-link-hover-col: "#404040"
 tag-background-hover-col: "#95ffff"
-tag-border-hover-col: "#9046cf"
+tag-border-hover-col: "#95ffff"
 
 # Alternatively, the navbar, footer, and page background can be set to an image
 # instead of colour

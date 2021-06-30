@@ -103,7 +103,7 @@
 		<!-- Create a div where overall metrics will be -->
 		<div id='hover_statistics' align='center' style='margin-bottom:10px;'></div>
 		<!-- Create a div where the graph will take place -->
-		<div id='war_network_analysis_graph' align='center' style='margin-bottom:15px;'></div>
+		<div id='war_network_analysis_graph' align='center' style='margin-bottom:100px;' style='margin-top:-500px;' ></div>
 		<div id='list_of_data_sources' align='left' style='margin-bottom:15px;'>
 			<p>All data has been obtained from the <a href='https://correlatesofwar.org/' target='_blank'>Correlates of War Project</a>, using all of the following files in some capacity:
 				<ul>
@@ -439,7 +439,7 @@
 				margin = {top: 0, bottom: 15, left: 0, right: 0},
 				width = 750,
 				height = 550,
-				svg2Height = 250;
+				svg2Height = 800;
 
 				// setting a text sizes for all graph items
 				graphTextSize = '14px',
@@ -552,8 +552,8 @@
 															stdNullRadiusSize = getNodeDescriptiveValuesOutput[2];
 															updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 
-															addStdText(svg2, null, 'node_descriptor_selected_text', width-descriptorMaxNameLength-descriptorXLoc+5, yAdjustment + 42.5, graphMenuTextSize, 0, nodeDescriptorSelected);
-															addStdText(svg2, null, 'link_descriptor_selected_text', width-descriptorMaxNameLength-descriptorXLoc+5, 42.5, graphMenuTextSize, 0, linkDescriptorSelected);
+															addStdText(svg2, null, 'node_descriptor_selected_text', descriptorTextXLoc, yAdjustment+descriptorTextYLoc, graphMenuTextSize, 0, nodeDescriptorSelected);
+															addStdText(svg2, null, 'link_descriptor_selected_text', descriptorTextXLoc, descriptorTextYLoc, graphMenuTextSize, 0, linkDescriptorSelected);
 											});
 
 					svg2.append('g')
@@ -797,7 +797,6 @@
 					descriptorNameLengths = partNullDescriptiveOutput[1];
 				};
 
-				descriptorMaxNameLength = maxFromArray(descriptorNameLengths['link'].concat(descriptorNameLengths['node']));
 				svg2.select('#timeframe_slider').attr('transform', 'translate(200,20)');
 
 				console.log('defaultValues', defaultValues);
@@ -813,8 +812,7 @@
 				getNodeDescriptiveValuesOutput = getNodeDescriptiveValues(null),
 				nodeDescriptiveValues = getNodeDescriptiveValuesOutput[0],
 				maxDomain = getNodeDescriptiveValuesOutput[1],
-				stdNullRadiusSize = getNodeDescriptiveValuesOutput[2],
-				descriptorXLoc = 10;
+				stdNullRadiusSize = getNodeDescriptiveValuesOutput[2];
 
 				function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
 
@@ -1204,7 +1202,7 @@
 
 
 				// the following two functions will be used for both links and participants
-				function descriptiveMenuMouseOver(groupingType, maxWidth, descriptiveArray, clickFunction, xLoc, yAdjustment) {
+				function descriptiveMenuMouseOver(groupingType, descriptiveArray, clickFunction, yAdjustmentInput) {
 
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 
@@ -1214,8 +1212,8 @@
 
 							for ( var i = 0; i <= Object.keys(descriptiveArray).length-1; i++ ) {
 								dropDownName = Object.keys(descriptiveArray)[i];
-								addStdRect(svg2, groupingType + '_descriptor_dropdowns', dropDownName, width-maxWidth-xLoc, yAdjustment + 21 + ((i+1)*30), maxWidth+10, 30, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
-								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, width-maxWidth-xLoc+5, yAdjustment + 42.5 + ((i+1)*30), graphMenuTextSize, 0, dropDownName);
+								addStdRect(svg2, groupingType + '_descriptor_dropdowns', dropDownName, descriptorRectXLoc, yAdjustmentInput + descriptorRectYLoc + ((i+1)*descriptorRectHeight), descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
+								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc + ((i+1)*descriptorRectHeight), graphMenuTextSize, 0, dropDownName);
 							}
 						}
 						else
@@ -1223,12 +1221,12 @@
 
 				};
 
-				function descriptiveMenuClick(groupingType, descriptorName, maxWidth, descriptiveFieldsDic, moFunction, xLoc, yAdjustment) {
+				function descriptiveMenuClick(groupingType, descriptorName, descriptiveFieldsDic, moFunction, yAdjustmentInput) {
 
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 						svg2.select('#' + groupingType + '_descriptor_selected_text').remove();
 
-						addStdText(svg2, null, groupingType + '_descriptor_selected_text', width-maxWidth-xLoc+5, yAdjustment + 42.5, graphMenuTextSize, 0, descriptorName);
+						addStdText(svg2, null, groupingType + '_descriptor_selected_text', descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc, graphMenuTextSize, 0, descriptorName);
 				};
 
 				function updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize) {
@@ -1274,14 +1272,14 @@
 				var linkMenuMouseOver = function(d) {
 
 						generalRectML;
-						descriptiveMenuMouseOver('link', descriptorMaxNameLength, descriptiveFields['link'][timeFrame], linkMenuClick, descriptorXLoc, 0);
+						descriptiveMenuMouseOver('link', descriptiveFields['link'][timeFrame], linkMenuClick, 0);
 				},
 						linkMenuClick = function(d) {
 
 						selectedDescriptor = d3.select(this).attr('id'),
 						linkDescriptiveValues = descriptiveFields['link'][timeFrame][selectedDescriptor]['values'];
 
-						descriptiveMenuClick('link', selectedDescriptor, descriptorMaxNameLength, descriptiveFields['link'][timeFrame], linkMenuMouseOver, descriptorXLoc, 0);
+						descriptiveMenuClick('link', selectedDescriptor, descriptiveFields['link'][timeFrame], linkMenuMouseOver, 0);
 
 						link.selectAll('.link_dash')
 								.transition().delay(50).duration(1000)
@@ -1299,7 +1297,7 @@
 					 	nodeMenuMouseOver = function(d) {
 
 						generalRectML;
-						descriptiveMenuMouseOver('node', descriptorMaxNameLength, descriptiveFields['node'][timeFrame], nodeMenuCLick, descriptorXLoc, yAdjustment);
+						descriptiveMenuMouseOver('node', descriptiveFields['node'][timeFrame], nodeMenuCLick, yAdjustment);
 				},
 						nodeMenuCLick = function(d) {
 
@@ -1308,23 +1306,47 @@
 						maxDomain = descriptiveFields['node'][timeFrame][selectedDescriptor]['max_domain'],
 						stdNullRadiusSize = descriptiveFields['node'][timeFrame][selectedDescriptor]['std_node_size'];
 
-						descriptiveMenuClick('node', selectedDescriptor, descriptorMaxNameLength, descriptiveFields['node'][timeFrame], nodeMenuMouseOver, descriptorXLoc, yAdjustment);
+						descriptiveMenuClick('node', selectedDescriptor, descriptiveFields['node'][timeFrame], nodeMenuMouseOver, yAdjustment);
 						updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 				};
 
+				descriptorMaxNameLength = maxFromArray(descriptorNameLengths['link'].concat(descriptorNameLengths['node'])),
 				// adjusting x position for node to go below link dropdown selection options
+				descriptorRectXLoc = 10,
+				descriptorRectWidth = descriptorMaxNameLength+10,
+				descriptorRectHeight = 30,
 				yAdjustment = 60,
-				linkMenuTitle = 'Adjust Link Dashes: ',
-				nodeMenuTitle = 'Adjust Node Size: ';
+				linkMenuTitle = 'Link Dashes: ',
+				nodeMenuTitle = 'Node Size: ',
 				// linkMenuTitleLength = getTextWidth(svg2, linkMenuTitle, graphMenuTextSize);
 				// nodeMenuTitleLength = getTextWidth(svg2, nodeMenuTitle, graphMenuTextSize);
-				addStdText(svg2, null, 'node_descriptor_selected_title', width-descriptorMaxNameLength-descriptorXLoc, yAdjustment + 15, graphMenuTextSize, 0, nodeMenuTitle);
-				addStdText(svg2, null, 'link_descriptor_selected_title', width-descriptorMaxNameLength-descriptorXLoc, 15, graphMenuTextSize, 0, linkMenuTitle);
-				addStdRect(svg2, null, 'link_descriptor_selected_rect', width-descriptorMaxNameLength-descriptorXLoc, 21, descriptorMaxNameLength+10, 30, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
-				addStdRect(svg2, null, 'node_descriptor_selected_rect', width-descriptorMaxNameLength-descriptorXLoc, yAdjustment + 21, descriptorMaxNameLength+10, 30, 'black', 1, null, 'transparent', null, nodeMenuMouseOver, generalRectML, null);
-				addStdText(svg2, null, 'link_descriptor_selected_text', width-descriptorMaxNameLength-descriptorXLoc+5, 42.5, graphMenuTextSize, 0, linkDescriptorSelected);
-				addStdText(svg2, null, 'node_descriptor_selected_text', width-descriptorMaxNameLength-descriptorXLoc+5, yAdjustment + 42.5, graphMenuTextSize, 0, nodeDescriptorSelected);
+				descriptorTitleYLoc = 15,
+				descriptorRectYLoc = 21,
+				descriptorRectXLoc = width-descriptorMaxNameLength-descriptorRectXLoc,
+				descriptorTextXLoc = descriptorRectXLoc + 5,
+				// descriptorButtonXLoc = descriptorRectXLoc + descriptorRectWidth,
+				// descriptorArrowXLoc = descriptorButtonXLoc + 7,
+				// descriptorArrowYLoc = descriptorRectYLoc + 10,
+				// descriptorArrowYLoc = descriptorRectYLoc,
+				// descriptorButtonHeight = descriptorRectHeight/2,
+				// descriptorButtonWidth = 25,
+				descriptorTextYLoc = 42.5;
 
+				addStdText(svg2, null, 'node_descriptor_selected_title', descriptorRectXLoc, yAdjustment + descriptorTitleYLoc, graphMenuTextSize, 0, nodeMenuTitle);
+				addStdText(svg2, null, 'link_descriptor_selected_title', descriptorRectXLoc, descriptorTitleYLoc, graphMenuTextSize, 0, linkMenuTitle);
+
+				addStdRect(svg2, null, 'link_descriptor_selected_rect', descriptorRectXLoc, descriptorRectYLoc, descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
+				addStdRect(svg2, null, 'node_descriptor_selected_rect', descriptorRectXLoc, yAdjustment + descriptorRectYLoc, descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'transparent', null, nodeMenuMouseOver, generalRectML, null);
+
+				addStdText(svg2, null, 'link_descriptor_selected_text', descriptorTextXLoc, descriptorTextYLoc, graphMenuTextSize, 0, linkDescriptorSelected);
+				addStdText(svg2, null, 'node_descriptor_selected_text', descriptorTextXLoc, yAdjustment + descriptorTextYLoc, graphMenuTextSize, 0, nodeDescriptorSelected);
+
+				// addStdRect(svg2, null, 'node_descriptor_up_rect', descriptorButtonXLoc, yAdjustment + descriptorRectYLoc, descriptorButtonWidth, descriptorButtonHeight, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, null);
+				// addStdRect(svg2, null, 'link_descriptor_up_rect', descriptorButtonXLoc, descriptorRectYLoc, descriptorButtonWidth, descriptorButtonHeight, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, null);
+				//
+				// addStdText(svg2, null, 'node_descriptor_up_text', descriptorArrowXLoc, yAdjustment + descriptorArrowYLoc, 10, 0, '▲');
+				// addStdRect(svg2, null, 'node_descriptor_down_rect', descriptorButtonXLoc, yAdjustment + descriptorRectYLoc + descriptorButtonHeight, descriptorButtonWidth, descriptorButtonHeight, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, null);
+				// addStdRect(svg2, null, 'link_descriptor_down_rect', descriptorButtonXLoc, descriptorRectYLoc + descriptorButtonHeight, descriptorButtonWidth, descriptorButtonHeight, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, null);
 
 				function defineNodeTooltips(nodeMargins, nodeDescriptorSelected, nodeDescriptiveValues) {
 

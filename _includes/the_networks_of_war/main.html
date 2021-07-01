@@ -468,8 +468,8 @@
 				};
 
 				// creating a rect for a back to menu button
-				addStdRect(svg2, null, 'back_to_menu', 1,  1, 70, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, backToMenuClick);
-				addStdText(svg2, null, null, 6, 22.5, graphMenuTextSize, 0, '↖ Menu');
+				addStdRect(svg2, null, 'back_to_menu', 1,  10, 70, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, backToMenuClick);
+				addStdText(svg2, null, null, 6, 31.5, graphMenuTextSize, 0, '↖ Menu');
 
 				function getWarDic() {
 
@@ -1052,7 +1052,7 @@
 						else
 						{ leftPosition = nodeCTM.e - nodeRadius - parseInt(toolTipWidth) - 25; }
 						// needed to add an arbitrary value (425) to the top in order to make this work.
-						topPosition = nodeCTM.f + 400;
+						topPosition = nodeCTM.f + 200;
 
 						return {'left': leftPosition, 'top': topPosition};
 				};
@@ -1193,11 +1193,15 @@
 							svg2.select('#' + groupingType + '_descriptor_selected_text').style('opacity', 0);
 
 							for ( var i = 0; i <= Object.keys(descriptiveArray).length-1; i++ ) {
-								dropDownName = Object.keys(descriptiveArray)[i];
-
-								addStdRect(svg2, groupingType + '_descriptor_dropdowns', dropDownName, descriptorRectXLoc, yAdjustmentInput + descriptorRectYLoc + ((i+1)*descriptorRectHeight), descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'white', null, generalRectMO, generalRectML, clickFunction);
-								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc + ((i+1)*descriptorRectHeight), graphMenuTextSize, 0, dropDownName);
-
+								dropdownSelectedValue = Object.keys(descriptiveArray)[i];
+								if ( linkDescriptorSelected==dropdownSelectedValue || nodeDescriptorSelected==dropdownSelectedValue ) {
+									dropdownBackgroundColor = 'violet'
+								}
+								else {
+									dropdownBackgroundColor = 'white'
+								}
+								addStdRect(svg2, groupingType + '_descriptor_dropdowns', dropdownSelectedValue, descriptorRectXLoc, yAdjustmentInput + descriptorRectYLoc + ((i+1)*descriptorRectHeight), descriptorRectWidth, descriptorRectHeight, 'black', 1, null, dropdownBackgroundColor, null, generalRectMO, generalRectML, clickFunction);
+								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc + ((i+1)*descriptorRectHeight), graphMenuTextSize, 0, dropdownSelectedValue);
 							}
 						}
 						else
@@ -1259,10 +1263,9 @@
 				},
 						linkMenuClick = function(d) {
 
-						selectedDescriptor = d3.select(this).attr('id'),
-						linkDescriptiveValues = descriptiveFields['link'][timeFrame][selectedDescriptor]['values'];
-
-						descriptiveMenuClick('link', selectedDescriptor, descriptiveFields['link'][timeFrame], linkMenuMouseOver, 0);
+						linkDescriptorSelected = d3.select(this).attr('id'),
+						linkDescriptiveValues = descriptiveFields['link'][timeFrame][linkDescriptorSelected]['values'];
+						descriptiveMenuClick('link', linkDescriptorSelected, descriptiveFields['link'][timeFrame], linkMenuMouseOver, 0);
 
 						link.selectAll('.link_dash')
 								.transition().delay(50).duration(1000)
@@ -1284,12 +1287,12 @@
 				},
 						nodeMenuCLick = function(d) {
 
-						selectedDescriptor = d3.select(this).attr('id'),
-						nodeDescriptiveValues = descriptiveFields['node'][timeFrame][selectedDescriptor]['values'],
-						maxDomain = descriptiveFields['node'][timeFrame][selectedDescriptor]['max_domain'],
-						stdNullRadiusSize = descriptiveFields['node'][timeFrame][selectedDescriptor]['std_node_size'];
+						nodeDescriptorSelected = d3.select(this).attr('id'),
+						nodeDescriptiveValues = descriptiveFields['node'][timeFrame][nodeDescriptorSelected]['values'],
+						maxDomain = descriptiveFields['node'][timeFrame][nodeDescriptorSelected]['max_domain'],
+						stdNullRadiusSize = descriptiveFields['node'][timeFrame][nodeDescriptorSelected]['std_node_size'];
 
-						descriptiveMenuClick('node', selectedDescriptor, descriptiveFields['node'][timeFrame], nodeMenuMouseOver, yAdjustment);
+						descriptiveMenuClick('node', nodeDescriptorSelected, descriptiveFields['node'][timeFrame], nodeMenuMouseOver, yAdjustment);
 						updateNodeSizes(nodeDescriptorSelected, nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 				};
 
@@ -1303,11 +1306,11 @@
 				nodeMenuTitle = 'Node Size: ',
 				// linkMenuTitleLength = getTextWidth(svg2, linkMenuTitle, graphMenuTextSize);
 				// nodeMenuTitleLength = getTextWidth(svg2, nodeMenuTitle, graphMenuTextSize);
-				descriptorTitleYLoc = 15,
-				descriptorRectYLoc = 21,
+				descriptorTitleYLoc = 20,
+				descriptorRectYLoc = descriptorTitleYLoc + 6,
 				descriptorRectXLoc = width-descriptorMaxNameLength-xAdjustment,
 				descriptorTextXLoc = descriptorRectXLoc + 5,
-				descriptorTextYLoc = 42.5;
+				descriptorTextYLoc = descriptorTitleYLoc + 27.5;
 
 				addStdText(svg2, null, 'node_descriptor_selected_title', descriptorRectXLoc, yAdjustment + descriptorTitleYLoc, graphMenuTextSize, 0, nodeMenuTitle);
 				addStdText(svg2, null, 'link_descriptor_selected_title', descriptorRectXLoc, descriptorTitleYLoc, graphMenuTextSize, 0, linkMenuTitle);
@@ -1324,7 +1327,7 @@
 					for ( var i = 0; i <= Object.values(nodeMargins['radius_size']).length-1; i++ ) {
 
 						 	textInput = nodeDescriptorSelected + ': ' + nodeDescriptiveValues[i].toLocaleString();
-							defineTooltip('war_network_analysis_graph', 'node_tooltip_' + i, 700, '50px', toolTipWidth, toolTipHeight, textInput);
+							defineTooltip('war_network_analysis_graph', 'node_tooltip_' + i, 0, 0, toolTipWidth, toolTipHeight, textInput);
 					};
 				};
 
@@ -1421,7 +1424,6 @@
 
 						// need to figure out why cursor is being interfered when drag has not ended
 						d3.select(this).style('cursor', 'grab');
-
 						// // not displaying tooltips during drag
 						d3.selectAll('.tooltip').style('opacity', 0);
 

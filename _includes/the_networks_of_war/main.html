@@ -447,10 +447,7 @@
 				var svg2BodyMO = function(d) {
 
 						svg2.selectAll('.link_descriptor_dropdowns').remove();
-						svg2.select('#link_descriptor_selected_text').style('opacity', 1);
-
 						svg2.selectAll('.node_descriptor_dropdowns').remove();
-						svg2.select('#node_descriptor_selected_text').style('opacity', 1);
 				};
 
 
@@ -1189,8 +1186,6 @@
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 
 						if ( Object.keys(descriptiveArray).length > 0) {
-
-							svg2.select('#' + groupingType + '_descriptor_selected_text').style('opacity', 0);
 
 							for ( var i = 0; i <= Object.keys(descriptiveArray).length-1; i++ ) {
 								dropdownSelectedValue = Object.keys(descriptiveArray)[i];

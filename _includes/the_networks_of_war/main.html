@@ -652,8 +652,6 @@
 				// the following functions are for both dyadic and participant descriptive fields
 				function getDefaultSelectors(defaultValues, timeFrameInput, grouping) {
 
-						console.log(descriptiveFields);
-						console.log(timeFrameInput);
 						// creating a value for a default descriptor for when no descriptive fields exist
 						if ( Object.keys(descriptiveFields[grouping][timeFrameInput]).length==0 )
 						// filling no selection with the default empty value ('None Available') if there are none to choose from.
@@ -879,12 +877,16 @@
 						return nodeMargins;
 				};
 
+				getNodeDescriptiveValuesOutput = getNodeDescriptiveValues(null),
+				nodeDescriptiveValues = getNodeDescriptiveValuesOutput[0],
+				maxDomain = getNodeDescriptiveValuesOutput[1],
+				stdNullRadiusSize = getNodeDescriptiveValuesOutput[2],
+				// base value that will be used to calculate the values appended to the arrays above.
+				nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
+
 				// // base value that will be used to calculate the values appended to the arrays above.
 				// // including linkNodeSize inside of addedMarginSize.
 				// var linkNodeSize = 10;
-
-				// base value that will be used to calculate the values appended to the arrays above.
-				nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 				function OnlyOnePrimaryNodeCheck() {
 						// creating an array of all links by node id
@@ -919,7 +921,6 @@
 				};
 
 				onlyOnePrimaryNode = OnlyOnePrimaryNodeCheck();
-				console.log('onlyOnePrimaryNode', onlyOnePrimaryNode);
 
 				function createGraphLayout() {
 
@@ -1124,6 +1125,7 @@
 						})
 			      .text('?');
 
+
 			  function ticked() {
 
 						// transform statement below prevents nodes from going beyond the dimensions of the svg2.
@@ -1204,7 +1206,6 @@
 						maxDomain = descriptiveFields['node'][timeFrame][nodeDescriptorSelected]['max_domain'],
 						stdNullRadiusSize = descriptiveFields['node'][timeFrame][nodeDescriptorSelected]['std_node_size'];
 					}
-
 					// base value that will be used to calculate the values appended to the arrays above.
 					// including linkNodeSize inside of addedMarginSize.
 					nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
@@ -1212,8 +1213,8 @@
 					graphLayout = createGraphLayout();
 
 					nodeTransitionDelay = 50,
-					nodeTransitionDuration = 3000;
-					textTransitionDelay = 1000;
+					nodeTransitionDuration = 3000,
+					textTransitionDelay = 1000,
 					textTransitionDuration = nodeTransitionDuration - textTransitionDelay;
 
 					svg2.selectAll('.nodes')
@@ -1308,7 +1309,7 @@
 				},
 						// Two functions that change the the selection for participant node sizes
 						nodeMenuMouseOver = function(d) {
-;
+
 						descriptiveMenuMouseOver('node', descriptiveFields['node'][timeFrame], nodeMenuCLick, yAdjustment);
 				},
 						nodeMenuCLick = function(d) {

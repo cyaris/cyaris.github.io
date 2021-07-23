@@ -227,7 +227,7 @@
 							if ( strokeWidth==0 )
 							{ return 'transparent'; }
 							else
-							 { return 'black'; }
+							{ return 'black'; }
 						 });
 		};
 
@@ -276,6 +276,32 @@
 				.html(textInput);
 		};
 
+		// function addTooltipSymbol(svgInput, idInput, circX, circY, textX, textY, textRotate) {
+		//
+		// 	svgInput.append("circle")
+		// 				.attr("pointer-events", "none")
+		// 				.attr("id", idInput + "Circle")
+		// 				.attr("cx", circX)
+		// 				.attr("cy", circY)
+	 	// 		    .attr('r', 7.5)
+	 	// 		    .style('fill', "rgb(0,122,255)")
+		// 				.style('opacity', 0.9)
+		// 				.style("stroke-width", 2)
+		// 				.style("stroke", "transparent");
+		//
+		// 	svgInput.append("text")
+		// 				.attr("pointer-events", "none")
+		// 				.attr("id", idInput + "Text")
+		// 				.attr("transform", textRotate)
+		// 				.attr("x", textX)
+		// 				.attr("y", textY)
+		// 				.text("i")
+		// 					.style('fill', "white")
+		// 					.style('stroke', "white")
+		// 					.style('font-size', "11.5px")
+		// 					.style('font-weight', 500);
+		// };
+
 		var generalRectMO = function(d) {
 				// this will be used as a decorator to other mouseover functions
 				d3.select(this)
@@ -300,46 +326,50 @@
 			svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0),
 			fileDic = {
 				'file_name' : [],
+				'war_num': [],
 				'war_name': [],
+				'war_type': [],
+				'war_subtype': [],
+				'ongoing_war': [],
 				'start_year': [],
 				'end_year': [],
 				'start_date': [],
 				'end_date': [],
-				'war_type': [],
-				'war_sub_type': [],
-				'ongoing_war': [],
 				'start_date_estimated': [],
 				'end_date_estimated': [],
-				'total_days_in_war': [],
-				'total_participants': []
+				'participants': [],
+				'days_in_war': []
 			};
 
 			data.forEach(function(d) {
 				// determining the war type for each row in the file.
 				fileWarType = d.war_type.toLowerCase().replace('-', '_').replace(' ', '_');
 				// performing the following actions if the war type in the file matches the war type for the page.
-				if ( warPageType==fileWarType )
-				{ warNameLengths.push(getTextWidth(svgDummy, d.war_name, '14px'));
+				if ( warPageType==fileWarType ) {
+					warNameLengths.push(getTextWidth(svgDummy, d.war_name, '14px')),
 					fileDic['file_name'].push(d.file_name),
+					fileDic['war_num'].push(d.war_num),
 					fileDic['war_name'].push(d.war_name),
-					fileDic['start_year'].push(parseInt(d.start_year)),
-					fileDic['end_year'].push(parseInt(d.end_year)),
-					fileDic['start_date'].push(parseTime(d.start_date)),
-					fileDic['end_date'].push(parseTime(d.end_date)),
 					fileDic['war_type'].push(d.war_type),
-					fileDic['war_sub_type'].push(d.war_sub_type),
+					fileDic['war_subtype'].push(d.war_subtype),
 					fileDic['ongoing_war'].push(parseInt(d.ongoing_war)),
+					fileDic['start_year'].push(parseInt(d.start_year)),
+					fileDic['start_date'].push(parseTime(d.start_date)),
 					fileDic['start_date_estimated'].push(parseInt(d.start_date_estimated)),
+					fileDic['end_year'].push(parseInt(d.end_year)),
+					fileDic['end_date'].push(parseTime(d.end_date)),
 					fileDic['end_date_estimated'].push(parseInt(d.end_date_estimated)),
-					fileDic['total_participants'].push(parseInt(d.total_participants));
+					fileDic['participants'].push(parseInt(d.participants));
+
 					if ( parseInt(d.start_date_estimated)==1 || parseInt(d.end_date_estimated)==1 )
 					{ estimationFlag = ' *' }
 					else
 					{ estimationFlag = '' }
+
 					if ( parseInt(d.ongoing_war)==1 )
-					{	fileDic['total_days_in_war'].push((d3.timeDay.count(parseTime(d.start_date), new Date()) + 1).toLocaleString() + estimationFlag); }
+					{ fileDic['days_in_war'].push((d3.timeDay.count(parseTime(d.start_date), new Date()) + 1).toLocaleString() + estimationFlag); }
 					else
-					{ fileDic['total_days_in_war'].push(parseInt(d.total_days_in_war).toLocaleString() + estimationFlag);	}
+					{ fileDic['days_in_war'].push((d3.timeDay.count(parseTime(d.start_date), parseTime(d.end_date))).toLocaleString() + estimationFlag); }
 			 }
 			});
 
@@ -372,7 +402,7 @@
 				addStdText(svg1, null, null, 10, 25, '14px', 0.75, 'Name');
 				addStdText(svg1, null, null, warNameMaxLength + 65, 25, menuTextSize, 0.75, 'Timeframe');
 				addStdText(svg1, null, null, warNameMaxLength + 200, 25, menuTextSize, 0.75, 'Length in Days');
-				addStdText(svg1, null, null, warNameMaxLength + 340, 25, menuTextSize, 0.75, 'Total Participants');
+				addStdText(svg1, null, null, warNameMaxLength + 340, 25, menuTextSize, 0.75, 'Participating Forces');
 
 				// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
 				var mainMenuMouseOver = function(d) {
@@ -414,8 +444,8 @@
 					else
 					{ addStdText(svg1, null, null, warNameMaxLength + 55, 30*(i+2), menuTextSize, 0, fileDic['start_year'][i] + ' - ' + fileDic['end_year'][i]); }
 
-					addStdText(svg1, null, null, warNameMaxLength + 230, 30*(i+2), menuTextSize, 0, fileDic['total_days_in_war'][i].toLocaleString());
-					addStdText(svg1, null, null, warNameMaxLength + 395, 30*(i+2), menuTextSize, 0, fileDic['total_participants'][i].toLocaleString());
+					addStdText(svg1, null, null, warNameMaxLength + 230, 30*(i+2), menuTextSize, 0, fileDic['days_in_war'][i].toLocaleString());
+					addStdText(svg1, null, null, warNameMaxLength + 395, 30*(i+2), menuTextSize, 0, fileDic['participants'][i].toLocaleString());
 				};
 		};
 		// calling the war menu function upon page load
@@ -473,7 +503,11 @@
 				for ( var i = 0; i <= warFields.length-1; i++ )
 				{ warDic[warFields[i]] = graph.war[0][warFields[i]]; };
 
-				if ( warDic['start_year']==warDic['end_year'] ) {
+				if ( warDic['ongoing_war']==1 ) {
+					warDic['single_year_war'] = false,
+					warDic['timeFrame'] = warDic['start_year'] + ' - Present';
+				}
+				else if ( warDic['start_year']==warDic['end_year'] ) {
 					warDic['single_year_war'] = true,
 					warDic['timeFrame'] = warDic['start_year'];
 				}
@@ -484,57 +518,6 @@
 
 				addStdText(svg2, null, null, 0, 85, graphMenuTextSize, 0, warDic['war_name']);
 				addStdText(svg2, null, null, 0, 102.5, graphMenuTextSize, 0, warDic['timeFrame']);
-
-				if ( warDic['single_year_war']==false ) {
-
-					sliderDefined = true,
-					sliderData = [0, 1, 2],
-					sliderDataLabels = {0: 'First Year', 1: 'Last Year', 2: 'All Years'},
-					yearSlider = d3.sliderBottom()
-											.min(d3.min(sliderData))
-				    					.max(d3.max(sliderData))
-				    					.width(130)
-											.step(1)
-											.ticks(3)
-											.default(d3.max(sliderData))
-											.tickValues(sliderData)
-											.tickFormat(function(d, i) { return sliderDataLabels[i]; })
-											.on('onchange', val => {
-
-															timeFrame = val;
-
-															// keeping current dropdown selection for links/nodes if they appear in the newly selected timeframe.
-															if ( Object.keys(descriptiveFields['link'][timeFrame]).includes(linkDescriptorSelected.substring(0, linkDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]])) )
-															{ linkDescriptorSelected = linkDescriptorSelected.substring(0, linkDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]])  }
-															else
-															{ linkDescriptorSelected = defaultValues['link'][timeFrame] }
-
-															if ( Object.keys(descriptiveFields['node'][timeFrame]).includes(nodeDescriptorSelected.substring(0, nodeDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]])) )
-															{ nodeDescriptorSelected = nodeDescriptorSelected.substring(0, nodeDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]]); }
-															else
-															{ nodeDescriptorSelected = defaultValues['node'][timeFrame]; }
-
-															descriptiveMenuClick('link', linkDescriptorSelected, linkMenuMouseOver, 0);
-															descriptiveMenuClick('node', nodeDescriptorSelected, nodeMenuMouseOver, yAdjustment);
-											});
-
-					svg2.append('g')
-							.attr('id', 'timeframe_slider')
-							.attr('transform', 'translate(200,200)')
-							.call(yearSlider);
-
-
-					svg2.select('#timeframe_slider').attr('transform', 'translate(200,20)');
-					timeFrame = yearSlider.value();
-				}
-				else {
-					sliderDefined = false;
-					timeFrame = 2;
-				};
-				// overriding feature in built-in function that makes current selection invisible
-				d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', '12px').style('opacity', 1);
-				// making ticks on axis black
-				d3.selectAll('.axis line').style('stroke', 'black');
 
 				// var linkNodes = [];
 				//
@@ -721,7 +704,6 @@
 					}
 				};
 
-
 				function adjustForOneYearWars(groupingType, fieldName, overAllFields) {
 
 					newFieldName = fieldName.split('_x')[0] + '_z';
@@ -734,6 +716,58 @@
 					}
 						return [descriptiveFields, descriptorNameLengths]
 				};
+
+				// slider is non-applicable for single_year_wars, AND wars where there are no start_year OR end_year selections with values available.
+				if ( warDic['single_year_war']==false && (Object.keys(descriptiveFields['node'][0]).length + Object.keys(descriptiveFields['node'][1]).length + Object.keys(descriptiveFields['link'][0]).length + Object.keys(descriptiveFields['link'][1]).length) > 0 ) {
+
+					sliderDefined = true,
+					sliderData = [0, 1, 2],
+					sliderDataLabels = {0: 'First Year', 1: 'Last Year', 2: 'All Years'},
+					yearSlider = d3.sliderBottom()
+											.min(d3.min(sliderData))
+											.max(d3.max(sliderData))
+											.width(130)
+											.step(1)
+											.ticks(3)
+											.default(d3.max(sliderData))
+											.tickValues(sliderData)
+											.tickFormat(function(d, i) { return sliderDataLabels[i]; })
+											.on('onchange', val => {
+
+															timeFrame = val;
+
+															// keeping current dropdown selection for links/nodes if they appear in the newly selected timeframe.
+															if ( Object.keys(descriptiveFields['link'][timeFrame]).includes(linkDescriptorSelected.substring(0, linkDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]])) )
+															{ linkDescriptorSelected = linkDescriptorSelected.substring(0, linkDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]])  }
+															else
+															{ linkDescriptorSelected = defaultValues['link'][timeFrame] }
+
+															if ( Object.keys(descriptiveFields['node'][timeFrame]).includes(nodeDescriptorSelected.substring(0, nodeDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]])) )
+															{ nodeDescriptorSelected = nodeDescriptorSelected.substring(0, nodeDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]]); }
+															else
+															{ nodeDescriptorSelected = defaultValues['node'][timeFrame]; }
+
+															descriptiveMenuClick('link', linkDescriptorSelected, linkMenuMouseOver, 0);
+															descriptiveMenuClick('node', nodeDescriptorSelected, nodeMenuMouseOver, yAdjustment);
+											});
+
+					svg2.append('g')
+							.attr('id', 'timeframe_slider')
+							.attr('transform', 'translate(200,200)')
+							.call(yearSlider);
+
+					svg2.select('#timeframe_slider').attr('transform', 'translate(200,20)');
+					timeFrame = yearSlider.value();
+				}
+				else {
+					sliderDefined = false;
+					timeFrame = 2;
+				};
+				// overriding feature in built-in function that makes current selection invisible
+				d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', '12px').style('opacity', 1);
+				// making ticks on axis black
+				d3.selectAll('.axis line').style('stroke', 'black');
+
 
 				if ( warDic['single_year_war'] ) {
 
@@ -757,14 +791,13 @@
 					linkNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'link'),
 					defaultValues = linkNullDescriptiveOutput[0],
 					descriptorNameLengths = linkNullDescriptiveOutput[1],
-					linkDescriptorSelected = defaultValues['link'][timeFrame],
+					linkDescriptorSelected = defaultValues['link'][timeFrame];
 
 					partNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'node'),
 					defaultValues = partNullDescriptiveOutput[0],
 					descriptorNameLengths = partNullDescriptiveOutput[1],
 					nodeDescriptorSelected = defaultValues['node'][timeFrame];
 				};
-
 
 				function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
 
@@ -1272,13 +1305,14 @@
 						if ( Object.keys(descriptiveArray).length > 0) {
 
 							for ( var i = 0; i <= Object.keys(descriptiveArray).length-1; i++ ) {
+
 								dropdownSelected = Object.keys(descriptiveArray)[i];
-								if ( linkDescriptorSelected==dropdownSelected || nodeDescriptorSelected==dropdownSelected ) {
-									dropdownBackgroundColor = 'violet'
-								}
-								else {
-									dropdownBackgroundColor = 'white'
-								}
+
+								if ( linkDescriptorSelected==dropdownSelected || nodeDescriptorSelected==dropdownSelected )
+								{ dropdownBackgroundColor = 'violet'; }
+								else
+								{ dropdownBackgroundColor = 'white'; }
+
 								addStdRect(svg2, groupingType + '_descriptor_dropdowns', dropdownSelected, descriptorRectXLoc, yAdjustmentInput + descriptorRectYLoc + ((i+1)*descriptorRectHeight), descriptorRectWidth, descriptorRectHeight, 'black', 1, null, dropdownBackgroundColor, null, generalRectMO, generalRectML, clickFunction);
 								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc + ((i+1)*descriptorRectHeight), graphMenuTextSize, 0, dropdownSelected);
 							}
@@ -1344,6 +1378,12 @@
 				addStdRect(svg2, null, 'node_descriptor_selected_rect', descriptorRectXLoc, yAdjustment + descriptorRectYLoc, descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'transparent', null, nodeMenuMouseOver, generalRectML, null);
 				addStdText(svg2, null, 'link_descriptor_selected_text', descriptorTextXLoc, descriptorTextYLoc, graphMenuTextSize, 0, linkDescriptorSelected);
 				addStdText(svg2, null, 'node_descriptor_selected_text', descriptorTextXLoc, yAdjustment + descriptorTextYLoc, graphMenuTextSize, 0, nodeDescriptorSelected);
+
+				// descriptorTooltipSymbolXLoc = descriptorRectXLoc-15;
+				// addStdRect(svg4, "link_descriptor_tooltip_rect", descriptorTooltipSymbolXLoc, descriptorTextYLoc-1, 20, 20, 'black', tooltipMO, tooltipML, null);
+				// addTooltipSymbol(svg2, 'link_descriptor_tooltip', descriptorTooltipSymbolXLoc, descriptorTextYLoc-4.5, descriptorTooltipSymbolXLoc-1, descriptorTextYLoc-1, null);
+				// addStdRect(svg4, "part_descriptor_tooltip_rect", descriptorTooltipSymbolXLoc, yAdjustment+descriptorTextYLoc-1, 20, 20, 'transparent', tooltipMO, tooltipML, null);
+				// addTooltipSymbol(svg2, 'part_descriptor_tooltip', descriptorTooltipSymbolXLoc, yAdjustment + descriptorTextYLoc-4.5, descriptorTooltipSymbolXLoc-1, yAdjustment+descriptorTextYLoc-1, null);
 
 				function defineNodeTooltips() {
 

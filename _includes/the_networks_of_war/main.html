@@ -203,12 +203,15 @@
 
 			  for ( var i = 0; i < this.length; i++ ) {
 					// not adding any values to the array that have already been added
- 					// not adding any null values to the array
-			    if ( !array.contains(this[i]) && isNaN(this[i])==false )
+			    if ( array.contains(this[i]) ) {}
+ 					// adding zeros instead of null values to the array
+					else if ( isNaN(this[i]) )
+					{ array.push(0); }
+					else
 					{ array.push(this[i]) }
 			  }
 
-			  return array;
+			  return array.sort();
 		};
 
 		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
@@ -461,7 +464,7 @@
 
 				// set the dimensions and margins of the graph
 				margin = {top: 0, bottom: 15, left: 0, right: 0},
-				width = 750,
+				width = 800,
 				height = 900;
 				// setting a text sizes for all graph items
 				graphTextSize = '14px',
@@ -532,11 +535,10 @@
 
 				// obtaining arrays of all participant/link fields in the json file.
 				// these will be used to fill the descriptiveFields and descriptorNameLengths arrays.
-				oppositeGroupings = {
-					'node': 'link',
-					'link': 'node'
-				},
 				allPartFields = Object.keys(graph.nodes[0]).sort(),
+				allPartFields.push('days_at_war_z'),
+				allPartFields.push('battle_deaths_per_day_z'),
+				allPartFields = allPartFields.sort();
 				allLinkFields = Object.keys(graph.links[0]).sort(),
 				descriptiveFields = {
 					'node': {
@@ -579,23 +581,29 @@
 						maxDomain = 0,
 						// this will be used to count the total nodes with null radius sizes.
 						nullRadiusNodes = 0;
-
 						// first defining the data that will ifnnfluence how the svg is defnined
 						graph.nodes.forEach(function(d) {
-								// determining totalCasualties across all countries as maxRadiusSize.
-								// this will make larger numbers proportional to the total across all countries.
-								// checking for null input or null value in field
-								if ( isNaN(parseFloat(d[sizeField])) ) {
-									nullRadiusNodes+=1
-									nodeDescriptiveValues.push(NaN);
-								}
-								else {
-									// cannot be a negative value
-									// the plus may need to be removed here
-									{ maxDomain+=Math.max(0, parseFloat(d[sizeField])) }
-									// cannot be a negative value
-									// the plus may need to be removed here
-									nodeDescriptiveValues.push(Math.max(0, parseFloat(d[sizeField])));
+
+							if ( sizeField=='days_at_war_z' )
+							{ sizeValue = parseFloat(d3.timeDay.count(parseTime(d.start_date), parseTime(d.end_date))); }
+							else if ( sizeField=='battle_deaths_per_day_z' )
+							{ sizeValue = Math.round(parseFloat(d.battle_deaths_z)/parseFloat(d3.timeDay.count(parseTime(d.start_date), parseTime(d.end_date))) * 100)/100; }
+							else
+							{ sizeValue = parseFloat(d[sizeField]); }
+							// determining totalCasualties across all countries as maxRadiusSize.
+							// this will make larger numbers proportional to the total across all countries.
+							// checking for null input or null value in field
+							if ( isNaN(sizeValue) ) {
+								nullRadiusNodes+=1,
+								nodeDescriptiveValues.push(NaN);
+							}
+							else {
+								// cannot be a negative value
+								// the plus may need to be removed here
+								maxDomain+=Math.max(0, sizeValue),
+								// cannot be a negative value
+								// the plus may need to be removed here
+								nodeDescriptiveValues.push(Math.max(0, sizeValue));
 							}
 						});
 
@@ -603,11 +611,11 @@
 
 						if ( nullRadiusNodes!=totalNodes ) {
 							// stdNullRadiusSize is the average of non-null inputs for node size
-							stdNullRadiusSize = maxDomain/(totalNodes - nullRadiusNodes);
+							stdNullRadiusSize = maxDomain/(totalNodes - nullRadiusNodes),
 							maxDomain+=(stdNullRadiusSize * nullRadiusNodes);
 						}
 						else {
-							maxDomain = 2;
+							maxDomain = 2,
 							stdNullRadiusSize = maxDomain/totalNodes;
 						}
 
@@ -643,7 +651,7 @@
 						else
 						{ textLabel = 'None Selected'; }
 
-						defaultValues[grouping][timeFrameInput] = textLabel;
+						defaultValues[grouping][timeFrameInput] = textLabel,
 						descriptorNameLengths[grouping].push(getTextWidth(svg2, textLabel, graphMenuTextSize));
 
 						return 	[defaultValues, descriptorNameLengths];
@@ -656,12 +664,17 @@
 					else if ( d3.max(graph.links, function(d) { return d[allLinkFields[i]]; })!=1 ) {}
 					else {
 						// nonDescriptiveField = false;
-						timeFrameInt = descriptiveTags[allLinkFields[i].slice(-2)];
-						descriptiveFields['link'][timeFrameInt][allLinkFields[i]] = {'values': getLinkDescriptiveValues(allLinkFields[i]) };
+						timeFrameInt = descriptiveTags[allLinkFields[i].slice(-2)],
+						descriptiveFields['link'][timeFrameInt][allLinkFields[i]] = {'values': getLinkDescriptiveValues(allLinkFields[i]) },
 						// getting an array of name lengths for all items added
 						descriptorNameLengths['link'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
 					}
 				};
+
+				// calculating these separately since they will be compared to other descriptive fields in the loop.
+				daysAtWarUniqueValues = getNodeDescriptiveValues('days_at_war_z')[0].uniqueNonNull(),
+				maxLandMassGain = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_gain_z')[0].uniqueNonNull()),
+				maxLandMassLoss = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_loss_z')[0].uniqueNonNull());
 
 				for ( var i = 0; i <= allPartFields.length-1; i++ ) {
 					// not including any field in nonDescriptivePartFields (text fields or just fields that don't need to be filtered on)
@@ -670,35 +683,46 @@
 					if ( Object.keys(descriptiveTags).includes(allPartFields[i].slice(-2))==false )
 					{ nonDescriptiveField = true; }
 					else {
-						nonDescriptiveField = false;
-						nodeDescriptiveValuesOutput = getNodeDescriptiveValues(allPartFields[i]);
-						nodeDescriptiveValues = nodeDescriptiveValuesOutput[0];
+
+						nonDescriptiveField = false,
+						nodeDescriptiveValuesOutput = getNodeDescriptiveValues(allPartFields[i]),
+						nodeDescriptiveValues = nodeDescriptiveValuesOutput[0],
+						maxDomain = nodeDescriptiveValuesOutput[1],
+						stdNodeSize = nodeDescriptiveValuesOutput[2],
 						nullRadiusNodes = nodeDescriptiveValuesOutput[3];
-						// accounting for when all values in array are zeros
-						// assuming that any network with all zeros should actually be all nulls
-						// could happen when descriptive data years do not cover war years
-						uniqueNodeDescriptiveValues = nodeDescriptiveValues.uniqueNonNull();
 					}
 					// flagging all fields that will be removed from analysis due to incomplete or non-applicable data
 					// flagging all fields that will be removed from analysis due to incomplete or non-applicable data
 					if ( nonDescriptiveField ) {}
-					else if ( uniqueNodeDescriptiveValues.length==0 ) {}
-					// nodeDescriptiveValues only contains zeros
-					else if ( uniqueNodeDescriptiveValues.length==1 && uniqueNodeDescriptiveValues[0]==0 ) {}
+					// accounting for when all values in array are zeros (or null)
+					// assuming that any network with all zeros should actually be all nulls
+					// could happen when descriptive data years do not cover war years
+					else if ( maxFromArray(nodeDescriptiveValues.uniqueNonNull())==0 ) {}
 					// must have greater than (or equal to) 50% non-null nodes.
 					// this will prevent improper size comparisons.
-					else if ( nullRadiusNodes/(nodeDescriptiveValues.length - nullRadiusNodes) >= 0.5 ) {}
+					else if ( nullRadiusNodes/nodeDescriptiveValues.length >= 0.5 ) {}
 					// all participants were in the war for the same number of days.
 					// nothing to compare if all the values are the same (for the same reason).
-					else if ( allPartFields[i]=='days_at_war_z' && uniqueNodeDescriptiveValues.length==1 ) {}
+					else if ( allPartFields[i]=='days_at_war_z' && daysAtWarUniqueValues.length==1 ) {}
+					// only showing land_mass_exchange_gain if there was a land_mass_exchange_loss in the war.
+					// only showing land_mass_exchange_loss if there was a land_mass_exchange_gain in the war.
+					// only showing population_exchange_gain if there was a population_exchange_loss in the war.
+					// only showing population_exchange_loss if there was a population_exchange_gain in the war.
+					else if ( ['land_mass_exchange_gain_x', 'land_mass_exchange_gain_y', 'land_mass_exchange_gain_z', 'population_exchange_gain_x', 'population_exchange_gain_y', 'population_exchange_gain_z'].includes(allPartFields[i]) && maxLandMassLoss==0 ) {}
+					else if ( ['land_mass_exchange_loss_x', 'land_mass_exchange_loss_y', 'land_mass_exchange_loss_z', 'population_exchange_loss_x', 'population_exchange_loss_y', 'population_exchange_loss_z'].includes(allPartFields[i]) && maxLandMassGain==0 ) {}
+					// else if ( allPartFields[i]=='days_at_war_z' && maxFromArray(daysAtWarUniqueValues) - minFromArray(daysAtWarUniqueValues) <= 14 ) { console.log('hi'); }
+					// else if ( allPartFields[i]=='battle_deaths_per_day_z' && maxFromArray(daysAtWarUniqueValues) - minFromArray(daysAtWarUniqueValues) <= 14 ) {}
+					// only showing battle_deaths_per_day if the sizing will be different from battle_deaths.
+					// this won't be true if all participants were at war for the same number of days.
+					else if ( allPartFields[i]=='battle_deaths_per_day_z' && daysAtWarUniqueValues.length==1 ) {}
 					else {
-						timeFrameInt = descriptiveTags[allPartFields[i].slice(-2)];
 
+						timeFrameInt = descriptiveTags[allPartFields[i].slice(-2)],
 						descriptiveFields['node'][timeFrameInt][allPartFields[i]] = {
 							'values': nodeDescriptiveValues,
-							'max_domain': nodeDescriptiveValuesOutput[1],
-							'std_node_size': nodeDescriptiveValuesOutput[2]
-						};
+							'max_domain': maxDomain,
+							'std_node_size': stdNodeSize
+						},
 						// getting an array of name lengths for all items added
 						descriptorNameLengths['node'].push(getTextWidth(svg2, allPartFields[i], graphMenuTextSize));
 					}
@@ -710,7 +734,7 @@
 
 					if ( overAllFields.includes(newFieldName)==false ) {
 
-						descriptiveFields[groupingType][descriptiveTags['_z']][newFieldName] = descriptiveFields[groupingType][descriptiveTags['_x']][fieldName]
+						descriptiveFields[groupingType][descriptiveTags['_z']][newFieldName] = descriptiveFields[groupingType][descriptiveTags['_x']][fieldName],
 						// getting an array of name lengths for all items added
 						descriptorNameLengths[groupingType].push(getTextWidth(svg2, newFieldName, graphMenuTextSize));
 					}
@@ -780,8 +804,8 @@
 
 					for ( var i = 0; i <= Object.keys(descriptiveFields['link'][0]).length-1; i++ ) {
 
-						adjustForOneYearWarsOutput = adjustForOneYearWars('link', Object.keys(descriptiveFields['link'][0])[i], Object.keys(descriptiveFields['link'][2]));
-						descriptiveFields = adjustForOneYearWarsOutput[0];
+						adjustForOneYearWarsOutput = adjustForOneYearWars('link', Object.keys(descriptiveFields['link'][0])[i], Object.keys(descriptiveFields['link'][2])),
+						descriptiveFields = adjustForOneYearWarsOutput[0],
 						descriptorNameLengths = adjustForOneYearWarsOutput[1];
 					};
 				};
@@ -877,14 +901,14 @@
 								if ( nameFitsInNodeBool==false ) {
 									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
 									// text is only a factor for the literal height of the letters
-									nodeMargins['added_top_margin'][d.id] = currentVerticalShift + parseInt(graphTextSize) + addedMarginSize;
+									nodeMargins['added_top_margin'][d.id] = currentVerticalShift + parseInt(graphTextSize) + addedMarginSize,
 									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
 									// don't need to add the text size for bottom margin
-									nodeMargins['added_bottom_margin'][d.id] = currentVerticalShift + parseInt(graphTextSize) + addedMarginSize;
+									nodeMargins['added_bottom_margin'][d.id] = currentVerticalShift + parseInt(graphTextSize) + addedMarginSize,
 									// plus half the length of the name on the screen, plus horizontal shift, plus a little extra
 									// without the addedMarginSize, this is the distance from the middle of the node to the left
 									// not including the radius because that's overlap
-									nodeMargins['added_left_margin'][d.id] = currentNameLengthHalf + currentHorizontalShift + addedMarginSize;
+									nodeMargins['added_left_margin'][d.id] = currentNameLengthHalf + currentHorizontalShift + addedMarginSize,
 									// plus half the length of the name on the screen, plus horizontal shift, plus a little extra
 									// without the addedMarginSize, this is the distance from the middle of the node to the right
 									// not including the radius because that's overlap
@@ -893,13 +917,13 @@
 								else {
 									// text is not a factor on the right if the above does not apply
 									// the node plus a little extra
-									nodeMargins['added_top_margin'][d.id] = currentRadiusSize + addedMarginSize;
+									nodeMargins['added_top_margin'][d.id] = currentRadiusSize + addedMarginSize,
 								  // the node plusd a little extra
-									nodeMargins['added_bottom_margin'][d.id] = currentRadiusSize + addedMarginSize;
+									nodeMargins['added_bottom_margin'][d.id] = currentRadiusSize + addedMarginSize,
 									// the node plus a little extra
 									// text is not a factor on the left if the above does not apply
 									// don't need to adjust for the name if it is inside the node
-									nodeMargins['added_left_margin'][d.id] = currentRadiusSize + addedMarginSize;
+									nodeMargins['added_left_margin'][d.id] = currentRadiusSize + addedMarginSize,
 									// the node plus a little extra
 									// text is not a factor on the right if the above does not apply
 									// don't need to adjust for the name if it is inside the node
@@ -944,9 +968,9 @@
 						// checking to see if all links contain the same node.
 						for ( var i = 0; i <= totalLinks-1; i++ ) {
 							if ( linkCombinations[i].includes(nodeID1) )
-							{ nodeID1Count+=1 }
+							{ nodeID1Count+=1; }
 							if ( linkCombinations[i].includes(nodeID2) )
-							{ nodeID2Count+=1 }
+							{ nodeID2Count+=1; }
 						};
 
 						if ( nodeID1Count==totalLinks | nodeID2Count==totalLinks )
@@ -963,8 +987,12 @@
 						graphLayout = d3.forceSimulation(graph.nodes)
 						    .force('charge', d3.forceManyBody().strength(-5000))
 						    .force('center', d3.forceCenter(width/2, (height/3) * 2))
-						    .force('x', d3.forceX(width/2).strength(0.50))
-						    .force('y', d3.forceY((height/3) * 2).strength(0.75))
+						    .force('x', d3.forceX(width/2).strength(0.5))
+						    .force('y', d3.forceY((height/3) * 2).strength(function(d) { if ( onlyOnePrimaryNode )
+																																						{ return 0.5; }
+																																						else
+																																						{ return 0.75; }
+																																					}))
 								.force('collision', d3.forceCollide().radius(function(d) { return Math.max(nodeMargins['radius_size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + 20,
 																																													 arrayAverage(Object.values(nodeMargins['radius_size'])) + arrayAverage(Object.values(nodeMargins['horizontal_name_shift'])) + 20,
 																																													 // linkNodeSize,
@@ -972,7 +1000,7 @@
 																																													 // creating conditional rules for defining link distance based on how many primary nodes are in the network.
 																																													 // link distance can be much greater if there is only one primary node.
  						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { if ( onlyOnePrimaryNode )
-																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + 125, 200); }
+																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2) + 175, 225); }
 																																																													else
 																																																													{ return Math.max(((nodeMargins['radius_size'][d.source.id] + nodeMargins['radius_size'][d.target.id]) * 2), 100); }
 																																																												}).strength(0.25))
@@ -1151,10 +1179,12 @@
 						.style('stroke', 'black')
 						.style('stroke-width', 0)
 						.style('opacity', function(d) {
-							if ( nodeDescriptiveValues.uniqueNonNull().length==0 )
+							if ( maxFromArray(nodeDescriptiveValues.uniqueNonNull())==0 )
 							{ return 0; }
+							// treating null values differently from zeros.
+							// these will get question marks.
 							else if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
-								{ return 1; }
+							{ return 1; }
 							else
 							{ return 0; }
 						})
@@ -1263,10 +1293,10 @@
 							// adjusting opacity will be a shorter transition than repositioning the label.
 							.transition().delay(nodeTransitionDelay).duration(nodeTransitionDelay)
 							.style('opacity', function(d) {
-								if ( nodeDescriptiveValues.uniqueNonNull().length==0 )
+								if ( maxFromArray(nodeDescriptiveValues.uniqueNonNull())==0 )
 								{ return 0; }
 								else if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
-									{ return 1; }
+								{ return 1; }
 								else
 								{ return 0; }
 							})
@@ -1293,7 +1323,7 @@
 				descriptorRectYLoc = descriptorTitleYLoc + 6,
 				descriptorRectXLoc = width-descriptorMaxNameLength-xAdjustment,
 				descriptorTextXLoc = descriptorRectXLoc + 5,
-				descriptorTextYLoc = descriptorTitleYLoc + 27.5;
+				descriptorTextYLoc = descriptorTitleYLoc + 27.5,
 				toolTipWidth = '250px',
 				toolTipHeight = '75px';
 
@@ -1301,6 +1331,9 @@
 				function descriptiveMenuMouseOver(groupingType, descriptiveArray, clickFunction, yAdjustmentInput) {
 
 						svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
+
+						// creating new rect to overlap on top of current selection with greater stroke width.
+						addStdRect(svg2, groupingType + '_descriptor_dropdowns', null, descriptorRectXLoc, yAdjustmentInput + descriptorRectYLoc, descriptorRectWidth, descriptorRectHeight, 'black', 2.15, null, 'transparent', null, null, null, null);
 
 						if ( Object.keys(descriptiveArray).length > 0) {
 
@@ -1317,8 +1350,6 @@
 								addStdText(svg2, groupingType + '_descriptor_dropdowns', null, descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc + ((i+1)*descriptorRectHeight), graphMenuTextSize, 0, dropdownSelected);
 							}
 						}
-						else
-						{ svg2.select('#' + groupingType + '_descriptor_selected_rect').style('stroke-width', 2); }
 				};
 
 				// Two functions that change the the selection for link dash marks (based on interaction variables).
@@ -1414,7 +1445,10 @@
 						// needed to add an arbitrary value (425) to the top in order to make this work.
 						topPosition = nodeCTM.f + 200;
 
-						return {'left': leftPosition, 'top': topPosition};
+						return {
+							'left': leftPosition,
+							'top': topPosition
+						};
 				};
 
 				defineNodeTooltips();

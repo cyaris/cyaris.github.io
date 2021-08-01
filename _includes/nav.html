@@ -16,8 +16,6 @@
       {%- for link in site.navbar-links -%}
         {%- if link[1].first %}
           <li class="nav-item dropdown">
-            <!-- custom edit: removed toggle button on projects tab so that the dropdown occurs upon hover -->
-            <!-- custom edit removed -->
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               {%- for childlink in link[1] -%}
@@ -33,6 +31,14 @@
           </li>
         {%- endif -%}
       {%- endfor -%}
+      {% if site.post_search %}
+        <li class="nav-item">
+          <a class="nav-link" id="nav-search-link" href="#" title="Search">
+            <span id="nav-search-icon" class="fa fa-search"></span>
+            <span id="nav-search-text">Search</span>
+          </a>
+        </li>
+      {%- endif -%}
     </ul>
   </div>
 
@@ -53,3 +59,5 @@
   {% endif %}
 
 </nav>
+
+{% include search.html %}

@@ -872,7 +872,7 @@
 						minRadiusSize = 1,
 						maxRadiusSize = 150,
 						radius = d3.scaleLinear().domain([0, maxDomain]).range([minRadiusSize, maxRadiusSize]),
-						addedMarginSize = 5 + linkNodeSize,
+						addedMarginSize = Math.max(linkNodeSize, 5),
 						// dic for size of all the participant nodes, and size needed around them according to borders and text adjustments
 						nodeMargins = {
 							'name': {},
@@ -996,35 +996,36 @@
 				function createGraphLayout() {
 
 						graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
-						    .force('charge', d3.forceManyBody().strength(function(d) { if ( onlyOnePrimaryNode && d.source!=='undefined' )
-																																					 { return -7500; }
-																																					 else if ( onlyOnePrimaryNode )
+						    .force('charge', d3.forceManyBody().strength(function(d) { if ( onlyOnePrimaryNode && d.source=='undefined' )
 																																					 { return -10000; }
+																																					 else if ( onlyOnePrimaryNode )
+																																					 { return -7500; }
 																																					 else if ( d.source!=='undefined' )
 																																					 { return -2000; }
 																																					 else
 																																					 { return -4000; }
 																																					}))
-						    .force('center', d3.forceCenter(width/2, (height/3) * 2))
+						    .force('center', d3.forceCenter(width/2, (height/3) * 2).strength(function(d) { if ( onlyOnePrimaryNode )
+																																																{ return 1; }
+																																																else
+																																																{ return 0.75; }
+																																															}))
 						    .force('x', d3.forceX(width/2).strength(function(d) { if ( onlyOnePrimaryNode )
 																																			{ return 0.75; }
 																																			else
 																																			{ return 0.15; }
 																																		}))
 						    .force('y', d3.forceY((height/3) * 2).strength(function(d) { if ( onlyOnePrimaryNode )
-																																						 { return 1; }
+																																						 { return 0.75; }
 																																						 else
 																																						 { return 0.5; }
 																																					 }))
 								.force('collision', d3.forceCollide().radius(function(d) { if ( d.source!=='undefined' )
-																																					 { return linkNodeSize + 15; }
+																																					 { return linkNodeSize + 2.5; }
 																																					 else
-																																					 { return Math.min(nodeMargins['radius_size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + nodeMargins['vertical_name_shift'][d.id] + 15,
-																																					 arrayAverage(Object.values(nodeMargins['radius_size'])) + arrayAverage(Object.values(nodeMargins['horizontal_name_shift'])) + arrayAverage(Object.values(nodeMargins['vertical_name_shift'])) + 15,
-																																					 30); }})
+																																					 { return nodeMargins['radius_size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + nodeMargins['vertical_name_shift'][d.id] + 2.5;}})
 																																					 .strength(1))
-								 // creating conditional rules for defining link distance based on how many primary nodes are in the network.
-								 // link distance can be much greater if there is only one primary node.
+								 // '??' is acting as a coalesce in the statement below.
  						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { return Math.max(((nodeMargins['radius_size'][d.source.id] ?? linkNodeSize) + (nodeMargins['radius_size'][d.target.id] ?? linkNodeSize)) + 2.5, 5); })
 																																																	 .strength(0.75))
 						    .on('tick', ticked);
@@ -1299,10 +1300,10 @@
 					// redefining graph layout with updated nodeMargins
 					graphLayout = createGraphLayout();
 
-					nodeTransitionDelay = 50,
+					nodeTransitionDelay = 500,
 					nodeTransitionDuration = 3000,
-					textTransitionDelay = 1000,
-					textTransitionDuration = nodeTransitionDuration - textTransitionDelay;
+					textTransitionDelay = 1500,
+					textTransitionDuration = 2000;
 
 					svg2.selectAll('.nodes')
 							.transition().delay(nodeTransitionDelay).duration(nodeTransitionDuration)
@@ -1327,8 +1328,8 @@
 							.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
 							.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); });
 
-						d3.selectAll('.tooltip').remove();
-						defineNodeTooltips();
+					d3.selectAll('.tooltip').remove();
+					defineNodeTooltips();
 				};
 
 				descriptorMaxNameLength = maxFromArray(descriptorNameLengths['link'].concat(descriptorNameLengths['node'])),

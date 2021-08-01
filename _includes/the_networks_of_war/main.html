@@ -1019,7 +1019,7 @@
 								.force('collision', d3.forceCollide().radius(function(d) { if ( d.source!=='undefined' )
 																																					 { return linkNodeSize + 15; }
 																																					 else
-																																					 { return Math.min(nodeMargins['radius_size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + + nodeMargins['vertical_name_shift'][d.id] + 15,
+																																					 { return Math.min(nodeMargins['radius_size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + nodeMargins['vertical_name_shift'][d.id] + 15,
 																																					 arrayAverage(Object.values(nodeMargins['radius_size'])) + arrayAverage(Object.values(nodeMargins['horizontal_name_shift'])) + arrayAverage(Object.values(nodeMargins['vertical_name_shift'])) + 15,
 																																					 30); }})
 																																					 .strength(1))

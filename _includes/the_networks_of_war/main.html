@@ -1005,11 +1005,7 @@
 																																					 else
 																																					 { return -4000; }
 																																					}))
-						    .force('center', d3.forceCenter(width/2, (height/3) * 2).strength(function(d) { if ( onlyOnePrimaryNode )
-																																																{ return 1; }
-																																																else
-																																																{ return 0.75; }
-																																															}))
+						    .force('center', d3.forceCenter(width/2, (height/3) * 2))
 						    .force('x', d3.forceX(width/2).strength(function(d) { if ( onlyOnePrimaryNode )
 																																			{ return 0.75; }
 																																			else

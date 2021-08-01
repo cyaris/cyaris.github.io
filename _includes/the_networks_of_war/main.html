@@ -1001,9 +1001,9 @@
 																																					 else if ( onlyOnePrimaryNode )
 																																					 { return -10000; }
 																																					 else if ( d.source!=='undefined' )
-																																					 { return -1500; }
+																																					 { return -2000; }
 																																					 else
-																																					 { return -3500; }
+																																					 { return -4000; }
 																																					}))
 						    .force('center', d3.forceCenter(width/2, (height/3) * 2))
 						    .force('x', d3.forceX(width/2).strength(function(d) { if ( onlyOnePrimaryNode )
@@ -1014,22 +1014,18 @@
 						    .force('y', d3.forceY((height/3) * 2).strength(function(d) { if ( onlyOnePrimaryNode )
 																																						 { return 1; }
 																																						 else
-																																						 { return 0.55; }
+																																						 { return 0.5; }
 																																					 }))
 								.force('collision', d3.forceCollide().radius(function(d) { if ( d.source!=='undefined' )
-																																					 { return linkNodeSize + 5; }
+																																					 { return linkNodeSize + 15; }
 																																					 else
-																																					 { return Math.min(nodeMargins['radius_size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + + nodeMargins['vertical_name_shift'][d.id] + 5,
-																																					 arrayAverage(Object.values(nodeMargins['radius_size'])) + arrayAverage(Object.values(nodeMargins['horizontal_name_shift'])) + arrayAverage(Object.values(nodeMargins['vertical_name_shift'])) + 5,
-																																					 10); }})
+																																					 { return Math.min(nodeMargins['radius_size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + + nodeMargins['vertical_name_shift'][d.id] + 15,
+																																					 arrayAverage(Object.values(nodeMargins['radius_size'])) + arrayAverage(Object.values(nodeMargins['horizontal_name_shift'])) + arrayAverage(Object.values(nodeMargins['vertical_name_shift'])) + 15,
+																																					 30); }})
 																																					 .strength(1))
 								 // creating conditional rules for defining link distance based on how many primary nodes are in the network.
 								 // link distance can be much greater if there is only one primary node.
- 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { if ( onlyOnePrimaryNode )
-																																																													 { return Math.max((((nodeMargins['radius_size'][d.source.id] ?? linkNodeSize) + (nodeMargins['radius_size'][d.target.id] ?? linkNodeSize)) * 2) + 2.5, 5); }
-																																																													 else
-																																																													 { return Math.max((((nodeMargins['radius_size'][d.source.id] ?? linkNodeSize) + (nodeMargins['radius_size'][d.target.id] ?? linkNodeSize)) * 2) + 15, 30); }
-																																																												 })
+ 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { return Math.max(((nodeMargins['radius_size'][d.source.id] ?? linkNodeSize) + (nodeMargins['radius_size'][d.target.id] ?? linkNodeSize)) + 2.5, 5); })
 																																																	 .strength(0.75))
 						    .on('tick', ticked);
 

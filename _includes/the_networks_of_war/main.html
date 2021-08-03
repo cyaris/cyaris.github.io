@@ -8,7 +8,7 @@
 		<link href='https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;400&display=swap' rel='stylesheet'>
 		<style>
 
-		@media (max-width:750px){
+		@media (max-width:900px){
 	      #war_network_analysis_graph {
 						display: none;
 	      }
@@ -26,7 +26,7 @@
 	      }
 			}
 
-		@media (min-width:750px){
+		@media (min-width:900px){
 			#hidden_project_explained {
 				display: none;
 	    }
@@ -463,12 +463,14 @@
 				color = d3.scaleLinear().domain([1, 2]).range(['lightgreen', 'violet']);
 
 				// set the dimensions and margins of the graph
-				margin = {top: 0, bottom: 15, left: 0, right: 0},
-				width = 1000,
-				height = 825;
+				margin = {top: 0, bottom: 15, left: -175, right: 0},
+				width = 1100,
+				height = 900;
 				// setting a text sizes for all graph items
 				graphTextSize = '14px',
-				graphMenuTextSize = '15px';
+				graphMenuTextSize = '15px',
+				// linkNodeSize will be included inside of addedMarginSize.
+				linkNodeSize = 5;
 
 				// defining svg for the graph,
 				// includes area for descriptive statistics to be activated upon hovering nodes.
@@ -482,6 +484,7 @@
 				};
 
 				addStdRect(svg2, null, 'svg2_rect_outline', 0, 0, width, height, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
+				addStdRect(svg2, null, 'svg2_rect_outline_test', 0, height/4, width, height * 0.75, 'red', 1, null, 'transparent', null, svg2BodyMO, null, null);
 
 				// this will send you back to choose a new war (of the same type)
 				var backToMenuClick = function(d) {
@@ -555,12 +558,127 @@
 					'All Years': '_z'
 				};
 
-				function defaultSelectorCheck(groupingType, dropdownSelectedInput) {
 
-					if ( defaultValues[groupingType][timeFrame].includes(dropdownSelectedInput) )
-					{ return true; }
-					else
-					{ return false; }
+				var linkNodes = [];
+
+				graph.links.forEach(function(link) {
+
+					linkNodes.push({
+						source: graph.nodes[link.source],
+						target: graph.nodes[link.target]
+					});
+				});
+
+				function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
+
+						// adjusting text position when it does not fit inside the node
+						if ( nodeRadius * 2 > getTextWidth(svgInput, nameInput, textSize) + 15 )
+						{ return true; }
+						else
+						{ return false; }
+				};
+
+				function nameVerticalShift(svgInput, nodeRadius, participantName, textSize) {
+
+						// adjusting text position when it does not fit inside the node
+						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
+						{ return nodeRadius + 25; }
+						else
+						{ return 5; }
+				};
+
+				function nameHorizontalShift(svgInput, nodeRadius, participantName, textSize) {
+
+						// adjusting text position when it does not fit inside the node
+						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
+						{ return 30; }
+						else
+						{ return 0; }
+				};
+
+				function getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize) {
+
+						minRadiusSize = 1,
+						maxRadiusSize = 175,
+						radius = d3.scaleLinear().domain([0, maxDomain]).range([minRadiusSize, maxRadiusSize]),
+						addedMarginSize = Math.max(linkNodeSize, 5),
+						// dic for size of all the participant nodes, and size needed around them according to borders and text adjustments
+						nodeMargins = {
+							'name': {},
+							'radius_size': {},
+							// dic for vertical distance each text label needs to be shifted
+							'vertical_name_shift': {},
+							'name_fits_in_node': {},
+							// dic for horizontal distance each text label needs to be shifted
+							'horizontal_name_shift': {},
+							// dic for the lengths of the names of all the participant names on the screen
+							'name_lengths': {},
+							// creating four dics to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg2.
+							'added_top_margin': {},
+							'added_bottom_margin': {},
+							'added_left_margin': {},
+							'added_right_margin': {}
+						},
+						// creating a dummy svg so that the gettextwidth function can be used before any 'real' svgs are defined
+						svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0);
+
+						// now going through the iterations that needed radius to already be defined
+						graph.nodes.forEach(function(d) {
+								// determining totalCasualties across all countries as maxRadiusSize.
+								// this will make larger numbers proportional to the total across all countries.
+								// setting a minimum for radius so the node will never completely disappear.
+								if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
+								 { currentRadiusSize = radius(stdNullRadiusSize); }
+								else
+								 { currentRadiusSize = radius(nodeDescriptiveValues[d.id]); }
+								nodeMargins['radius_size'][d.id] = currentRadiusSize,
+								nodeMargins['name'][d.id] = d.participant,
+								currentNameLength = getTextWidth(svgDummy, d.participant, graphTextSize),
+								currentNameLengthHalf = currentNameLength/2,
+								nodeMargins['name_lengths'][d.id] = currentNameLength,
+								currentVerticalShift = nameVerticalShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
+								currentHorizontalShift = nameHorizontalShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
+								nodeMargins['vertical_name_shift'][d.id] = currentVerticalShift,
+								nameFitsInNodeBool = nameFitsInNode(svgDummy, currentRadiusSize, d.participant, graphTextSize),
+								nodeMargins['name_fits_in_node'][d.id] = nameFitsInNodeBool,
+								nodeMargins['horizontal_name_shift'][d.id] = currentHorizontalShift;
+
+								if ( nameFitsInNodeBool==false ) {
+									// adding the top quarter of the svg into added_top_margin since this will be used for the menu.
+									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
+									// text is only a factor for the literal height of the letters
+									nodeMargins['added_top_margin'][d.id] = (height * 0.25) + currentVerticalShift + parseInt(graphTextSize) + addedMarginSize,
+									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
+									// don't need to add the text size for bottom margin
+									nodeMargins['added_bottom_margin'][d.id] = currentVerticalShift + parseInt(graphTextSize) + addedMarginSize,
+									// plus half the length of the name on the screen, plus horizontal shift, plus a little extra
+									// without the addedMarginSize, this is the distance from the middle of the node to the left
+									// not including the radius because that's overlap
+									nodeMargins['added_left_margin'][d.id] = currentNameLengthHalf + currentHorizontalShift + addedMarginSize,
+									// plus half the length of the name on the screen, plus horizontal shift, plus a little extra
+									// without the addedMarginSize, this is the distance from the middle of the node to the right
+									// not including the radius because that's overlap
+									nodeMargins['added_right_margin'][d.id] = currentNameLengthHalf + currentHorizontalShift + addedMarginSize;
+								}
+								else {
+									// adding the top quarter of the svg into added_top_margin since this will be used for the menu.
+									// text is not a factor on the right if the above does not apply
+									// the node plus a little extra
+									nodeMargins['added_top_margin'][d.id] = (height * 0.25) + currentRadiusSize + addedMarginSize,
+								  // the node plusd a little extra
+									nodeMargins['added_bottom_margin'][d.id] = currentRadiusSize + addedMarginSize,
+									// the node plus a little extra
+									// text is not a factor on the left if the above does not apply
+									// don't need to adjust for the name if it is inside the node
+									nodeMargins['added_left_margin'][d.id] = currentRadiusSize + addedMarginSize,
+									// the node plus a little extra
+									// text is not a factor on the right if the above does not apply
+									// don't need to adjust for the name if it is inside the node
+							 		nodeMargins['added_right_margin'][d.id] = currentRadiusSize + addedMarginSize;
+								}
+						});
+
+						return nodeMargins;
 				};
 
 				function getNodeDescriptiveValues(sizeField) {
@@ -611,6 +729,13 @@
 						return [nodeDescriptiveValues, maxDomain, stdNullRadiusSize, nullRadiusNodes];
 				};
 
+				getNodeDescriptiveValuesOutput = getNodeDescriptiveValues(null),
+				nodeDescriptiveValues = getNodeDescriptiveValuesOutput[0],
+				maxDomain = getNodeDescriptiveValuesOutput[1],
+				stdNullRadiusSize = getNodeDescriptiveValuesOutput[2],
+				// base value that will be used to calculate the values appended to the arrays above.
+				nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
+
 				function getLinkDescriptiveValues(linkDescriptorName) {
 
 						// will need to return this array to make it global
@@ -627,6 +752,20 @@
 						});
 
 						return linkDescriptiveValues;
+				};
+
+				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
+					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
+					// only pushing first year links if the start year equals the end year
+					if ( Object.keys(descriptiveTags).includes(allLinkFields[i].slice(-2))==false ) {}
+					else if ( d3.max(graph.links, function(d) { return d[allLinkFields[i]]; })!=1 ) {}
+					else {
+						// nonDescriptiveField = false;
+						timeFrameInt = descriptiveTags[allLinkFields[i].slice(-2)],
+						descriptiveFields['link'][timeFrameInt][allLinkFields[i]] = {'values': getLinkDescriptiveValues(allLinkFields[i]) },
+						// getting an array of name lengths for all items added
+						descriptorNameLengths['link'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
+					}
 				};
 
 				// the following functions are for both dyadic and participant descriptive fields
@@ -646,18 +785,21 @@
 						return 	[defaultValues, descriptorNameLengths];
 				};
 
-				for ( var i = 0; i <= allLinkFields.length-1; i++ ) {
-					// getting an array of all descriptive dyadic fields that have at least one record > 0 (binary yes)
-					// only pushing first year links if the start year equals the end year
-					if ( Object.keys(descriptiveTags).includes(allLinkFields[i].slice(-2))==false ) {}
-					else if ( d3.max(graph.links, function(d) { return d[allLinkFields[i]]; })!=1 ) {}
-					else {
-						// nonDescriptiveField = false;
-						timeFrameInt = descriptiveTags[allLinkFields[i].slice(-2)],
-						descriptiveFields['link'][timeFrameInt][allLinkFields[i]] = {'values': getLinkDescriptiveValues(allLinkFields[i]) },
-						// getting an array of name lengths for all items added
-						descriptorNameLengths['link'].push(getTextWidth(svg2, allLinkFields[i], graphMenuTextSize));
-					}
+				// default timeframe is all years.
+				defaultTimeFrame = 2,
+				linkDescriptiveValues = getLinkDescriptiveValues(null);
+
+				for ( var i = 0; i <= 2; i++ ) {
+
+					linkNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'link'),
+					defaultValues = linkNullDescriptiveOutput[0],
+					descriptorNameLengths = linkNullDescriptiveOutput[1],
+					linkDescriptorSelected = defaultValues['link'][defaultTimeFrame];
+
+					partNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'node'),
+					defaultValues = partNullDescriptiveOutput[0],
+					descriptorNameLengths = partNullDescriptiveOutput[1],
+					nodeDescriptorSelected = defaultValues['node'][defaultTimeFrame];
 				};
 
 				// calculating these separately since they will be compared to other descriptive fields in the loop.
@@ -746,6 +888,22 @@
 						return [descriptiveFields, descriptorNameLengths]
 				};
 
+				if ( warDic['single_year_war'] ) {
+
+					for ( var i = 0; i <= Object.keys(descriptiveFields['node'][0]).length-1; i++ ) {
+
+						adjustForOneYearWarsOutput = adjustForOneYearWars('node', Object.keys(descriptiveFields['node'][0])[i], Object.keys(descriptiveFields['node'][2]));
+						descriptiveFields = adjustForOneYearWarsOutput[0];
+						descriptorNameLengths = adjustForOneYearWarsOutput[1];
+					};
+
+					for ( var i = 0; i <= Object.keys(descriptiveFields['link'][0]).length-1; i++ ) {
+
+						adjustForOneYearWarsOutput = adjustForOneYearWars('link', Object.keys(descriptiveFields['link'][0])[i], Object.keys(descriptiveFields['link'][2])),
+						descriptiveFields = adjustForOneYearWarsOutput[0],
+						descriptorNameLengths = adjustForOneYearWarsOutput[1];
+					};
+				};
 				// slider is non-applicable for single_year_wars, AND wars where there are no start_year OR end_year selections with values available.
 				if ( warDic['single_year_war']==false && (Object.keys(descriptiveFields['node'][0]).length + Object.keys(descriptiveFields['node'][1]).length + Object.keys(descriptiveFields['link'][0]).length + Object.keys(descriptiveFields['link'][1]).length) > 0 ) {
 
@@ -797,167 +955,6 @@
 				// making ticks on axis black
 				d3.selectAll('.axis line').style('stroke', 'black');
 
-				var linkNodes = [];
-
-				graph.links.forEach(function(link) {
-
-					linkNodes.push({
-						source: graph.nodes[link.source],
-						target: graph.nodes[link.target]
-					});
-				});
-
-				// linkNodeSize will be included inside of addedMarginSize.
-				linkNodeSize = 2.5;
-
-				if ( warDic['single_year_war'] ) {
-
-					for ( var i = 0; i <= Object.keys(descriptiveFields['node'][0]).length-1; i++ ) {
-
-						adjustForOneYearWarsOutput = adjustForOneYearWars('node', Object.keys(descriptiveFields['node'][0])[i], Object.keys(descriptiveFields['node'][2]));
-						descriptiveFields = adjustForOneYearWarsOutput[0];
-						descriptorNameLengths = adjustForOneYearWarsOutput[1];
-					};
-
-					for ( var i = 0; i <= Object.keys(descriptiveFields['link'][0]).length-1; i++ ) {
-
-						adjustForOneYearWarsOutput = adjustForOneYearWars('link', Object.keys(descriptiveFields['link'][0])[i], Object.keys(descriptiveFields['link'][2])),
-						descriptiveFields = adjustForOneYearWarsOutput[0],
-						descriptorNameLengths = adjustForOneYearWarsOutput[1];
-					};
-				};
-
-				for ( var i = 0; i <= 2; i++ ) {
-
-					linkNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'link'),
-					defaultValues = linkNullDescriptiveOutput[0],
-					descriptorNameLengths = linkNullDescriptiveOutput[1],
-					linkDescriptorSelected = defaultValues['link'][timeFrame];
-
-					partNullDescriptiveOutput = getDefaultSelectors(defaultValues, i, 'node'),
-					defaultValues = partNullDescriptiveOutput[0],
-					descriptorNameLengths = partNullDescriptiveOutput[1],
-					nodeDescriptorSelected = defaultValues['node'][timeFrame];
-				};
-
-				function nameFitsInNode(svgInput, nodeRadius, nameInput, textSize) {
-
-						// adjusting text position when it does not fit inside the node
-						if ( nodeRadius * 2 > getTextWidth(svgInput, nameInput, textSize) + 15 )
-						{ return true; }
-						else
-						{ return false; }
-				};
-
-				function nameVerticalShift(svgInput, nodeRadius, participantName, textSize) {
-
-						// adjusting text position when it does not fit inside the node
-						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
-						{ return nodeRadius + 25; }
-						else
-						{ return 5; }
-				};
-
-				function nameHorizontalShift(svgInput, nodeRadius, participantName, textSize) {
-
-						// adjusting text position when it does not fit inside the node
-						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
-						{ return 20; }
-						else
-						{ return 0; }
-				};
-
-				function getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize) {
-
-						minRadiusSize = 1,
-						maxRadiusSize = 150,
-						radius = d3.scaleLinear().domain([0, maxDomain]).range([minRadiusSize, maxRadiusSize]),
-						addedMarginSize = Math.max(linkNodeSize, 5),
-						// dic for size of all the participant nodes, and size needed around them according to borders and text adjustments
-						nodeMargins = {
-							'name': {},
-							'radius_size': {},
-							// dic for vertical distance each text label needs to be shifted
-							'vertical_name_shift': {},
-							'name_fits_in_node': {},
-							// dic for horizontal distance each text label needs to be shifted
-							'horizontal_name_shift': {},
-							// dic for the lengths of the names of all the participant names on the screen
-							'name_lengths': {},
-							// creating four dics to define values that will prevent any nodes, lines, or text from leaving/being cut off from the svg2.
-							'added_top_margin': {},
-							'added_bottom_margin': {},
-							'added_left_margin': {},
-							'added_right_margin': {}
-						},
-						// creating a dummy svg so that the gettextwidth function can be used before any 'real' svgs are defined
-						svgDummy = d3.select('#war_menu').append('svg').attr('width', 0).attr('height', 0);
-
-						// now going through the iterations that needed radius to already be defined
-						graph.nodes.forEach(function(d) {
-								// determining totalCasualties across all countries as maxRadiusSize.
-								// this will make larger numbers proportional to the total across all countries.
-								// setting a minimum for radius so the node will never completely disappear.
-								if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
-								 { currentRadiusSize = radius(stdNullRadiusSize); }
-								else
-								 { currentRadiusSize = radius(nodeDescriptiveValues[d.id]); }
-								nodeMargins['radius_size'][d.id] = currentRadiusSize,
-								nodeMargins['name'][d.id] = d.participant,
-								currentNameLength = getTextWidth(svgDummy, d.participant, graphTextSize),
-								currentNameLengthHalf = currentNameLength/2,
-								nodeMargins['name_lengths'][d.id] = currentNameLength,
-								currentVerticalShift = nameVerticalShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
-								currentHorizontalShift = nameHorizontalShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
-								nodeMargins['vertical_name_shift'][d.id] = currentVerticalShift,
-								nameFitsInNodeBool = nameFitsInNode(svgDummy, currentRadiusSize, d.participant, graphTextSize),
-								nodeMargins['name_fits_in_node'][d.id] = nameFitsInNodeBool,
-								nodeMargins['horizontal_name_shift'][d.id] = currentHorizontalShift;
-
-								if ( nameFitsInNodeBool==false ) {
-									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
-									// text is only a factor for the literal height of the letters
-									nodeMargins['added_top_margin'][d.id] = currentVerticalShift + parseInt(graphTextSize) + addedMarginSize,
-									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
-									// don't need to add the text size for bottom margin
-									nodeMargins['added_bottom_margin'][d.id] = currentVerticalShift + parseInt(graphTextSize) + addedMarginSize,
-									// plus half the length of the name on the screen, plus horizontal shift, plus a little extra
-									// without the addedMarginSize, this is the distance from the middle of the node to the left
-									// not including the radius because that's overlap
-									nodeMargins['added_left_margin'][d.id] = currentNameLengthHalf + currentHorizontalShift + addedMarginSize,
-									// plus half the length of the name on the screen, plus horizontal shift, plus a little extra
-									// without the addedMarginSize, this is the distance from the middle of the node to the right
-									// not including the radius because that's overlap
-									nodeMargins['added_right_margin'][d.id] = currentNameLengthHalf + currentHorizontalShift + addedMarginSize;
-								}
-								else {
-									// text is not a factor on the right if the above does not apply
-									// the node plus a little extra
-									nodeMargins['added_top_margin'][d.id] = currentRadiusSize + addedMarginSize,
-								  // the node plusd a little extra
-									nodeMargins['added_bottom_margin'][d.id] = currentRadiusSize + addedMarginSize,
-									// the node plus a little extra
-									// text is not a factor on the left if the above does not apply
-									// don't need to adjust for the name if it is inside the node
-									nodeMargins['added_left_margin'][d.id] = currentRadiusSize + addedMarginSize,
-									// the node plus a little extra
-									// text is not a factor on the right if the above does not apply
-									// don't need to adjust for the name if it is inside the node
-							 		nodeMargins['added_right_margin'][d.id] = currentRadiusSize + addedMarginSize;
-								}
-						});
-
-						return nodeMargins;
-				};
-
-				linkDescriptiveValues = getLinkDescriptiveValues(null);
-
-				getNodeDescriptiveValuesOutput = getNodeDescriptiveValues(null),
-				nodeDescriptiveValues = getNodeDescriptiveValuesOutput[0],
-				maxDomain = getNodeDescriptiveValuesOutput[1],
-				stdNullRadiusSize = getNodeDescriptiveValuesOutput[2],
-				// base value that will be used to calculate the values appended to the arrays above.
-				nodeMargins = getNodeMargins(nodeDescriptiveValues, maxDomain, stdNullRadiusSize);
 
 				function OnlyOnePrimaryNodeCheck() {
 						// creating an array of all links by node id
@@ -995,34 +992,34 @@
 
 				function createGraphLayout() {
 
-						graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
-						    .force('charge', d3.forceManyBody().strength(function(d) { if ( onlyOnePrimaryNode && d.source=='undefined' )
-																																					 { return -10000; }
-																																					 else if ( onlyOnePrimaryNode )
-																																					 { return -7500; }
-																																					 else if ( d.source!=='undefined' )
-																																					 { return -2000; }
+						// graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
+						graphLayout = d3.forceSimulation(graph.nodes)
+						    .force('charge', d3.forceManyBody().distanceMin(1)
+																									 .distanceMax(width-(addedMarginSize*2))
+																									 .strength(function(d) { if ( onlyOnePrimaryNode )
+																																					 { return -20000; }
 																																					 else
-																																					 { return -4000; }
+																																					 { return -10000; }
 																																					}))
-						    .force('center', d3.forceCenter(width/2, (height/3) * 2))
+						    .force('center', d3.forceCenter(width/2, height * (5/8)))
 						    .force('x', d3.forceX(width/2).strength(function(d) { if ( onlyOnePrimaryNode )
 																																			{ return 0.75; }
 																																			else
 																																			{ return 0.15; }
 																																		}))
-						    .force('y', d3.forceY((height/3) * 2).strength(function(d) { if ( onlyOnePrimaryNode )
+						    .force('y', d3.forceY(height * 0.75).strength(function(d) { if ( onlyOnePrimaryNode )
 																																						 { return 0.75; }
 																																						 else
 																																						 { return 0.5; }
 																																					 }))
+																																					 // line below is for linknodes only
 								.force('collision', d3.forceCollide().radius(function(d) { if ( d.source!=='undefined' )
-																																					 { return linkNodeSize + 2.5; }
+																																					 { return Math.max(linkNodeSize + 2.5, 5); }
 																																					 else
-																																					 { return nodeMargins['radius_size'][d.id] + nodeMargins['horizontal_name_shift'][d.id] + nodeMargins['vertical_name_shift'][d.id] + 2.5;}})
+																																					 { return Math.max(nodeMargins['radius_size'][d.id] + Math.abs(nodeMargins['horizontal_name_shift'][d.id]) + Math.abs(nodeMargins['vertical_name_shift'][d.id]) + 2.5, stdNodeSize + 2.5, 5); }})
 																																					 .strength(1))
 								 // '??' is acting as a coalesce in the statement below.
- 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { return Math.max(((nodeMargins['radius_size'][d.source.id] ?? linkNodeSize) + (nodeMargins['radius_size'][d.target.id] ?? linkNodeSize)) + 2.5, 5); })
+ 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { return (nodeMargins['radius_size'][d.source.id]??linkNodeSize) + (nodeMargins['radius_size'][d.target.id]??linkNodeSize) + 25; })
 																																																	 .strength(0.75))
 						    .on('tick', ticked);
 
@@ -1219,14 +1216,117 @@
 						// includes transformation for nodes and the text itself
 						node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][d.id], Math.min(width - nodeMargins['added_right_margin'][d.id], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][d.id], Math.min(height - nodeMargins['added_bottom_margin'][d.id], d.y)) + ')'; });
 
-						linkNode.attr('cx', function(d) { return d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x))) * 0.5 })
-										.attr('cy', function(d) { return d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y))) * 0.5 });
-
 						svg2.selectAll('.link,.link_dash')
 								.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)); })
 				        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)); })
 				        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x)); })
 				        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y)); });
+
+						linkNodeCoordinates = {};
+
+						linkNode.each(function(d) {
+
+							nodeNodeAngle = Math.atan2(d.source.y - d.target.y, d.source.x - d.target.x) * (180/Math.PI);
+
+							// if ( d.source.id==1 || d.target.id ==1)
+							// {
+							// console.log(nodeNodeAngle);
+							// console.log(nodeMargins['radius_size'][d.source.id]);
+							// };
+
+							if ( nodeNodeAngle > -180 && nodeNodeAngle < -90 )
+							{ theta1 = Math.abs(180-Math.abs(nodeNodeAngle)),
+								theta2 = Math.abs(90-theta1);
+
+								// console.log('theta1', theta1);
+								// console.log('theta2', theta2);
+								oppositeLength1 = Math.sin(theta2*(Math.PI/180)) * nodeMargins['radius_size'][d.source.id],
+								adjacentLength1 = Math.sqrt((nodeMargins['radius_size'][d.source.id] * nodeMargins['radius_size'][d.source.id]) - (oppositeLength1 * oppositeLength1));
+
+								adjacentLength2 = Math.cos(theta1*(Math.PI/180)) * nodeMargins['radius_size'][d.target.id],
+								oppositeLength2 = Math.sqrt((nodeMargins['radius_size'][d.target.id] * nodeMargins['radius_size'][d.target.id]) - (adjacentLength2 * adjacentLength2));
+
+								newXSource = d.source.x + oppositeLength1,
+								newYSource = d.source.y + adjacentLength1,
+								newXTarget = d.target.x - adjacentLength2,
+								newYTarget = d.target.y - oppositeLength2;
+							}
+							else if ( nodeNodeAngle > -90 && nodeNodeAngle < 0 )
+							{	theta1 = Math.abs(nodeNodeAngle),
+								theta2 = Math.abs(90-theta1);
+
+								oppositeLength1 = Math.sin(theta2*(Math.PI/180)) * nodeMargins['radius_size'][d.source.id],
+								adjacentLength1 = Math.sqrt((nodeMargins['radius_size'][d.source.id] * nodeMargins['radius_size'][d.source.id]) - (oppositeLength1 * oppositeLength1));
+
+								adjacentLength2 = Math.cos(theta1*(Math.PI/180)) * nodeMargins['radius_size'][d.target.id],
+								oppositeLength2 = Math.sqrt((nodeMargins['radius_size'][d.target.id] * nodeMargins['radius_size'][d.target.id]) - (adjacentLength2 * adjacentLength2));
+
+								newXSource = d.source.x - oppositeLength1,
+								newYSource = d.source.y + adjacentLength1,
+								newXTarget = d.target.x + adjacentLength2,
+								newYTarget = d.target.y - oppositeLength2;
+							}
+
+							else if ( nodeNodeAngle > 0 && nodeNodeAngle < 90 )
+							{ theta1 = Math.abs(nodeNodeAngle),
+								theta2 = Math.abs(90-theta1);
+
+								oppositeLength1 = Math.sin(theta2*(Math.PI/180)) * nodeMargins['radius_size'][d.source.id],
+								adjacentLength1 = Math.sqrt((nodeMargins['radius_size'][d.source.id] * nodeMargins['radius_size'][d.source.id]) - (oppositeLength1 * oppositeLength1));
+
+								adjacentLength2 = Math.cos(theta1*(Math.PI/180)) * nodeMargins['radius_size'][d.target.id],
+								oppositeLength2 = Math.sqrt((nodeMargins['radius_size'][d.target.id] * nodeMargins['radius_size'][d.target.id]) - (adjacentLength2 * adjacentLength2));
+
+								newXSource = d.source.x - oppositeLength1,
+								newYSource = d.source.y - adjacentLength1,
+								newXTarget = d.target.x + adjacentLength2,
+								newYTarget = d.target.y + oppositeLength2;
+							}
+							else if ( nodeNodeAngle > 90 && nodeNodeAngle < 180 )
+							{ theta1 = Math.abs(Math.abs(nodeNodeAngle)-180),
+								theta2 = Math.abs(90-theta1);
+
+								oppositeLength1 = Math.sin(theta2*(Math.PI/180)) * nodeMargins['radius_size'][d.source.id],
+								adjacentLength1 = Math.sqrt((nodeMargins['radius_size'][d.source.id] * nodeMargins['radius_size'][d.source.id]) - (oppositeLength1 * oppositeLength1));
+
+								adjacentLength2 = Math.cos(theta1*(Math.PI/180)) * nodeMargins['radius_size'][d.target.id],
+								oppositeLength2 = Math.sqrt((nodeMargins['radius_size'][d.target.id] * nodeMargins['radius_size'][d.target.id]) - (adjacentLength2 * adjacentLength2));
+
+								newXSource = d.source.x + oppositeLength1,
+								newYSource = d.source.y - adjacentLength1,
+								newXTarget = d.target.x - adjacentLength2,
+								newYTarget = d.target.y + oppositeLength2;
+							}
+							else if ( nodeNodeAngle==-90 )
+							{ newXSource = d.source.x,
+								newYSource = d.source.y + nodeMargins['radius_size'][d.source.id],
+								newXTarget = d.target.x,
+								newYTarget = d.target.y - nodeMargins['radius_size'][d.target.id];
+							}
+							else if ( nodeNodeAngle==0 )
+							{ newXSource = d.source.x - nodeMargins['radius_size'][d.source.id],
+								newYSource = d.source.y,
+								newXTarget = d.target.x + nodeMargins['radius_size'][d.target.id],
+								newYTarget = d.target.y;
+							}
+							else if ( nodeNodeAngle==90 )
+							{ newXSource = d.source.x,
+								newYSource = d.source.y - nodeMargins['radius_size'][d.source.id],
+								newXTarget = d.target.x,
+								newYTarget = d.target.y + nodeMargins['radius_size'][d.target.id];
+							}
+							else if ( nodeNodeAngle==-180 || nodeNodeAngle==180 )
+							{ newXSource = d.source.x + nodeMargins['radius_size'][d.source.id],
+								newYSource = d.source.y,
+								newXTarget = d.target.x - nodeMargins['radius_size'][d.target.id],
+								newYTarget = d.target.y;
+							}
+
+							d3.select(this)
+								.attr('cx', d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], newXSource)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], newXTarget))) * 0.5)
+								.attr('cy', d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], newYSource)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], newYTarget))) * 0.5);
+
+						});
 
 						repositionNodeNames(50, 100, false);
 			  };
@@ -1298,7 +1398,7 @@
 
 					nodeTransitionDelay = 500,
 					nodeTransitionDuration = 3000,
-					textTransitionDelay = 1500,
+					textTransitionDelay = 1000,
 					textTransitionDuration = 2000;
 
 					svg2.selectAll('.nodes')
@@ -1310,7 +1410,7 @@
 
 					svg2.selectAll('.node_size_warnings')
 							// adjusting opacity will be a shorter transition than repositioning the label.
-							.transition().delay(nodeTransitionDelay).duration(nodeTransitionDelay)
+							.transition().delay(textTransitionDelay).duration(textTransitionDuration)
 							.style('opacity', function(d) {
 								if ( maxFromArray(nodeDescriptiveValues.uniqueNonNull())==0 )
 								{ return 0; }
@@ -1330,7 +1430,7 @@
 
 				descriptorMaxNameLength = maxFromArray(descriptorNameLengths['link'].concat(descriptorNameLengths['node'])),
 				// adjusting x position for node to go below link dropdown selection options
-				descriptorRectWidth = descriptorMaxNameLength+10,
+				descriptorRectWidth = descriptorMaxNameLength + 10,
 				descriptorRectHeight = 30,
 				yAdjustment = 60,
 				xAdjustment = 30,
@@ -1402,6 +1502,15 @@
 
 						nodeDescriptorSelected = d3.select(this).attr('id');
 						descriptiveMenuClick('node', nodeDescriptorSelected, nodeMenuMouseOver, yAdjustment);
+				};
+
+
+				function defaultSelectorCheck(groupingType, dropdownSelectedInput) {
+
+					if ( defaultValues[groupingType][timeFrame].includes(dropdownSelectedInput) )
+					{ return true; }
+					else
+					{ return false; }
 				};
 
 				function descriptiveMenuClick(groupingType, descriptorName, moFunction, yAdjustmentInput) {

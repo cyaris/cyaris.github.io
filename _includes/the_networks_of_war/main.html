@@ -664,17 +664,17 @@
 									// adding the top quarter of the svg into added_top_margin since this will be used for the menu.
 									// text is not a factor on the right if the above does not apply
 									// the node plus a little extra
-									nodeMargins['added_top_margin'][d.id] = (height * 0.25) + currentRadiusSize + addedMarginSize,
+									nodeMargins['added_top_margin'][d.id] = (height * 0.25) + Math.max(currentRadiusSize, linkNodeSize) + addedMarginSize,
 								  // the node plusd a little extra
-									nodeMargins['added_bottom_margin'][d.id] = currentRadiusSize + addedMarginSize,
+									nodeMargins['added_bottom_margin'][d.id] = Math.max(currentRadiusSize, linkNodeSize) + addedMarginSize,
 									// the node plus a little extra
 									// text is not a factor on the left if the above does not apply
 									// don't need to adjust for the name if it is inside the node
-									nodeMargins['added_left_margin'][d.id] = currentRadiusSize + addedMarginSize,
+									nodeMargins['added_left_margin'][d.id] = Math.max(currentRadiusSize, linkNodeSize) + addedMarginSize,
 									// the node plus a little extra
 									// text is not a factor on the right if the above does not apply
 									// don't need to adjust for the name if it is inside the node
-							 		nodeMargins['added_right_margin'][d.id] = currentRadiusSize + addedMarginSize;
+							 		nodeMargins['added_right_margin'][d.id] = Math.max(currentRadiusSize, linkNodeSize) + addedMarginSize;
 								}
 						});
 
@@ -995,38 +995,10 @@
 						graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
 						    .force('charge', d3.forceManyBody().distanceMin(1)
 																									 .distanceMax(width-(addedMarginSize*2))
-																									 //
-																									 //
-																									 // .strength(function(d) {
-																									 //  //  if ( d.source!=='undefined' )
-																									 // // { return 0; }
-																									 // 											 // if ( onlyOnePrimaryNode && Object.values(nodeMargins['radius_size']).length<=2 )
-																									 // 											 //  { return -15000; }
-																									 // 											 //  else if ( onlyOnePrimaryNode && Object.values(nodeMargins['radius_size']).length<=5 )
-																									 // 											 //  { return -15000; }
-																									 // 											 //  else if ( onlyOnePrimaryNode && d.source=='undefined' )
-																									 // 											 //  { return -15000; }
-																									 // 												if ( onlyOnePrimaryNode )
-																									 // 												{ return -20000; }
-																									 // 												// line below is for linknodes only
-																									 // 												// else if ( d.source!=='undefined' )
-																									 // 												// { return -10000; }
-																									 // 												else
-																									 // 												{ return -10000; }
-																									 //
-																									 .strength(function(d) {  if ( onlyOnePrimaryNode && Object.values(nodeMargins['radius_size']).length<=2 )
- 																									 											  	{ return -12500; }
-	 																									 											  else if ( onlyOnePrimaryNode && Object.values(nodeMargins['radius_size']).length<=5 )
-	 																									 											  { return -12500; }
-	 																									 											  // else if ( onlyOnePrimaryNode && d.source=='undefined' )
-	 																									 											  // { return -20000; }
-																																						if ( onlyOnePrimaryNode )
-																										 												{ return -10000; }
-																										 												// line below is for linknodes only
-																										 												// else if ( d.source!=='undefined' )
-																										 												// { return -10000; }
+																									 .strength(function(d) { if ( onlyOnePrimaryNode )
+																										 												{ return -12500; }
 																										 												else
-																										 												{ return -1500; }
+																										 												{ return -1750; }
 																																					}))
 						    .force('center', d3.forceCenter(width/2, height * (5/8)))
 						    .force('x', d3.forceX(width/2).strength(function(d) { if ( onlyOnePrimaryNode )
@@ -1041,12 +1013,12 @@
 																																					 }))
 																																					 // line below is for linknodes only
 								.force('collision', d3.forceCollide().radius(function(d) { if ( d.source!=='undefined' )
-																																					 { return Math.max(linkNodeSize + 2.5, 5); }
+																																					 { return Math.max(linkNodeSize, 5); }
 																																					 else
-																																					 { return Math.max(nodeMargins['radius_size'][d.id] + Math.abs(nodeMargins['horizontal_name_shift'][d.id]) + Math.abs(nodeMargins['vertical_name_shift'][d.id]) + 2.5, stdNodeSize + 2.5, 5); }})
+																																					 { return Math.max(nodeMargins['radius_size'][d.id] + Math.abs(nodeMargins['horizontal_name_shift'][d.id]) + Math.abs(nodeMargins['vertical_name_shift'][d.id]) + 5, stdNodeSize + 5, 10); }})
 																																					 .strength(1))
 								 // '??' is acting as a coalesce in the statement below.
- 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { return (nodeMargins['radius_size'][d.source.id]??linkNodeSize) + (nodeMargins['radius_size'][d.target.id]??linkNodeSize) + Math.max(maxRadiusSize, 25); })
+ 						    .force('link', d3.forceLink(graph.links).id(function(d) { return parseInt(d.id); }).distance(function(d) { return (nodeMargins['radius_size'][d.source.id]??linkNodeSize) + (nodeMargins['radius_size'][d.target.id]??linkNodeSize) + Math.max(maxRadiusSize, 15); })
 																																																	 .strength(0.75))
 						    .on('tick', ticked);
 
@@ -1236,118 +1208,108 @@
 
 			  function ticked() {
 
-						// transform statement below prevents nodes from going beyond the dimensions of the svg2.
-						// boundaries are then limited even further since when they get close to the edge of the svg2, items like text begin to be cut off.
-						// needs to also be adjusted for the participant name label since this could be positioned below the node
-						// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
-						// includes transformation for nodes and the text itself
-						node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][d.id], Math.min(width - nodeMargins['added_right_margin'][d.id], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][d.id], Math.min(height - nodeMargins['added_bottom_margin'][d.id], d.y)) + ')'; });
+					// transform statement below prevents nodes from going beyond the dimensions of the svg2.
+					// boundaries are then limited even further since when they get close to the edge of the svg2, items like text begin to be cut off.
+					// needs to also be adjusted for the participant name label since this could be positioned below the node
+					// text adjustments are not needed for anything above the node because the text is always below (or inside) the node
+					// includes transformation for nodes and the text itself
+					node.attr('transform', function(d) { return 'translate(' + Math.max(nodeMargins['added_left_margin'][d.id], Math.min(width - nodeMargins['added_right_margin'][d.id], d.x)) + ',' + Math.max(nodeMargins['added_top_margin'][d.id], Math.min(height - nodeMargins['added_bottom_margin'][d.id], d.y)) + ')'; });
 
-						svg2.selectAll('.link,.link_dash')
-								.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)); })
-				        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)); })
-				        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], d.target.x)); })
-				        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y)); });
+					svg2.selectAll('.link,.link_dash')
+							.attr('x1', function(d) { return Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], d.source.x)); })
+			        .attr('y1', function(d) { return Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], d.source.y)); })
+			        .attr('x2', function(d) { return Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_right_margin'][d.target.id], d.target.x)); })
+			        .attr('y2', function(d) { return Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], d.target.y)); });
 
-						linkNodeCoordinates = {};
+					linkNodeCoordinates = {};
 
-						linkNode.each(function(d) {
+					linkNode.each(function(d) {
 
-							nodeNodeAngle = Math.atan2(d.source.y - d.target.y, d.source.x - d.target.x) * (180/Math.PI);
+						nodeNodeAngle = Math.atan2(d.source.y - d.target.y, d.source.x - d.target.x) * (180/Math.PI);
 
-							if ( nodeNodeAngle > -180 && nodeNodeAngle < -90 )
-							{ theta1 = Math.abs(180-Math.abs(nodeNodeAngle)),
-								theta2 = Math.abs(90-theta1);
+						function getTriangleSideLengths(theta1) {
 
-								oppositeLength1 = Math.sin(theta2*(Math.PI/180)) * nodeMargins['radius_size'][d.source.id],
-								adjacentLength1 = Math.sqrt((nodeMargins['radius_size'][d.source.id] * nodeMargins['radius_size'][d.source.id]) - (oppositeLength1 * oppositeLength1));
+							theta2 = Math.abs(90-theta1);
 
-								adjacentLength2 = Math.cos(theta1*(Math.PI/180)) * nodeMargins['radius_size'][d.target.id],
-								oppositeLength2 = Math.sqrt((nodeMargins['radius_size'][d.target.id] * nodeMargins['radius_size'][d.target.id]) - (adjacentLength2 * adjacentLength2));
+							oppositeLength1 = Math.sin(theta2*(Math.PI/180)) * nodeMargins['radius_size'][d.source.id],
+							adjacentLength1 = Math.sqrt((nodeMargins['radius_size'][d.source.id] * nodeMargins['radius_size'][d.source.id]) - (oppositeLength1 * oppositeLength1));
 
-								newXSource = d.source.x + oppositeLength1,
-								newYSource = d.source.y + adjacentLength1,
-								newXTarget = d.target.x - adjacentLength2,
-								newYTarget = d.target.y - oppositeLength2;
-							}
-							else if ( nodeNodeAngle > -90 && nodeNodeAngle < 0 )
-							{	theta1 = Math.abs(nodeNodeAngle),
-								theta2 = Math.abs(90-theta1);
+							adjacentLength2 = Math.cos(theta1*(Math.PI/180)) * nodeMargins['radius_size'][d.target.id],
+							oppositeLength2 = Math.sqrt((nodeMargins['radius_size'][d.target.id] * nodeMargins['radius_size'][d.target.id]) - (adjacentLength2 * adjacentLength2));
 
-								oppositeLength1 = Math.sin(theta2*(Math.PI/180)) * nodeMargins['radius_size'][d.source.id],
-								adjacentLength1 = Math.sqrt((nodeMargins['radius_size'][d.source.id] * nodeMargins['radius_size'][d.source.id]) - (oppositeLength1 * oppositeLength1));
+							return {
+								'adjacentLength1': adjacentLength1,
+								'oppositeLength1': oppositeLength1,
+								'adjacentLength2': adjacentLength2,
+								'oppositeLength2': oppositeLength2
+							};
+						};
 
-								adjacentLength2 = Math.cos(theta1*(Math.PI/180)) * nodeMargins['radius_size'][d.target.id],
-								oppositeLength2 = Math.sqrt((nodeMargins['radius_size'][d.target.id] * nodeMargins['radius_size'][d.target.id]) - (adjacentLength2 * adjacentLength2));
+						if ( nodeNodeAngle > -180 && nodeNodeAngle < -90 )
+						{ triangleSideLengths = getTriangleSideLengths(Math.abs(180-Math.abs(nodeNodeAngle)));
 
-								newXSource = d.source.x - oppositeLength1,
-								newYSource = d.source.y + adjacentLength1,
-								newXTarget = d.target.x + adjacentLength2,
-								newYTarget = d.target.y - oppositeLength2;
-							}
+							newXSource = d.source.x + triangleSideLengths['oppositeLength1'],
+							newYSource = d.source.y + triangleSideLengths['adjacentLength1'],
+							newXTarget = d.target.x - triangleSideLengths['adjacentLength2'],
+							newYTarget = d.target.y - triangleSideLengths['oppositeLength2'];
+						}
+						else if ( nodeNodeAngle > -90 && nodeNodeAngle < 0 )
+						{	triangleSideLengths = getTriangleSideLengths(Math.abs(nodeNodeAngle));
 
-							else if ( nodeNodeAngle > 0 && nodeNodeAngle < 90 )
-							{ theta1 = Math.abs(nodeNodeAngle),
-								theta2 = Math.abs(90-theta1);
+							newXSource = d.source.x - triangleSideLengths['oppositeLength1'],
+							newYSource = d.source.y + triangleSideLengths['adjacentLength1'],
+							newXTarget = d.target.x + triangleSideLengths['adjacentLength2'],
+							newYTarget = d.target.y - triangleSideLengths['oppositeLength2'];
+						}
 
-								oppositeLength1 = Math.sin(theta2*(Math.PI/180)) * nodeMargins['radius_size'][d.source.id],
-								adjacentLength1 = Math.sqrt((nodeMargins['radius_size'][d.source.id] * nodeMargins['radius_size'][d.source.id]) - (oppositeLength1 * oppositeLength1));
+						else if ( nodeNodeAngle > 0 && nodeNodeAngle < 90 )
+						{ triangleSideLengths = getTriangleSideLengths(Math.abs(nodeNodeAngle));
 
-								adjacentLength2 = Math.cos(theta1*(Math.PI/180)) * nodeMargins['radius_size'][d.target.id],
-								oppositeLength2 = Math.sqrt((nodeMargins['radius_size'][d.target.id] * nodeMargins['radius_size'][d.target.id]) - (adjacentLength2 * adjacentLength2));
+							newXSource = d.source.x - triangleSideLengths['oppositeLength1'],
+							newYSource = d.source.y - triangleSideLengths['adjacentLength1'],
+							newXTarget = d.target.x + triangleSideLengths['adjacentLength2'],
+							newYTarget = d.target.y + triangleSideLengths['oppositeLength2'];
+						}
+						else if ( nodeNodeAngle > 90 && nodeNodeAngle < 180 )
+						{ triangleSideLengths = getTriangleSideLengths(Math.abs(Math.abs(nodeNodeAngle)-180));
 
-								newXSource = d.source.x - oppositeLength1,
-								newYSource = d.source.y - adjacentLength1,
-								newXTarget = d.target.x + adjacentLength2,
-								newYTarget = d.target.y + oppositeLength2;
-							}
-							else if ( nodeNodeAngle > 90 && nodeNodeAngle < 180 )
-							{ theta1 = Math.abs(Math.abs(nodeNodeAngle)-180),
-								theta2 = Math.abs(90-theta1);
+							newXSource = d.source.x + triangleSideLengths['oppositeLength1'],
+							newYSource = d.source.y - triangleSideLengths['adjacentLength1'],
+							newXTarget = d.target.x - triangleSideLengths['adjacentLength2'],
+							newYTarget = d.target.y + triangleSideLengths['oppositeLength2'];
+						}
+						else if ( nodeNodeAngle==-90 )
+						{ newXSource = d.source.x,
+							newYSource = d.source.y + nodeMargins['radius_size'][d.source.id],
+							newXTarget = d.target.x,
+							newYTarget = d.target.y - nodeMargins['radius_size'][d.target.id];
+						}
+						else if ( nodeNodeAngle==0 )
+						{ newXSource = d.source.x - nodeMargins['radius_size'][d.source.id],
+							newYSource = d.source.y,
+							newXTarget = d.target.x + nodeMargins['radius_size'][d.target.id],
+							newYTarget = d.target.y;
+						}
+						else if ( nodeNodeAngle==90 )
+						{ newXSource = d.source.x,
+							newYSource = d.source.y - nodeMargins['radius_size'][d.source.id],
+							newXTarget = d.target.x,
+							newYTarget = d.target.y + nodeMargins['radius_size'][d.target.id];
+						}
+						else if ( nodeNodeAngle==-180 || nodeNodeAngle==180 )
+						{ newXSource = d.source.x + nodeMargins['radius_size'][d.source.id],
+							newYSource = d.source.y,
+							newXTarget = d.target.x - nodeMargins['radius_size'][d.target.id],
+							newYTarget = d.target.y;
+						}
 
-								oppositeLength1 = Math.sin(theta2*(Math.PI/180)) * nodeMargins['radius_size'][d.source.id],
-								adjacentLength1 = Math.sqrt((nodeMargins['radius_size'][d.source.id] * nodeMargins['radius_size'][d.source.id]) - (oppositeLength1 * oppositeLength1));
+						d3.select(this)
+							.attr('cx', d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], newXSource)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_right_margin'][d.target.id], newXTarget))) * 0.5)
+							.attr('cy', d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], newYSource)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], newYTarget))) * 0.5);
 
-								adjacentLength2 = Math.cos(theta1*(Math.PI/180)) * nodeMargins['radius_size'][d.target.id],
-								oppositeLength2 = Math.sqrt((nodeMargins['radius_size'][d.target.id] * nodeMargins['radius_size'][d.target.id]) - (adjacentLength2 * adjacentLength2));
+					});
 
-								newXSource = d.source.x + oppositeLength1,
-								newYSource = d.source.y - adjacentLength1,
-								newXTarget = d.target.x - adjacentLength2,
-								newYTarget = d.target.y + oppositeLength2;
-							}
-							else if ( nodeNodeAngle==-90 )
-							{ newXSource = d.source.x,
-								newYSource = d.source.y + nodeMargins['radius_size'][d.source.id],
-								newXTarget = d.target.x,
-								newYTarget = d.target.y - nodeMargins['radius_size'][d.target.id];
-							}
-							else if ( nodeNodeAngle==0 )
-							{ newXSource = d.source.x - nodeMargins['radius_size'][d.source.id],
-								newYSource = d.source.y,
-								newXTarget = d.target.x + nodeMargins['radius_size'][d.target.id],
-								newYTarget = d.target.y;
-							}
-							else if ( nodeNodeAngle==90 )
-							{ newXSource = d.source.x,
-								newYSource = d.source.y - nodeMargins['radius_size'][d.source.id],
-								newXTarget = d.target.x,
-								newYTarget = d.target.y + nodeMargins['radius_size'][d.target.id];
-							}
-							else if ( nodeNodeAngle==-180 || nodeNodeAngle==180 )
-							{ newXSource = d.source.x + nodeMargins['radius_size'][d.source.id],
-								newYSource = d.source.y,
-								newXTarget = d.target.x - nodeMargins['radius_size'][d.target.id],
-								newYTarget = d.target.y;
-							}
-
-							d3.select(this)
-								.attr('cx', d.x = (Math.max(nodeMargins['added_left_margin'][d.source.id], Math.min(width - nodeMargins['added_right_margin'][d.source.id], newXSource)) + Math.max(nodeMargins['added_left_margin'][d.target.id], Math.min(width - nodeMargins['added_left_margin'][d.target.id], newXTarget))) * 0.5)
-								.attr('cy', d.y = (Math.max(nodeMargins['added_top_margin'][d.source.id], Math.min(height - nodeMargins['added_bottom_margin'][d.source.id], newYSource)) + Math.max(nodeMargins['added_top_margin'][d.target.id], Math.min(height - nodeMargins['added_bottom_margin'][d.target.id], newYTarget))) * 0.5);
-
-						});
-
-						repositionNodeNames(50, 100, false);
+					repositionNodeNames(50, 100, false);
 			  };
 
 				function repositionNodeNames(delay, duration, nodeSizeTransition) {

@@ -178,37 +178,28 @@
 		    for ( i in array )
 				{ sumOfAllItems+=array[i]; }
 		    // get the length of the array
-		    totalItems = array.length;
+		    itemCount = array.length;
 
 		    // return the average
-		    return sumOfAllItems/totalItems;
+		    return sumOfAllItems/itemCount;
 		};
 
-		// unique values from array part 1
-		Array.prototype.contains = function(v) {
-
-			  for ( var i = 0; i < this.length; i++ ) {
-			    if ( this[i]===v )
-					{ return true; }
-					else
-					{ return false; }
-			  }
-		};
-
-		// unique values from array part 2
+		// unique values from array part
 		// returning all non null values from an array with no duplicates
+		// null values will be counted as zero (only once).
 		Array.prototype.uniqueNonNull = function() {
 
 			  array = [];
 
 			  for ( var i = 0; i < this.length; i++ ) {
 					// not adding any values to the array that have already been added
-			    if ( array.contains(this[i]) ) {}
+			    if ( array.includes(this[i]) ) {}
+					else if ( isNaN(this[i]) && array.includes(0) ) {}
  					// adding zeros instead of null values to the array
 					else if ( isNaN(this[i]) )
 					{ array.push(0); }
 					else
-					{ array.push(this[i]) }
+					{ array.push(this[i]); }
 			  }
 
 			  return array.sort();
@@ -465,7 +456,9 @@
 				// set the dimensions and margins of the graph
 				margin = {top: 0, bottom: 15, left: -175, right: 0},
 				width = 1100,
-				height = 900;
+				height = 950,
+				graphCenterX = width * 0.5,
+				graphCenterY = height * (5/8),
 				// setting a text sizes for all graph items
 				graphTextSize = '14px',
 				graphMenuTextSize = '15px',
@@ -484,7 +477,7 @@
 				};
 
 				addStdRect(svg2, null, 'svg2_rect_outline', 0, 0, width, height, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
-				addStdRect(svg2, null, 'svg2_rect_outline_test', 0, height/4, width, height * 0.75, 'red', 1, null, 'transparent', null, svg2BodyMO, null, null);
+				addStdRect(svg2, null, 'svg2_graoh_rect_outline', 0, height/4, width, height * 0.75, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
 
 				// this will send you back to choose a new war (of the same type)
 				var backToMenuClick = function(d) {
@@ -712,16 +705,16 @@
 							}
 						});
 
-						totalNodes = nodeDescriptiveValues.length;
+						nodeCount = nodeDescriptiveValues.length;
 
-						if ( nullRadiusNodes!=totalNodes ) {
+						if ( nullRadiusNodes!=nodeCount ) {
 							// stdNullRadiusSize is the average of non-null inputs for node size
-							stdNullRadiusSize = maxDomain/(totalNodes - nullRadiusNodes),
+							stdNullRadiusSize = maxDomain/(nodeCount - nullRadiusNodes),
 							maxDomain+=(stdNullRadiusSize * nullRadiusNodes);
 						}
 						else {
 							maxDomain = 2,
-							stdNullRadiusSize = maxDomain/totalNodes;
+							stdNullRadiusSize = maxDomain/nodeCount;
 						}
 
 						return [nodeDescriptiveValues, maxDomain, stdNullRadiusSize, nullRadiusNodes];
@@ -802,8 +795,8 @@
 
 				// calculating these separately since they will be compared to other descriptive fields in the loop.
 				daysAtWarUniqueValues = getNodeDescriptiveValues('days_at_war_z')[0].uniqueNonNull(),
-				maxLandMassGain = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_gain_z')[0].uniqueNonNull()),
-				maxLandMassLoss = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_loss_z')[0].uniqueNonNull()),
+				maxLandMassGain = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_gain_z')[0]),
+				maxLandMassLoss = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_loss_z')[0]),
 				sumAlliedCountries = getNodeDescriptiveValues('allied_countries_z')[0].reduce((a, b) => a + b, 0),
 				sumConcurrentWars = getNodeDescriptiveValues('concurrent_wars_z')[0].reduce((a, b) => a + b, 0),
 				sumTradeCountries = getNodeDescriptiveValues('trade_countries_z')[0].reduce((a, b) => a + b, 0),
@@ -854,8 +847,6 @@
 					else if ( ['mid_dyads_initiated_x', 'mid_dyads_initiated_y', 'mid_dyads_initiated_z'].includes(allPartFields[i]) && sumMidDyadsInitiated/2<=linkDescriptiveValues.length + 1 ) {}
 					else if ( ['mid_dyads_joined_x', 'mid_dyads_joined_y', 'mid_dyads_joined_z'].includes(allPartFields[i]) && sumMidDyadsJoined/2<=linkDescriptiveValues.length + 1 ) {}
 					else if ( ['mid_dyads_targeted_x', 'mid_dyads_targeted_y', 'mid_dyads_targeted_z'].includes(allPartFields[i]) && sumMidDyadsTargeted/2<=linkDescriptiveValues.length + 1 ) {}
-					// else if ( allPartFields[i]=='days_at_war_z' && maxFromArray(daysAtWarUniqueValues) - minFromArray(daysAtWarUniqueValues) <= 14 ) { console.log('hi'); }
-					// else if ( allPartFields[i]=='battle_deaths_per_day_z' && maxFromArray(daysAtWarUniqueValues) - minFromArray(daysAtWarUniqueValues) <= 14 ) {}
 
 					// only showing battle_deaths_per_day if the sizing will be different from battle_deaths.
 					// this won't be true if all participants were at war for the same number of days.
@@ -954,7 +945,7 @@
 				d3.selectAll('.axis line').style('stroke', 'black');
 
 
-				function checkForOnlyOnePrimaryNode() {
+				function identifyPrimaryNode() {
 						// creating an array of all links by node id
 						// determining if all links involve the same node.
 						// using this to evaluate whether there is one, or more than one center node in the network
@@ -964,29 +955,40 @@
 
 							linkCombinations.push(Array(parseInt(graph.nodes[link.source].id), parseInt(graph.nodes[link.target].id)).sort());
 						});
-						// evaluating all links, starting with the first link defined (could be any)
-						// this affect aggect the graph layout
-						nodeID1 = linkCombinations[0][0],
-						nodeID2 = linkCombinations[0][1],
-						nodeID1Count = 0,
-						nodeID2Count = 0,
-						totalLinks = linkCombinations.length;
-						// iterating over the first link in the network.
-						// checking to see if all links contain the same node.
-						for ( var i = 0; i <= totalLinks-1; i++ ) {
-							if ( linkCombinations[i].includes(nodeID1) )
-							{ nodeID1Count+=1 }
-							if ( linkCombinations[i].includes(nodeID2) )
-							{ nodeID2Count+=1 }
-						};
+						// evaluating all links to determine if there is only one primary node.
+						// this will affect the graph layout
+						linkCount = linkCombinations.length;
 
-						if ( nodeID1Count==totalLinks | nodeID2Count==totalLinks )
-						{ return true; }
+						// linkCount is one less than nodeCount and no floating nodes (unique nodes with links equals nodeCount)
+						if ( linkCount==nodeCount-1 && nodeCount==linkCombinations.flat().uniqueNonNull().length ) {
+
+							previousLinkCombination = [NaN, NaN];
+
+							for ( var i = 0; i <= linkCount-1; i++ ) {
+
+								if ( nodeCount==2 )
+								{ return linkCombinations[i][0]; }
+								else if ( previousLinkCombination.includes(linkCombinations[i][0]) )
+								{ return linkCombinations[i][0]; }
+								else if ( previousLinkCombination.includes(linkCombinations[i][1]) )
+								{ return linkCombinations[i][1]; }
+								else {
+									previousLinkCombination[0] = linkCombinations[i][0],
+									previousLinkCombination[1] = linkCombinations[i][1];
+								}
+							}
+						}
 						else
-						{ return false; }
+						{ return NaN; }
 				};
 
-				onlyOnePrimaryNode = checkForOnlyOnePrimaryNode();
+				primaryNode = identifyPrimaryNode();
+
+				if ( isNaN(primaryNode)==false )
+				{ onlyOnePrimaryNode = true; }
+				else
+				{ onlyOnePrimaryNode = false; }
+
 
 				function createGraphLayout() {
 
@@ -995,12 +997,12 @@
 																									 // .distanceMin(1)
 																									 // .distanceMax(width-(addedMarginSize*2))
 																									 .strength(function(d) { if ( onlyOnePrimaryNode )
-																										 											 { return -15000; }
+																										 											 { return -12500; }
 																										 											 else
 																										 											 { return -1750; }
 																																				 }))
-						    .force('center', d3.forceCenter(width/2, height * (5/8)))
-						    .force('x', d3.forceX(width/2).strength(function(d) { if ( onlyOnePrimaryNode )
+						    .force('center', d3.forceCenter(graphCenterX, graphCenterY))
+						    .force('x', d3.forceX(graphCenterX).strength(function(d) { if ( onlyOnePrimaryNode )
 																																			{ return 0.75; }
 																																			else
 																																			{ return 0.15; }
@@ -1076,7 +1078,7 @@
 				linkNode = svg2.selectAll()
 			      .data(linkNodes)
 					.enter().append('circle')
-						.attr('opacity', 0.25)
+						.attr('opacity', 0)
 			      .attr('r', linkNodeSize);
 
 				// mouseover function for one specific node
@@ -1208,13 +1210,19 @@
 				// adjusting x position based on margin limitations.
 				function getXAdjusted(id, xLoc) {
 
-					return Math.max(nodeMargins['added_left_margin'][id], Math.min(width - nodeMargins['added_right_margin'][id], xLoc));
+					if ( id==primaryNode && nodeCount>2 )
+					{ return graphCenterX; }
+					else
+					{ return Math.max(nodeMargins['added_left_margin'][id], Math.min(width - nodeMargins['added_right_margin'][id], xLoc)); }
 				};
 
 				// adjusting y position based on margin limitations.
 				function getYAdjusted(id, yLoc) {
 
-					return Math.max(nodeMargins['added_top_margin'][id], Math.min(height - nodeMargins['added_bottom_margin'][id], yLoc));
+					if ( id==primaryNode && nodeCount>2 )
+					{ return graphCenterY; }
+					else
+					{ return Math.max(nodeMargins['added_top_margin'][id], Math.min(height - nodeMargins['added_bottom_margin'][id], yLoc)); }
 				};
 
 			  function ticked() {
@@ -1262,67 +1270,58 @@
 							};
 						};
 
-						if ( nodeNodeAngle > -180 && nodeNodeAngle < -90 )
-						{ triangleSideLengths = getTriangleSideLengths(Math.abs(180-Math.abs(nodeNodeAngle)));
+						function getLinkNodePositionsFromTriangle(operator1, operator2, operator3, operator4) {
 
-							newXSource = xSourceAdjusted + triangleSideLengths['oppositeLength1'],
-							newYSource = ySourceAdjusted + triangleSideLengths['adjacentLength1'],
-							newXTarget = xTargetAdjusted - triangleSideLengths['adjacentLength2'],
-							newYTarget = yTargetAdjusted - triangleSideLengths['oppositeLength2'];
-						}
-						else if ( nodeNodeAngle > -90 && nodeNodeAngle < 0 )
-						{	triangleSideLengths = getTriangleSideLengths(Math.abs(nodeNodeAngle));
+							linkNodePositions = {};
 
-							newXSource = xSourceAdjusted - triangleSideLengths['oppositeLength1'],
-							newYSource = ySourceAdjusted + triangleSideLengths['adjacentLength1'],
-							newXTarget = xTargetAdjusted + triangleSideLengths['adjacentLength2'],
-							newYTarget = yTargetAdjusted - triangleSideLengths['oppositeLength2'];
+							linkNodePositions['newXSource'] = xSourceAdjusted + (operator1 * triangleSideLengths['oppositeLength1']),
+							linkNodePositions['newYSource'] = ySourceAdjusted + (operator2 * triangleSideLengths['adjacentLength1']),
+							linkNodePositions['newXTarget'] = xTargetAdjusted - (operator3 * triangleSideLengths['adjacentLength2']),
+							linkNodePositions['newYTarget'] = yTargetAdjusted - (operator4 * triangleSideLengths['oppositeLength2']);
+
+							return linkNodePositions;
 						}
 
-						else if ( nodeNodeAngle > 0 && nodeNodeAngle < 90 )
-						{ triangleSideLengths = getTriangleSideLengths(Math.abs(nodeNodeAngle));
+						function getLinkNodePositionsFromRadius(operator1, operator2, operator3, operator4) {
 
-							newXSource = xSourceAdjusted - triangleSideLengths['oppositeLength1'],
-							newYSource = ySourceAdjusted - triangleSideLengths['adjacentLength1'],
-							newXTarget = xTargetAdjusted + triangleSideLengths['adjacentLength2'],
-							newYTarget = yTargetAdjusted + triangleSideLengths['oppositeLength2'];
+							linkNodePositions = {};
+
+							linkNodePositions['newXSource'] = xSourceAdjusted + (operator1 * nodeMargins['radius_size'][d.source.id]),
+							linkNodePositions['newYSource'] = ySourceAdjusted + (operator2 * nodeMargins['radius_size'][d.source.id]),
+							linkNodePositions['newXTarget'] = xTargetAdjusted - (operator3 * nodeMargins['radius_size'][d.target.id]),
+							linkNodePositions['newYTarget'] = yTargetAdjusted - (operator4 * nodeMargins['radius_size'][d.target.id]);
+
+							return linkNodePositions;
 						}
-						else if ( nodeNodeAngle > 90 && nodeNodeAngle < 180 )
-						{ triangleSideLengths = getTriangleSideLengths(Math.abs(Math.abs(nodeNodeAngle)-180));
 
-							newXSource = xSourceAdjusted + triangleSideLengths['oppositeLength1'],
-							newYSource = ySourceAdjusted - triangleSideLengths['adjacentLength1'],
-							newXTarget = xTargetAdjusted - triangleSideLengths['adjacentLength2'],
-							newYTarget = yTargetAdjusted + triangleSideLengths['oppositeLength2'];
+						if ( nodeNodeAngle > -180 && nodeNodeAngle < -90 ) {
+							triangleSideLengths = getTriangleSideLengths(Math.abs(180-Math.abs(nodeNodeAngle))),
+							linkNodePositions = getLinkNodePositionsFromTriangle(1, 1, -1, -1);
+						}
+						else if ( nodeNodeAngle > -90 && nodeNodeAngle < 0 ) {
+							triangleSideLengths = getTriangleSideLengths(Math.abs(nodeNodeAngle)),
+							linkNodePositions = getLinkNodePositionsFromTriangle(-1, 1, 1, -1);
+						}
+						else if ( nodeNodeAngle > 0 && nodeNodeAngle < 90 ) {
+							triangleSideLengths = getTriangleSideLengths(Math.abs(nodeNodeAngle)),
+							linkNodePositions = getLinkNodePositionsFromTriangle(-1, -1, 1, 1);
+						}
+						else if ( nodeNodeAngle > 90 && nodeNodeAngle < 180 ) {
+							triangleSideLengths = getTriangleSideLengths(Math.abs(Math.abs(nodeNodeAngle)-180)),
+							linkNodePositions = getLinkNodePositionsFromTriangle(1, -1, -1, 1);
 						}
 						else if ( nodeNodeAngle==-90 )
-						{ newXSource = xSourceAdjusted,
-							newYSource = ySourceAdjusted + nodeMargins['radius_size'][d.source.id],
-							newXTarget = xTargetAdjusted,
-							newYTarget = yTargetAdjusted - nodeMargins['radius_size'][d.target.id];
-						}
+						{ linkNodePositions = getLinkNodePositionsFromRadius(0, 1, 0, -1); }
 						else if ( nodeNodeAngle==0 )
-						{ newXSource = xSourceAdjusted - nodeMargins['radius_size'][d.source.id],
-							newYSource = ySourceAdjusted,
-							newXTarget = xTargetAdjusted + nodeMargins['radius_size'][d.target.id],
-							newYTarget = yTargetAdjusted;
-						}
+						{ linkNodePositions = getLinkNodePositionsFromRadius(-1, 0, 1, 0); }
 						else if ( nodeNodeAngle==90 )
-						{ newXSource = xSourceAdjusted,
-							newYSource = ySourceAdjusted - nodeMargins['radius_size'][d.source.id],
-							newXTarget = xTargetAdjusted,
-							newYTarget = yTargetAdjusted + nodeMargins['radius_size'][d.target.id];
-						}
+						{ linkNodePositions = getLinkNodePositionsFromRadius(0, -1, 0, 1); }
 						else if ( nodeNodeAngle==-180 || nodeNodeAngle==180 )
-						{ newXSource = xSourceAdjusted + nodeMargins['radius_size'][d.source.id],
-							newYSource = ySourceAdjusted,
-							newXTarget = xTargetAdjusted - nodeMargins['radius_size'][d.target.id],
-							newYTarget = yTargetAdjusted;
-						}
+						{ linkNodePositions = getLinkNodePositionsFromRadius(1, 0, -1, 0); }
 
 						d3.select(this)
-							.attr('cx', d.x = (newXSource + newXTarget) * 0.5)
-							.attr('cy', d.y = (newYSource + newYTarget) * 0.5);
+							.attr('cx', d.x = (linkNodePositions['newXSource'] + linkNodePositions['newXTarget']) * 0.5)
+							.attr('cy', d.y = (linkNodePositions['newYSource'] + linkNodePositions['newYTarget']) * 0.5);
 
 					});
 
@@ -1333,44 +1332,31 @@
 
 						node.each(function(d) {
 
+								function shiftAndTransitionNodeNames(operator1, operator2) {
+
+									svg2.select('#node_name_' + d.id)
+										.transition().delay(delay).duration(duration)
+										.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * operator1)
+										.attr('dy', nodeMargins['vertical_name_shift'][d.id] * operator2);
+								}
+
 								if ( nodeMargins['name_fits_in_node'][d.id]==false ) {
 									// need to add two additional if statements,
 									// one for if the label is at max y, and one for if the label is at min y.
 									// some sort of randomization will need to determine what to do in these cases to prevent overlap.
-									if ( d.x < width * 0.5 && d.y < height * 0.5 ) {
-										svg2.select('#node_name_' + d.id)
-											.transition().delay(delay).duration(duration)
-											.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
-											.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
-									}
-									else if ( d.x >= width * 0.5 && d.y < height * 0.5 ) {
-										svg2.select('#node_name_' + d.id)
-											.transition().delay(delay).duration(duration)
-											.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-											.attr('dy', nodeMargins['vertical_name_shift'][d.id] * -1);
-									}
-									else if ( d.x < width * 0.5 && d.y >= height * 0.5 ) {
-										svg2.select('#node_name_' + d.id)
-											.transition().delay(delay).duration(duration)
-											.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * -1)
-											.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
-									}
-									else {
-										//* (d.x/(width * 0.5)); })// * (d.y/(height * 0.5)); })
-										svg2.select('#node_name_' + d.id)
-												.transition().delay(delay).duration(duration)
-												.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-												.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
-									}
+									if ( getXAdjusted(d.id, d.x) < graphCenterX && getYAdjusted(d.id, d.y) < graphCenterY )
+									{ shiftAndTransitionNodeNames(-1, -1); }
+									else if ( getXAdjusted(d.id, d.x) >= graphCenterX && getYAdjusted(d.id, d.y) < graphCenterY )
+									{ shiftAndTransitionNodeNames(1, -1); }
+									else if ( getXAdjusted(d.id, d.x) <= graphCenterX && getYAdjusted(d.id, d.y) >= graphCenterY )
+									{ shiftAndTransitionNodeNames(-1, 1); }
+									else
+									{ shiftAndTransitionNodeNames(1, 1); }
 								}
 								// repositioning for when name_fits_in_node==true
 								// applicable to node size transitions when name_fits_in_node changes.
-								else if ( nodeSizeTransition ) {
-									d3.select('#node_name_' + d.id)
-									 	.transition().delay(delay).duration(duration)
-										.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
-							      .attr('dy', nodeMargins['vertical_name_shift'][d.id]);
-								}
+								else if ( nodeSizeTransition )
+								{ shiftAndTransitionNodeNames(1, 1); }
 					 })
 				};
 
@@ -1564,7 +1550,7 @@
 						nodeCTM = nodeElem.getCTM();
 						// calculating the position of the middle of the node, and then shifting the tooltip to the left.
 						// adjusting for when the node is on the left vs right side of the svg.
-						if ( nodeCTM.e >= width * 0.5 )
+						if ( nodeCTM.e >= graphCenterX )
 						{ leftPosition = nodeCTM.e + nodeRadius + 50; }
 						else
 						{ leftPosition = nodeCTM.e - nodeRadius - parseInt(toolTipWidth) - 25; }
@@ -1590,8 +1576,8 @@
 
 				    if ( !d3.event.active ) {
 							graphLayout.alphaTarget(0.3).restart();
-					    d.fx = d.x;
-					    d.fy = d.y;
+					    d.fx = getXAdjusted(d.id, d.x);
+					    d.fy = getYAdjusted(d.id, d.y);
 						}
 				};
 

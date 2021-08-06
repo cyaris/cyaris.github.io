@@ -457,6 +457,7 @@
 				margin = {top: 0, bottom: 15, left: -175, right: 0},
 				width = 1100,
 				height = 950,
+				graphHeight = height * 0.75,
 				graphCenterX = width * 0.5,
 				graphCenterY = height * (5/8),
 				// setting a text sizes for all graph items
@@ -477,7 +478,7 @@
 				};
 
 				addStdRect(svg2, null, 'svg2_rect_outline', 0, 0, width, height, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
-				addStdRect(svg2, null, 'svg2_graoh_rect_outline', 0, height/4, width, height * 0.75, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
+				addStdRect(svg2, null, 'svg2_graoh_rect_outline', 0, height/4, width, graphHeight, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
 
 				// this will send you back to choose a new war (of the same type)
 				var backToMenuClick = function(d) {
@@ -569,7 +570,7 @@
 						{ return false; }
 				};
 
-				function nameVerticalShift(svgInput, nodeRadius, participantName, textSize) {
+				function verticalNameShift(svgInput, nodeRadius, participantName, textSize) {
 
 						// adjusting text position when it does not fit inside the node
 						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
@@ -578,7 +579,7 @@
 						{ return 5; }
 				};
 
-				function nameHorizontalShift(svgInput, nodeRadius, participantName, textSize) {
+				function horizontalNameShift(svgInput, nodeRadius, participantName, textSize) {
 
 						// adjusting text position when it does not fit inside the node
 						if ( nameFitsInNode(svgInput, nodeRadius, participantName, textSize)==false )
@@ -627,8 +628,8 @@
 								currentNameLength = getTextWidth(svgDummy, d.participant, graphTextSize),
 								currentNameLengthHalf = currentNameLength/2,
 								nodeMargins['name_lengths'][d.id] = currentNameLength,
-								currentVerticalShift = nameVerticalShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
-								currentHorizontalShift = nameHorizontalShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
+								currentVerticalShift = verticalNameShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
+								currentHorizontalShift = horizontalNameShift(svgDummy, currentRadiusSize, d.participant, graphTextSize),
 								nodeMargins['vertical_name_shift'][d.id] = currentVerticalShift,
 								nameFitsInNodeBool = nameFitsInNode(svgDummy, currentRadiusSize, d.participant, graphTextSize),
 								nodeMargins['name_fits_in_node'][d.id] = nameFitsInNodeBool,
@@ -638,7 +639,7 @@
 									// adding the top quarter of the svg into added_top_margin since this will be used for the menu.
 									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
 									// text is only a factor for the literal height of the letters
-									nodeMargins['added_top_margin'][d.id] = (height * 0.25) + currentVerticalShift + parseInt(graphTextSize) + addedMarginSize,
+									nodeMargins['added_top_margin'][d.id] = (height - graphHeight) + currentVerticalShift + parseInt(graphTextSize) + addedMarginSize,
 									// name vertical shift (which includes nodesize), plus the height of the text, plus a little extra
 									// don't need to add the text size for bottom margin
 									nodeMargins['added_bottom_margin'][d.id] = currentVerticalShift + parseInt(graphTextSize) + addedMarginSize,
@@ -655,7 +656,7 @@
 									// adding the top quarter of the svg into added_top_margin since this will be used for the menu.
 									// text is not a factor on the right if the above does not apply
 									// the node plus a little extra
-									nodeMargins['added_top_margin'][d.id] = (height * 0.25) + Math.max(currentRadiusSize, linkNodeSize) + addedMarginSize,
+									nodeMargins['added_top_margin'][d.id] = (height - graphHeight) + Math.max(currentRadiusSize, linkNodeSize) + addedMarginSize,
 								  // the node plusd a little extra
 									nodeMargins['added_bottom_margin'][d.id] = Math.max(currentRadiusSize, linkNodeSize) + addedMarginSize,
 									// the node plus a little extra
@@ -795,8 +796,8 @@
 
 				// calculating these separately since they will be compared to other descriptive fields in the loop.
 				daysAtWarUniqueValues = getNodeDescriptiveValues('days_at_war_z')[0].uniqueNonNull(),
-				maxLandMassGain = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_gain_z')[0]),
-				maxLandMassLoss = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_loss_z')[0]),
+				maxLandMassGain = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_gain_z')[0].uniqueNonNull()),
+				maxLandMassLoss = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_loss_z')[0].uniqueNonNull()),
 				sumAlliedCountries = getNodeDescriptiveValues('allied_countries_z')[0].reduce((a, b) => a + b, 0),
 				sumConcurrentWars = getNodeDescriptiveValues('concurrent_wars_z')[0].reduce((a, b) => a + b, 0),
 				sumTradeCountries = getNodeDescriptiveValues('trade_countries_z')[0].reduce((a, b) => a + b, 0),
@@ -898,7 +899,11 @@
 
 					sliderDefined = true,
 					sliderData = [0, 1, 2],
-					sliderDataLabels = {0: 'First Year', 1: 'Last Year', 2: 'All Years'},
+					sliderDataLabels = {
+						0: 'First Year',
+						1: 'Last Year',
+						2: 'All Years'
+					},
 					yearSlider = d3.sliderBottom()
 											.min(d3.min(sliderData))
 											.max(d3.max(sliderData))
@@ -957,10 +962,12 @@
 						});
 						// evaluating all links to determine if there is only one primary node.
 						// this will affect the graph layout
-						linkCount = linkCombinations.length;
+						linkCount = linkCombinations.length,
+						// floating nodes are total nodes without links.
+						floatingNodeCount = nodeCount - linkCombinations.flat().uniqueNonNull().length;
 
 						// linkCount is one less than nodeCount and no floating nodes (unique nodes with links equals nodeCount)
-						if ( linkCount==nodeCount-1 && nodeCount==linkCombinations.flat().uniqueNonNull().length ) {
+						if ( linkCount==nodeCount-1 && floatingNodeCount==0 ) {
 
 							previousLinkCombination = [NaN, NaN];
 
@@ -989,7 +996,6 @@
 				else
 				{ onlyOnePrimaryNode = false; }
 
-
 				function createGraphLayout() {
 
 						graphLayout = d3.forceSimulation(graph.nodes.concat(linkNodes))
@@ -1003,15 +1009,15 @@
 																																				 }))
 						    .force('center', d3.forceCenter(graphCenterX, graphCenterY))
 						    .force('x', d3.forceX(graphCenterX).strength(function(d) { if ( onlyOnePrimaryNode )
-																																			{ return 0.75; }
-																																			else
-																																			{ return 0.15; }
-																																		}))
-						    .force('y', d3.forceY((height * 0.75) - (addedMarginSize*2)).strength(function(d) { if ( onlyOnePrimaryNode )
-																																																		{ return 0.75; }
-																																																		else
-																																																		{ return 0.5; }
-																																																	}))
+																																					 { return 0.75; }
+																																					 else
+																																					 { return 0.15; }
+																																				 }))
+						    .force('y', d3.forceY((graphHeight) - (addedMarginSize*2)).strength(function(d) { if ( onlyOnePrimaryNode )
+																																																	{ return 0.75; }
+																																																	else
+																																																	{ return 0.5; }
+																																																}))
 																																					 // line below is for linknodes only
 								.force('collision', d3.forceCollide().radius(function(d) { if ( d.source!=='undefined' )
 																																					 { return Math.max(linkNodeSize, 2.5); }
@@ -1174,38 +1180,23 @@
 				node.append('text')
 						.attr('class', 'node_names')
 						.attr('id', function(d) { return 'node_name_' + d.id; })
-						// this setup will need to be updated for each tick
-						.attr('dx', function(d) { return nodeMargins['horizontal_name_shift'][d.id]; })
-			      .attr('dy', function(d) { return nodeMargins['vertical_name_shift'][d.id]; })
 			      .attr('text-anchor', 'middle')
 						.style('font-size', graphTextSize)
 						.style('stroke', 'black')
 						.style('stroke-width', 0)
 			      .text(function(d) { return d.participant; });
 
+				nodeSizeWarningOffset = 10;
+
 				node.append('text')
 						.attr('class', 'node_size_warnings')
 						.attr('id', function(d) { return 'node_size_warning_' + d.id; })
-						// need a better solution for when text comes too close to node because nodesize is small
-						// this setup will need to be updated for each tick
-						.attr('dx', function(d) { return Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
-						.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); })
 						.attr('text-anchor', 'middle')
 						.style('font-size', graphTextSize)
 						.style('stroke', 'black')
 						.style('stroke-width', 0)
-						.style('opacity', function(d) {
-							if ( maxFromArray(nodeDescriptiveValues.uniqueNonNull())==0 )
-							{ return 0; }
-							// treating null values differently from zeros.
-							// these will get question marks.
-							else if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
-							{ return 1; }
-							else
-							{ return 0; }
-						})
+						.style('opacity', 0)
 			      .text('?');
-
 
 				// adjusting x position based on margin limitations.
 				function getXAdjusted(id, xLoc) {
@@ -1270,26 +1261,26 @@
 							};
 						};
 
-						function getLinkNodePositionsFromTriangle(operator1, operator2, operator3, operator4) {
+						function getLinkNodePositionsFromTriangle(xOperator1, yOperator1, xOperator2, yOperator2) {
 
 							linkNodePositions = {};
 
-							linkNodePositions['newXSource'] = xSourceAdjusted + (operator1 * triangleSideLengths['oppositeLength1']),
-							linkNodePositions['newYSource'] = ySourceAdjusted + (operator2 * triangleSideLengths['adjacentLength1']),
-							linkNodePositions['newXTarget'] = xTargetAdjusted - (operator3 * triangleSideLengths['adjacentLength2']),
-							linkNodePositions['newYTarget'] = yTargetAdjusted - (operator4 * triangleSideLengths['oppositeLength2']);
+							linkNodePositions['newXSource'] = xSourceAdjusted + (xOperator1 * triangleSideLengths['oppositeLength1']),
+							linkNodePositions['newYSource'] = ySourceAdjusted + (yOperator1 * triangleSideLengths['adjacentLength1']),
+							linkNodePositions['newXTarget'] = xTargetAdjusted - (xOperator2 * triangleSideLengths['adjacentLength2']),
+							linkNodePositions['newYTarget'] = yTargetAdjusted - (yOperator2 * triangleSideLengths['oppositeLength2']);
 
 							return linkNodePositions;
 						}
 
-						function getLinkNodePositionsFromRadius(operator1, operator2, operator3, operator4) {
+						function getLinkNodePositionsFromRadius(xOperator1, yOperator1, xOperator2, yOperator2) {
 
 							linkNodePositions = {};
 
-							linkNodePositions['newXSource'] = xSourceAdjusted + (operator1 * nodeMargins['radius_size'][d.source.id]),
-							linkNodePositions['newYSource'] = ySourceAdjusted + (operator2 * nodeMargins['radius_size'][d.source.id]),
-							linkNodePositions['newXTarget'] = xTargetAdjusted - (operator3 * nodeMargins['radius_size'][d.target.id]),
-							linkNodePositions['newYTarget'] = yTargetAdjusted - (operator4 * nodeMargins['radius_size'][d.target.id]);
+							linkNodePositions['newXSource'] = xSourceAdjusted + (xOperator1 * nodeMargins['radius_size'][d.source.id]),
+							linkNodePositions['newYSource'] = ySourceAdjusted + (yOperator1 * nodeMargins['radius_size'][d.source.id]),
+							linkNodePositions['newXTarget'] = xTargetAdjusted - (xOperator2 * nodeMargins['radius_size'][d.target.id]),
+							linkNodePositions['newYTarget'] = yTargetAdjusted - (yOperator2 * nodeMargins['radius_size'][d.target.id]);
 
 							return linkNodePositions;
 						}
@@ -1322,41 +1313,49 @@
 						d3.select(this)
 							.attr('cx', d.x = (linkNodePositions['newXSource'] + linkNodePositions['newXTarget']) * 0.5)
 							.attr('cy', d.y = (linkNodePositions['newYSource'] + linkNodePositions['newYTarget']) * 0.5);
-
 					});
 
-					repositionNodeNames(50, 100, false);
+					// need to adjust this function call so that it does not override other call to repositionNodeLabels.
+					repositionNodeLabels(50, 100);
 			  };
 
-				function repositionNodeNames(delay, duration, nodeSizeTransition) {
+				function repositionNodeLabels(delay, duration) {
 
 						node.each(function(d) {
 
-								function shiftAndTransitionNodeNames(operator1, operator2) {
+								function transitionNodeLabelsPosition(xOperator, yOperator) {
 
-									svg2.select('#node_name_' + d.id)
-										.transition().delay(delay).duration(duration)
-										.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * operator1)
-										.attr('dy', nodeMargins['vertical_name_shift'][d.id] * operator2);
-								}
+									if ( nodeMargins['name_fits_in_node'][d.id] ) {
 
-								if ( nodeMargins['name_fits_in_node'][d.id]==false ) {
-									// need to add two additional if statements,
-									// one for if the label is at max y, and one for if the label is at min y.
-									// some sort of randomization will need to determine what to do in these cases to prevent overlap.
-									if ( getXAdjusted(d.id, d.x) < graphCenterX && getYAdjusted(d.id, d.y) < graphCenterY )
-									{ shiftAndTransitionNodeNames(-1, -1); }
-									else if ( getXAdjusted(d.id, d.x) >= graphCenterX && getYAdjusted(d.id, d.y) < graphCenterY )
-									{ shiftAndTransitionNodeNames(1, -1); }
-									else if ( getXAdjusted(d.id, d.x) <= graphCenterX && getYAdjusted(d.id, d.y) >= graphCenterY )
-									{ shiftAndTransitionNodeNames(-1, 1); }
-									else
-									{ shiftAndTransitionNodeNames(1, 1); }
+										svg2.select('#node_name_' + d.id)
+											.transition().delay(delay).duration(duration)
+											.attr('dx', nodeMargins['horizontal_name_shift'][d.id])
+											.attr('dy', nodeMargins['vertical_name_shift'][d.id]);
+									}
+									else {
+
+										svg2.select('#node_name_' + d.id)
+											.transition().delay(delay).duration(duration)
+											.attr('dx', nodeMargins['horizontal_name_shift'][d.id] * xOperator)
+											.attr('dy', nodeMargins['vertical_name_shift'][d.id] * yOperator);
+									}
+
+									svg2.select('#node_size_warning_' + d.id)
+											.transition().delay(delay).duration(duration)
+											.attr('dx', function(d) { return Math.max(nodeMargins['horizontal_name_shift'][d.id], nodeMargins['radius_size'][d.id] + nodeSizeWarningOffset) * (xOperator*-1); })
+											.attr('dy', function(d) { return Math.max(nodeMargins['horizontal_name_shift'][d.id], nodeMargins['radius_size'][d.id] + nodeSizeWarningOffset) * (yOperator*-1); })
 								}
-								// repositioning for when name_fits_in_node==true
-								// applicable to node size transitions when name_fits_in_node changes.
-								else if ( nodeSizeTransition )
-								{ shiftAndTransitionNodeNames(1, 1); }
+								// need to add two additional if statements,
+								// one for if the label is at max y, and one for if the label is at min y.
+								// some sort of randomization will need to determine what to do in these cases to prevent overlap.
+								if ( getXAdjusted(d.id, d.x) <= graphCenterX && getYAdjusted(d.id, d.y) >= graphCenterY )
+								{ transitionNodeLabelsPosition(-1, 1); }
+								else if ( getXAdjusted(d.id, d.x) >= graphCenterX && getYAdjusted(d.id, d.y) <= graphCenterY )
+								{ transitionNodeLabelsPosition(1, -1); }
+								else if ( getXAdjusted(d.id, d.x) < graphCenterX && getYAdjusted(d.id, d.y) < graphCenterY )
+								{ transitionNodeLabelsPosition(-1, -1); }
+								else
+								{ transitionNodeLabelsPosition(1, 1); }
 					 })
 				};
 
@@ -1380,33 +1379,30 @@
 					// redefining graph layout with updated nodeMargins
 					graphLayout = createGraphLayout();
 
-					nodeTransitionDelay = 500,
+
 					nodeTransitionDuration = 3000,
-					textTransitionDelay = 1000,
-					textTransitionDuration = 2000;
+					textTransitionDuration = 2000,
+					nodeTransitionDelay = 500,
+					textTransitionDelay = nodeTransitionDelay + (nodeTransitionDuration-textTransitionDuration);
 
 					svg2.selectAll('.nodes')
 							.transition().delay(nodeTransitionDelay).duration(nodeTransitionDuration)
 							.attr('r', function(d) { return nodeMargins['radius_size'][d.id]; });
 
-					// calling same function used on tick to reposition node names
-					repositionNodeNames(textTransitionDelay, textTransitionDuration, true);
-
 					svg2.selectAll('.node_size_warnings')
-							// adjusting opacity will be a shorter transition than repositioning the label.
-							.transition().delay(textTransitionDelay).duration(textTransitionDuration)
 							.style('opacity', function(d) {
 								if ( maxFromArray(nodeDescriptiveValues.uniqueNonNull())==0 )
 								{ return 0; }
+								// treating null values differently from zeros.
+								// these will get question marks.
 								else if ( isNaN(parseFloat(nodeDescriptiveValues[d.id])) )
 								{ return 1; }
 								else
 								{ return 0; }
 							})
-							.transition().delay(textTransitionDelay).duration(textTransitionDuration)
-							// need a better solution for when text comes too close to node because nodesize is small
-							.attr('dx', function(d) { return  Math.min(nodeMargins['radius_size'][d.id] * -1.5, -30); })
-							.attr('dy', function(d) { return Math.max(nodeMargins['radius_size'][d.id], 10); });
+
+					// calling same function used on tick to reposition node names
+					repositionNodeLabels(textTransitionDelay, textTransitionDuration);
 
 					d3.selectAll('.tooltip').remove();
 					defineNodeTooltips();
@@ -1604,6 +1600,7 @@
 				};
 			}});
 		}})
+
 		</script>
 	</body>
 </html>

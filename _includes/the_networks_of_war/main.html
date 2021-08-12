@@ -966,14 +966,14 @@
 						// floating nodes are total nodes without links.
 						floatingNodeCount = nodeCount - linkCombinations.flat().uniqueNonNull().length;
 
-						// linkCount is one less than nodeCount and no floating nodes (unique nodes with links equals nodeCount)
-						if ( linkCount==nodeCount-1 && floatingNodeCount==0 ) {
+						// linkCount is one less than non-floating-nodeCount
+						if ( linkCount==nodeCount-floatingNodeCount-1 ) {
 
 							previousLinkCombination = [NaN, NaN];
 
 							for ( var i = 0; i <= linkCount-1; i++ ) {
 
-								if ( nodeCount==2 )
+								if ( linkCount==1 )
 								{ return linkCombinations[i][0]; }
 								else if ( previousLinkCombination.includes(linkCombinations[i][0]) )
 								{ return linkCombinations[i][0]; }

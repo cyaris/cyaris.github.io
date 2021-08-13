@@ -478,7 +478,7 @@
 				};
 
 				addStdRect(svg2, null, 'svg2_rect_outline', 0, 0, width, height, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
-				addStdRect(svg2, null, 'svg2_graoh_rect_outline', 0, height/4, width, graphHeight, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
+				// addStdRect(svg2, null, 'svg2_graph_rect_outline', 0, height/4, width, graphHeight, 'black', 1, null, 'transparent', null, svg2BodyMO, null, null);
 
 				// this will send you back to choose a new war (of the same type)
 				var backToMenuClick = function(d) {
@@ -1267,8 +1267,8 @@
 
 							linkNodePositions['newXSource'] = xSourceAdjusted + (xOperator1 * triangleSideLengths['oppositeLength1']),
 							linkNodePositions['newYSource'] = ySourceAdjusted + (yOperator1 * triangleSideLengths['adjacentLength1']),
-							linkNodePositions['newXTarget'] = xTargetAdjusted - (xOperator2 * triangleSideLengths['adjacentLength2']),
-							linkNodePositions['newYTarget'] = yTargetAdjusted - (yOperator2 * triangleSideLengths['oppositeLength2']);
+							linkNodePositions['newXTarget'] = xTargetAdjusted + (xOperator2 * triangleSideLengths['adjacentLength2']),
+							linkNodePositions['newYTarget'] = yTargetAdjusted + (yOperator2 * triangleSideLengths['oppositeLength2']);
 
 							return linkNodePositions;
 						}
@@ -1279,8 +1279,8 @@
 
 							linkNodePositions['newXSource'] = xSourceAdjusted + (xOperator1 * nodeMargins['radius_size'][d.source.id]),
 							linkNodePositions['newYSource'] = ySourceAdjusted + (yOperator1 * nodeMargins['radius_size'][d.source.id]),
-							linkNodePositions['newXTarget'] = xTargetAdjusted - (xOperator2 * nodeMargins['radius_size'][d.target.id]),
-							linkNodePositions['newYTarget'] = yTargetAdjusted - (yOperator2 * nodeMargins['radius_size'][d.target.id]);
+							linkNodePositions['newXTarget'] = xTargetAdjusted + (xOperator2 * nodeMargins['radius_size'][d.target.id]),
+							linkNodePositions['newYTarget'] = yTargetAdjusted + (yOperator2 * nodeMargins['radius_size'][d.target.id]);
 
 							return linkNodePositions;
 						}
@@ -1379,6 +1379,8 @@
 					// redefining graph layout with updated nodeMargins
 					graphLayout = createGraphLayout();
 
+					console.log(nodeDescriptorSelected);
+					console.log(nodeMargins);
 
 					nodeTransitionDuration = 3000,
 					textTransitionDuration = 2000,
@@ -1399,7 +1401,7 @@
 								{ return 1; }
 								else
 								{ return 0; }
-							})
+							});
 
 					// calling same function used on tick to reposition node names
 					repositionNodeLabels(textTransitionDelay, textTransitionDuration);

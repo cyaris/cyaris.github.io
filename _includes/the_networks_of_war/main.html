@@ -817,13 +817,17 @@
 				daysAtWarUniqueValues = daysAtWarValues.uniqueNonNull(),
 				maxLandMassGain = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_gain_z')[0].uniqueNonNull()),
 				maxLandMassLoss = maxFromArray(getNodeDescriptiveValues('land_mass_exchange_loss_z')[0].uniqueNonNull()),
-				sumAlliedCountries = getNodeDescriptiveValues('allied_countries_z')[0].reduce((a, b) => a + b, 0),
-				sumConcurrentWars = getNodeDescriptiveValues('concurrent_wars_z')[0].reduce((a, b) => a + b, 0),
-				sumTradeCountries = getNodeDescriptiveValues('trade_countries_z')[0].reduce((a, b) => a + b, 0),
-				sumMidDyads = getNodeDescriptiveValues('mid_dyads_z')[0].reduce((a, b) => a + b, 0),
-				sumMidDyadsInitiated = getNodeDescriptiveValues('mid_dyads_initiated_z')[0].reduce((a, b) => a + b, 0),
-				sumMidDyadsJoined = getNodeDescriptiveValues('mid_dyads_joined_z')[0].reduce((a, b) => a + b, 0),
-				sumMidDyadsTargeted = getNodeDescriptiveValues('mid_dyads_targeted_z')[0].reduce((a, b) => a + b, 0);
+				sumAlliedCountries = getNodeDescriptiveValues('allied_countries_z')[0].reduce((a, b) => a??0 + b??0, 0),
+				sumTerrorismDeaths = getNodeDescriptiveValues('terrorism_deaths_z')[0].reduce((a, b) => a??0 + b??0, 0),
+				sumConcurrentWars = getNodeDescriptiveValues('concurrent_wars_z')[0].reduce((a, b) => a??0 + b??0, 0),
+				sumTradeCountries = getNodeDescriptiveValues('trade_countries_z')[0].reduce((a, b) => a??0 + b??0, 0),
+				sumMidDyads = getNodeDescriptiveValues('mid_dyads_z')[0].reduce((a, b) => a??0 + b??0, 0),
+				sumMidDyadsInitiated = getNodeDescriptiveValues('mid_dyads_initiated_z')[0].reduce((a, b) => a??0 + b??0, 0),
+				sumMidDyadsJoined = getNodeDescriptiveValues('mid_dyads_joined_z')[0].reduce((a, b) => a??0 + b??0, 0),
+				sumMidDyadsTargeted = getNodeDescriptiveValues('mid_dyads_targeted_z')[0].reduce((a, b) => a??0 + b??0, 0);
+
+				// console.log('sumTerrorismDeaths', sumTerrorismDeaths);
+				// console.log('test', getNodeDescriptiveValues('terrorism_deaths_z')[0].reduce((a, b) => a + b, 0));
 
 				for ( var i = 0; i <= allPartFields.length-1; i++ ) {
 					// not including any field in nonDescriptivePartFields (text fields or just fields that don't need to be filtered on)
@@ -862,11 +866,12 @@
 					// dyads cannot be less than or equal to total nodes (must contain information other than what's being looked at.)
 					else if ( ['concurrent_wars_x', 'concurrent_wars_y', 'concurrent_wars_z'].includes(allPartFields[i]) && sumConcurrentWars<=3 ) {}
 					else if ( ['allied_countries_x', 'allied_countries_y', 'allied_countries_z'].includes(allPartFields[i]) && sumAlliedCountries/2<=3 ) {}
+					else if ( ['terrorism_deaths_x', 'terrorism_deaths_y', 'terrorism_deaths_z'].includes(allPartFields[i]) && sumTerrorismDeaths<=100 ) {}
 					else if ( ['trade_countries_x', 'trade_countries_x', 'trade_countries_z'].includes(allPartFields[i]) && sumTradeCountries/2<=10 ) {}
 					else if ( ['mid_dyads_x', 'mid_dyads_initiated_x', 'mid_dyads_joined_x', 'mid_dyads_targeted_x', 'mid_dyads_y', 'mid_dyads_initiated_y', 'mid_dyads_joined_y', 'mid_dyads_targeted_y', 'mid_dyads_z', 'mid_dyads_initiated_z', 'mid_dyads_joined_z', 'mid_dyads_targeted_z'].includes(allPartFields[i]) && sumMidDyads/2<=linkDescriptiveValues.length ) {}
-					else if ( ['mid_dyads_initiated_x', 'mid_dyads_initiated_y', 'mid_dyads_initiated_z'].includes(allPartFields[i]) && sumMidDyadsInitiated/2<=linkDescriptiveValues.length + 1 ) {}
-					else if ( ['mid_dyads_joined_x', 'mid_dyads_joined_y', 'mid_dyads_joined_z'].includes(allPartFields[i]) && sumMidDyadsJoined/2<=linkDescriptiveValues.length + 1 ) {}
-					else if ( ['mid_dyads_targeted_x', 'mid_dyads_targeted_y', 'mid_dyads_targeted_z'].includes(allPartFields[i]) && sumMidDyadsTargeted/2<=linkDescriptiveValues.length + 1 ) {}
+					else if ( ['mid_dyads_initiated_x', 'mid_dyads_initiated_y', 'mid_dyads_initiated_z'].includes(allPartFields[i]) && sumMidDyadsInitiated/2<=linkDescriptiveValues.length+1 ) {}
+					else if ( ['mid_dyads_joined_x', 'mid_dyads_joined_y', 'mid_dyads_joined_z'].includes(allPartFields[i]) && sumMidDyadsJoined/2<=linkDescriptiveValues.length+1 ) {}
+					else if ( ['mid_dyads_targeted_x', 'mid_dyads_targeted_y', 'mid_dyads_targeted_z'].includes(allPartFields[i]) && sumMidDyadsTargeted/2<=linkDescriptiveValues.length+1 ) {}
 
 					// only showing battle_deaths_per_day if the sizing will be different from battle_deaths.
 					// this won't be true if all participants were at war for the same number of days.

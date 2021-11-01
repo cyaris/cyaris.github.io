@@ -12,8 +12,7 @@ html {
 
 body {
   font-family: 'Lora', 'Times New Roman', serif;
-  /* custom edit: changed font-size for body  */
-  font-size: 1rem;
+  font-size: 1.125rem;
   color: {{ site.text-col | default: "#404040" }};
   position: relative;
   background-color: {{ site.page-col | default: "#FFFFFF" }};
@@ -52,8 +51,7 @@ a {
 }
 a:hover,
 a:focus {
-  /* custom edit: changed hover-col to link-hover-col  */
-  color: {{ site.link-hover-col | default: "#0085A1" }};
+  color: {{ site.hover-col | default: "#0085A1" }};
 }
 blockquote {
   color: #808080;
@@ -85,14 +83,12 @@ hr.small {
 ::-moz-selection {
   color: #fff;
   text-shadow: none;
-  /* custom edit: changed hover-col to link-hover-col  */
-  background-color: {{ site.link-hover-col | default: "#0085A1" }};
+  background-color: {{ site.hover-col | default: "#0085A1" }};
 }
 ::selection {
   color: #fff;
   text-shadow: none;
-  /* custom edit: changed hover-col to link-hover-col  */
-  background-color: {{ site.link-hover-col | default: "#0085A1" }};
+  background-color: {{ site.hover-col | default: "#0085A1" }};
 }
 img::selection {
   color: #fff;
@@ -195,8 +191,7 @@ img {
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-nav .nav-link {
   font-weight: 800;
-  /* custom edit: changed variable name navbar-text-col to navbar-link-col */
-  color: {{ site.navbar-link-col | default: "#404040" }};
+  color: {{ site.navbar-text-col | default: "#404040" }};
 }
 
 .navbar-toggler {
@@ -267,8 +262,7 @@ img {
   text-decoration: none !important;
   border-width: 0 1px 1px 1px;
   font-weight: normal;
-  /* custom edit: changed variable name navbar-text-col to navbar-link-col */
-  color: {{ site.navbar-link-col | default: "#404040" }};
+  color: {{ site.navbar-text-col | default: "#404040" }};
 }
 
 @media (min-width: 1200px) {
@@ -311,8 +305,7 @@ img {
 .navbar-custom .navbar-nav .nav-link:focus,
 .navbar-custom .navbar-nav .dropdown-menu .dropdown-item:hover,
 .navbar-custom .navbar-nav .dropdown-menu .dropdown-item:focus {
-  /* custom edit: changed hover-col to link-hover-col  */
-  color: {{ site.link-hover-col | default: "#0085A1" }};
+  color: {{ site.hover-col | default: "#0085A1" }};
 }
 
 .navbar-custom .avatar-container {
@@ -464,8 +457,7 @@ footer .footer-custom-content {
 .post-preview a:focus,
 .post-preview a:hover {
   text-decoration: none;
-  /* custom edit: changed hover-col to link-hover-col  */
-  color: {{ site.link-hover-col | default: "#0085A1" }};
+  color: {{ site.hover-col | default: "#0085A1" }};
 }
 
 .post-preview .post-title {
@@ -812,10 +804,8 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
 .pagination .page-item .page-link:hover,
 .pagination .page-item .page-link:focus {
   color: #FFF;
-  /* custom edit: changed hover-col to link-hover-col  */
-  border: 1px solid {{ site.link-hover-col | default: "#0085A1" }};
-  /* custom edit: changed hover-col to link-hover-col  */
-  background-color: {{ site.link-hover-col | default: "#0085A1" }};
+  border: 1px solid {{ site.hover-col | default: "#0085A1" }};
+  background-color: {{ site.hover-col | default: "#0085A1" }};
 }
 
 /* --- Tables --- */

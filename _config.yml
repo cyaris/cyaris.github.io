@@ -111,7 +111,7 @@ keywords: "charlieyaris, cyaris"
 # custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links
 # custom edit: added several individual color variables below
 navbar-col: "#54bdca"
-navbar-border-col: "#f07b41"
+navbar-border-col: "#f26419"
 navbar-link-col: "#ffffff"
 # navbar-link-border-col: "#69D1E3"
 navbar-link-hover-col: "#175676"
@@ -130,16 +130,17 @@ footer-link-col: "#ffffff"
 footer-link-hover-col: "#175676"
 
 # social-links will have separate color variables from rest of footer
-social-link-col: "#f07b41"
-social-link-hover-col: "#ffffff"
-social-icon-link-col: "#ffffff"
-social-icon-link-hover-col: "#f26419"
+social-icon-col: "#ffffff"
+social-icon-background-col: "#f07b41"
+social-icon-hover-col: "#f26419"
+social-icon-background-hover-col: "#ffffff"
+# social-icon-background-border-hover-col: "#f26419"
 
 btn-link-col: "#ffffff"
 btn-background-col: "#f07b41"
-btn-link-hover-col: "#175676"
-btn-background-hover-col: "#95ffff"
-btn-border-hover-col: "#175676"
+btn-link-hover-col: "#f26419"
+btn-background-hover-col: "#ffffff"
+btn-border-hover-col: "#f26419"
 
 pagination-link-col: "#404040"
 pagination-background-col: "#ffffff"

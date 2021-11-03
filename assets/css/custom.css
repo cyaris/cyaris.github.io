@@ -27,6 +27,7 @@ a:focus {
 }
 
 /* --- Navbar --- */
+
 .navbar-custom {
   /* made bottom border thicker */
   border-bottom: 2px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
@@ -65,6 +66,11 @@ a:focus {
 
 @media (min-width: 1200px) {
 
+  .navbar-custom {
+    padding-top: 0.7375rem;
+    padding-bottom: 0.7375rem;
+  }
+
   .navbar-custom .nav-item.dropdown {
     /* added transparent border to project links section, which will become visible later on */
     border: 2px solid transparent;
@@ -73,6 +79,7 @@ a:focus {
   .navbar-custom .nav-item.dropdown:hover {
     /* added color to project links section border */
     border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
+    background-color: transparent;
   }
 
   .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
@@ -124,23 +131,22 @@ footer a:hover {
 
 .list-inline a {
   /* added individual color for social in footer */
-  color: {{ site.social-link-col | default: "#0085A1" }};
+  color: {{ site.social-icon-background-col | default: "#0085A1" }};
  }
 
 .list-inline a:hover {
   /* added individual color for social hover in footer */
-  color: {{ site.social-link-hover-col | default: "#0085A1" }};
+  color: {{ site.social-icon-background-hover-col | default: "#0085A1" }};
  }
-
 
  .fa-stack-1x {
   /* changed color of font-awesome icon */
-  color: {{ site.social-icon-link-col | default: "#0085A1" }};
+  color: {{ site.social-icon-col | default: "#0085A1" }};
  }
 
 .fa-stack-1x:hover {
  /* changed color of font-awesome icon on hover */
- color: {{ site.social-icon-link-hover-col | default: "#0085A1" }};
+ color: {{ site.social-icon-hover-col | default: "#0085A1" }};
 }
 
 .author-site a {

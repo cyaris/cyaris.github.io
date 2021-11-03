@@ -74,6 +74,7 @@ a:focus {
   .navbar-custom .nav-item.dropdown {
     /* added transparent border to project links section, which will become visible later on */
     border: 2.75px solid transparent;
+    border-width: 2.75px 2.75px 3px 2.75px;
   }
 
   .navbar-custom .nav-item.dropdown:hover {

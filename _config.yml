@@ -118,8 +118,9 @@ navbar-link-hover-col: "#175676"
 page-col: "#ffffff"
 text-col: "#404040"
 link-col: "#33658a"
+post-title-link-col: "#404040"
 link-hover-col: "#33658a"
-post-title-link-col: "#33658a" #54bdca
+post-title-link-hover-col: "#33658a" #54bdca
 
 footer-col: "#54bdca"
 footer-border-col: "#f07b41"
@@ -144,12 +145,13 @@ pagination-link-col: "#404040"
 pagination-background-col: "#ffffff"
 pagination-border-col: "#175676"
 pagination-link-hover-col: "#175676"
-pagination-background-hover-col: "#95ffff"
-pagination-border-hover-col: "#175676"
+pagination-background-hover-col: "#ffffff"
+pagination-border-hover-col: "#f26419"
 
+tag-link-col: "#404040"
 tag-link-hover-col: "#175676"
-tag-background-hover-col: "#95ffff"
-tag-border-hover-col: "#175676"
+tag-background-hover-col: "#ffffff"
+tag-border-hover-col: "#f26419"
 
 # Alternatively, the navbar, footer, and page background can be set to an image
 # instead of colour

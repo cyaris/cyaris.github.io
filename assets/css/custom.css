@@ -32,7 +32,7 @@ a:focus {
   /* added top border */
   border-top: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
   /* made bottom border thicker */
-  border-bottom: 3px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
+  border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
 
 .navbar-custom .navbar-brand {
@@ -124,12 +124,14 @@ footer {
   /* added top border */
   border-top: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
   /* added bottom border */
-  border-bottom: 3px solid {{ site.footer-border-col | default: "#DDDDDD" }};
+  border-bottom: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
 }
 
 footer a:hover {
   /* added individual hover color variable for footer */
   color: {{ site.footer-link-hover-col | default: "#404040" }};
+  /* removing underline for footer links on hover */
+  text-decoration: none;
 }
 
 .list-inline a {
@@ -176,15 +178,15 @@ footer a:hover {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* .post-preview .post-title { */
+.post-preview .post-title { */
   /* making title of the post the color of links (rather than black) */
-  /* color: {{ site.post-title-link-col | default: "#0085A1" }}; */
- /* } */
+  color: {{ site.post-title-link-col | default: "#0085A1" }};
+ }
 
- /* .post-preview .post-title:hover { */
+ .post-preview .post-title:hover {
    /* making title of the post the color of links (rather than black) */
-   /* color: {{ site.post-title-link-hover-col | default: "#0085A1" }}; */
-  /* } */
+   color: {{ site.post-title-link-hover-col | default: "#0085A1" }};
+  }
 
 
 /* --- Tags --- */
@@ -194,6 +196,8 @@ footer a:hover {
   border-radius:28px;
   /* added individual border color for tag on hover */
   border: 2.5px solid transparent;
+  /* added individual color for tag  */
+  color: {{ site.tag-link-col | default: "#404040" }};
 }
 
 .blog-tags a:hover {
@@ -227,6 +231,8 @@ footer a:hover {
   /* changed pagination background color on hover */
   background-color: {{ site.pagination-background-hover-col | default: "#0085A1" }};
   border-color: {{ site.pagination-border-hover-col | default: "#0085A1" }};;
+  /* underlining pagination link on hover */
+  text-decoration: underline;
 }
 
 

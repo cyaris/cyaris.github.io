@@ -29,10 +29,10 @@ a:focus {
 /* --- Navbar --- */
 
 .navbar-custom {
-  /* made bottom border thicker */
-  border-bottom: 2px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
   /* added top border */
-  border-top: 2px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
+  border-top: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
+  /* made bottom border thicker */
+  border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
 
 .navbar-custom .navbar-brand {
@@ -73,7 +73,7 @@ a:focus {
 
   .navbar-custom .nav-item.dropdown {
     /* added transparent border to project links section, which will become visible later on */
-    border: 2px solid transparent;
+    border: 2.75px solid transparent;
   }
 
   .navbar-custom .nav-item.dropdown:hover {
@@ -84,13 +84,15 @@ a:focus {
 
   .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
     /* made border for dropdown items on all sides */
-    border-width: 2px 2px 2px;
+    border-width: 0px 2.75px 2.75px 2.75px;
   }
 }
 
 .navbar-custom .nav-item.dropdown .dropdown-menu {
   /* changed font-size for navbar dropdown items */
   font-size: 0.825em;
+  width: 103.5%;
+  transform: translate(-2.75px, 2px);
 }
 
 .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
@@ -118,10 +120,10 @@ a:focus {
 
 /* --- Footer --- */
 footer {
-  /* added bottom border */
-  border-bottom: 1px solid {{ site.footer-border-col | default: "#DDDDDD" }};
   /* added top border */
-  border-top: 1px solid {{ site.footer-border-col | default: "#DDDDDD" }};
+  border-top: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
+  /* added bottom border */
+  border-bottom: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
 }
 
 footer a:hover {
@@ -173,10 +175,15 @@ footer a:hover {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* .post-preview .post-title {
+/* .post-preview .post-title { */
   /* making title of the post the color of links (rather than black) */
   /* color: {{ site.post-title-link-col | default: "#0085A1" }}; */
-/* } */
+ /* } */
+
+ /* .post-preview .post-title:hover { */
+   /* making title of the post the color of links (rather than black) */
+   /* color: {{ site.post-title-link-hover-col | default: "#0085A1" }}; */
+  /* } */
 
 
 /* --- Tags --- */

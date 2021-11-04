@@ -178,22 +178,23 @@ footer a:hover {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.post-preview .post-title { */
+.post-preview a {
   /* making title of the post the color of links (rather than black) */
   color: {{ site.post-title-link-col | default: "#0085A1" }};
- }
+}
 
- .post-preview .post-title:hover {
-   /* making title of the post the color of links (rather than black) */
-   color: {{ site.post-title-link-hover-col | default: "#0085A1" }};
-  }
+.post-preview a:focus,
+.post-preview a:hover {
+  /* making title of the post the color of links (rather than black) */
+  color: {{ site.post-title-link-hover-col | default: "#0085A1" }};
+}
 
 
 /* --- Tags --- */
 
 .blog-tags a {
   /* changed tag border radius to be consistent with site buttons */
-  border-radius:28px;
+  border-radius: 28px;
   /* added individual border color for tag on hover */
   border: 2.5px solid transparent;
   /* added individual color for tag  */
@@ -207,36 +208,10 @@ footer a:hover {
   background-color: {{ site.tag-background-hover-col | default: "#0085A1" }};
   /* added individual border color for tag on hover */
   border-color: {{ site.tag-border-hover-col | default: "#0085A1" }};
-
 }
-
-/* --- Pagination --- */
-.pagination .page-item .page-link {
-  /* changed pagination color */
-  color: {{ site.pagination-link-col | default: "#0085A1" }};
-  /* changed transform to capitalize */
-  text-transform: capitalize;
-  /* changed pagination border radius to be consistent with other site buttons */
-  border-radius:28px;
-  /* changed pagination background color */
-  background-color: {{ site.pagination-background-col | default: "#0085A1" }};
-  /* added border color */
-  border: 2.5px solid {{ site.pagination-border-col | default: "#0085A1" }};;
-}
-
-.pagination .page-item .page-link:hover,
-.pagination .page-item .page-link:focus {
-  /* changed pagination color on hover */
-  color: {{ site.pagination-link-hover-col | default: "#404040" }};
-  /* changed pagination background color on hover */
-  background-color: {{ site.pagination-background-hover-col | default: "#0085A1" }};
-  border-color: {{ site.pagination-border-hover-col | default: "#0085A1" }};;
-  /* underlining pagination link on hover */
-  text-decoration: underline;
-}
-
 
 /* --- 404 --- */
+
 /* 404 image width larger on desktop */
 @media (max-width: 768px) {
   .image_404 {
@@ -264,42 +239,56 @@ footer a:hover {
 
 
 /* --- Buttons --- */
+
 /* added btn-group and btn-group elements css formatting */
 .btn-group {
   background-color: {{ site.btn-background-col | default: "#0085A1" }};
-  border-radius:28px;
-  /* border:1px solid #18ab29; */
-  display:inline-block;
-  cursor:pointer;
+  border-radius: 28px;
+  display: inline-block;
+  cursor: pointer;
   color: {{ site.btn-link-col | default: "#0085A1" }};
-  font-size:17px;
+  font-size: 17px;
   font-weight: bold;
-  padding:16px 31px;
-  text-decoration:none;
-  border: 2.5px solid transparent;
+  padding: 16px 31px;
+  text-decoration: none;
+  border: 4.5px solid transparent;
   /* text-shadow:0px 1px 0px #2f6627; */
 }
 
 .btn-group:hover {
   color: {{ site.btn-link-hover-col | default: "#0085A1" }};
   background-color: {{ site.btn-background-hover-col | default: "#0085A1" }};
-  border: 2.5px solid {{ site.btn-border-hover-col | default: "#0085A1" }};;
+  border-color: {{ site.btn-border-hover-col | default: "#0085A1" }};
+  /* underlining button link on hover */
+  text-decoration: underline;
 }
 
 .btn-group:active {
-  position:relative;
-  top:1px;
+  position: relative;
+  top: 1px;
 }
 
+/* --- Pagination --- */
 
 .pagination .page-item .page-link {
-  background-color: {{ site.pagination-background-col | default: "#0085A1" }};
+  /* changed pagination color */
   color: {{ site.pagination-link-col | default: "#0085A1" }};
+  /* changed transform to capitalize */
+  text-transform: capitalize;
+  /* changed pagination background color */
+  background-color: {{ site.pagination-background-col | default: "#0085A1" }};
+  border: 5px solid transparent;
+  border-radius: 28px;
+  padding: 10px 12.5px;
 }
 
 .pagination .page-item .page-link:hover,
 .pagination .page-item .page-link:focus {
-  color: {{ site.pagination-link-hover-col | default: "#0085A1" }};
+  /* changed pagination color on hover */
+  color: {{ site.pagination-link-hover-col | default: "#404040" }};
+  /* changed pagination background color on hover */
   background-color: {{ site.pagination-background-hover-col | default: "#0085A1" }};
-  border: 2.5px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};;
+  /* underlining pagination link on hover */
+  text-decoration: underline;
+  border: 5px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};
 }

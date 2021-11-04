@@ -28,10 +28,17 @@ a:focus {
 
 /* --- Navbar --- */
 
+@media (min-width: 1200px) {
+  .navbar-custom {
+    padding-top: 0.7375rem;
+    padding-bottom: 0.7375rem;
+  }
+}
+
 .navbar-custom {
   /* added top border */
   border-top: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
-  /* made bottom border thicker */
+  /* added bottom border */
   border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
 
@@ -49,7 +56,7 @@ a:focus {
 
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-nav .nav-link {
-  /* custom edit: changed variable name navbar-text-col to navbar-link-col */
+  /* changed variable name navbar-text-col to navbar-link-col */
   color: {{ site.navbar-link-col | default: "#404040" }};
 }
 
@@ -57,35 +64,14 @@ a:focus {
 .navbar-custom .nav-item.dropdown {
   padding-left: 0.7375rem;
   padding-right: 0.7375rem;
+  /* added transparent border to project links section, which will become visible later on */
+  border: 2.75px solid transparent;
+  border-width: 2.75px 2.75px 3px 2.75px;
 }
 
-.navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
-  /* changed variable name navbar-text-col to navbar-link-col */
-  color: {{ site.navbar-link-col | default: "#404040" }};
-}
-
-@media (min-width: 1200px) {
-
-  .navbar-custom {
-    padding-top: 0.7375rem;
-    padding-bottom: 0.7375rem;
-  }
-
-  .navbar-custom .nav-item.dropdown {
-    /* added transparent border to project links section, which will become visible later on */
-    border: 2.75px solid transparent;
-    border-width: 2.75px 2.75px 3px 2.75px;
-  }
-
-  .navbar-custom .nav-item.dropdown:hover {
-    border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
-    background-color: transparent;
-  }
-
-  .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
-    border-width: 0px 2.75px 2px 2.75px;
-    border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
-  }
+.navbar-custom .nav-item.dropdown:hover {
+  border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
+  background-color: transparent;
 }
 
 .navbar-custom .nav-item.dropdown .dropdown-menu {
@@ -95,14 +81,18 @@ a:focus {
   transform: translate(-2.75px, 2px);
 }
 
-.navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
-  /* changed font-weight for dropdown items */
-  font-weight: 700;
-}
-
 .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
   /* making dropdown execute on hover instead of click */
   display: block;
+}
+
+.navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
+  /* changed variable name navbar-text-col to navbar-link-col */
+  color: {{ site.navbar-link-col | default: "#404040" }};
+  /* changed font-weight for dropdown items */
+  font-weight: 700;
+  border-width: 0px 2.75px 2px 2.75px;
+  border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
 
 .navbar-custom .navbar-brand:hover,
@@ -113,11 +103,10 @@ a:focus {
 .navbar-custom .navbar-nav .dropdown-menu .dropdown-item:focus {
   /* added individual hover color variable for navbar  */
   color: {{ site.navbar-link-hover-col | default: "#0085A1" }};
-  /* added individual border color variable for navbar  */
-  /* -webkit-text-stroke: 0.5px {{ site.navbar-link-hover-border-col | default: "#0085A1" }}; */
 }
 
 /* --- Footer --- */
+
 footer {
   /* added top border */
   border-top: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
@@ -142,7 +131,7 @@ footer a:hover {
   color: {{ site.social-icon-background-hover-col | default: "#0085A1" }};
  }
 
- .fa-stack-1x {
+.fa-stack-1x {
   /* changed color of font-awesome icon */
   color: {{ site.social-icon-col | default: "#0085A1" }};
  }
@@ -164,16 +153,14 @@ footer a:hover {
 
 /* --- Posts Preview Page --- */
 
-.post-preview a:focus,
-.post-preview a:hover {
-  /* custom edit: changed hover-col to link-hover-col  */
-  color: {{ site.link-hover-col | default: "#0085A1" }};
-}
-
 .post-preview .post-meta,
 .post-heading .post-meta {
   /* changed font of posts */
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.post-preview .blog-tags {
+  opacity: 0.8;
 }
 
 .post-preview a {
@@ -183,7 +170,7 @@ footer a:hover {
 
 .post-preview a:focus,
 .post-preview a:hover {
-  /* making title of the post the color of links (rather than black) */
+  /* making title of the post the color of links (rather than black) on hover  */
   color: {{ site.post-title-link-hover-col | default: "#0085A1" }};
 }
 

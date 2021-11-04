@@ -277,7 +277,7 @@ footer a:hover {
   text-transform: capitalize;
   /* changed pagination background color */
   background-color: {{ site.pagination-background-col | default: "#0085A1" }};
-  border: 5px solid transparent;
+  border: 4.5px solid transparent;
   border-radius: 28px;
   padding: 10px 12.5px;
 }
@@ -290,5 +290,5 @@ footer a:hover {
   background-color: {{ site.pagination-background-hover-col | default: "#0085A1" }};
   /* underlining pagination link on hover */
   text-decoration: underline;
-  border: 5px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};
+  border: 4.5px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};
 }

@@ -113,7 +113,7 @@ keywords: "charlieyaris, cyaris"
 navbar-col: "#54bdca"
 navbar-border-col: "#f26419"
 navbar-link-col: "#ffffff"
-navbar-link-hover-col: "#175676"
+navbar-link-hover-col: "#ffffff"
 
 page-col: "#ffffff"
 text-col: "#404040"

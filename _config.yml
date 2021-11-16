@@ -19,8 +19,8 @@ navbar-links:
   Projects:
     # Draft project below
     # - Falling Pizza: "falling_pizza"
-    - US Gun Violence Forecasting: "us_gun_violence_forecasting"
     - Mastermind: "mastermind"
+    - US Gun Violence Forecasting: "us_gun_violence_forecasting"
     - The Networks of War: "the_networks_of_war"
   Posts: "https://cyaris.github.io/"
   Resume: "resume"
@@ -111,9 +111,10 @@ keywords: "charlieyaris, cyaris"
 # custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links
 # custom edit: added several individual color variables below
 navbar-col: "#54bdca"
+navbar-dropdown-background-hover-col: "#4aa4b0"
 navbar-border-col: "#f26419"
 navbar-link-col: "#ffffff"
-navbar-link-hover-col: "#175676"
+navbar-link-hover-col: "#195f82" #175676
 
 page-col: "#ffffff"
 text-col: "#404040"
@@ -126,7 +127,7 @@ footer-col: "#54bdca"
 footer-border-col: "#f26419"
 footer-text-col: "#ffffff"
 footer-link-col: "#ffffff"
-footer-link-hover-col: "#175676"
+footer-link-hover-col: "#195f82" #175676
 
 # social-links will have separate color variables from rest of footer
 social-icon-col: "#ffffff"

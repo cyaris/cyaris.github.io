@@ -6,147 +6,147 @@
 		<meta charset="utf-8">
 		<script>
 
-		var boolDic = { true: 1, false: 0 },
-				pieceDic = {
-				1: ".",
-				2: ":",
-				3: ":.",
-				4: "::",
-				5: "★",
-				".": 1,
-				":": 2,
-				":.": 3,
-				"::": 4,
-				"★": 5
-				},
-				winningSymDic = {
-					1: "::",
-					2: "::",
-					3: "★",
-					4: "★"
-				}
-				levelAddress = window.location.href,
-				level = levelAddress.charAt(levelAddress.length-2),
-				colorOptions = {
-					1: Array("yellow", "blue", "red", "green", "orange", "purple"),
-					2: Array("yellow", "blue", "red", "green", "orange", "purple", "brown", "pink"),
-					3: Array("yellow", "blue", "red", "green", "orange", "purple"),
-					4: Array("yellow", "blue", "red", "green", "orange", "purple", "brown", "pink")
-				},
-				color1 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
-				color2 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
-				color3 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
-				color4 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
-				color5 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
-				colorCode = Array(color1, color2, color3, color4, color5),
-				maxTurns = {
-					1: 8,
-					2: 9,
-					3: 9,
-					4: 10
-				},
-				colorCodeLength = {
-					1: 4,
-					2: 4,
-					3: 5,
-					4: 5
-				},
-				colorCodeLengthText = {
-					1: "four",
-					2: "four",
-					3: "five",
-					4: "five"
-				},
-				fontSizeDic = {
-					".": 25,
-					":": 25,
-					":.": 25,
-					"::": 25,
-					"★": 12.5
-				}
-				colorCode = colorCode.slice(0, colorCodeLength[level]);
+			var boolDic = { true: 1, false: 0 },
+					pieceDic = {
+					1: ".",
+					2: ":",
+					3: ":.",
+					4: "::",
+					5: "★",
+					".": 1,
+					":": 2,
+					":.": 3,
+					"::": 4,
+					"★": 5
+					},
+					winningSymDic = {
+						1: "::",
+						2: "::",
+						3: "★",
+						4: "★"
+					}
+					levelAddress = window.location.href,
+					level = levelAddress.charAt(levelAddress.length-2),
+					colorOptions = {
+						1: Array("yellow", "blue", "red", "green", "orange", "purple"),
+						2: Array("yellow", "blue", "red", "green", "orange", "purple", "brown", "pink"),
+						3: Array("yellow", "blue", "red", "green", "orange", "purple"),
+						4: Array("yellow", "blue", "red", "green", "orange", "purple", "brown", "pink")
+					},
+					color1 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
+					color2 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
+					color3 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
+					color4 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
+					color5 = colorOptions[level][Math.floor(Math.random()*colorOptions[level].length)],
+					colorCode = Array(color1, color2, color3, color4, color5),
+					maxTurns = {
+						1: 8,
+						2: 9,
+						3: 9,
+						4: 10
+					},
+					colorCodeLength = {
+						1: 4,
+						2: 4,
+						3: 5,
+						4: 5
+					},
+					colorCodeLengthText = {
+						1: "four",
+						2: "four",
+						3: "five",
+						4: "five"
+					},
+					fontSizeDic = {
+						".": 25,
+						":": 25,
+						":.": 25,
+						"::": 25,
+						"★": 12.5
+					}
+					colorCode = colorCode.slice(0, colorCodeLength[level]);
 
-		console.log(colorCode);
+			console.log(colorCode);
 
 		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 
-		/* svg {
-			border: 1px solid #000;
-		} */
+			/* svg {
+				border: 1px solid #000;
+			} */
 
-		@media (max-width:602px){
-        #color_buttons {
-            margin-left:22.5%;
-        }
-	      #game_board_tooltip_div {
-						display: none;
+			@media (max-width:602px){
+	        #color_buttons {
+	            margin-left:22.5%;
+	        }
+		      #game_board_tooltip_div {
+							display: none;
+		      }
+	    }
+
+	    @media (min-width:602px){
+	      #color_buttons {
+	        margin-left:13.5%;
 	      }
-    }
+	    }
 
-    @media (min-width:602px){
-      #color_buttons {
-        margin-left:13.5%;
-      }
-    }
+			#hidden-button-win {
+				display: none;
+			}
 
-		#hidden-button-win {
-			display: none;
-		}
+			#hidden-button-lose {
+				display: none;
+			}
 
-		#hidden-button-lose {
-			display: none;
-		}
+			.blinking{
+			    animation:blinkingText 1s infinite;
+			}
 
-		.blinking{
-		    animation:blinkingText 1s infinite;
-		}
+			@keyframes blinkingText{
+			    0%{     color: #000;    }
+			    49%{     color: #000;    }
+			    50%{    color: transparent; }
+			    99%{    color: transparent;  }
+			    100%{   color: #000;    }
+			}
 
-		@keyframes blinkingText{
-		    0%{     color: #000;    }
-		    49%{     color: #000;    }
-		    50%{    color: transparent; }
-		    99%{    color: transparent;  }
-		    100%{   color: #000;    }
-		}
+			svg text {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				pointer-events: none;
+			}
 
-		svg text {
-			-webkit-touch-callout: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			pointer-events: none;
-		}
+			div.tooltip {
+				/* position: absolute; */
+				text-align: left;
+				padding: 5px;
+				font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				font-size: 12px;
+				stroke: black;
+				background: white;
+				border: solid;
+				border-width: 2px;
+				border-radius: 5px;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				pointer-events: none;
+			}
 
-		div.tooltip {
-			/* position: absolute; */
-			text-align: left;
-			padding: 5px;
-			font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-			font-size: 12px;
-			stroke: black;
-			background: white;
-			border: solid;
-			border-width: 2px;
-			border-radius: 5px;
-			-webkit-touch-callout: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			pointer-events: none;
-		}
-
-		</style>
+	</style>
 	</head>
 	<body>
 		<div id="level_message" align="center"></div>
 		<script>
 
-		document.getElementById("level_message").innerHTML = String(maxTurns[level])
-		+ " tries to crack the " + colorCodeLengthText[level] + " color code.<br>" + String(colorOptions[level].length) + " possible colors."
+			document.getElementById("level_message").innerHTML = String(maxTurns[level])
+			+ " tries to crack the " + colorCodeLengthText[level] + " color code.<br>" + String(colorOptions[level].length) + " possible colors."
 
 		</script>
 		<!-- Load d3.js -->

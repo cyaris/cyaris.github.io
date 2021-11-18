@@ -5,40 +5,40 @@
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<style type="text/css">
 
-		/* svg {
-			border: 1px solid #000;
-		} */
+			/* svg {
+				border: 1px solid #000;
+			} */
 
-		@media (max-width:500px){
-	      #profile_photo {
-						display: none;
-	      }
-				#profile_photo_pixels {
-						display: none;
-	      }
-				#transition_menu {
-						display: none;
-	      }
-				#fireworks {
-						display: none;
-	      }
+			@media (max-width:500px){
+		      #profile_photo {
+							display: none;
+		      }
+					#profile_photo_pixels {
+							display: none;
+		      }
+					#transition_menu {
+							display: none;
+		      }
+					#fireworks {
+							display: none;
+		      }
+				}
+
+		 	/* #profile_photo {
+				cursor: url(../assets/img/pizza_cursor.png), auto;
+			} */
+
+			svg text {
+				stroke: black;
+				fill: black;
+			  background: white;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				pointer-events: none;
 			}
-
-	 	/* #profile_photo {
-			cursor: url(../assets/img/pizza_cursor.png), auto;
-		} */
-
-		svg text {
-			stroke: black;
-			fill: black;
-		  background: white;
-			-webkit-touch-callout: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			pointer-events: none;
-		}
 
 	</style>
 	</head>
@@ -523,7 +523,7 @@
 						{	d3.timeout(launchFireworks, Math.max((fireWorkInterval1*totalFireworks1), (fireWorkInterval1*totalFireworks1) + (fireWorkInterval2*(i-totalFireworks1)) + chance.floating({ min: -2500, max: 2500 }))); }
 					}
 				}
-			}, 1000);
+			}, 500);
 
 			pixelMO = function(d) {
 

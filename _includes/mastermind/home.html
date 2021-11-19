@@ -7,15 +7,35 @@
 			  width: 185px;
 			}
 
+			@media (max-width: 767px) {
+
+			  .custom-btn-adjustment1 {
+			    margin-bottom: 7.5px;
+			  }
+
+				.custom-btn-adjustment2 {
+					margin-top: 0px;
+			    margin-bottom: 40px;
+			  }
+			}
+
+			@media (min-width: 767px) {
+
+				.custom-btn-adjustment2 {
+					margin-top: 10px;
+			    margin-bottom: 40px;
+			  }
+			}
+
 		</style>
 	</head>
 	<body>
-		<div class="center">
+		<div class="center custom-btn-adjustment1">
 			<a href="../play_mastermind/" class="btn-group custom-btn-size">Play Game</a>
 		</div>
-		<div class="center" style="margin-top:20px; margin-bottom:40px;">
-			<a href="../mastermind_development/" class="btn-group custom-btn-size">Development</a>
-			<a href="../mastermind_instructions/" class="btn-group custom-btn-size">Instructions</a>
+		<div class="center custom-btn-adjustment2">
+			<a href="../mastermind_development/" class="btn-group custom-btn-size custom-btn-adjustment1">Development</a>
+			<a href="../mastermind_instructions/" class="btn-group custom-btn-size custom-btn-adjustment1">Instructions</a>
 		</div>
 	</body>
 </html>

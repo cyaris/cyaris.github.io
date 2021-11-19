@@ -7,17 +7,41 @@
 			  width: 170px;
 			}
 
+			@media (max-width: 767px) {
+
+			  .custom-btn-adjustment1 {
+			    margin-bottom: 7.5px;
+			  }
+
+				.custom-btn-adjustment2 {
+					margin-top: 0px;
+			    margin-bottom: 0px;
+			  }
+			}
+
+			@media (min-width: 767px) {
+
+				.custom-btn-adjustment2 {
+					margin-top: 10px;
+			    margin-bottom: 12.5px;
+			  }
+			}
+
+			.custom-btn-adjustment3 {
+				margin-bottom: 40px;
+			}
+
 		</style>
 	</head>
 	<body>
 		<p align="center">Choose a War Type</p>
-		<div class="center">
-			<a href="../the_networks_of_war_inter_state_wars/" class="btn-group custom-btn-size">Inter-State</a>
-			<a href="../the_networks_of_war_intra_state_wars/" class="btn-group custom-btn-size">Intra-State</a>
+		<div class="center custom-btn-adjustment2">
+			<a href="../the_networks_of_war_inter_state_wars/" class="btn-group custom-btn-size custom-btn-adjustment1">Inter-State</a>
+			<a href="../the_networks_of_war_intra_state_wars/" class="btn-group custom-btn-size custom-btn-adjustment1">Intra-State</a>
 		</div>
-		<div class="center" style="margin-top:20px; margin-bottom:40px;">
-			<a href="../the_networks_of_war_extra_state_wars/" class="btn-group custom-btn-size">Extra-State</a>
-			<!-- <a href="../the_networks_of_war_non_state_wars/" class="btn-group btn-size-1">Non-State</a> -->
+		<div class="center custom-btn-adjustment3">
+			<a href="../the_networks_of_war_extra_state_wars/" class="btn-group custom-btn-size custom-btn-adjustment1">Extra-State</a>
+			<!-- <a href="../the_networks_of_war_non_state_wars/" class="btn-group custom-btn-size custom-btn-adjustment1">Non-State</a> -->
 		</div>
 	</body>
 </html>

@@ -272,6 +272,8 @@ footer a:hover {
   border: 4px solid transparent;
   border-radius: 28px;
   padding: 10px 17.5px;
+  text-align: center;
+  width: 175px;
 }
 
 .pagination .page-item .page-link:hover,

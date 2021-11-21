@@ -274,6 +274,7 @@
 				.attr("class", "tooltip")
 				.attr("id", "game_board_tooltip")
 				.style("opacity", 0);
+
 		//Read the data
 		d3.csv("/assets/csv/mastermind/game_board" + String(level) + ".csv", function(data) {
 			// Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
@@ -320,55 +321,56 @@
 						.style("opacity", 1)
 						.style("cursor", "pointer");
 				}
-			 },
-				 mousemove = function(d) {
-					 if ( gridScoreDic[d.score_index]==null )
-					 { toolNumber = 0 }
-					 else
-					 { toolNumber = pieceDic[gridScoreDic[d.score_index]] }
-					 if ( d.group=="W" )
-					 { colorState = " wrong" }
-					 if ( d.group=="B" )
-					 { colorState = " right" }
-					 if ( toolNumber==1 )
-					 { cPlur = "" }
-					 else
-					 { cPlur = "s" }
-					 if ( toolNumber!=0 ) {
-						 d3.select("#game_board_tooltip")
-						 .html(toolNumber + " right color" + cPlur + " in"
-						 + "<br>the " + colorState + " place.")
-					 }
-					 else if ( toolNumber==0 && (d.variable)<=(clickCount/colorCodeLength[level]) ) {
-						 d3.select("#game_board_tooltip")
-						 .html("No right color" + cPlur + " in"
-						 + "<br>the " + colorState + " place.")
-					 }
-					 else {
-						 d3.select("#game_board_tooltip")
-						 .html("This round hasn't<br>been played yet.")
-					 }
-					 d3.select("#game_board_tooltip")
-						 .style("left", "555px")
-						 .style("top", (d3.mouse(this)[1]) + 76.5 + "px")
-				},
-				mouseleave = function(d) {
-					hoverID = d3.select(this)["_groups"][0][0]["id"];
-					if ( hoverID=="rect_colors" ) {
-						if ( d.group=="W" || d.group=="B" ) {
-							d3.select("#game_board_tooltip")
-								.style("opacity", 0)
-							d3.select(this)
-								.style("stroke-width", 1)
-								.style("stroke", "black")
-								.style("opacity", 1)
-						}}
-						else {
+		 	},
+			mousemove = function(d) {
+				if ( gridScoreDic[d.score_index]==null )
+				{ toolNumber = 0 }
+				else
+				{ toolNumber = pieceDic[gridScoreDic[d.score_index]] }
+				if ( d.group=="W" )
+				{ colorState = " wrong" }
+				if ( d.group=="B" )
+				{ colorState = " right" }
+				if ( toolNumber==1 )
+				{ cPlur = "" }
+				else
+				{ cPlur = "s" }
+				if ( toolNumber!=0 ) {
+					d3.select("#game_board_tooltip")
+					.html(toolNumber + " right color" + cPlur + " in"
+					+ "<br>the " + colorState + " place.")
+				}
+				else if ( toolNumber==0 && (d.variable)<=(clickCount/colorCodeLength[level]) ) {
+					d3.select("#game_board_tooltip")
+					.html("No right color" + cPlur + " in"
+					+ "<br>the " + colorState + " place.")
+				}
+				else {
+					d3.select("#game_board_tooltip")
+					.html("This round hasn't<br>been played yet.")
+				}
+				d3.select("#game_board_tooltip")
+					.style("left", "555px")
+					.style("top", (d3.mouse(this)[1]) + 76.5 + "px")
+			},
+			mouseleave = function(d) {
+				hoverID = d3.select(this)["_groups"][0][0]["id"];
+				if ( hoverID=="rect_colors" ) {
+					if ( d.group=="W" || d.group=="B" ) {
+						d3.select("#game_board_tooltip")
+							.style("opacity", 0)
 						d3.select(this)
-							.style("stroke-width", 2)
+							.style("stroke-width", 1)
 							.style("stroke", "black")
 							.style("opacity", 1)
-				}};
+					}}
+					else {
+					d3.select(this)
+						.style("stroke-width", 2)
+						.style("stroke", "black")
+						.style("opacity", 1)
+			}};
+			
 		  // add the squares
 		  var rect = svg1.selectAll()
 			    .data(data, function(d) { return d.group+':'+d.variable; })

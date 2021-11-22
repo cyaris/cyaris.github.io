@@ -187,19 +187,14 @@ footer a:hover {
 .blog-tags a {
   /* changed tag border radius to be consistent with site buttons */
   border-radius: 28px;
-  /* added individual border color for tag on hover */
   border: 2.5px solid transparent;
-  /* added individual color for tag  */
   color: {{ site.tag-link-col | default: "#404040" }};
 }
 
 .blog-tags a:hover {
-  /* added individual color for tag on hover */
   color: {{ site.tag-link-hover-col | default: "#404040" }};
-  /* added individual background color for tag on hover */
-  background-color: {{ site.tag-background-hover-col | default: "#0085A1" }};
-  /* added individual border color for tag on hover */
   border-color: {{ site.tag-border-hover-col | default: "#0085A1" }};
+  background-color: {{ site.tag-background-hover-col | default: "#0085A1" }};
 }
 
 /* --- 404 --- */

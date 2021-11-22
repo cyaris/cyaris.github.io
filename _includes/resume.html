@@ -1,36 +1,42 @@
-<head>
-  <style type="text/css">
+<!-- <!DOCTYPE html> -->
 
-	@media (max-width:750px){
-      #resume_view {
-					display: none;
-      }
-  }
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name='viewport' content='width=device-width, initial-scale=1'>
+	  <style type="text/css">
 
-  @media (min-width:750px){
-    #resume_link {
-			display: none;
-    }
-  }
+		@media (max-width:750px){
+	      #resume_view {
+						display: none;
+	      }
+	  }
 
-	#link_text {
-		font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		font-weight: 800;
-	}
+	  @media (min-width:750px){
+	    #resume_link {
+				display: none;
+	    }
+	  }
 
-  </style>
-</head>
-<body>
-	<object id="resume_view" data="{{site.url}}/assets/pdf/resume/Charlie_Yaris_Resume.pdf#navpanes=0&scrollbar=0&toolbar=0" type="application/pdf" align="center" width="750px" height="1000px" style="margin-bottom:-50px;">
-	    <embed src="{{site.url}}/assets/pdf/resume/Charlie_Yaris_Resume.pdf" >
-	        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="{{site.url}}/assets/resume/Charlie_Yaris_Resume.pdf">Download PDF</a>.</p>
-	    </embed>
-	</object>
-	<div id="resume_link" style="margin-top:0px; margin-bottom:-100px;">
-		<font size="5.5"><b><a id="link_text" href="{{site.url}}/assets/pdf/resume/Charlie_Yaris_Resume.pdf" target="_blank">View Resume</a></b></font>
-	</div>
-</body>
-<br>
-<br>
-<br>
-<br>
+		#link_text {
+			font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-weight: 800;
+		}
+
+	  </style>
+	</head>
+	<body>
+		<object id="resume_view" data="{{site.url}}/assets/pdf/resume/Charlie_Yaris_Resume.pdf#navpanes=0&scrollbar=0&toolbar=0" type="application/pdf" align="center" width="750px" height="1000px" style="margin-bottom:-50px;">
+		    <embed src="{{site.url}}/assets/pdf/resume/Charlie_Yaris_Resume.pdf" >
+		        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="{{site.url}}/assets/resume/Charlie_Yaris_Resume.pdf">Download PDF</a>.</p>
+		    </embed>
+		</object>
+		<div id="resume_link" style="margin-top:0px; margin-bottom:-100px;">
+			<font size="5.5"><b><a id="link_text" href="{{site.url}}/assets/pdf/resume/Charlie_Yaris_Resume.pdf" target="_blank">View Resume</a></b></font>
+		</div>
+	</body>
+	<br>
+	<br>
+	<br>
+	<br>
+</html>

@@ -1,666 +1,669 @@
-<head>
-	<style type="text/css">
+<!-- <!DOCTYPE html> -->
+<html>
+	<head>
+		<style type="text/css">
 
-		/* svg {
-			border: 1px solid #000;
-		} */
+			/* svg {
+				border: 1px solid #000;
+			} */
 
-		@media (max-width:500px){
-	      #profile_photo {
-						display: none;
-	      }
-				#profile_photo_pixels {
-						display: none;
-	      }
-				#transition_menu {
-						display: none;
-	      }
-				#fireworks {
-						display: none;
-	      }
+			@media (max-width:500px){
+		      #profile_photo {
+							display: none;
+		      }
+					#profile_photo_pixels {
+							display: none;
+		      }
+					#transition_menu {
+							display: none;
+		      }
+					#fireworks {
+							display: none;
+		      }
+				}
+
+		 	/* #profile_photo {
+				cursor: url(../assets/img/pizza_cursor.png), auto;
+			} */
+
+			svg text {
+				stroke: black;
+				fill: black;
+			  background: white;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				pointer-events: none;
 			}
 
-	 	/* #profile_photo {
-			cursor: url(../assets/img/pizza_cursor.png), auto;
-		} */
+	</style>
+	</head>
+	<body>
+		<!-- Load d3.js -->
+		<script src='https://d3js.org/d3.v4.min.js'></script>
+		<script src='https://chancejs.com/chance.min.js'></script>
+		<!-- Create a div where the graph will take place -->
+		<div id='profile_photo' align='center' style='margin-bottom:-406.25px;'></div>
+		<div id='profile_photo_pixels' align='center' style='margin-bottom:15px;'></div>
+		<script src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
+		<!-- Create a div where the slider will be -->
+		<div id='transition_menu' align='center' style='margin-bottom:-25px;'></div>
+		<div id='fireworks' align='center' style='margin-bottom:-650px;'></div>
+		<script>
 
-		svg text {
-			stroke: black;
-			fill: black;
-		  background: white;
-			-webkit-touch-callout: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			pointer-events: none;
+
+		function getRandomInt(min, max) {
+
+			min = Math.ceil(min);
+			max = Math.floor(max);
+
+			// the maximum is exclusive and the minimum is inclusive
+			return Math.floor(Math.random() * (max - min) + min);
 		}
 
-</style>
-</head>
-<body>
-	<!-- Load d3.js -->
-	<script src='https://d3js.org/d3.v4.min.js'></script>
-	<script src='https://chancejs.com/chance.min.js'></script>
-	<!-- Create a div where the graph will take place -->
-	<div id='profile_photo' align='center' style='margin-bottom:-406.25px;'></div>
-	<div id='profile_photo_pixels' align='center' style='margin-bottom:15px;'></div>
-	<script src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
-	<!-- Create a div where the slider will be -->
-	<div id='transition_menu' align='center' style='margin-bottom:-25px;'></div>
-	<div id='fireworks' align='center' style='margin-bottom:-650px;'></div>
-	<script>
+
+		// function getRandomPositiveNegative() {
+		//
+		// 	return Math.ceil((Math.random() - 0.5) * 2) < 1 ? -1 : 1;
+		// }
 
 
-	function getRandomInt(min, max) {
+		function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
 
-		min = Math.ceil(min);
-		max = Math.floor(max);
-
-		// the maximum is exclusive and the minimum is inclusive
-		return Math.floor(Math.random() * (max - min) + min);
-	}
-
-
-	// function getRandomPositiveNegative() {
-	//
-	// 	return Math.ceil((Math.random() - 0.5) * 2) < 1 ? -1 : 1;
-	// }
+				window[svgName] = d3.select('#' + divInput)
+														.append('svg')
+															.attr('width', widthInput)
+															.attr('height', heightInput)
+															.attr('transform', 'translate(' + marginLeftInput + ',' + marginTopInput + ')')
+															.style('cursor', cursorInput);
+		};
 
 
-	function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
+		function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, fontStyle, opacity, strokeWidth, textInput) {
 
-			window[svgName] = d3.select('#' + divInput)
-													.append('svg')
-														.attr('width', widthInput)
-														.attr('height', heightInput)
-														.attr('transform', 'translate(' + marginLeftInput + ',' + marginTopInput + ')')
-														.style('cursor', cursorInput);
-	};
+				svgInput.append('text')
+					.attr('class', classInput)
+					.attr('id', idInput)
+					.attr('x', textX)
+					.attr('y', textY)
+					.attr('pointer-events', 'none')
+					.text(textInput)
+						.style('font-size', fontSize)
+						.style('font-style', fontStyle)
+						.style('opacity', opacity)
+						.style('stroke-width', strokeWidth)
+						.style('stroke', function(d) {
+							if ( strokeWidth==0 )
+							{ return 'transparent'; }
+							else
+							 { return 'black'; }
+						 });
+		};
 
+		// set the dimensions and margins of the graph
+		margin = {top: 0, bottom: 15, left: 0, right: 0},
+	  width = 405,
+	  height = 405,
+		svg3Height = 120,
+		svg4Width = width*2.5,
+		// width*3,
+		svg4Height = height+svg3Height+175;
 
-	function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, fontStyle, opacity, strokeWidth, textInput) {
+		// append the svg object to the body of the pageC
+		addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
+		// a separate svg is needed for the pixels so that they will always be on top, even while objects are appended to the original image (laser eyes).
+		addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, null);
+		addStdSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, null);
 
-			svgInput.append('text')
-				.attr('class', classInput)
-				.attr('id', idInput)
-				.attr('x', textX)
-				.attr('y', textY)
-				.attr('pointer-events', 'none')
-				.text(textInput)
-					.style('font-size', fontSize)
-					.style('font-style', fontStyle)
-					.style('opacity', opacity)
-					.style('stroke-width', strokeWidth)
-					.style('stroke', function(d) {
-						if ( strokeWidth==0 )
-						{ return 'transparent'; }
-						else
-						 { return 'black'; }
-					 });
-	};
+		addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*0.275, -height*1.725, null);
+		svg4.attr('pointer-events', 'none');
 
-	// set the dimensions and margins of the graph
-	margin = {top: 0, bottom: 15, left: 0, right: 0},
-  width = 405,
-  height = 405,
-	svg3Height = 120,
-	svg4Width = width*2.5,
-	// width*3,
-	svg4Height = height+svg3Height+175;
+		addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'normal', 0.80, 0, 'Hover on my face!');
 
-	// append the svg object to the body of the pageC
-	addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
-	// a separate svg is needed for the pixels so that they will always be on top, even while objects are appended to the original image (laser eyes).
-	addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, null);
-	addStdSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, null);
+		// credit is due to this blocks page for the process defined below: http://bl.ocks.org/mrtriangle/11222485
+		// I took what was there and made adjustments launchXLocd on preference and version differences, but the basic foundation was all set up on that page.
+		executeLaserEyes = function(d) {
 
-	addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*0.275, -height*1.725, null);
-	svg4.attr('pointer-events', 'none');
+			for ( var i=1; i<=4; ++i ) {
 
-	addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'normal', 0.80, 0, 'Hover on my face!');
+				createLaserEye = function(i, cxInput, cyInput) {
 
-	// credit is due to this blocks page for the process defined below: http://bl.ocks.org/mrtriangle/11222485
-	// I took what was there and made adjustments launchXLocd on preference and version differences, but the basic foundation was all set up on that page.
-	executeLaserEyes = function(d) {
+					svg1.append('circle')
+							.attr('cx', cxInput)
+							.attr('cy', cyInput)
+							.attr('r', 0.25)
+							.style('fill', 'transparent')
+							.style('stroke', '#cc0000')
+							.style('stroke-width', 7.5)
+							.transition()
+								// this delay is increasingly long for each circle
+								// additional seconds are added so that the eyes are stay red for a few seconds before transitioning
+								.delay((i*225) + 500)
+								.duration(2000)
+								.attr('r', 200)
+								.style('stroke-width', 0)
+								.style('stroke-opacity', 0)
+								.on('end', function() {
+									d3.select(this).remove();
+								});
+					}
 
-		for ( var i=1; i<=4; ++i ) {
+					// appending first laser eye
+					createLaserEye(i, 177.5, 201.25);
+					// appending second laser eye
+					createLaserEye(i, 246.75, 197.75);
+			}
+		}
 
-			createLaserEye = function(i, cxInput, cyInput) {
+		// appending the original version of the photo, invisible upon page load.
+		// x,y coordinates are relative to the transform translate above.
+		svg1.append('svg:image')
+				// .attr('id', 'full_resolution_photo')
+				.attr('x', 0)
+				.attr('y', 0)
+				.attr('width', width)
+				.attr('height', height)
+				.attr('xlink:href', '../assets/img/profile_photo.png')
+				.attr('pointer-events', 'none');
 
-				svg1.append('circle')
-						.attr('cx', cxInput)
-						.attr('cy', cyInput)
-						.attr('r', 0.25)
-						.style('fill', 'transparent')
-						.style('stroke', '#cc0000')
-						.style('stroke-width', 7.5)
+		//Read the data
+		d3.csv('/assets/csv/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
+
+			// defining time variables as inputs for pixelMO and pixelML tansitions.
+			pixelTransDelay = 100,
+			pixelTransDuration = 750,
+			pixelTransLength = (pixelTransDelay * 2) + (pixelTransDuration * 2);
+
+			// determining input for selectAll launchXLocd on valid pixels
+			function getTransitionSelect(idInput, mouseFunction) {
+
+				currentPixel = '#' + idInput,
+				xInput = parseInt(idInput.replace('x', '').split('y', 2)[0]),
+				yInput = parseInt(idInput.replace('x', '').split('y', 2)[1]);
+
+				// defining neighbors so they'll activate a 3x3 box area of pixels in all directions
+				// these each need to be evaluated to confirm that the pixel exists
+				// each of these will be checked individually to see their current opacity
+				// only those that are not invisible will be needed (since those are already fully transitioned)
+				transitionPixels = Array(currentPixel);
+
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+1)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-1)),
+				transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+1)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-1)),
+				transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput)),
+				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput-2)),
+				transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput+2)),
+				transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput-2));
+
+				transitionSelect = '';
+
+				// creating conditional for whether it's a mouseover or mouseleave
+				// goal here is to limit transitions that are unnecesarry (ex: transitioning an invisible object)
+				for ( var i=1; i<=transitionPixels.length; i++ ) {
+
+					if ( d3.select(transitionPixels[i]).empty()==false && (
+						(mouseFunction=='pixelMO' && d3.select(transitionPixels[i]).style('opacity')!=0 )
+						// doing all possible transitions for mouseleave
+						// this will only apply to transition mode
+						|| mouseFunction=='pixelML'
+					)) {
+							// creating a string that will have all ids needed for transition select statements
+							if ( transitionSelect=='' )
+							{ transitionSelect = transitionPixels[i]; }
+							else
+							{ transitionSelect+=', ' + transitionPixels[i]; }
+					}
+				}
+
+				return transitionSelect;
+			};
+
+			// credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5
+			// I took what was there, made adjustments on preference/version differences, and added to it.
+			function launchFireworks() {
+
+				////////////////////////////////////////////////////////////////////////////////////////////////
+
+				// // palettes that have been removed:
+
+				// P a s t e l R a i n b o w Color Palette: https://www.color-hex.com/color-palette/104769
+				// ['#ffc5c5', '#bcffa7', '#feffb6', '#98e5e7', '#ffaef3'],
+				// Beach Color Palette: https://www.color-hex.com/color-palette/895
+				// ['#96ceb4', '#ffeead', '#ff6f69', '#ffcc5c', '#88d8b0'],
+				// Metro Style Color Palette: https://www.color-hex.com/color-palette/471
+				// ['#00aedb', '#a200ff', '#f47835', '#d41243', '#8ec127'],
+				// Retro Color Palette: https://www.color-hex.com/color-palette/165
+				// ['#666547', '#fb2e01', '#6fcb9f', '#ffe28a', '#fffeb3'],
+				// BG colors Color Palette: https://www.color-hex.com/color-palette/105000
+				// ['#08a184', '#42d4b9', '#fdec40', '#1bd43a', '#dc143c'],
+				// original bg theme Color Palette: https://www.color-hex.com/color-palette/105004
+				// ['#fdca40', '#970b44', '#00cb9c', '#7ddf64', '#aaaaaa'],
+				// BGSS colors Color Palette: https://www.color-hex.com/color-palette/104999
+				// ['#fdf540', '#0cead9', '#00cb9c', '#8ddf64', '#dc143c'],
+				// Gryffindors Color Palette: https://www.color-hex.com/color-palette/104972
+				// ['#ae2825', '#fbcd14', '#b9282f', '#e5ba30', '#86162a'],
+				// ESO Item Qualities Color Palette: https://www.color-hex.com/color-palette/104887
+				// ['#2dc50e', '#3a92ff', '#a02ef7', '#eeca2a', '#ff8200'],
+				// Neon 0908 Color Palette: https://www.color-hex.com/color-palette/1131
+				// ['#fe0000', '#fdfe02', '#0bff01', '#011efe', '#fe00f6'],
+				// ESO MOTD Color Text Color Palette: https://www.color-hex.com/color-palette/20452
+				// ['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f'],
+				// Fire oranges Color Palette: https://www.color-hex.com/color-palette/104858
+				// ['#ffbf00', '#ffa500', '#ff8000', '#ff4000', '#ff1500'],
+
+				////////////////////////////////////////////////////////////////////////////////////////////////
+
+				// creating an array of separate color palettes for each firework
+				fireWorksColorPalettes = [
+					// https://htmlcolorcodes.com/
+					//		// ['#DFFF00', '#FFBF00', '#FF7F50', '#DE3163', '#9FE2BF', '#40E0D0', '#6495ED', '#CCCCFF'],
+					//		// adjusted above to remove one or more colors
+					['#DFFF00', '#FFBF00', '#FF7F50', '#DE3163', '#40E0D0'],
+					// Astrid Gen Wyatt Shyla Cynthia Color Palette: https://www.color-hex.com/color-palette/104729
+					//		// ['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6'],
+					//		// adjusted above to remove one or more colors
+					['#1ecf25', '#fcd300', '#30cf89', '#19cde6'],
+					// Bohemian sunset Color Palette: https://www.color-hex.com/color-palette/104833
+					['#9c2ea1', '#ff5f58', '#ffdd23', '#fd9301', '#ff0055'],
+					// KINDA BRIGHT Color Palette: https://www.color-hex.com/color-palette/104792
+					['#d578ff', '#625df0', '#59e7f2', '#f259a6', '#67eebb'],
+					// pastel colors of the rainbow Color Palette: https://www.color-hex.com/color-palette/5361
+					['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'],
+					// VaporWave Color Palette: https://www.color-hex.com/color-palette/10221
+					['#ff71ce', '#01cdfe', '#05ffa1', '#b967ff', '#fffb96'],
+					// 80s Color Palette: https://www.color-hex.com/color-palette/25888
+					//		// ['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9', '#ff3f3f'],
+					//		// adjusted above to remove one or more colors
+					['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9'],
+					// Metro UI Colors Color Palette: https://www.color-hex.com/color-palette/700
+					//		// ['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'],
+					//		// adjusted above to remove one or more colors
+					['#00b159', '#00aedb', '#f37735', '#ffc425'],
+					// neon colors Color Palette: https://www.color-hex.com/color-palette/8618
+					//		// ['#4deeea', '#74ee15', '#ffe700', '#f000ff', '#001eff'],
+					//		// adjusted above to remove one or more colors
+					['#4deeea', '#74ee15', '#ffe700', '#f000ff'],
+					// Instagram gradient Color Palette: https://www.color-hex.com/color-palette/44340
+					//		// ['#feda75', '#fa7e1e', '#d62976', '#962fbf', '#4f5bd5'],
+					//		// adjusted above to remove one or more colors
+					['#feda75', '#fa7e1e', '#d62976', '#962fbf'],
+					// Rainbow Dash Color Palette: https://www.color-hex.com/color-palette/807
+					//		// ['#ee4035', '#f37736', '#fdf498', '#7bc043', '#0392cf'],
+					//		// adjusted above to remove one or more colors
+					['#ee4035', '#f37736', '#fdf498', '#0392cf'],
+					// Cyberpunk Color Palette: https://www.color-hex.com/color-palette/14887
+					//		// ['#00ff9f', '#00b8ff', '#001eff', '#bd00ff', '#d600ff'],
+					//		// adjusted above to remove one or more colors
+					['#00ff9f', '#00b8ff', '#bd00ff', '#d600ff'],
+					// fruit tree Color Palette: https://www.color-hex.com/color-palette/104883
+					//		// ['#38ad94', '#62a43d', '#ffb42b', '#ff493a', '#ff8bb6'],
+					//		// adjusted above to remove one or more colors
+					['#38ad94', '#ffb42b', '#ff493a', '#ff8bb6'],
+					// cool blue Color Palette: https://www.color-hex.com/color-palette/30415
+					//		// ['#005073', '#107dac', '#189ad3', '#1ebbd7', '#71c7ec'],
+					//		// adjusted above to remove one or more colors
+					['#107dac', '#189ad3', '#1ebbd7', '#71c7ec'],
+					// Shades of Turquoise Color Palette: https://www.color-hex.com/color-palette/1836
+					['#b3ecec', '#89ecda', '#43e8d8', '#40e0d0', '#3bd6c6'],
+					// Red-Orange Color Palette: https://www.color-hex.com/color-palette/4699
+					['#ffc100', '#ff9a00', '#ff7400', '#ff4d00', '#ff0000'],
+					// I Loved In Shades of Green Color Palette: https://www.color-hex.com/color-palette/1325
+					//		// ['#adff00', '#74d600', '#028900', '#00d27f', '#00ff83'],
+					//		// adjusted above to remove one or more colors
+					['#adff00', '#74d600', '#00d27f', '#00ff83'],
+					// Facebook Messenger 1 Color Palette: https://www.color-hex.com/color-palette/15945
+					//		// ['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb'],
+					//		// adjusted above to remove one or more colors
+					['#0084ff', '#44bec7', '#ffc300', '#fa3c4c'],
+					// Ice Cream Pastels Color Palette: https://www.color-hex.com/color-palette/104985
+					['#41d8ca', '#c7e3e5', '#f4f3d4', '#f9d7c5', '#f4a2a9'],
+					// Pop Quiz Color Palette: https://www.color-hex.com/color-palette/104873
+					//		// ['#fe0879', '#ff82e2', '#fed715', '#0037b3', '#70baff'],
+					//		// adjusted above to remove one or more colors
+					['#fe0879', '#ff82e2', '#fed715', '#70baff'],
+					// indy Color Palette: https://www.color-hex.com/color-palette/104870
+					//		// ['#ff5454', '#ff7698', '#56dfd4', '#2497a7', '#2e0ff6'],
+					//		// adjusted above to remove one or more colors
+					['#ff5454', '#ff7698', '#56dfd4', '#2497a7'],
+					// Crystal Glacier Color Palette: https://www.color-hex.com/color-palette/104790
+					//		// ['#ebb6f9', '#7f8bf5', '#445bab', '#0fba7c', '#4b9cfc'],
+					//		// adjusted above to remove one or more colors
+					['#ebb6f9', '#7f8bf5', '#445bab', '#4b9cfc'],
+					// Midnight Mountain Color Palette: https://www.color-hex.com/color-palette/104789
+					//		// ['#d948c3', '#3227a5', '#0ed9c1', '#600571', '#1c024b'],
+					//		// adjusted above to remove one or more colors
+					['#d948c3', '#3227a5', '#0ed9c1'],
+					// XuxaDiversidade Color Palette: https://www.color-hex.com/color-palette/104756
+					//		// ['#ff0000', '#ff5e00', '#f8d900', '#4b8b05', '#1771de'],
+					//		// adjusted above to remove one or more colors
+					['#ff0000', '#ff5e00', '#f8d900', '#1771de'],
+					// Date Nite Color Palette: https://www.color-hex.com/color-palette/104742
+					//		// ['#f53473', '#93135d', '#28357b', '#5595c1', '#77def1']
+					//		// adjusted above to remove one or more colors
+					['#f53473', '#93135d', '#5595c1', '#77def1'],
+				];
+
+				// defining y parameter for the height of the launch
+				// the is the distance from the top of the pange
+				LaunchYLoc = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.20 }),
+				// defining adjusted y parameter for delay preceding explosion
+				// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
+				explosionDrop = chance.floating({ min: 20, max: 100 }),
+				// height all the circles will be at after the drop (and just before exploding)
+				explosionYLoc = LaunchYLoc + explosionDrop,
+				// defining values for the launch of the firework
+				// function below will be used to determine the x location for launching the rocket
+				randomXStart = d3.randomNormal(svg4Width/2, 130),
+				// x coordinate for the ascending (and descending) rocket
+				launchXLoc = randomXStart(),
+				// determining the magnitude of the explosion (value to be squared) at random
+				// the actual distance from the explosion will be a combination of this value and another random value determined for each piece
+				// this will also be used to decide the total circles for the explosion
+				explosionMagnitude = chance.floating({ min: 140, max: 180 }),
+				// total circles for the explosion
+				totalCircles = Math.round(explosionMagnitude*1.5),
+				// function to determine the x coordinates for all explosion pieces
+				explosionData = d3.range(totalCircles).map(function() {
+						// distance fron the center of the explosion determined at random
+						// explosionSize (magnitude of the explosion) stays the same for each circle
+						explosionDistance = Math.sqrt(~~(chance.floating({ min: 0, max: 1 }) * explosionMagnitude * explosionMagnitude)),
+						// randomly determining the angle by which each circle will be relative to the center of the explosion
+						randomAngle = Math.random() * 2 * Math.PI;
+
+						return {
+						x: launchXLoc + (explosionDistance * Math.cos(randomAngle)),
+						y: explosionYLoc + (explosionDistance * Math.sin(randomAngle))
+					};
+				}),
+				randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length)],
+				launchColor = randomPallete[getRandomInt(0, randomPallete.length)],
+				fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
+
+				launchRadius = 3,
+				launchDuration = 1000,
+				launchSpeed = launchDuration/((svg4Height+launchRadius)- LaunchYLoc),
+				dropDuration = launchSpeed*explosionDrop;
+
+				// these two variables will help create the tail effect with delay
+				fireWorkTailSize = 90,
+				tailDelaySize = 2.5;
+
+				svg4.selectAll()
+						.data(explosionData).enter()
+						.append('circle')
+							.attr('r', launchRadius)
+							.attr('cx', launchXLoc)
+							.attr('cy', svg4Height+launchRadius)
+							.style('fill', launchColor)
+							.style('opacity', function(d, i) {
+								if ( i>0 && i<=fireWorkTailSize )
+								{ return 0.15; }
+								else
+								{ return 1; }
+							})
 						.transition()
-							// this delay is increasingly long for each circle
-							// additional seconds are added so that the eyes are stay red for a few seconds before transitioning
-							.delay((i*225) + 500)
-							.duration(2000)
-							.attr('r', 200)
-							.style('stroke-width', 0)
-							.style('stroke-opacity', 0)
+							// delay here is to create the ascending tail
+							.delay(function(d, i) {
+								if ( i>0 && i<=fireWorkTailSize )
+								{ return i*tailDelaySize; }
+								else
+								{ return 0; }
+							})
+							.ease(d3.easeCircle)
+							.duration(launchDuration)
+							.attr('cy', LaunchYLoc)
+						.transition()
+							.duration(dropDuration)
+							.ease(d3.easeQuad)
+							.attr('r', 5)
+							.attr('cy', explosionYLoc)
+						.transition()
+							// delay here is to allow all objects to catch up
+							.delay(function(d, i) {
+								if ( i>0 && i<=fireWorkTailSize )
+								{ return (fireWorkTailSize*tailDelaySize)-(i*tailDelaySize); }
+								else
+								{ return fireWorkTailSize*tailDelaySize; }
+							})
+							.duration(0)
+							.style('opacity', 1)
+						.transition()
+							.duration(500)
+							.ease(d3.easeCircle)
+							.attr('cx', function(d) { return d.x; })
+							.attr('cy', function(d) { return d.y; })
+							.attr('r', 10)
+							// .attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
+							.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
+						.transition()
+							.duration(1750 + chance.floating({ min: -750, max: 750 }))
+							.ease(d3.easeCircle)
+							.style('opacity', 0)
+							.attr('cx', function(d) {
+								if ( d.x > launchXLoc )
+								{ return d.x + (d.x - launchXLoc) }
+								else
+								{ return d.x - (-d.x + launchXLoc) }
+							})
+							.attr('cy', function(d) {
+								if ( d.y > explosionYLoc )
+								{ return d.y + (d.y - explosionYLoc ) }
+								else
+								{ return d.y - (-d.y + explosionYLoc ) }
+							})
 							.on('end', function() {
 								d3.select(this).remove();
 							});
-				}
+			}
 
-				// appending first laser eye
-				createLaserEye(i, 177.5, 201.25);
-				// appending second laser eye
-				createLaserEye(i, 246.75, 197.75);
-		}
-	}
+			function countInvisiblePixels() {
 
-	// appending the original version of the photo, invisible upon page load.
-	// x,y coordinates are relative to the transform translate above.
-	svg1.append('svg:image')
-			// .attr('id', 'full_resolution_photo')
-			.attr('x', 0)
-			.attr('y', 0)
-			.attr('width', width)
-			.attr('height', height)
-			.attr('xlink:href', '../assets/img/profile_photo.png')
-			.attr('pointer-events', 'none');
+				// iterating over all pixels to check the current opacity, and get a percent of total pixels that are invisible.
+				totalPixels = svg2.selectAll('.photo_pixels').size(),
+				invisiblePixels = 0;
 
-	//Read the data
-	d3.csv('/assets/csv/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
+				svg2.selectAll('.photo_pixels')
+				  .each(function(d) {
 
-		// defining time variables as inputs for pixelMO and pixelML tansitions.
-		pixelTransDelay = 100,
-		pixelTransDuration = 750,
-		pixelTransLength = (pixelTransDelay * 2) + (pixelTransDuration * 2);
+						if ( d3.select(this).style('opacity')==0 )
+						{ invisiblePixels+=1 }
+				  });
 
-		// determining input for selectAll launchXLocd on valid pixels
-		function getTransitionSelect(idInput, mouseFunction) {
+				// labelling dynamically the percent of the non-pixelated photo that's fully visible.
+				svg3.select('#percent_revealed').remove();
 
-			currentPixel = '#' + idInput,
-			xInput = parseInt(idInput.replace('x', '').split('y', 2)[0]),
-			yInput = parseInt(idInput.replace('x', '').split('y', 2)[1]);
+				percentFormat = d3.format('.2f'),
+				numberInput = percentFormat((invisiblePixels/totalPixels)*100),
+				textInput = 'Percent Revealed: ' + numberInput + '%';
 
-			// defining neighbors so they'll activate a 3x3 box area of pixels in all directions
-			// these each need to be evaluated to confirm that the pixel exists
-			// each of these will be checked individually to see their current opacity
-			// only those that are not invisible will be needed (since those are already fully transitioned)
-			transitionPixels = Array(currentPixel);
+				// if ( numberInput>=50 ) {
+				// 	fillColor = '#cc0000';
+			 	// 	fontWeight = ((numberInput-50) * 16) + 100;
+				// }
+				// else {
+				// 	fillColor = 'black',
+				// 	fontWeight = 0;
+				// }
 
-			transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+2)),
-			transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-2)),
-			transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+1)),
-			transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-1)),
-			transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput)),
-			transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+2)),
-			transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-2)),
-			transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+1)),
-			transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-1)),
-			transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput)),
-			transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput+2)),
-			transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput-2)),
-			transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput+2)),
-			transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput-2)),
-			transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput+2)),
-			transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput-2));
+				addStdText(svg3, null, 'percent_revealed', 117.5, 110, '15px', 'normal', 0.80, 0, textInput);
 
-			transitionSelect = '';
+				return numberInput
+			}
 
-			// creating conditional for whether it's a mouseover or mouseleave
-			// goal here is to limit transitions that are unnecesarry (ex: transitioning an invisible object)
-			for ( var i=1; i<=transitionPixels.length; i++ ) {
+			// the percent of total pixels revealed will be continuously updated every x (see limit) seconds
+			// once the percent reaches 100, the fireworks will be launched, and not launched again unless the mode is changed (resetting the percentage to zero)
+			launchedAlready = false;
 
-				if ( d3.select(transitionPixels[i]).empty()==false && (
-					(mouseFunction=='pixelMO' && d3.select(transitionPixels[i]).style('opacity')!=0 )
-					// doing all possible transitions for mouseleave
-					// this will only apply to transition mode
-					|| mouseFunction=='pixelML'
-				)) {
-						// creating a string that will have all ids needed for transition select statements
-						if ( transitionSelect=='' )
-						{ transitionSelect = transitionPixels[i]; }
+			pixelCountTimer = d3.interval(function() {
+
+			percentRevealed = countInvisiblePixels();
+				if ( percentRevealed>=90 && launchedAlready==false ) {
+					// making all pixels invisible once the once has revealed 90% of the photo.
+					svg2.selectAll('.photo_pixels').style('opacity', 0);
+					launchedAlready = true,
+					// total fireworks in the regular show
+					totalFireworks1 = 150,
+					// duration per firework of the regular show
+					fireWorkInterval1 = 1500,
+					// total fireworks in the grand finale
+					totalFireWorks2 = 25,
+					// duration per firework of the grand finale show
+					fireWorkInterval2 = 500;
+
+					for ( var i=1; i<=totalFireworks1+totalFireWorks2; i++ ) {
+
+						// all fireworks for the regular show
+						if ( i<=totalFireworks1 )
+						{	d3.timeout(launchFireworks, Math.max(fireWorkInterval1, (fireWorkInterval1*i) + chance.floating({ min: -2500, max: 2500 }))); }
 						else
-						{ transitionSelect+=', ' + transitionPixels[i]; }
+						// time for the grand finale!!!
+						{	d3.timeout(launchFireworks, Math.max((fireWorkInterval1*totalFireworks1), (fireWorkInterval1*totalFireworks1) + (fireWorkInterval2*(i-totalFireworks1)) + chance.floating({ min: -2500, max: 2500 }))); }
+					}
 				}
-			}
+			}, 500);
 
-			return transitionSelect;
-		};
+			pixelMO = function(d) {
 
-		// credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5
-		// I took what was there, made adjustments on preference/version differences, and added to it.
-		function launchFireworks() {
+				transitionSliderMode = transitionSlider.value(),
+				thisID = d3.select(this).attr('id'),
+				transitionSelect = getTransitionSelect(thisID, 'pixelMO');
 
-			////////////////////////////////////////////////////////////////////////////////////////////////
+				// checking that the selector is not empty
+				if ( transitionSelect!='' ) {
 
-			// // palettes that have been removed:
-
-			// P a s t e l R a i n b o w Color Palette: https://www.color-hex.com/color-palette/104769
-			// ['#ffc5c5', '#bcffa7', '#feffb6', '#98e5e7', '#ffaef3'],
-			// Beach Color Palette: https://www.color-hex.com/color-palette/895
-			// ['#96ceb4', '#ffeead', '#ff6f69', '#ffcc5c', '#88d8b0'],
-			// Metro Style Color Palette: https://www.color-hex.com/color-palette/471
-			// ['#00aedb', '#a200ff', '#f47835', '#d41243', '#8ec127'],
-			// Retro Color Palette: https://www.color-hex.com/color-palette/165
-			// ['#666547', '#fb2e01', '#6fcb9f', '#ffe28a', '#fffeb3'],
-			// BG colors Color Palette: https://www.color-hex.com/color-palette/105000
-			// ['#08a184', '#42d4b9', '#fdec40', '#1bd43a', '#dc143c'],
-			// original bg theme Color Palette: https://www.color-hex.com/color-palette/105004
-			// ['#fdca40', '#970b44', '#00cb9c', '#7ddf64', '#aaaaaa'],
-			// BGSS colors Color Palette: https://www.color-hex.com/color-palette/104999
-			// ['#fdf540', '#0cead9', '#00cb9c', '#8ddf64', '#dc143c'],
-			// Gryffindors Color Palette: https://www.color-hex.com/color-palette/104972
-			// ['#ae2825', '#fbcd14', '#b9282f', '#e5ba30', '#86162a'],
-			// ESO Item Qualities Color Palette: https://www.color-hex.com/color-palette/104887
-			// ['#2dc50e', '#3a92ff', '#a02ef7', '#eeca2a', '#ff8200'],
-			// Neon 0908 Color Palette: https://www.color-hex.com/color-palette/1131
-			// ['#fe0000', '#fdfe02', '#0bff01', '#011efe', '#fe00f6'],
-			// ESO MOTD Color Text Color Palette: https://www.color-hex.com/color-palette/20452
-			// ['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f'],
-			// Fire oranges Color Palette: https://www.color-hex.com/color-palette/104858
-			// ['#ffbf00', '#ffa500', '#ff8000', '#ff4000', '#ff1500'],
-
-			////////////////////////////////////////////////////////////////////////////////////////////////
-
-			// creating an array of separate color palettes for each firework
-			fireWorksColorPalettes = [
-				// https://htmlcolorcodes.com/
-				//		// ['#DFFF00', '#FFBF00', '#FF7F50', '#DE3163', '#9FE2BF', '#40E0D0', '#6495ED', '#CCCCFF'],
-				//		// adjusted above to remove one or more colors
-				['#DFFF00', '#FFBF00', '#FF7F50', '#DE3163', '#40E0D0'],
-				// Astrid Gen Wyatt Shyla Cynthia Color Palette: https://www.color-hex.com/color-palette/104729
-				//		// ['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6'],
-				//		// adjusted above to remove one or more colors
-				['#1ecf25', '#fcd300', '#30cf89', '#19cde6'],
-				// Bohemian sunset Color Palette: https://www.color-hex.com/color-palette/104833
-				['#9c2ea1', '#ff5f58', '#ffdd23', '#fd9301', '#ff0055'],
-				// KINDA BRIGHT Color Palette: https://www.color-hex.com/color-palette/104792
-				['#d578ff', '#625df0', '#59e7f2', '#f259a6', '#67eebb'],
-				// pastel colors of the rainbow Color Palette: https://www.color-hex.com/color-palette/5361
-				['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'],
-				// VaporWave Color Palette: https://www.color-hex.com/color-palette/10221
-				['#ff71ce', '#01cdfe', '#05ffa1', '#b967ff', '#fffb96'],
-				// 80s Color Palette: https://www.color-hex.com/color-palette/25888
-				//		// ['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9', '#ff3f3f'],
-				//		// adjusted above to remove one or more colors
-				['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9'],
-				// Metro UI Colors Color Palette: https://www.color-hex.com/color-palette/700
-				//		// ['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'],
-				//		// adjusted above to remove one or more colors
-				['#00b159', '#00aedb', '#f37735', '#ffc425'],
-				// neon colors Color Palette: https://www.color-hex.com/color-palette/8618
-				//		// ['#4deeea', '#74ee15', '#ffe700', '#f000ff', '#001eff'],
-				//		// adjusted above to remove one or more colors
-				['#4deeea', '#74ee15', '#ffe700', '#f000ff'],
-				// Instagram gradient Color Palette: https://www.color-hex.com/color-palette/44340
-				//		// ['#feda75', '#fa7e1e', '#d62976', '#962fbf', '#4f5bd5'],
-				//		// adjusted above to remove one or more colors
-				['#feda75', '#fa7e1e', '#d62976', '#962fbf'],
-				// Rainbow Dash Color Palette: https://www.color-hex.com/color-palette/807
-				//		// ['#ee4035', '#f37736', '#fdf498', '#7bc043', '#0392cf'],
-				//		// adjusted above to remove one or more colors
-				['#ee4035', '#f37736', '#fdf498', '#0392cf'],
-				// Cyberpunk Color Palette: https://www.color-hex.com/color-palette/14887
-				//		// ['#00ff9f', '#00b8ff', '#001eff', '#bd00ff', '#d600ff'],
-				//		// adjusted above to remove one or more colors
-				['#00ff9f', '#00b8ff', '#bd00ff', '#d600ff'],
-				// fruit tree Color Palette: https://www.color-hex.com/color-palette/104883
-				//		// ['#38ad94', '#62a43d', '#ffb42b', '#ff493a', '#ff8bb6'],
-				//		// adjusted above to remove one or more colors
-				['#38ad94', '#ffb42b', '#ff493a', '#ff8bb6'],
-				// cool blue Color Palette: https://www.color-hex.com/color-palette/30415
-				//		// ['#005073', '#107dac', '#189ad3', '#1ebbd7', '#71c7ec'],
-				//		// adjusted above to remove one or more colors
-				['#107dac', '#189ad3', '#1ebbd7', '#71c7ec'],
-				// Shades of Turquoise Color Palette: https://www.color-hex.com/color-palette/1836
-				['#b3ecec', '#89ecda', '#43e8d8', '#40e0d0', '#3bd6c6'],
-				// Red-Orange Color Palette: https://www.color-hex.com/color-palette/4699
-				['#ffc100', '#ff9a00', '#ff7400', '#ff4d00', '#ff0000'],
-				// I Loved In Shades of Green Color Palette: https://www.color-hex.com/color-palette/1325
-				//		// ['#adff00', '#74d600', '#028900', '#00d27f', '#00ff83'],
-				//		// adjusted above to remove one or more colors
-				['#adff00', '#74d600', '#00d27f', '#00ff83'],
-				// Facebook Messenger 1 Color Palette: https://www.color-hex.com/color-palette/15945
-				//		// ['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb'],
-				//		// adjusted above to remove one or more colors
-				['#0084ff', '#44bec7', '#ffc300', '#fa3c4c'],
-				// Ice Cream Pastels Color Palette: https://www.color-hex.com/color-palette/104985
-				['#41d8ca', '#c7e3e5', '#f4f3d4', '#f9d7c5', '#f4a2a9'],
-				// Pop Quiz Color Palette: https://www.color-hex.com/color-palette/104873
-				//		// ['#fe0879', '#ff82e2', '#fed715', '#0037b3', '#70baff'],
-				//		// adjusted above to remove one or more colors
-				['#fe0879', '#ff82e2', '#fed715', '#70baff'],
-				// indy Color Palette: https://www.color-hex.com/color-palette/104870
-				//		// ['#ff5454', '#ff7698', '#56dfd4', '#2497a7', '#2e0ff6'],
-				//		// adjusted above to remove one or more colors
-				['#ff5454', '#ff7698', '#56dfd4', '#2497a7'],
-				// Crystal Glacier Color Palette: https://www.color-hex.com/color-palette/104790
-				//		// ['#ebb6f9', '#7f8bf5', '#445bab', '#0fba7c', '#4b9cfc'],
-				//		// adjusted above to remove one or more colors
-				['#ebb6f9', '#7f8bf5', '#445bab', '#4b9cfc'],
-				// Midnight Mountain Color Palette: https://www.color-hex.com/color-palette/104789
-				//		// ['#d948c3', '#3227a5', '#0ed9c1', '#600571', '#1c024b'],
-				//		// adjusted above to remove one or more colors
-				['#d948c3', '#3227a5', '#0ed9c1'],
-				// XuxaDiversidade Color Palette: https://www.color-hex.com/color-palette/104756
-				//		// ['#ff0000', '#ff5e00', '#f8d900', '#4b8b05', '#1771de'],
-				//		// adjusted above to remove one or more colors
-				['#ff0000', '#ff5e00', '#f8d900', '#1771de'],
-				// Date Nite Color Palette: https://www.color-hex.com/color-palette/104742
-				//		// ['#f53473', '#93135d', '#28357b', '#5595c1', '#77def1']
-				//		// adjusted above to remove one or more colors
-				['#f53473', '#93135d', '#5595c1', '#77def1'],
-			];
-
-			// defining y parameter for the height of the launch
-			// the is the distance from the top of the pange
-			LaunchYLoc = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.20 }),
-			// defining adjusted y parameter for delay preceding explosion
-			// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-			explosionDrop = chance.floating({ min: 20, max: 100 }),
-			// height all the circles will be at after the drop (and just before exploding)
-			explosionYLoc = LaunchYLoc + explosionDrop,
-			// defining values for the launch of the firework
-			// function below will be used to determine the x location for launching the rocket
-			randomXStart = d3.randomNormal(svg4Width/2, 130),
-			// x coordinate for the ascending (and descending) rocket
-			launchXLoc = randomXStart(),
-			// determining the magnitude of the explosion (value to be squared) at random
-			// the actual distance from the explosion will be a combination of this value and another random value determined for each piece
-			// this will also be used to decide the total circles for the explosion
-			explosionMagnitude = chance.floating({ min: 140, max: 180 }),
-			// total circles for the explosion
-			totalCircles = Math.round(explosionMagnitude*1.5),
-			// function to determine the x coordinates for all explosion pieces
-			explosionData = d3.range(totalCircles).map(function() {
-					// distance fron the center of the explosion determined at random
-					// explosionSize (magnitude of the explosion) stays the same for each circle
-					explosionDistance = Math.sqrt(~~(chance.floating({ min: 0, max: 1 }) * explosionMagnitude * explosionMagnitude)),
-					// randomly determining the angle by which each circle will be relative to the center of the explosion
-					randomAngle = Math.random() * 2 * Math.PI;
-
-					return {
-					x: launchXLoc + (explosionDistance * Math.cos(randomAngle)),
-					y: explosionYLoc + (explosionDistance * Math.sin(randomAngle))
-				};
-			}),
-			randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length)],
-			launchColor = randomPallete[getRandomInt(0, randomPallete.length)],
-			fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
-
-			launchRadius = 3,
-			launchDuration = 1000,
-			launchSpeed = launchDuration/((svg4Height+launchRadius)- LaunchYLoc),
-			dropDuration = launchSpeed*explosionDrop;
-
-			// these two variables will help create the tail effect with delay
-			fireWorkTailSize = 90,
-			tailDelaySize = 2.5;
-
-			svg4.selectAll()
-					.data(explosionData).enter()
-					.append('circle')
-						.attr('r', launchRadius)
-						.attr('cx', launchXLoc)
-						.attr('cy', svg4Height+launchRadius)
-						.style('fill', launchColor)
-						.style('opacity', function(d, i) {
-							if ( i>0 && i<=fireWorkTailSize )
-							{ return 0.15; }
-							else
-							{ return 1; }
-						})
-					.transition()
-						// delay here is to create the ascending tail
-						.delay(function(d, i) {
-							if ( i>0 && i<=fireWorkTailSize )
-							{ return i*tailDelaySize; }
-							else
-							{ return 0; }
-						})
-						.ease(d3.easeCircle)
-						.duration(launchDuration)
-						.attr('cy', LaunchYLoc)
-					.transition()
-						.duration(dropDuration)
-						.ease(d3.easeQuad)
-						.attr('r', 5)
-						.attr('cy', explosionYLoc)
-					.transition()
-						// delay here is to allow all objects to catch up
-						.delay(function(d, i) {
-							if ( i>0 && i<=fireWorkTailSize )
-							{ return (fireWorkTailSize*tailDelaySize)-(i*tailDelaySize); }
-							else
-							{ return fireWorkTailSize*tailDelaySize; }
-						})
-						.duration(0)
-						.style('opacity', 1)
-					.transition()
-						.duration(500)
-						.ease(d3.easeCircle)
-						.attr('cx', function(d) { return d.x; })
-						.attr('cy', function(d) { return d.y; })
-						.attr('r', 10)
-						// .attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
-						.style('fill', function(d) { return fireWorkPaletteFunc(d.x); })
-					.transition()
-						.duration(1750 + chance.floating({ min: -750, max: 750 }))
-						.ease(d3.easeCircle)
-						.style('opacity', 0)
-						.attr('cx', function(d) {
-							if ( d.x > launchXLoc )
-							{ return d.x + (d.x - launchXLoc) }
-							else
-							{ return d.x - (-d.x + launchXLoc) }
-						})
-						.attr('cy', function(d) {
-							if ( d.y > explosionYLoc )
-							{ return d.y + (d.y - explosionYLoc ) }
-							else
-							{ return d.y - (-d.y + explosionYLoc ) }
-						})
-						.on('end', function() {
-							d3.select(this).remove();
-						});
-		}
-
-		function countInvisiblePixels() {
-
-			// iterating over all pixels to check the current opacity, and get a percent of total pixels that are invisible.
-			totalPixels = svg2.selectAll('.photo_pixels').size(),
-			invisiblePixels = 0;
-
-			svg2.selectAll('.photo_pixels')
-			  .each(function(d) {
-
-					if ( d3.select(this).style('opacity')==0 )
-					{ invisiblePixels+=1 }
-			  });
-
-			// labelling dynamically the percent of the non-pixelated photo that's fully visible.
-			svg3.select('#percent_revealed').remove();
-
-			percentFormat = d3.format('.2f'),
-			numberInput = percentFormat((invisiblePixels/totalPixels)*100),
-			textInput = 'Percent Revealed: ' + numberInput + '%';
-
-			// if ( numberInput>=50 ) {
-			// 	fillColor = '#cc0000';
-		 	// 	fontWeight = ((numberInput-50) * 16) + 100;
-			// }
-			// else {
-			// 	fillColor = 'black',
-			// 	fontWeight = 0;
-			// }
-			
-			addStdText(svg3, null, 'percent_revealed', 117.5, 110, '15px', 'normal', 0.80, 0, textInput);
-
-			return numberInput
-		}
-
-		// the percent of total pixels revealed will be continuously updated every x (see limit) seconds
-		// once the percent reaches 100, the fireworks will be launched, and not launched again unless the mode is changed (resetting the percentage to zero)
-		launchedAlready = false;
-
-		pixelCountTimer = d3.interval(function() {
-
-		percentRevealed = countInvisiblePixels();
-			if ( percentRevealed>=90 && launchedAlready==false ) {
-				// making all pixels invisible once the once has revealed 90% of the photo.
-				svg2.selectAll('.photo_pixels').style('opacity', 0);
-				launchedAlready = true,
-				// total fireworks in the regular show
-				totalFireworks1 = 150,
-				// duration per firework of the regular show
-				fireWorkInterval1 = 1500,
-				// total fireworks in the grand finale
-				totalFireWorks2 = 25,
-				// duration per firework of the grand finale show
-				fireWorkInterval2 = 500;
-
-				for ( var i=1; i<=totalFireworks1+totalFireWorks2; i++ ) {
-
-					// all fireworks for the regular show
-					if ( i<=totalFireworks1 )
-					{	d3.timeout(launchFireworks, Math.max(fireWorkInterval1, (fireWorkInterval1*i) + chance.floating({ min: -2500, max: 2500 }))); }
-					else
-					// time for the grand finale!!!
-					{	d3.timeout(launchFireworks, Math.max((fireWorkInterval1*totalFireworks1), (fireWorkInterval1*totalFireworks1) + (fireWorkInterval2*(i-totalFireworks1)) + chance.floating({ min: -2500, max: 2500 }))); }
-				}
-			}
-		}, 500);
-
-		pixelMO = function(d) {
-
-			transitionSliderMode = transitionSlider.value(),
-			thisID = d3.select(this).attr('id'),
-			transitionSelect = getTransitionSelect(thisID, 'pixelMO');
-
-			// checking that the selector is not empty
-			if ( transitionSelect!='' ) {
-
-				svg2.selectAll(transitionSelect)
-					.style('stroke-width', 0.3)
-					.transition()
-						.delay(pixelTransDelay)
-						.duration(pixelTransDuration)
-						// .ease(d3.easeQuad)
-						.attr('x', function(d) { return x(d.x_coordinate) + 1.5})
-						.attr('y', function(d) { return y(d.y_coordinate) - 1})
-						.attr('width', x.bandwidth()/1.5)
-						.attr('height', y.bandwidth()/1.5)
-						.attr('transform', function(d) { return 'rotate(45,' + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + ',' + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ')'})
-					.transition()
-						.delay(pixelTransDelay)
-						.duration(pixelTransDuration)
-						.style('opacity', 0);
-						// .on('end', function() {
-						// 	// // pixels will be recreated when the slider is used
-						// 	// // removing those that have been activated for reveal modes.
-						// 	if ( transitionSliderMode!=2 )
-						// 	{ svg2.selectAll(transitionSelect).remove(); }
-						// });
-				}
-		},
-
-		pixelML = function(d) {
-
-			transitionSliderMode = transitionSlider.value(),
-			thisID = d3.select(this).attr('id'),
-			transitionSelect = getTransitionSelect(thisID, 'pixelML');
-
-			if ( transitionSliderMode==2 ) {
-
-				svg2.selectAll(transitionSelect)
-					.transition()
-						.delay(pixelTransLength + 500)
-						.duration(pixelTransDuration)
-					// .ease(d3.easeQuad)
-						.attr('x', function(d) { return x(d.x_coordinate) })
-						.attr('y', function(d) { return y(d.y_coordinate) })
-						.attr('width', x.bandwidth())
-						.attr('height', y.bandwidth())
-						.attr('transform', function(d) { return 'rotate(0,'  + ( (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2))) + ',' + ( (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5))/2))) + ')'})
+					svg2.selectAll(transitionSelect)
 						.style('stroke-width', 0.3)
-						.style('opacity', 1)
-					.transition()
-						.delay(pixelTransDelay)
-						.duration(pixelTransDuration)
-						.style('stroke-width', 0.075);
-			}
-		};
+						.transition()
+							.delay(pixelTransDelay)
+							.duration(pixelTransDuration)
+							// .ease(d3.easeQuad)
+							.attr('x', function(d) { return x(d.x_coordinate) + 1.5})
+							.attr('y', function(d) { return y(d.y_coordinate) - 1})
+							.attr('width', x.bandwidth()/1.5)
+							.attr('height', y.bandwidth()/1.5)
+							.attr('transform', function(d) { return 'rotate(45,' + (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2)) + ',' + (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5)))) + ')'})
+						.transition()
+							.delay(pixelTransDelay)
+							.duration(pixelTransDuration)
+							.style('opacity', 0);
+							// .on('end', function() {
+							// 	// // pixels will be recreated when the slider is used
+							// 	// // removing those that have been activated for reveal modes.
+							// 	if ( transitionSliderMode!=2 )
+							// 	{ svg2.selectAll(transitionSelect).remove(); }
+							// });
+					}
+			},
 
-		// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
-		pixelX = d3.map(data, function(d) { return d.x_coordinate; }).keys(),
-		pixelY = d3.map(data, function(d) { return d.y_coordinate; }).keys();
+			pixelML = function(d) {
 
-		// Build X and Y scales and axis:
-		// Scaling the pixels within the space of the svg.
-		x = d3.scaleBand().range([0, width]).domain(pixelX).padding(0),
-		y = d3.scaleBand().range([0, height]).domain(pixelY).padding(0);
+				transitionSliderMode = transitionSlider.value(),
+				thisID = d3.select(this).attr('id'),
+				transitionSelect = getTransitionSelect(thisID, 'pixelML');
 
-		function addPixelRects() {
+				if ( transitionSliderMode==2 ) {
 
-			// adding the 48x48 pixels that will make up the profile photo
-		  rect = svg2.selectAll()
-			    .data(data, function(d) { return d.x_coordinate+':'+d.y_coordinate; })
-			    .enter();
+					svg2.selectAll(transitionSelect)
+						.transition()
+							.delay(pixelTransLength + 500)
+							.duration(pixelTransDuration)
+						// .ease(d3.easeQuad)
+							.attr('x', function(d) { return x(d.x_coordinate) })
+							.attr('y', function(d) { return y(d.y_coordinate) })
+							.attr('width', x.bandwidth())
+							.attr('height', y.bandwidth())
+							.attr('transform', function(d) { return 'rotate(0,'  + ( (x(d.x_coordinate) + ((x.bandwidth()-(x.bandwidth()/1.5))/2))) + ',' + ( (y(d.y_coordinate) + ((y.bandwidth()-(y.bandwidth()/1.5))/2))) + ')'})
+							.style('stroke-width', 0.3)
+							.style('opacity', 1)
+						.transition()
+							.delay(pixelTransDelay)
+							.duration(pixelTransDuration)
+							.style('stroke-width', 0.075);
+				}
+			};
 
-			rect.append('rect')
-						.attr('class', 'photo_pixels')
-						.attr('id', function(d) { return 'x' + String(parseInt(d.x_coordinate)) + 'y' + String(parseInt(d.y_coordinate))})
-						.attr('x', function(d) { return x(d.x_coordinate) })
-			      .attr('y', function(d) { return y(d.y_coordinate) })
-			      .attr('rx', 0)
-			      .attr('ry', 0)
-			      .attr('width', x.bandwidth())
-			      .attr('height', y.bandwidth())
-						.style('stroke', 'white')
-						.style('stroke-width', 0.075)
-			      .style('fill', function(d) { return 'rgb(' + String(parseInt(d.r)) + ',' + String(parseInt(d.g)) + ',' + String(parseInt(d.b)) + ')'})
-						.on('mouseover', pixelMO)
-						.on('mouseleave', pixelML);
-		};
+			// Labels of row and columns -> unique identifier of the column called 'xCoordinate' and 'yCoordinate'
+			pixelX = d3.map(data, function(d) { return d.x_coordinate; }).keys(),
+			pixelY = d3.map(data, function(d) { return d.y_coordinate; }).keys();
 
-		addPixelRects();
+			// Build X and Y scales and axis:
+			// Scaling the pixels within the space of the svg.
+			x = d3.scaleBand().range([0, width]).domain(pixelX).padding(0),
+			y = d3.scaleBand().range([0, height]).domain(pixelY).padding(0);
 
-		sliderData = [0, 1, 2],
-		sliderDataLabels = {0: 'Reveal Mode', 1: 'Reveal My Laser Vision Mode', 2: 'Transition Mode'},
-		transitionSlider = d3.sliderBottom()
-								.min(d3.min(sliderData))
-	    					.max(d3.max(sliderData))
-	    					.width(300)
-								.step(1)
-								.ticks(3)
-								.default(d3.min(sliderData))
-								.tickValues(sliderData)
-								.tickFormat(function(d, i) { return sliderDataLabels[i]; })
-								.on('onchange', val => {
+			function addPixelRects() {
 
-											d3.selectAll('.photo_pixels').remove();
-											addPixelRects();
-											if ( val==1 )
-											// manually inputting a number slightly larger the how long it will take for final laser eye circle will finish transition (delay included).
-											// the final transition was calculated by adding the delay from the highest i value with the duration seconds.
-											{ timer = d3.interval(executeLaserEyes, 3000); }
-											else
-											{ timer.stop(); }
-											// fireworks can be launched again since the percent revealed will be back to zero.
-											launchedAlready = false;
-								});
+				// adding the 48x48 pixels that will make up the profile photo
+			  rect = svg2.selectAll()
+				    .data(data, function(d) { return d.x_coordinate+':'+d.y_coordinate; })
+				    .enter();
 
-		svg3.append('g')
-				.attr('id', 'transition_slider')
-				.attr('transform', 'translate(50,10)')
-				.call(transitionSlider);
+				rect.append('rect')
+							.attr('class', 'photo_pixels')
+							.attr('id', function(d) { return 'x' + String(parseInt(d.x_coordinate)) + 'y' + String(parseInt(d.y_coordinate))})
+							.attr('x', function(d) { return x(d.x_coordinate) })
+				      .attr('y', function(d) { return y(d.y_coordinate) })
+				      .attr('rx', 0)
+				      .attr('ry', 0)
+				      .attr('width', x.bandwidth())
+				      .attr('height', y.bandwidth())
+							.style('stroke', 'white')
+							.style('stroke-width', 0.075)
+				      .style('fill', function(d) { return 'rgb(' + String(parseInt(d.r)) + ',' + String(parseInt(d.g)) + ',' + String(parseInt(d.b)) + ')'})
+							.on('mouseover', pixelMO)
+							.on('mouseleave', pixelML);
+			};
 
-		// overriding feature in built-in function that makes current selection invisible
-		d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', '12px').attr('fill', 'black').style('opacity', 0.75);
-		// making ticks on axis black
-		d3.selectAll('.axis line').style('stroke', 'black');
+			addPixelRects();
 
-		});
+			sliderData = [0, 1, 2],
+			sliderDataLabels = {0: 'Reveal Mode', 1: 'Reveal My Laser Vision Mode', 2: 'Transition Mode'},
+			transitionSlider = d3.sliderBottom()
+									.min(d3.min(sliderData))
+		    					.max(d3.max(sliderData))
+		    					.width(300)
+									.step(1)
+									.ticks(3)
+									.default(d3.min(sliderData))
+									.tickValues(sliderData)
+									.tickFormat(function(d, i) { return sliderDataLabels[i]; })
+									.on('onchange', val => {
 
-	</script>
-</body>
+												d3.selectAll('.photo_pixels').remove();
+												addPixelRects();
+												if ( val==1 )
+												// manually inputting a number slightly larger the how long it will take for final laser eye circle will finish transition (delay included).
+												// the final transition was calculated by adding the delay from the highest i value with the duration seconds.
+												{ timer = d3.interval(executeLaserEyes, 3000); }
+												else
+												{ timer.stop(); }
+												// fireworks can be launched again since the percent revealed will be back to zero.
+												launchedAlready = false;
+									});
+
+			svg3.append('g')
+					.attr('id', 'transition_slider')
+					.attr('transform', 'translate(50,10)')
+					.call(transitionSlider);
+
+			// overriding feature in built-in function that makes current selection invisible
+			d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', '12px').attr('fill', 'black').style('opacity', 0.75);
+			// making ticks on axis black
+			d3.selectAll('.axis line').style('stroke', 'black');
+
+			});
+
+		</script>
+	</body>
+</html>

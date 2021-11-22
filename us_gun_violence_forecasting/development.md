@@ -7,4 +7,6 @@ gh-badge: [follow, star]
 social-share: true
 ---
 
-{% include /us_gun_violence_forecasting/development.html %}
+{% include /us_gun_violence_forecasting/start_forecasting_button.html %}
+
+Development page coming soon! Stay tuned for updates.

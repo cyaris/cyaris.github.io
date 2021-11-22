@@ -1,0 +1,10 @@
+<html>
+	<body>
+		<div class="center" style="margin-bottom:30px;">
+			<script>
+				var href_link = ('../' + "{{ page.title | replace: " ", "_" }}" + '/').toLowerCase();
+				document.write('<a class="btn-group" href="' + href_link + '">{{ page.title }}</a>');
+			</script>
+		</div>
+	</body>
+</html>

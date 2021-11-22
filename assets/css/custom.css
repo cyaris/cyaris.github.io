@@ -286,3 +286,10 @@ footer a:hover {
   text-decoration: underline;
   border: 4px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};
 }
+
+
+/* --- Thumbnails --- */
+
+.post-preview .post-image .post-image-short {
+  display: inline;
+}

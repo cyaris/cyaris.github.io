@@ -114,7 +114,7 @@ navbar-col: "#54bdca"
 navbar-dropdown-background-hover-col: "#4aa4b0"
 navbar-border-col: "#f26419"
 navbar-link-col: "#ffffff"
-navbar-link-hover-col: "#195f82" #175676
+navbar-link-hover-col: "#175676"
 
 page-col: "#ffffff"
 text-col: "#404040"
@@ -127,7 +127,7 @@ footer-col: "#54bdca"
 footer-border-col: "#f26419"
 footer-text-col: "#ffffff"
 footer-link-col: "#ffffff"
-footer-link-hover-col: "#195f82" #175676
+footer-link-hover-col: "#175676"
 
 # social-links will have separate color variables from rest of footer
 social-icon-col: "#ffffff"
@@ -143,10 +143,10 @@ btn-background-hover-col: "#f07b41"
 btn-border-hover-col: "#c44536"
 
 pagination-link-col: "#ffffff"
-pagination-background-col: "#1b998b"
-pagination-border-col: "#1b998b"
+pagination-background-col: "#20b3a1"
+pagination-border-col: "#20b3a1"
 pagination-link-hover-col: "#ffffff"
-pagination-background-hover-col: "#1b998b"
+pagination-background-hover-col: "#20b3a1"
 pagination-border-hover-col: "#197278"
 
 tag-link-col: "#404040"

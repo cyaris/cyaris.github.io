@@ -40,7 +40,7 @@ a:focus {
 
 .navbar-custom {
   /* added top border */
-  border-top: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
+  /* border-top: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }}; */
   /* added bottom border */
   border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
@@ -118,7 +118,7 @@ footer {
   /* added top border */
   border-top: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
   /* added bottom border */
-  border-bottom: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
+  /* border-bottom: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }}; */
 }
 
 footer a:hover {
@@ -233,10 +233,10 @@ footer a:hover {
   cursor: pointer;
   color: {{ site.btn-link-col | default: "#0085A1" }};
   font-size: 17px;
-  font-weight: bold;
+  font-weight: 750;
   padding: 16px 31px;
   text-decoration: none;
-  border: 4px solid transparent;
+  border: 4.5px solid transparent;
   /* static button sizes across all buttons. */
   height: 65px;
   width: 205px;
@@ -246,8 +246,8 @@ footer a:hover {
   color: {{ site.btn-link-hover-col | default: "#0085A1" }};
   background-color: {{ site.btn-background-hover-col | default: "#0085A1" }};
   border-color: {{ site.btn-border-hover-col | default: "#0085A1" }};
-  /* underlining button link on hover */
-  text-decoration: underline;
+  text-decoration: none;
+  font-weight: 750;
 }
 
 .btn-group:active {
@@ -264,10 +264,11 @@ footer a:hover {
   text-transform: capitalize;
   /* changed pagination background color */
   background-color: {{ site.pagination-background-col | default: "#0085A1" }};
-  border: 4px solid transparent;
+  border: 4.5px solid transparent;
   border-radius: 28px;
   padding: 10px 17.5px;
   text-align: center;
+  font-weight: 750;
   width: 175px;
 }
 
@@ -277,9 +278,8 @@ footer a:hover {
   color: {{ site.pagination-link-hover-col | default: "#404040" }};
   /* changed pagination background color on hover */
   background-color: {{ site.pagination-background-hover-col | default: "#0085A1" }};
-  /* underlining pagination link on hover */
-  text-decoration: underline;
-  border: 4px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};
+  border: 4.5px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};
+  font-weight: 750;
 }
 
 

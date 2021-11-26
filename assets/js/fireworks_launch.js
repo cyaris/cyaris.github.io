@@ -63,7 +63,7 @@ function getBodyDimenstions() {
 margin = {top: 55, bottom: 15, left: 0, right: 0},
 height = 750;
 
-addStdSVG('svg4', 'fireworks', '100%', height, margin.left, margin.top, null);
+addStdSVG('svg4', 'fireworks', '100%', '100%', margin.left, margin.top, null);
 svg4.attr('pointer-events', 'none');
 
 // credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5

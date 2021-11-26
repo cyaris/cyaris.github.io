@@ -50,6 +50,24 @@ a:focus {
   font-size: 1.25rem;
 }
 
+.navbar-brand:hover {
+  cursor: url(../img/kidpix_dynamite_eraser.gif), auto;
+  /* animation: cursor 0.5s linear infinite; */
+}
+
+/* @keyframes cursor{ */
+   /* 0% {
+       cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
+   }
+   50% {
+       cursor: url(../img/kidpix_dynamite_eraser_2.png), auto;
+   }
+   100% {
+       cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
+   } */
+
+/* } */
+
 .navbar-custom .navbar-nav .nav-item {
   /* changed transform to capitalize */
   text-transform: capitalize;

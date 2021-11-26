@@ -38,6 +38,18 @@ a:focus {
   }
 }
 
+@media (min-width: 768px) {
+  .navbar-brand-mobile {
+        display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-brand {
+        display: none;
+  }
+}
+
 .navbar-custom {
   /* added top border */
   /* border-top: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }}; */

@@ -104,9 +104,9 @@ function launchFireworkBurst() {
 	// creating an array of separate color palettes for each firework
 	fireWorksColorPalettes = [
 		// https://htmlcolorcodes.com/
-		//		// ['#DFFF00', '#FFBF00', '#FF7F50', '#DE3163', '#9FE2BF', '#40E0D0', '#6495ED', '#CCCCFF'],
+		//		// ['#dfff00', '#ffbf00', '#ff7f50', '#de3163', '#9fe2bf', '#40e0d0', '#6495ed', '#ccccff'],
 		//		// adjusted above to remove one or more colors
-		['#DFFF00', '#FFBF00', '#FF7F50', '#DE3163', '#40E0D0'],
+		['#dfff00', '#ff7f50', '#de3163', '#40e0d0', '#6495ed'],
 		// Astrid Gen Wyatt Shyla Cynthia Color Palette: https://www.color-hex.com/color-palette/104729
 		//		// ['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6'],
 		//		// adjusted above to remove one or more colors
@@ -116,17 +116,19 @@ function launchFireworkBurst() {
 		// KINDA BRIGHT Color Palette: https://www.color-hex.com/color-palette/104792
 		['#d578ff', '#625df0', '#59e7f2', '#f259a6', '#67eebb'],
 		// pastel colors of the rainbow Color Palette: https://www.color-hex.com/color-palette/5361
-		['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'],
+		// ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'],
+		//		// adjusted above to remove one or more colors
+		// ['#ffb3ba', '#ffdfba', '#baffc9', '#bae1ff'],
 		// VaporWave Color Palette: https://www.color-hex.com/color-palette/10221
 		['#ff71ce', '#01cdfe', '#05ffa1', '#b967ff', '#fffb96'],
 		// 80s Color Palette: https://www.color-hex.com/color-palette/25888
 		//		// ['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9', '#ff3f3f'],
 		//		// adjusted above to remove one or more colors
-		['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9'],
+		['#ff48c4', '#2bd1fc', '#c04df9', '#ff3f3f'],
 		// Metro UI Colors Color Palette: https://www.color-hex.com/color-palette/700
 		//		// ['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'],
 		//		// adjusted above to remove one or more colors
-		['#00b159', '#00aedb', '#f37735', '#ffc425'],
+		['#d11141', '#00aedb', '#f37735', '#ffc425'],
 		// neon colors Color Palette: https://www.color-hex.com/color-palette/8618
 		//		// ['#4deeea', '#74ee15', '#ffe700', '#f000ff', '#001eff'],
 		//		// adjusted above to remove one or more colors
@@ -146,7 +148,7 @@ function launchFireworkBurst() {
 		// fruit tree Color Palette: https://www.color-hex.com/color-palette/104883
 		//		// ['#38ad94', '#62a43d', '#ffb42b', '#ff493a', '#ff8bb6'],
 		//		// adjusted above to remove one or more colors
-		['#38ad94', '#ffb42b', '#ff493a', '#ff8bb6'],
+		// ['#38ad94', '#ff493a', '#ff8bb6'],
 		// cool blue Color Palette: https://www.color-hex.com/color-palette/30415
 		//		// ['#005073', '#107dac', '#189ad3', '#1ebbd7', '#71c7ec'],
 		//		// adjusted above to remove one or more colors
@@ -164,7 +166,7 @@ function launchFireworkBurst() {
 		//		// adjusted above to remove one or more colors
 		['#0084ff', '#44bec7', '#ffc300', '#fa3c4c'],
 		// Ice Cream Pastels Color Palette: https://www.color-hex.com/color-palette/104985
-		['#41d8ca', '#c7e3e5', '#f4f3d4', '#f9d7c5', '#f4a2a9'],
+		// ['#41d8ca', '#c7e3e5', '#f4f3d4', '#f9d7c5', '#f4a2a9'],
 		// Pop Quiz Color Palette: https://www.color-hex.com/color-palette/104873
 		//		// ['#fe0879', '#ff82e2', '#fed715', '#0037b3', '#70baff'],
 		//		// adjusted above to remove one or more colors
@@ -188,7 +190,7 @@ function launchFireworkBurst() {
 		// Date Nite Color Palette: https://www.color-hex.com/color-palette/104742
 		//		// ['#f53473', '#93135d', '#28357b', '#5595c1', '#77def1']
 		//		// adjusted above to remove one or more colors
-		['#f53473', '#93135d', '#5595c1', '#77def1'],
+		['#f53473', '#93135d', '#5595c1', '#77def1']
 	];
 
 	// defining y parameter for the height of the launch
@@ -226,6 +228,8 @@ function launchFireworkBurst() {
 	randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length)],
 	launchColor = randomPallete[getRandomInt(0, randomPallete.length)],
 	fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
+
+	// console.log(randomPallete);
 
 	launchRadius = 3,
 	launchDuration = 1000,

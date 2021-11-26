@@ -47,16 +47,23 @@ function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, fontS
 				 });
 };
 
-// set the dimensions and margins of the graph
-margin = {top: 0, bottom: 15, left: 0, right: 0},
-width = 405,
-height = 405,
-svg3Height = 120,
-svg4Width = width*2.5,
-// width*3,
-svg4Height = height+svg3Height+175;
+function getBodyDimenstions() {
 
-addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*0.275, -height*1.725, null);
+	var w = window,
+			d = document,
+			e = d.documentElement,
+			g = d.getElementsByTagName('body')[0],
+			width = w.innerWidth || e.clientWidth || g.clientWidth,
+			height = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+	return [width, height];
+
+}
+// set the dimensions and margins of the graph
+margin = {top: 55, bottom: 15, left: 0, right: 0},
+height = 750;
+
+addStdSVG('svg4', 'fireworks', '100%', height, margin.left, margin.top, null);
 svg4.attr('pointer-events', 'none');
 
 // credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5
@@ -186,7 +193,7 @@ function launchFireworkBurst() {
 
 	// defining y parameter for the height of the launch
 	// the is the distance from the top of the pange
-	LaunchYLoc = chance.floating({ min: svg4Height*0.05, max: svg4Height*0.20 }),
+	LaunchYLoc = chance.floating({ min: height*0.05, max: height*0.20 }),
 	// defining adjusted y parameter for delay preceding explosion
 	// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
 	explosionDrop = chance.floating({ min: 20, max: 100 }),
@@ -194,7 +201,7 @@ function launchFireworkBurst() {
 	explosionYLoc = LaunchYLoc + explosionDrop,
 	// defining values for the launch of the firework
 	// function below will be used to determine the x location for launching the rocket
-	randomXStart = d3.randomNormal(svg4Width/2, 130),
+	randomXStart = d3.randomNormal(getBodyDimenstions()[0]/2, getBodyDimenstions()[0]/8),
 	// x coordinate for the ascending (and descending) rocket
 	launchXLoc = randomXStart(),
 	// determining the magnitude of the explosion (value to be squared) at random
@@ -222,7 +229,7 @@ function launchFireworkBurst() {
 
 	launchRadius = 3,
 	launchDuration = 1000,
-	launchSpeed = launchDuration/((svg4Height+launchRadius)- LaunchYLoc),
+	launchSpeed = launchDuration/((height+launchRadius)- LaunchYLoc),
 	dropDuration = launchSpeed*explosionDrop;
 
 	// these two variables will help create the tail effect with delay
@@ -234,7 +241,7 @@ function launchFireworkBurst() {
 			.append('circle')
 				.attr('r', launchRadius)
 				.attr('cx', launchXLoc)
-				.attr('cy', svg4Height+launchRadius)
+				.attr('cy', height+launchRadius)
 				.style('fill', launchColor)
 				.style('opacity', function(d, i) {
 					if ( i>0 && i<=fireWorkTailSize )

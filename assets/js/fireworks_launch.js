@@ -106,11 +106,11 @@ function launchFireworkBurst() {
 		// https://htmlcolorcodes.com/
 		//		// ['#dfff00', '#ffbf00', '#ff7f50', '#de3163', '#9fe2bf', '#40e0d0', '#6495ed', '#ccccff'],
 		//		// adjusted above to remove one or more colors
-		['#dfff00', '#ff7f50', '#de3163', '#40e0d0', '#6495ed'],
+		['#dfff00', '#ff7f50', '#de3163', '#40e0d0'],
 		// Astrid Gen Wyatt Shyla Cynthia Color Palette: https://www.color-hex.com/color-palette/104729
 		//		// ['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6'],
 		//		// adjusted above to remove one or more colors
-		['#1ecf25', '#fcd300', '#30cf89', '#19cde6'],
+		// ['#1ecf25', '#9419e6', '#fcd300'],
 		// Bohemian sunset Color Palette: https://www.color-hex.com/color-palette/104833
 		['#9c2ea1', '#ff5f58', '#ffdd23', '#fd9301', '#ff0055'],
 		// KINDA BRIGHT Color Palette: https://www.color-hex.com/color-palette/104792
@@ -124,7 +124,7 @@ function launchFireworkBurst() {
 		// 80s Color Palette: https://www.color-hex.com/color-palette/25888
 		//		// ['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9', '#ff3f3f'],
 		//		// adjusted above to remove one or more colors
-		['#ff48c4', '#2bd1fc', '#c04df9', '#ff3f3f'],
+		['#ff48c4', '#2bd1fc', '#f3ea5f', '#c04df9'],
 		// Metro UI Colors Color Palette: https://www.color-hex.com/color-palette/700
 		//		// ['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'],
 		//		// adjusted above to remove one or more colors
@@ -160,11 +160,11 @@ function launchFireworkBurst() {
 		// I Loved In Shades of Green Color Palette: https://www.color-hex.com/color-palette/1325
 		//		// ['#adff00', '#74d600', '#028900', '#00d27f', '#00ff83'],
 		//		// adjusted above to remove one or more colors
-		['#adff00', '#74d600', '#00d27f', '#00ff83'],
+		// ['#adff00', '#74d600', '#00d27f', '#00ff83'],
 		// Facebook Messenger 1 Color Palette: https://www.color-hex.com/color-palette/15945
 		//		// ['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb'],
 		//		// adjusted above to remove one or more colors
-		['#0084ff', '#44bec7', '#ffc300', '#fa3c4c'],
+		['#0084ff', '#44bec7', '#fa3c4c'],
 		// Ice Cream Pastels Color Palette: https://www.color-hex.com/color-palette/104985
 		// ['#41d8ca', '#c7e3e5', '#f4f3d4', '#f9d7c5', '#f4a2a9'],
 		// Pop Quiz Color Palette: https://www.color-hex.com/color-palette/104873

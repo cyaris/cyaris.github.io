@@ -106,7 +106,7 @@ function launchFireworkBurst() {
 		// https://htmlcolorcodes.com/
 		//		// ['#dfff00', '#ffbf00', '#ff7f50', '#de3163', '#9fe2bf', '#40e0d0', '#6495ed', '#ccccff'],
 		//		// adjusted above to remove one or more colors
-		['#dfff00', '#ff7f50', '#de3163', '#40e0d0'],
+		['#dfff00', '#ffbf00', '#de3163', '#40e0d0'],
 		// Astrid Gen Wyatt Shyla Cynthia Color Palette: https://www.color-hex.com/color-palette/104729
 		//		// ['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6'],
 		//		// adjusted above to remove one or more colors
@@ -164,7 +164,7 @@ function launchFireworkBurst() {
 		// Facebook Messenger 1 Color Palette: https://www.color-hex.com/color-palette/15945
 		//		// ['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb'],
 		//		// adjusted above to remove one or more colors
-		['#0084ff', '#44bec7', '#fa3c4c'],
+		['#0084ff', '#44bec7', '#ffc300', '#fa3c4c'],
 		// Ice Cream Pastels Color Palette: https://www.color-hex.com/color-palette/104985
 		// ['#41d8ca', '#c7e3e5', '#f4f3d4', '#f9d7c5', '#f4a2a9'],
 		// Pop Quiz Color Palette: https://www.color-hex.com/color-palette/104873

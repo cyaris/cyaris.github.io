@@ -26,6 +26,7 @@ layout: base
                 {% when 'follow'%}
                   <!-- custom edit: changed width for follow count -->
                   <iframe src="https://ghbtns.com/github-btn.html?user={{ gh_user }}&type=follow&count=true" frameborder="0" scrolling="0" width="120px" height="20px"></iframe>
+                  <!-- end of custom edit -->
               {% endcase %}
             {% endfor %}
           {% endif %}
@@ -68,12 +69,18 @@ layout: base
       <ul class="pagination blog-pager">
         {% if page.previous.url %}
         <li class="page-item previous">
-          <a class="page-link" href="{{ page.previous.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title | strip_html | xml_escape}}">&larr; Previous Post</a>
+        <!-- custom edit: added additional pagination button for desktop vs mobile. -->
+          <a class="page-link page-link-desktop" href="{{ page.previous.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title | strip_html | xml_escape}}">&larr; Previous Post</a>
+          <a class="page-link page-link-mobile" href="{{ page.previous.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title | strip_html | xml_escape}}">&larr;</a>
+        <!-- end of custom edit -->
         </li>
         {% endif %}
         {% if page.next.url %}
         <li class="page-item next">
-          <a class="page-link" href="{{ page.next.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title | strip_html | xml_escape}}">Next Post &rarr;</a>
+        <!-- custom edit: added additional pagination button for desktop vs mobile. -->
+          <a class="page-link page-link-desktop" href="{{ page.next.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title | strip_html | xml_escape}}">Next Post &rarr;</a>
+          <a class="page-link page-link-mobile" href="{{ page.next.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title | strip_html | xml_escape}}">&rarr;</a>
+        <!-- end of custom edit -->
         </li>
         {% endif %}
       </ul>

@@ -1,71 +1,3 @@
-
-function getRandomInt(min, max) {
-
-	min = Math.ceil(min);
-	max = Math.floor(max);
-
-	// the maximum is exclusive and the minimum is inclusive
-	return Math.floor(Math.random() * (max - min) + min);
-}
-
-
-// function getRandomPositiveNegative() {
-//
-// 	return Math.ceil((Math.random() - 0.5) * 2) < 1 ? -1 : 1;
-// }
-
-
-function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
-
-		window[svgName] = d3.select('#' + divInput)
-												.append('svg')
-													.attr('width', widthInput)
-													.attr('height', heightInput)
-													.attr('transform', 'translate(' + marginLeftInput + ',' + marginTopInput + ')')
-													.style('cursor', cursorInput);
-};
-
-
-function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, fontStyle, opacity, strokeWidth, textInput) {
-
-		svgInput.append('text')
-			.attr('class', classInput)
-			.attr('id', idInput)
-			.attr('x', textX)
-			.attr('y', textY)
-			.attr('pointer-events', 'none')
-			.text(textInput)
-				.style('font-size', fontSize)
-				.style('font-style', fontStyle)
-				.style('opacity', opacity)
-				.style('stroke-width', strokeWidth)
-				.style('stroke', function(d) {
-					if ( strokeWidth==0 )
-					{ return 'transparent'; }
-					else
-					 { return 'black'; }
-				 });
-};
-
-function getBodyDimenstions() {
-
-	var w = window,
-			d = document,
-			e = d.documentElement,
-			g = d.getElementsByTagName('body')[0],
-			width = w.innerWidth || e.clientWidth || g.clientWidth,
-			height = w.innerHeight|| e.clientHeight|| g.clientHeight;
-
-	return [width, height];
-
-}
-// set the dimensions and margins of the graph
-margin = {top: 55, bottom: 15, left: 0, right: 0},
-height = 750;
-
-addStdSVG('svg4', 'fireworks', '100%', '100%', margin.left, margin.top, null);
-svg4.attr('pointer-events', 'none');
-
 // credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5
 // I took what was there, made adjustments on preference/version differences, and added to it.
 function launchFireworkBurst() {
@@ -74,30 +6,40 @@ function launchFireworkBurst() {
 
 	// // palettes that have been removed:
 
-	// P a s t e l R a i n b o w Color Palette: https://www.color-hex.com/color-palette/104769
-	// ['#ffc5c5', '#bcffa7', '#feffb6', '#98e5e7', '#ffaef3'],
+	// Astrid Gen Wyatt Shyla Cynthia Color Palette: https://www.color-hex.com/color-palette/104729
+	// ['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6']
 	// Beach Color Palette: https://www.color-hex.com/color-palette/895
 	// ['#96ceb4', '#ffeead', '#ff6f69', '#ffcc5c', '#88d8b0'],
-	// Metro Style Color Palette: https://www.color-hex.com/color-palette/471
-	// ['#00aedb', '#a200ff', '#f47835', '#d41243', '#8ec127'],
-	// Retro Color Palette: https://www.color-hex.com/color-palette/165
-	// ['#666547', '#fb2e01', '#6fcb9f', '#ffe28a', '#fffeb3'],
 	// BG colors Color Palette: https://www.color-hex.com/color-palette/105000
 	// ['#08a184', '#42d4b9', '#fdec40', '#1bd43a', '#dc143c'],
-	// original bg theme Color Palette: https://www.color-hex.com/color-palette/105004
-	// ['#fdca40', '#970b44', '#00cb9c', '#7ddf64', '#aaaaaa'],
 	// BGSS colors Color Palette: https://www.color-hex.com/color-palette/104999
 	// ['#fdf540', '#0cead9', '#00cb9c', '#8ddf64', '#dc143c'],
-	// Gryffindors Color Palette: https://www.color-hex.com/color-palette/104972
-	// ['#ae2825', '#fbcd14', '#b9282f', '#e5ba30', '#86162a'],
 	// ESO Item Qualities Color Palette: https://www.color-hex.com/color-palette/104887
 	// ['#2dc50e', '#3a92ff', '#a02ef7', '#eeca2a', '#ff8200'],
-	// Neon 0908 Color Palette: https://www.color-hex.com/color-palette/1131
-	// ['#fe0000', '#fdfe02', '#0bff01', '#011efe', '#fe00f6'],
 	// ESO MOTD Color Text Color Palette: https://www.color-hex.com/color-palette/20452
 	// ['#ff0000', '#fff000', '#18fff9', '#d3ac4b', '#8f139f'],
 	// Fire oranges Color Palette: https://www.color-hex.com/color-palette/104858
 	// ['#ffbf00', '#ffa500', '#ff8000', '#ff4000', '#ff1500'],
+	// fruit tree Color Palette: https://www.color-hex.com/color-palette/104883
+	// ['#38ad94', '#62a43d', '#ffb42b', '#ff493a', '#ff8bb6'],
+	// Gryffindors Color Palette: https://www.color-hex.com/color-palette/104972
+	// ['#ae2825', '#fbcd14', '#b9282f', '#e5ba30', '#86162a'],
+	// I Loved In Shades of Green Color Palette: https://www.color-hex.com/color-palette/1325
+	// ['#adff00', '#74d600', '#028900', '#00d27f', '#00ff83'],
+	// Ice Cream Pastels Color Palette: https://www.color-hex.com/color-palette/104985
+	// ['#41d8ca', '#c7e3e5', '#f4f3d4', '#f9d7c5', '#f4a2a9'],
+	// Metro Style Color Palette: https://www.color-hex.com/color-palette/471
+	// ['#00aedb', '#a200ff', '#f47835', '#d41243', '#8ec127'],
+	// Neon 0908 Color Palette: https://www.color-hex.com/color-palette/1131
+	// ['#fe0000', '#fdfe02', '#0bff01', '#011efe', '#fe00f6'],
+	// original bg theme Color Palette: https://www.color-hex.com/color-palette/105004
+	// ['#fdca40', '#970b44', '#00cb9c', '#7ddf64', '#aaaaaa'],
+	// Retro Color Palette: https://www.color-hex.com/color-palette/165
+	// ['#666547', '#fb2e01', '#6fcb9f', '#ffe28a', '#fffeb3'],
+	// P a s t e l R a i n b o w Color Palette: https://www.color-hex.com/color-palette/104769
+	// ['#ffc5c5', '#bcffa7', '#feffb6', '#98e5e7', '#ffaef3'],
+	// pastel colors of the rainbow Color Palette: https://www.color-hex.com/color-palette/5361
+	// ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'],
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -107,18 +49,10 @@ function launchFireworkBurst() {
 		//		// ['#dfff00', '#ffbf00', '#ff7f50', '#de3163', '#9fe2bf', '#40e0d0', '#6495ed', '#ccccff'],
 		//		// adjusted above to remove one or more colors
 		['#dfff00', '#ffbf00', '#de3163', '#40e0d0'],
-		// Astrid Gen Wyatt Shyla Cynthia Color Palette: https://www.color-hex.com/color-palette/104729
-		//		// ['#1ecf25', '#9419e6', '#fcd300', '#30cf89', '#19cde6'],
-		//		// adjusted above to remove one or more colors
-		// ['#1ecf25', '#9419e6', '#fcd300'],
 		// Bohemian sunset Color Palette: https://www.color-hex.com/color-palette/104833
 		['#9c2ea1', '#ff5f58', '#ffdd23', '#fd9301', '#ff0055'],
 		// KINDA BRIGHT Color Palette: https://www.color-hex.com/color-palette/104792
 		['#d578ff', '#625df0', '#59e7f2', '#f259a6', '#67eebb'],
-		// pastel colors of the rainbow Color Palette: https://www.color-hex.com/color-palette/5361
-		// ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'],
-		//		// adjusted above to remove one or more colors
-		// ['#ffb3ba', '#ffdfba', '#baffc9', '#bae1ff'],
 		// VaporWave Color Palette: https://www.color-hex.com/color-palette/10221
 		['#ff71ce', '#01cdfe', '#05ffa1', '#b967ff', '#fffb96'],
 		// 80s Color Palette: https://www.color-hex.com/color-palette/25888
@@ -145,10 +79,6 @@ function launchFireworkBurst() {
 		//		// ['#00ff9f', '#00b8ff', '#001eff', '#bd00ff', '#d600ff'],
 		//		// adjusted above to remove one or more colors
 		['#00ff9f', '#00b8ff', '#bd00ff', '#d600ff'],
-		// fruit tree Color Palette: https://www.color-hex.com/color-palette/104883
-		//		// ['#38ad94', '#62a43d', '#ffb42b', '#ff493a', '#ff8bb6'],
-		//		// adjusted above to remove one or more colors
-		// ['#38ad94', '#ff493a', '#ff8bb6'],
 		// cool blue Color Palette: https://www.color-hex.com/color-palette/30415
 		//		// ['#005073', '#107dac', '#189ad3', '#1ebbd7', '#71c7ec'],
 		//		// adjusted above to remove one or more colors
@@ -157,16 +87,10 @@ function launchFireworkBurst() {
 		['#b3ecec', '#89ecda', '#43e8d8', '#40e0d0', '#3bd6c6'],
 		// Red-Orange Color Palette: https://www.color-hex.com/color-palette/4699
 		['#ffc100', '#ff9a00', '#ff7400', '#ff4d00', '#ff0000'],
-		// I Loved In Shades of Green Color Palette: https://www.color-hex.com/color-palette/1325
-		//		// ['#adff00', '#74d600', '#028900', '#00d27f', '#00ff83'],
-		//		// adjusted above to remove one or more colors
-		// ['#adff00', '#74d600', '#00d27f', '#00ff83'],
 		// Facebook Messenger 1 Color Palette: https://www.color-hex.com/color-palette/15945
 		//		// ['#0084ff', '#44bec7', '#ffc300', '#fa3c4c', '#d696bb'],
 		//		// adjusted above to remove one or more colors
 		['#0084ff', '#44bec7', '#ffc300', '#fa3c4c'],
-		// Ice Cream Pastels Color Palette: https://www.color-hex.com/color-palette/104985
-		// ['#41d8ca', '#c7e3e5', '#f4f3d4', '#f9d7c5', '#f4a2a9'],
 		// Pop Quiz Color Palette: https://www.color-hex.com/color-palette/104873
 		//		// ['#fe0879', '#ff82e2', '#fed715', '#0037b3', '#70baff'],
 		//		// adjusted above to remove one or more colors
@@ -193,13 +117,17 @@ function launchFireworkBurst() {
 		['#f53473', '#93135d', '#5595c1', '#77def1']
 	];
 
-	// defining y parameter for the height of the launch
+	// set the dimensions and margins of the graph
+	margin = {top: 0, bottom: 0, left: 0, right: 0};
+	addStdSVG('svgFW', 'fireworks', getBodyDimenstions()[0], getBodyDimenstions()[1], margin.left, margin.top, null);
+
+	// defining y parameter for the getBodyDimenstions()[1] of the launch
 	// the is the distance from the top of the pange
-	LaunchYLoc = chance.floating({ min: height*0.05, max: height*0.20 }),
+	LaunchYLoc = chance.floating({ min: getBodyDimenstions()[1]*0.10, max: getBodyDimenstions()[1]*0.20 }),
 	// defining adjusted y parameter for delay preceding explosion
-	// new height adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
+	// new getBodyDimenstions()[1] adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
 	explosionDrop = chance.floating({ min: 20, max: 100 }),
-	// height all the circles will be at after the drop (and just before exploding)
+	// getBodyDimenstions()[1] all the circles will be at after the drop (and just before exploding)
 	explosionYLoc = LaunchYLoc + explosionDrop,
 	// defining values for the launch of the firework
 	// function below will be used to determine the x location for launching the rocket
@@ -233,19 +161,19 @@ function launchFireworkBurst() {
 
 	launchRadius = 3,
 	launchDuration = 1000,
-	launchSpeed = launchDuration/((height+launchRadius)- LaunchYLoc),
+	launchSpeed = launchDuration/((getBodyDimenstions()[1]+launchRadius)- LaunchYLoc),
 	dropDuration = launchSpeed*explosionDrop;
 
 	// these two variables will help create the tail effect with delay
 	fireWorkTailSize = 90,
 	tailDelaySize = 2.5;
 
-	svg4.selectAll()
+	svgFW.selectAll()
 			.data(explosionData).enter()
 			.append('circle')
 				.attr('r', launchRadius)
 				.attr('cx', launchXLoc)
-				.attr('cy', height+launchRadius)
+				.attr('cy', getBodyDimenstions()[1]+launchRadius)
 				.style('fill', launchColor)
 				.style('opacity', function(d, i) {
 					if ( i>0 && i<=fireWorkTailSize )

@@ -2,6 +2,7 @@
 layout: null
 ---
 
+/* --- Body --- */
 
 body {
   /* changed font for body */
@@ -16,7 +17,7 @@ a:focus {
   color: {{ site.link-hover-col | default: "#0085A1" }};
 }
 
-::-moz-selection {
+::-moz-selection, {
   /* changed hover-col to link-hover-col  */
   background-color: {{ site.link-hover-col | default: "#0085A1" }};
 }
@@ -25,6 +26,18 @@ a:focus {
   /* changed hover-col to link-hover-col  */
   background-color: {{ site.link-hover-col | default: "#0085A1" }};
 }
+
+
+/* --- Center --- */
+
+/* redefined center class css formatting */
+.center {
+  text-align: center;
+  display: block;
+  align-items: center;
+  justify-content: space-around;
+}
+
 
 /* --- Navbar --- */
 
@@ -38,21 +51,19 @@ a:focus {
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 800px) {
   .navbar-brand-mobile {
-        display: none;
+    display: none;
   }
 }
 
-@media (max-width: 768px) {
-  .navbar-brand {
-        display: none;
+@media (max-width: 800px) {
+  .navbar-brand-desktop {
+    display: none;
   }
 }
 
 .navbar-custom {
-  /* added top border */
-  /* border-top: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }}; */
   /* added bottom border */
   border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
@@ -62,23 +73,17 @@ a:focus {
   font-size: 1.25rem;
 }
 
-.navbar-brand:hover {
-  cursor: url(../img/kidpix_dynamite_eraser.gif), auto;
-  /* animation: cursor 0.5s linear infinite; */
+/* .navbar-brand:hover {
+  cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
+  animation: cursor_animate 0.5s linear infinite;
 }
 
-/* @keyframes cursor{ */
-   /* 0% {
-       cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
-   }
-   50% {
-       cursor: url(../img/kidpix_dynamite_eraser_2.png), auto;
-   }
-   100% {
-       cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
-   } */
-
-/* } */
+@keyframes cursor_animate{
+   0% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
+   50% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
+   51% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
+   100% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
+} */
 
 .navbar-custom .navbar-nav .nav-item {
   /* changed transform to capitalize */
@@ -142,32 +147,12 @@ a:focus {
   color: {{ site.navbar-link-hover-col | default: "#0085A1" }};
 }
 
-/* svg {
-  outline: 2px dashed blue;
- } */
-
-#fireworks{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 99;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  pointer-events: none;
-}
 
 /* --- Footer --- */
 
 footer {
   /* added top border */
   border-top: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
-  /* added bottom border */
-  /* border-bottom: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }}; */
 }
 
 footer a:hover {
@@ -207,16 +192,13 @@ footer a:hover {
   font-weight: 625;
 }
 
+
 /* --- Posts Preview Page --- */
 
 .post-preview .post-meta,
 .post-heading .post-meta {
-  /* changed font of posts */
+  /* changed font of posts to be consistent with rest of site*/
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-.post-preview .blog-tags {
-  opacity: 0.8;
 }
 
 .post-preview a {
@@ -228,6 +210,10 @@ footer a:hover {
 .post-preview a:hover {
   /* making title of the post the color of links (rather than black) on hover  */
   color: {{ site.post-title-link-hover-col | default: "#0085A1" }};
+}
+
+.post-preview .blog-tags {
+  opacity: 0.8;
 }
 
 
@@ -246,38 +232,12 @@ footer a:hover {
   background-color: {{ site.tag-background-hover-col | default: "#0085A1" }};
 }
 
-/* --- 404 --- */
-
-/* 404 image width larger on desktop */
-@media (max-width: 768px) {
-  .image_404 {
-    max-width: 60%;
-    max-height: 60%;
-  }
-}
-
-/* 404 image width smaller on mobile */
-@media (min-width: 768px) {
-  .image_404 {
-    max-width: 40%;
-    max-height: 40%;
-  }
-}
-
-/* redefined center class css formatting */
-.center {
-  text-align: center;
-  display: block;
-  align-items: center;
-  justify-content: space-around;
-}
 
 /* --- Buttons --- */
 
 /* added btn-group and btn-group elements css formatting */
 .btn-group {
   background-color: {{ site.btn-background-col | default: "#0085A1" }};
-  border-radius: 28px;
   display: inline-block;
   cursor: pointer;
   color: {{ site.btn-link-col | default: "#0085A1" }};
@@ -285,6 +245,7 @@ footer a:hover {
   font-weight: 750;
   padding: 16px 31px;
   text-decoration: none;
+  border-radius: 28px;
   border: 4.5px solid transparent;
   /* static button sizes across all buttons. */
   height: 65px;
@@ -304,7 +265,20 @@ footer a:hover {
   top: 1px;
 }
 
+
 /* --- Pagination --- */
+
+@media (min-width: 800px) {
+  .page-link-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .page-link-desktop {
+    display: none;
+  }
+}
 
 .pagination .page-item .page-link {
   /* changed pagination color */
@@ -318,7 +292,14 @@ footer a:hover {
   padding: 10px 17.5px;
   text-align: center;
   font-weight: 750;
+}
+
+.pagination .page-item .page-link-desktop {
   width: 175px;
+}
+
+.pagination .page-item .page-link-mobile {
+  width: 65px;
 }
 
 .pagination .page-item .page-link:hover,
@@ -337,3 +318,96 @@ footer a:hover {
 /* .post-preview .post-image .post-image-short { */
   /* display: inline; */
 /* } */
+
+
+/* --- 404 Page --- */
+
+
+
+/* --- General D3 --- */
+
+/* svg {
+  outline: 2px solid blue;
+ } */
+
+svg text {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.no_selection {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.no_events {
+  pointer-events: none;
+}
+
+div.tooltip {
+  /* position: absolute; */
+  text-align: left;
+  padding: 5px;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  stroke: black;
+  background: white;
+  border: solid;
+  border-width: 2px;
+  border-radius: 5px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.blinking_text {
+  animation: blinkingText 1s infinite;
+}
+
+@keyframes blinkingText {
+  0% { color: #000; }
+  49% { color: #000; }
+  50% { color: transparent; }
+  99% { color: transparent; }
+  100% { color: #000; }
+}
+
+.cursive {
+  font-family: cursive
+}
+
+
+/* overriding feature in built-in function that makes current selection invisible */
+/* .axis .tick text {
+  stroke-width: 0;
+  font-size: '12px';
+  fill: 'black';
+  opacity: 0.75;
+} */
+
+/* making ticks on axis black */
+/* .axis line {
+  stroke: 'black';
+} */
+
+/* --- D3 Fireworks --- */
+
+#fireworks {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+}

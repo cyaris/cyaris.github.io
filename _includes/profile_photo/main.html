@@ -1,11 +1,7 @@
 <!-- <!DOCTYPE html> -->
 <html>
 	<head>
-		<style type="text/css">
-
-			/* svg {
-				border: 1px solid #000;
-			} */
+		<style type='text/css'>
 
 			@media (max-width:500px){
 		      #profile_photo {
@@ -17,32 +13,21 @@
 					#transition_menu {
 							display: none;
 		      }
-					#fireworks {
-							display: none;
-		      }
 				}
-
-		 	/* #profile_photo {
-				cursor: url(../assets/img/pizza_cursor.png), auto;
-			} */
 
 			svg text {
 				stroke: black;
 				fill: black;
 			  background: white;
-				-webkit-touch-callout: none;
-				-webkit-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
-				pointer-events: none;
 			}
 
-	</style>
+		 	/* #profile_photo {
+				cursor: url({{site.url}}/assets/img/pizza_cursor.png), auto;
+			} */
+
+		</style>
 	</head>
 	<body>
-		<!-- Load d3.js -->
-		<script src='https://d3js.org/d3.v4.min.js'></script>
 		<script src='https://chancejs.com/chance.min.js'></script>
 		<!-- Create a div where the graph will take place -->
 		<div id='profile_photo' align='center' style='margin-bottom:-406.25px;'></div>
@@ -51,73 +36,19 @@
 		<!-- Create a div where the slider will be -->
 		<div id='transition_menu' align='center' style='margin-bottom:25px;'></div>
 		<!-- <div id='fireworks' align='center' style='margin-bottom:-650px;'></div> -->
-		<script type="text/javascript">
-
-			function getRandomInt(min, max) {
-
-				min = Math.ceil(min);
-				max = Math.floor(max);
-
-				// the maximum is exclusive and the minimum is inclusive
-				return Math.floor(Math.random() * (max - min) + min);
-			}
-
-
-			// function getRandomPositiveNegative() {
-			//
-			// 	return Math.ceil((Math.random() - 0.5) * 2) < 1 ? -1 : 1;
-			// }
-
-
-			function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
-
-					window[svgName] = d3.select('#' + divInput)
-															.append('svg')
-																.attr('width', widthInput)
-																.attr('height', heightInput)
-																.attr('transform', 'translate(' + marginLeftInput + ',' + marginTopInput + ')')
-																.style('cursor', cursorInput);
-			};
-
-
-			function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, fontStyle, opacity, strokeWidth, textInput) {
-
-					svgInput.append('text')
-						.attr('class', classInput)
-						.attr('id', idInput)
-						.attr('x', textX)
-						.attr('y', textY)
-						.attr('pointer-events', 'none')
-						.text(textInput)
-							.style('font-size', fontSize)
-							.style('font-style', fontStyle)
-							.style('opacity', opacity)
-							.style('stroke-width', strokeWidth)
-							.style('stroke', function(d) {
-								if ( strokeWidth==0 )
-								{ return 'transparent'; }
-								else
-								 { return 'black'; }
-							 });
-			};
+		<script type='text/javascript'>
 
 			// set the dimensions and margins of the graph
 			margin = {top: 0, bottom: 15, left: 0, right: 0},
 		  width = 405,
 		  height = 405,
-			svg3Height = 120,
-			svg4Width = width*2.5,
-			// width*3,
-			svg4Height = height+svg3Height+175;
+			svg3Height = 120;
 
-			// append the svg object to the body of the pageC
+			// append the svg object to the body of the page.
 			addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, null);
 			// a separate svg is needed for the pixels so that they will always be on top, even while objects are appended to the original image (laser eyes).
 			addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, null);
 			addStdSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, null);
-
-			// addStdSVG('svg4', 'fireworks', svg4Width, svg4Height, -width*0.275, -height*1.725, null);
-			svg4.attr('pointer-events', 'none');
 
 			addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'normal', 0.80, 0, 'Hover on my face!');
 
@@ -159,16 +90,16 @@
 			// appending the original version of the photo, invisible upon page load.
 			// x,y coordinates are relative to the transform translate above.
 			svg1.append('svg:image')
+					.attr('class', 'no_selection no_events')
 					// .attr('id', 'full_resolution_photo')
 					.attr('x', 0)
 					.attr('y', 0)
 					.attr('width', width)
 					.attr('height', height)
-					.attr('xlink:href', '../assets/img/profile_photo.png')
-					.attr('pointer-events', 'none');
+					.attr('xlink:href', '{{site.url}}/assets/img/profile_photo.png');
 
 			//Read the data
-			d3.csv('/assets/csv/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
+			d3.csv('{{site.url}}/assets/csv/profile_photo/proile_photo_pixel_rgb_codes.csv', function(data) {
 
 				// defining time variables as inputs for pixelMO and pixelML tansitions.
 				pixelTransDelay = 100,
@@ -188,22 +119,27 @@
 					// only those that are not invisible will be needed (since those are already fully transitioned)
 					transitionPixels = Array(currentPixel);
 
-					transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+2)),
-					transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-2)),
-					transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput+1)),
-					transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput-1)),
-					transitionPixels.push('#x' + String(xInput+2) + 'y' + String(yInput)),
-					transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+2)),
-					transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-2)),
-					transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput+1)),
-					transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput-1)),
-					transitionPixels.push('#x' + String(xInput-2) + 'y' + String(yInput)),
-					transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput+2)),
-					transitionPixels.push('#x' + String(xInput+1) + 'y' + String(yInput-2)),
-					transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput+2)),
-					transitionPixels.push('#x' + String(xInput-1) + 'y' + String(yInput-2)),
-					transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput+2)),
-					transitionPixels.push('#x' + String(xInput) + 'y' + String(yInput-2));
+					function getPixelCoordinateString(xCoordinateInput, xAdjustment, yCoordinateInput, yAdjustment) {
+
+						return '#x' + String(xCoordinateInput+xAdjustment) + 'y' + String(yCoordinateInput+yAdjustment);
+					}
+
+					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, 2)),
+					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, 1)),
+					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, 0)),
+					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, -1)),
+					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, -2)),
+					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, 2)),
+					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, 1)),
+					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, 0)),
+					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, -1)),
+					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, -2)),
+					transitionPixels.push(getPixelCoordinateString(xInput, 1, yInput, 2)),
+					transitionPixels.push(getPixelCoordinateString(xInput, 1, yInput, -2)),
+					transitionPixels.push(getPixelCoordinateString(xInput, -1, yInput, 2)),
+					transitionPixels.push(getPixelCoordinateString(xInput, -1, yInput, -2)),
+					transitionPixels.push(getPixelCoordinateString(xInput, 0, yInput, 2)),
+					transitionPixels.push(getPixelCoordinateString(xInput, 0, yInput, -2));
 
 					transitionSelect = '';
 

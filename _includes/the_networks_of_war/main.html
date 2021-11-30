@@ -2,91 +2,49 @@
 <html>
 	<head>
 		<!-- <link href='https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;400&display=swap' rel='stylesheet'> -->
-		<style type="text/css">
+		<style type='text/css'>
 
-			@media (max-width:900px){
-		      #war_network_analysis_graph {
-							display: none;
-		      }
-					#war_menu {
-							display: none;
-		      }
-					#war_network_analysis_graph {
-							display: none;
-		      }
-					#message {
-							display: none;
-		      }
-					#list_of_data_sources {
-							display: none;
-		      }
-				}
+			@media (max-width:990px){
+	      #war_network_analysis_graph {
+						display: none;
+	      }
+				#war_menu {
+						display: none;
+	      }
+				#war_network_analysis_graph {
+						display: none;
+	      }
+				#message {
+						display: none;
+	      }
+				#list_of_data_sources {
+						display: none;
+	      }
+			}
 
-			@media (min-width:900px){
+			@media (min-width:990px){
 				#hidden_project_explained {
 					display: none;
 		    }
 		  }
-
-			/* svg {
-				border: 1px solid #000;
-			} */
 
 			svg text {
 				/* font-family: 'Libre Franklin', sans-serif; */
 				stroke: black;
 				fill: black;
 			  background: white;
-				-webkit-touch-callout: none;
-				-webkit-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
-				/* pointer-events: none; */
 			}
 
 			div.tooltip {
-			  /* position: absolute; */
-			  text-align: left;
-				align: left;
 			  padding: 10px;
-				/* font-family: 'Libre Franklin', sans-serif; */
-				font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 				font-size: 13px;
-				stroke: black;
-			  background: white;
-			  border: solid;
 				border-width: 1px;
 			  border-radius: 5px;
-
-				-webkit-touch-callout: none;
-				-webkit-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
-				pointer-events: none;
 			}
 
 		</style>
 	</head>
 	<body>
-		<!-- <div id='war_choice_menu'>
-			document.getElementById('war_choice_menu').style.display = 'none';
-			document.getElementById('war_choice_menu').style.display = 'block';
-			<p align='center'>Choose a War Type</p>
-			<div class='center'>
-				<div class='btn-group'>
-					<a onclick=''><button class='button'>Inter-State</button></a>
-					<a onclick='' ><button class='button'>Intra-State</button></a>
-				</div>
-			</div>
-		<div class='center' style='margin-top:20px; margin-bottom:40px;'>
-			<div class='btn-group'>
-				<a onclick='' ><button class='button'>Extra-State</button></a>
-				<a onclick='' ><button class='button'>Non-State</button></a>
-			</div>
-		</div>
-		</div> -->
 		<div id='hidden_project_explained' align='left' style='margin-bottom:15px;'>
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
@@ -123,196 +81,10 @@
 		<!-- Load d3.js -->
 		<script src='https://d3js.org/d3.v5.min.js'></script>
 		<script src='https://d3js.org/d3-time.v2.min.js'></script>
-		<script type="text/javascript">
-
-			function getTextWidth(svgInput, textInput, fontSize) {
-
-					// obtaining length of any textinput (based on default font size and font family)
-					textWidthArray = [];
-
-					svgInput.append('g')
-									.selectAll('.dummyText')
-									.data([textInput])
-									.enter().append('text')
-										.attr('pointer-events', 'none')
-										// .attr('font-family', 'sans-serif')
-										.attr('font-size', fontSize)
-										.text(function(d) { return d; })
-										.each(function(d, i) {
-												thisWidth = this.getComputedTextLength();
-												textWidthArray.push(thisWidth);
-												this.remove();
-							});
-
-						textWidth = textWidthArray.reduce((a, b) => a + b, 0);
-
-						return textWidth;
-			};
-
-
-			// returning the array without the remove_item
-			function removeItemFromArray(array, remove_item) {
-
-				return array.filter(function(array_item) { return array_item!==remove_item});
-			};
-
-			// returning the max value from any array
-			function maxFromArray(array) {
-
-					maxValue = array.reduce(function(a, b) { return Math.max(a, b); });
-
-					return maxValue;
-			};
-
-			// returning the min value from any array
-			function minFromArray(array) {
-
-					minValue = array.reduce(function(a, b) { return Math.min(a, b); });
-
-					return minValue;
-			};
-
-			// returning average overall value across all numbers in an array.
-			function arrayAverage(array) {
-
-					// Find the sum
-			    sumOfAllItems = 0;
-
-			    for ( i in array )
-					{ sumOfAllItems+=array[i]; }
-			    // get the length of the array
-			    itemCount = array.length;
-
-			    // return the average
-			    return sumOfAllItems/itemCount;
-			};
-
-			// unique values from array part
-			// returning all non null values from an array with no duplicates
-			// null values will be counted as zero (only once).
-			Array.prototype.uniqueNonNull = function() {
-
-				  array = [];
-
-				  for ( var i = 0; i < this.length; i++ ) {
-						// not adding any values to the array that have already been added
-				    if ( array.includes(this[i]) ) {}
-						else if ( isNaN(this[i]) && array.includes(0) ) {}
-							// adding zeros instead of null values to the array
-						else if ( isNaN(this[i]) )
-						{ array.push(0); }
-						else
-						{ array.push(this[i]); }
-				  }
-
-				  return array.sort();
-			};
-
-			function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, strokeWidth, textInput) {
-
-					svgInput.append('text')
-						.attr('class', classInput)
-						.attr('id', idInput)
-						.attr('x', textX)
-						.attr('y', textY)
-						.attr('pointer-events', 'none')
-						.text(textInput)
-							.style('fill', 'black')
-							.style('font-size', fontSize)
-							.style('stroke-width', strokeWidth)
-							.style('stroke', function(d) {
-								if ( strokeWidth==0 )
-								{ return 'transparent'; }
-								else
-								{ return 'black'; }
-							 });
-			};
-
-			function addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
-
-					svgInput.append('rect')
-								.attr('class', classInput)
-								.attr('id', idInput)
-								.attr('x', rectX)
-								.attr('y', rectY)
-								.attr('width', rectWidth)
-								.attr('height', rectHeight)
-								.style('stroke', rectStroke)
-								.style('stroke-width', rectStrokeWidth)
-								.attr('stroke-opacity', rectStrokeOpacity)
-								.style('fill', rectFill)
-								.attr('fill-opacity', rectFillOpacity)
-								.on('mouseover', rMO)
-								.on('mouseleave', rML)
-								.on('click', rClick);
-			};
-
-			function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
-
-					window[svgName] = d3.select('#' + divInput)
-															.append('svg')
-																.attr('width', widthInput)
-																.attr('height', heightInput)
-																.attr('transform', 'translate(' + marginLeftInput + ',' + marginTopInput + ')')
-																.style('cursor', cursorInput);
-			};
-
-			function defineTooltip(divInput, idInput, leftLoc, topLoc, divWidth, divHeight, textInput) {
-
-				d3.select('#' + divInput)
-					.append('div')
-					.attr('pointer-events', 'none')
-					.attr('class', 'tooltip')
-					.attr('id', idInput)
-					.style('width', divWidth)
-					.style('height', divHeight)
-					.style('left', leftLoc)
-					.style('top', topLoc)
-					.style('bottom', '0px')
-					.style('opacity', 0)
-					.html(textInput);
-			};
-
-			// function addTooltipSymbol(svgInput, idInput, circX, circY, textX, textY, textRotate) {
-			//
-			// 	svgInput.append("circle")
-			// 				.attr("pointer-events", "none")
-			// 				.attr("id", idInput + "Circle")
-			// 				.attr("cx", circX)
-			// 				.attr("cy", circY)
-		 	// 		    .attr('r', 7.5)
-		 	// 		    .style('fill', "rgb(0,122,255)")
-			// 				.style('opacity', 0.9)
-			// 				.style("stroke-width", 2)
-			// 				.style("stroke", "transparent");
-			//
-			// 	svgInput.append("text")
-			// 				.attr("pointer-events", "none")
-			// 				.attr("id", idInput + "Text")
-			// 				.attr("transform", textRotate)
-			// 				.attr("x", textX)
-			// 				.attr("y", textY)
-			// 				.text("i")
-			// 					.style('fill', "white")
-			// 					.style('stroke', "white")
-			// 					.style('font-size', "11.5px")
-			// 					.style('font-weight', 500);
-			// };
-
-			var generalRectMO = function(d) {
-					// this will be used as a decorator to other mouseover functions
-					d3.select(this)
-						.style('stroke-width', 2)
-						.style('cursor', 'pointer');
-			},
-					generalRectML = function(d) {
-					// this will be used as a decorator to other mouseleave
-					d3.select(this)
-						.style('stroke-width', 1);
-			};
+		<script type='text/javascript'>
 
 			// reading in the data to create the war menu
-			d3.csv('../../assets/csv/the_networks_of_war/war_file_list.csv').then(function(data) {
+			d3.csv('{{ site.url }}/assets/csv/the_networks_of_war/war_file_list.csv').then(function(data) {
 
 				parseTime = d3.timeParse('%Y-%m-%d');
 
@@ -374,7 +146,7 @@
 				});
 
 			 	// removing all svgs to this point (only includes dummy svg)
-					d3.selectAll('svg').remove();
+				d3.selectAll('svg').remove();
 
 				warNameMaxLength = maxFromArray(warNameLengths);
 
@@ -398,10 +170,10 @@
 
 					// creating the labels for the menu (everything in the top row)
 					addStdRect(svg1, null, null, 0,  0, width, topRowHeight, 'black', 1, 0.15, 'black', 0.075, null, null, null);
-					addStdText(svg1, null, null, 10, 25, menuTextSize, 0.75, 'Name');
-					addStdText(svg1, null, null, warNameMaxLength + 60, 25, menuTextSize, 0.75, 'Timeframe');
-					addStdText(svg1, null, null, warNameMaxLength + 192.5, 25, menuTextSize, 0.75, 'Length in Days');
-					addStdText(svg1, null, null, warNameMaxLength + 337.5, 25, menuTextSize, 0.75, 'Participating Forces');
+					addStdText(svg1, null, null, 10, 25, menuTextSize, 0.75, 'normal', 1, 'Name');
+					addStdText(svg1, null, null, warNameMaxLength + 60, 25, menuTextSize, 0.75, 'normal', 1, 'Timeframe');
+					addStdText(svg1, null, null, warNameMaxLength + 192.5, 25, menuTextSize, 0.75, 'normal', 1, 'Length in Days');
+					addStdText(svg1, null, null, warNameMaxLength + 337.5, 25, menuTextSize, 0.75, 'normal', 1, 'Participating Forces');
 
 					// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
 					var mainMenuMouseOver = function(d) {
@@ -433,18 +205,18 @@
 					for ( var i = 0; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
 
 						addStdRect(svg1, null, fileDic['file_name'][i], 0, topRowHeight+(i*menuRowHeight), width, menuRowHeight, 'black', 1, 0.15, 'black', 0.075, mainMenuMouseOver, mainMenuMouseLeave, mainMenuClick);
-						addStdText(svg1, null, null, 10, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, fileDic['war_name'][i]);
+						addStdText(svg1, null, null, 10, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['war_name'][i]);
 
 						// calculating days since war began if the war is ongoing
 						if ( fileDic['ongoing_conflict'][i]==1 )
-						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, fileDic['start_year'][i] + '–Present'); }
+						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['start_year'][i] + '–Present'); }
 						else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
-						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, fileDic['start_year'][i]); }
+						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['start_year'][i]); }
 						else
-						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, fileDic['start_year'][i] + '–' + fileDic['end_year'][i]); }
+						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['start_year'][i] + '–' + fileDic['end_year'][i]); }
 
-						addStdText(svg1, null, null, warNameMaxLength + 230, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, fileDic['days_in_war'][i].toLocaleString());
-						addStdText(svg1, null, null, warNameMaxLength + 395, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, fileDic['participants'][i].toLocaleString());
+						addStdText(svg1, null, null, warNameMaxLength + 230, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['days_in_war'][i].toLocaleString());
+						addStdText(svg1, null, null, warNameMaxLength + 395, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['participants'][i].toLocaleString());
 					};
 			};
 			// calling the war menu function upon page load
@@ -453,7 +225,7 @@
 			function createNetworkGraph(fileName) {
 				// new code section: start of code for svg2
 				// reading in the data to create the network graph
-				d3.json('../../assets/json/the_networks_of_war/' + fileName).then(function(graph) {
+				d3.json('{{ site.url }}/assets/json/the_networks_of_war/' + fileName).then(function(graph) {
 
 					// creating a color scale to color the side of each war.
 					color = d3.scaleLinear().domain([1, 2]).range(['lightgreen', 'violet']);
@@ -500,7 +272,7 @@
 
 					// creating a rect for a back to menu button
 					addStdRect(svg2, null, 'back_to_menu', 1,  10, 70, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, backToMenuClick);
-					addStdText(svg2, null, null, 6, 31.5, graphMenuTextSize, 0, '↖ Menu');
+					addStdText(svg2, null, null, 6, 31.5, graphMenuTextSize, 0, 'normal', 0, '↖ Menu');
 
 					// obtaining array for all war fields in the json file
 					// these will be iterated through to fill the warDic dictionary
@@ -524,8 +296,8 @@
 						warDic['timeFrame'] = warDic['start_year'] + '–' + warDic['end_year'];
 					}
 
-					addStdText(svg2, null, null, 0, 85, graphMenuTextSize, 0, warDic['war_name']);
-					addStdText(svg2, null, null, 0, 102.5, graphMenuTextSize, 0, warDic['timeFrame']);
+					addStdText(svg2, null, null, 0, 85, graphMenuTextSize, 0, 'normal', 0, warDic['war_name']);
+					addStdText(svg2, null, null, 0, 102.5, graphMenuTextSize, 0, 'normal', 0, warDic['timeFrame']);
 
 					// obtaining arrays of all participant/link fields in the json file.
 					// these will be used to fill the descriptiveFields and descriptorNameLengths arrays.
@@ -1469,7 +1241,7 @@
 									{ dropdownBackgroundColor = 'white'; }
 
 									addStdRect(svg2, groupingType + '_descriptor_dropdowns', dropdownSelected, descriptorRectXLoc, yAdjustmentInput + descriptorRectYLoc + ((i+1)*descriptorRectHeight), descriptorRectWidth, descriptorRectHeight, 'black', 1, null, dropdownBackgroundColor, null, generalRectMO, generalRectML, clickFunction);
-									addStdText(svg2, groupingType + '_descriptor_dropdowns', null, descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc + ((i+1)*descriptorRectHeight), graphMenuTextSize, 0, dropdownSelected);
+									addStdText(svg2, groupingType + '_descriptor_dropdowns', null, descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc + ((i+1)*descriptorRectHeight), graphMenuTextSize, 0, 'normal', 0, dropdownSelected);
 								}
 							}
 					};
@@ -1521,7 +1293,7 @@
 							svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 							svg2.selectAll('#' + groupingType + '_descriptor_selected_text').remove();
 
-							addStdText(svg2, null, groupingType + '_descriptor_selected_text', descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc, graphMenuTextSize, 0, descriptorName);
+							addStdText(svg2, null, groupingType + '_descriptor_selected_text', descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc, graphMenuTextSize, 0, 'normal', 0, descriptorName);
 
 							if ( groupingType=='link' && defaultSelectorCheck('link', descriptorName) )
 							{ linkDescriptiveValues = getLinkDescriptiveValues(null); }
@@ -1534,17 +1306,17 @@
 					descriptiveMenuClick('link', linkDescriptorSelected, linkMenuMouseOver, 0);
 					descriptiveMenuClick('node', nodeDescriptorSelected, nodeMenuMouseOver, yAdjustment);
 
-					addStdText(svg2, null, 'node_descriptor_selected_title', descriptorRectXLoc, yAdjustment + descriptorTitleYLoc, graphMenuTextSize, 0, nodeMenuTitle);
-					addStdText(svg2, null, 'link_descriptor_selected_title', descriptorRectXLoc, descriptorTitleYLoc, graphMenuTextSize, 0, linkMenuTitle);
+					addStdText(svg2, null, 'node_descriptor_selected_title', descriptorRectXLoc, yAdjustment + descriptorTitleYLoc, graphMenuTextSize, 0, 'normal', 0, nodeMenuTitle);
+					addStdText(svg2, null, 'link_descriptor_selected_title', descriptorRectXLoc, descriptorTitleYLoc, graphMenuTextSize, 0, 'normal', 0, linkMenuTitle);
 					addStdRect(svg2, null, 'link_descriptor_selected_rect', descriptorRectXLoc, descriptorRectYLoc, descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
 					addStdRect(svg2, null, 'node_descriptor_selected_rect', descriptorRectXLoc, yAdjustment + descriptorRectYLoc, descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'transparent', null, nodeMenuMouseOver, generalRectML, null);
-					addStdText(svg2, null, 'link_descriptor_selected_text', descriptorTextXLoc, descriptorTextYLoc, graphMenuTextSize, 0, linkDescriptorSelected);
-					addStdText(svg2, null, 'node_descriptor_selected_text', descriptorTextXLoc, yAdjustment + descriptorTextYLoc, graphMenuTextSize, 0, nodeDescriptorSelected);
+					addStdText(svg2, null, 'link_descriptor_selected_text', descriptorTextXLoc, descriptorTextYLoc, graphMenuTextSize, 0, 'normal', 0, linkDescriptorSelected);
+					addStdText(svg2, null, 'node_descriptor_selected_text', descriptorTextXLoc, yAdjustment + descriptorTextYLoc, graphMenuTextSize, 0, 'normal', 0, nodeDescriptorSelected);
 
 					// descriptorTooltipSymbolXLoc = descriptorRectXLoc-15;
-					// addStdRect(svg4, "link_descriptor_tooltip_rect", descriptorTooltipSymbolXLoc, descriptorTextYLoc-1, 20, 20, 'black', tooltipMO, tooltipML, null);
+					// addStdRect(svg4, 'link_descriptor_tooltip_rect', descriptorTooltipSymbolXLoc, descriptorTextYLoc-1, 20, 20, 'black', tooltipMO, tooltipML, null);
 					// addTooltipSymbol(svg2, 'link_descriptor_tooltip', descriptorTooltipSymbolXLoc, descriptorTextYLoc-4.5, descriptorTooltipSymbolXLoc-1, descriptorTextYLoc-1, null);
-					// addStdRect(svg4, "part_descriptor_tooltip_rect", descriptorTooltipSymbolXLoc, yAdjustment+descriptorTextYLoc-1, 20, 20, 'transparent', tooltipMO, tooltipML, null);
+					// addStdRect(svg4, 'part_descriptor_tooltip_rect', descriptorTooltipSymbolXLoc, yAdjustment+descriptorTextYLoc-1, 20, 20, 'transparent', tooltipMO, tooltipML, null);
 					// addTooltipSymbol(svg2, 'part_descriptor_tooltip', descriptorTooltipSymbolXLoc, yAdjustment + descriptorTextYLoc-4.5, descriptorTooltipSymbolXLoc-1, yAdjustment+descriptorTextYLoc-1, null);
 
 					function defineNodeTooltips() {

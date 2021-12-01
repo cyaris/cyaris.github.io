@@ -703,6 +703,8 @@
 
 							svg1.select('#hover_legend_null').style('opacity', 0);
 							svg1.select('#hover_legend_line').style('stroke-opacity', 1);
+							svg1.select('#overall_legend_null').style('opacity', 0);
+							svg1.select('#overall_legend_line').style('stroke-opacity', 1);
 							svg1.select('#overall_ma_line').style('stroke', overallModelColor);
 
 							// Redefine the hover line and add path
@@ -720,6 +722,8 @@
 
 							svg1.select('#hover_legend_null').style('opacity', 1);
 							svg1.select('#hover_legend_line').style('stroke-opacity', 0);
+							svg1.select('#overall_legend_null').style('opacity', 0);
+							svg1.select('#overall_legend_line').style('stroke-opacity', 1);
 							svg1.select('#overall_ma_line').style('stroke', overallModelColor);
 							selectHide(svg1, 'hover_ma_line');
 						};

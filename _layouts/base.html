@@ -26,9 +26,13 @@ common-js:
 {% include head.html %}
 
 <body>
-
   <!-- custom edit: added div for fireworks -->
-  <div class='no_selection no_events' id='fireworks' align='center'></div>
+  <div class="no_selection no_events" id="fireworks" align="center"></div>
+  <script type='text/javascript'>
+  	// set the dimensions and margins of the graph
+    margin = {top: 0, bottom: 0, left: 0, right: 0};
+  	addStdSVG('svgFW', 'fireworks', getBodyDimenstions()[0], getBodyDimenstions()[1], margin.left, margin.top, null);
+  </script>
   <!-- end of custom edit -->
 
   {% include gtm_body.html %}

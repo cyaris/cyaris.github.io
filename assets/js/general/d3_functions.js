@@ -20,6 +20,7 @@ function addStdGroupSVG(svgName, divInput, widthInput, heightInput, marginLeftIn
 													.style('cursor', cursorInput);
 };
 
+
 function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, fontStyle, opacity, strokeWidth, textInput) {
 
 		svgInput.append('text')
@@ -60,8 +61,9 @@ function addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rect
 					.on('mouseleave', rML)
 					.on('click', rClick)
 					.style('pointer-events', function() { if ( rMO==null && rML==null && rClick==null )
-																								{ return 'none' }
-																								else { return 'auto '}
+																								{ return 'none'; }
+																								else
+																								{ return 'auto'; }
 																							});
 };
 
@@ -89,10 +91,10 @@ function addStdCircle(svgInput, idInput, circX, circY, fillColor) {
 				.attr('id', idInput)
 				.attr('cx', circX)
 				.attr('cy', circY)
-			    .attr('fill', fillColor)
+		    .attr('fill', fillColor)
 				.attr('stroke', 'black')
 				.attr('stroke-width', 0.5)
-			    .attr('r', 4);
+		    .attr('r', 4);
 };
 
 

@@ -116,11 +116,7 @@ function launchFireworkBurst() {
 		//		// adjusted above to remove one or more colors
 		['#f53473', '#93135d', '#5595c1', '#77def1']
 	];
-
-	// set the dimensions and margins of the graph
-	margin = {top: 0, bottom: 0, left: 0, right: 0};
-	addStdSVG('svgFW', 'fireworks', getBodyDimenstions()[0], getBodyDimenstions()[1], margin.left, margin.top, null);
-
+	
 	// defining y parameter for the getBodyDimenstions()[1] of the launch
 	// the is the distance from the top of the pange
 	LaunchYLoc = chance.floating({ min: getBodyDimenstions()[1]*0.10, max: getBodyDimenstions()[1]*0.20 }),
@@ -157,11 +153,11 @@ function launchFireworkBurst() {
 	launchColor = randomPallete[getRandomInt(0, randomPallete.length)],
 	fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
 
-	// console.log(randomPallete);
+	console.log(randomPallete);
 
 	launchRadius = 3,
 	launchDuration = 1000,
-	launchSpeed = launchDuration/((getBodyDimenstions()[1]+launchRadius)- LaunchYLoc),
+	launchSpeed = launchDuration/((getBodyDimenstions()[1] + launchRadius) - LaunchYLoc),
 	dropDuration = launchSpeed*explosionDrop;
 
 	// these two variables will help create the tail effect with delay
@@ -221,15 +217,15 @@ function launchFireworkBurst() {
 				.style('opacity', 0)
 				.attr('cx', function(d) {
 					if ( d.x > launchXLoc )
-					{ return d.x + (d.x - launchXLoc) }
+					{ return d.x + (d.x - launchXLoc); }
 					else
-					{ return d.x - (-d.x + launchXLoc) }
+					{ return d.x - (-d.x + launchXLoc); }
 				})
 				.attr('cy', function(d) {
 					if ( d.y > explosionYLoc )
-					{ return d.y + (d.y - explosionYLoc ) }
+					{ return d.y + (d.y - explosionYLoc); }
 					else
-					{ return d.y - (-d.y + explosionYLoc ) }
+					{ return d.y - (-d.y + explosionYLoc); }
 				})
 				.on('end', function() {
 					d3.select(this).remove();

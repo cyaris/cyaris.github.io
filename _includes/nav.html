@@ -4,8 +4,6 @@
     <a class="navbar-brand navbar-brand-logo" href="{{ '' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
   {%- elsif site.title -%}
 		<!-- custom edit: importing libraries for fireworks launch. changing top left nav link to Launch Fireworks instead of site title -->
-    <script src='https://d3js.org/d3.v4.min.js'></script>
-		<script src='https://chancejs.com/chance.min.js'></script>
 		<script type="text/javascript" src="{{ site.url }}/assets/js/fireworks/fireworks_launch.js"></script>
     <a class="navbar-brand navbar-brand-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()">Fireworks<img src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img></a>
 		<a class="navbar-brand navbar-brand-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()"><img src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img><img src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img><img src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img></a>

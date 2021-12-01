@@ -206,14 +206,13 @@
 				allObsSrtd = allObs.slice(0).sort(function(a,b){return b-a}),
 				nydKeys = Object.keys(newYearsDayDic),
 				maxYearObserved = d3.max(maxYearObserved),
-				numFuturePredDays = numRows - allObs.length,
-				mostRecObsDate = allDates[allObs.length].toLocaleDateString('en-US');
+				numFuturePredDays = numRows - allObs.length;
 
-				today = new Date(),
-				daysSinceMostRecObs = parseInt(Math.round((Math.abs(today - allDates[allObs.length])/1000)/86400)).toLocaleString();
-
-				console.log('Today\'s date is ' + today.toLocaleDateString('en-US') + '.');
-				console.log('The most recent date recorded is ' + mostRecObsDate + ', ' + daysSinceMostRecObs + ' days ago.');
+				// today = new Date(),
+				// mostRecObsDate = allDates[allObs.length].toLocaleDateString('en-US');
+				// daysSinceMostRecObs = parseInt(Math.round((Math.abs(today - allDates[allObs.length])/1000)/86400)).toLocaleString();
+				// console.log('Today\'s date is ' + today.toLocaleDateString('en-US') + '.');
+				// console.log('The most recent date recorded is ' + mostRecObsDate + ', ' + daysSinceMostRecObs + ' days ago.');
 
 				sliderData = {
 					'obs': {
@@ -225,10 +224,11 @@
 					'ts': {
 						'ticks': [5, 10, 15, 20, 25, 30],
 						'step': 5,
-						'default': 15,
+						'default': 10,
 						'width': 112.5
 					}
-				},
+				};
+
 				obsSlider = d3.sliderBottom()
 							.min(d3.min(sliderData['obs']['ticks']))
 	  					.max(d3.max(sliderData['obs']['ticks']))
@@ -265,6 +265,7 @@
 				overallYearlyTrendPast = 0,
 				overallYearlyTrendFuture = 0,
 				overallRMSE = 0;
+
 		    // format the data
 		    data.forEach(function(d) {
 	        d[overallCol] = +d[overallCol];
@@ -288,10 +289,10 @@
 				overallYearlyTrendPast = parseInt(Math.round(overallYearlyTrendPast/(obsCumDic[maxYearObserved]-numFuturePredDays))).toLocaleString(),
 				overallYearlyTrendFuture = parseInt(Math.round(overallYearlyTrendFuture/numFuturePredDays)).toLocaleString(),
 				overallRMSE = parseInt(Math.round(Math.sqrt(overallRMSE))).toLocaleString();
+
 		    // Scale the range of the data
 		    x.domain(d3.extent(data, function(d) { return d.date; }));
 		    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 15; })]);
-
 				/////////////////////////////////////////////
 				/////////////////////////////////////////////
 
@@ -323,23 +324,14 @@
 							.data(dataInput)
 							.enter()
 							.append('circle')
+								.filter(function(d) { return d.non_observation!=1; })
 								.attr('pointer-events', 'none')
 								.attr('id', idInput)
 								.attr('r', 2)
 								.attr('cx', function(d) { return x(d.date); })
 								.attr('cy', function(d) { return y(d[yVariable]); })
-								.style('fill', function(d) {
-									if ( d.non_observation==1 )
-									{ return 'transparent' }
-									else
-									{ return fillColor }
-								})
-								.style('stroke', function(d) {
-									if ( d.non_observation==1 )
-									{ return 'transparent' }
-									else
-									{ return strokeColor }
-								})
+								.style('fill', fillColor)
+								.style('stroke', strokeColor)
 								.style('stroke-width', 0.5);
 				};
 
@@ -347,21 +339,16 @@
 				addGunViolenceObservations(svg1, data, 'circle_obs', true, 'num_harmed', obsColor, 'black');
 				// defining all three lines (not including legend lines).
 				// all three are affected by moving averages.
-				obsMALine = d3.line()
-		        .x(function(d) { return null; })
-		        .y(function(d) { return null; });
+				obsMALine = d3.line().x(null).y(null);
 				addStdPath(svg1, [data], 'obs_ma_line', obsMALine, obsColor, 0);
 
 				overallMALine = d3.line()
-						// CHECK OUT: Revisit what the line below does.
 						.defined(function(d) { return d.index>tsSlider.value()-1; })
 						.x(function(d) { return x(d.date); })
-						.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(sliderData['ts']['default'])][d.index-(tsSlider.value()-1)]); });
+						.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(sliderData['ts']['default'])][d.index-tsSlider.value()]); });
 				addStdPath(svg1, [data], 'overall_ma_line', overallMALine, overallModelColor, 1);
 
-				hoverMALine = d3.line()
-		        .x(function(d) { return null; })
-		        .y(function(d) { return null; });
+				hoverMALine = d3.line().x(null).y(null);
 				addStdPath(svg1, [data], 'hover_ma_line', hoverMALine, hoverModelColor, 0);
 
 				addStdRect(svg1, null, 'graph_rect_outline', -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), 'black', 1, 1, 'transparent', 1, null, null, null);
@@ -429,10 +416,9 @@
 				dropDownSelected = overallTimeFrame,
 				dropDownOption = 'Next ' + String(numFuturePredDays) + ' Days';
 				dropDownSelectedMO = function(d) {
+					generalRectMO;
 					d3.select(this)
-						.style('stroke', 'black')
-						.style('stroke-width', 2)
-						.style('cursor', 'pointer');
+						.style('stroke', 'black');
 					addStdRect(svg4, null, 'dropdown_option', leftMarginAdj + 1, 32.5, 91, 17.5, 'black', 1, 1, 'white', 1, generalRectMO, generalRectML, dropDownOptionClick);
 					addStdText(svg4, null, 'dropdown_option', leftMarginAdj + 6, 45, '12px', 'normal', 1, 0, dropDownOption);
 				};
@@ -450,7 +436,7 @@
 								futurePredictionSpecific();
 								dropDownSelected = 'Next ' + String(numFuturePredDays) + ' Days';
 								dropDownOption = overallTimeFrame;
-								d3.select('#metrics_methodology_tooltip').style('height', '85px').html(futurePredText);
+								d3.select('#metrics_methodology_tooltip').style('height', '92.5px').html(futurePredText);
 							}
 							else {
 								svg4.selectAll('#future_prediction_specific').remove();
@@ -582,8 +568,8 @@
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg4, 'obs_ma_tooltip', 549.5, 23.5, 548, 27.5, null);
 
-				textInput = 'Adjust the slider to specify a moving average for displaying time series models. Units are in days, with 0 days displaying the exact prediction.'
-				defineTooltip('metrics_and_sliders', 'ts_ma_tooltip', '420px', '472.5px', '192.5px', '110px', 0, textInput);
+				textInput = 'Adjust the slider to specify a moving average for displaying time series models. Units are in days, with 0 days displaying the exact prediction on a given day.'
+				defineTooltip('metrics_and_sliders', 'ts_ma_tooltip', '420px', '472.5px', '192.5px', '130px', 0, textInput);
 				addStdRect(svg4, null, 'ts_ma_tooltip_rect', 722, 14.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg4, 'ts_ma_tooltip', 732, 23.5, 730.5, 27.5, null);
@@ -591,156 +577,146 @@
 	/////////////////////////////////////////////
 
 				function updateGraph(hoverYear, sourceObject) {
-				  d3.csv('/assets/csv/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv', function(data) {
 
-						if ( sourceObject=='lv_filter' ) {
+					if ( sourceObject=='lv_filter' ) {
 
-							if ( svg3.select('#lv_filter_check_mark').style('opacity')==1 )
-							{ yMax = maxOb; }
+						if ( svg3.select('#lv_filter_check_mark').style('opacity')==1 )
+						{ yMax = maxOb; }
+						else
+						{ yMax = allObsSrtd[1]; }
+						// Rescale the range of the data vertically
+						y.domain([0, yMax + 15]);
+						// Update the Y Axis
+						svg1.select('.y_axis').call(d3.axisLeft(y));
+						// Update the circles.
+						svg1.selectAll('#circle_obs').attr('cy', function(d) { return y(d.num_harmed); });
+
+						// Redefine the overall Pred line path.
+						overallMALine = d3.line()
+						// CHECK OUT: No idea why this is needed.
+								.defined(function(d) { return d.index>tsSlider.value()-1; })
+								.x(function(d) { return x(d.date); })
+								.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-tsSlider.value()]); });
+
+						svg1.select('#overall_ma_line')
+								.attr('d', overallMALine);
+					};
+
+					if ( svg3.select('#obs_filter_check_mark').style('opacity')==0 ) {
+
+						svg1.select('#obs_legend_null').style('opacity', 1);
+						svg1.select('#obs_legend_line').style('stroke-opacity', 0);
+						svg1.select('#obs_legend_circle').style('opacity', 0);
+						selectHide(svg1, 'obs_ma_line');
+
+						svg1.selectAll('#circle_obs')
+							.style('fill', 'transparent')
+							.style('stroke', 'transparent');
+				 	}
+					else if ( obsSlider.value()==0 ) {
+
+						svg1.select('#obs_legend_null').style('opacity', 0);
+						svg1.select('#obs_legend_line').style('stroke-opacity', 0);
+						svg1.select('#obs_legend_circle').style('opacity', 1);
+						selectHide(svg1, 'obs_ma_line');
+
+						svg1.selectAll('#circle_obs')
+								.filter(function(d) { return d.non_observation!=1; })
+								.style('fill', obsColor)
+								.style('non_observation', 'black')
+								.style('opacity', function(d) {
+									if ( d.year <= hoverYear )
+									{ return 1 }
+									else
+									{ return 0.4 }
+								})
+								.style('stroke-width', 0.5);
+					}
+					else {
+
+						svg1.select('#obs_legend_null').style('opacity', 0);
+						svg1.select('#obs_legend_line').style('stroke-opacity', 1);
+			 			svg1.select('#obs_legend_circle').style('opacity', 0);
+			 			selectAllHide(svg1, 'circle_obs');
+		 			 	// Redefine the overall line path.
+						obsMALine = d3.line()
+			 					.defined(function(d) { return d.index>obsSlider.value()-1 && d.non_observation!=1; })
+			 					.x(function(d) { return x(d.date); })
+			 					.y(function(d) { return y(obsMADic[obsSlider.value()][d.index-obsSlider.value()]); });
+
+			 			svg1.select('#obs_ma_line')
+			 					.attr('d', obsMALine)
+								.style('stroke', obsColor)
+								.style('stroke-opacity', 1);
+					};
+
+					if ( sourceObject=='ts_slider' ) {
+
+						svg1.select('#overall_legend_null').style('opacity', 0);
+						svg1.select('#overall_legend_line').style('stroke-opacity', 1);
+
+						// Redefine the overall Pred line path.
+						overallMALine = d3.line()
+								.defined(function(d) { return d.index>tsSlider.value()-1; })
+								.x(function(d) { return x(d.date); })
+								.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-tsSlider.value()]); });
+
+						svg1.select('#overall_ma_line')
+								.attr('d', overallMALine)
+								.style('stroke', overallModelColor)
+								.style('stroke-opacity', 1);
+					}
+
+					if ( svg3.select('#ts_filter_check_mark').style('opacity')!=1 ) {
+
+						svg1.select('#hover_legend_null').style('opacity', 1);
+						svg1.select('#hover_legend_line').style('stroke-opacity', 0);
+						svg1.select('#overall_legend_null').style('opacity', 1);
+						svg1.select('#overall_legend_line').style('stroke-opacity', 0);
+						selectHide(svg1, 'overall_ma_line');
+						selectHide(svg1, 'hover_ma_line');
+					}
+					else if ( svg3.select('#ts_filter_check_mark').style('opacity')==1 && hoverYear<maxYearObserved ) {
+
+						svg1.select('#hover_legend_null').style('opacity', 0);
+						svg1.select('#hover_legend_line').style('stroke-opacity', 1);
+						svg1.select('#overall_legend_null').style('opacity', 0);
+						svg1.select('#overall_legend_line').style('stroke-opacity', 1);
+						svg1.select('#overall_ma_line').style('stroke', overallModelColor);
+
+						// Redefine the hover line and add path
+						hoverMALine = d3.line()
+								.defined(function(d) { return d.index>tsSlider.value()-1; })
+								.x(function(d) { return x(d.date); })
+								.y(function(d) { return y(tsMADic[String(hoverYear) + '_' + String(tsSlider.value())][d.index-tsSlider.value()]); });
+
+						svg1.select('#hover_ma_line')
+								.attr('d', hoverMALine)
+								.style('stroke', hoverModelColor)
+								.style('stroke-opacity', 0.85);
+					}
+					else {
+
+						svg1.select('#hover_legend_null').style('opacity', 1);
+						svg1.select('#hover_legend_line').style('stroke-opacity', 0);
+						svg1.select('#overall_legend_null').style('opacity', 0);
+						svg1.select('#overall_legend_line').style('stroke-opacity', 1);
+						svg1.select('#overall_ma_line').style('stroke', overallModelColor);
+						selectHide(svg1, 'hover_ma_line');
+					};
+
+					var updateHoverMetrics = function(d) {
+						if ( hoverYear!=maxYearObserved ) {
+							if ( dropDownSelected==overallTimeFrame )
+							{ updatePastHoverMetrics(hoverYear); }
 							else
-							{ yMax = allObsSrtd[1]; }
-							// Rescale the range of the data vertically
-							y.domain([0, yMax + 15]);
-							// Update the Y Axis
-							svg1.select('.y_axis').call(d3.axisLeft(y));
-							// Update the circles.
-							svg1.selectAll('#circle_obs').attr('cy', function(d) { return y(d.num_harmed); });
-
-							// Redefine the overall Pred line path.
-							overallMALine = d3.line()
-									.defined(function(d) { return d.index>tsSlider.value()-1; })
-									.x(function(d) { return x(d.date); })
-									.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
-
-							svg1.select('#overall_ma_line')
-									.attr('d', overallMALine);
-						};
-
-						if ( svg3.select('#obs_filter_check_mark').style('opacity')==0 ) {
-
-							svg1.select('#obs_legend_null').style('opacity', 1);
-							svg1.select('#obs_legend_line').style('stroke-opacity', 0);
-							svg1.select('#obs_legend_circle').style('opacity', 0);
-							selectHide(svg1, 'obs_ma_line');
-
-							svg1.selectAll('#circle_obs')
-								.style('fill', 'transparent')
-								.style('stroke', 'transparent');
-					 	}
-						else if ( obsSlider.value()==0 ) {
-
-							svg1.select('#obs_legend_null').style('opacity', 0);
-							svg1.select('#obs_legend_line').style('stroke-opacity', 0);
-							svg1.select('#obs_legend_circle').style('opacity', 1);
-							selectHide(svg1, 'obs_ma_line');
-
-							svg1.selectAll('#circle_obs')
-									.style('fill', function(d) {
-										if ( d.non_observation==1 )
-										{ return 'transparent'; }
-										else
-										{ return obsColor; }
-									})
-									.style('stroke', function(d) {
-										if ( d.non_observation==1 )
-										{ return 'transparent'; }
-										else
-										{ return 'black'; }
-									})
-									.style('opacity', function(d) {
-										if ( d.year <= hoverYear )
-										{ return 1 }
-										else
-										{ return 0.4 }
-									})
-									.style('stroke-width', 0.5);
+							{ updateFutureHoverMetrics(hoverYear); }
 						}
-						else {
+						else
+						{ addHoverInstruction(); }
+					};
 
-							svg1.select('#obs_legend_null').style('opacity', 0);
-							svg1.select('#obs_legend_line').style('stroke-opacity', 1);
-				 			svg1.select('#obs_legend_circle').style('opacity', 0);
-				 			selectAllHide(svg1, 'circle_obs');
-			 			 	// Redefine the overall line path.
-							obsMALine = d3.line()
-				 					.defined(function(d) { return d.index>obsSlider.value()-1 && d.non_observation!=1; })
-				 					.x(function(d) { return x(d.date); })
-				 					.y(function(d) { return y(obsMADic[obsSlider.value()][d.index-(obsSlider.value()-1)]); });
-
-				 			svg1.select('#obs_ma_line')
-				 					.attr('d', obsMALine)
-									.style('stroke', obsColor)
-									.style('stroke-opacity', 1);
-						};
-
-						if ( sourceObject=='ts_slider' ) {
-
-							svg1.select('#overall_legend_null').style('opacity', 0);
-							svg1.select('#overall_legend_line').style('stroke-opacity', 1);
-
-							// Redefine the overall Pred line path.
-							overallMALine = d3.line()
-									.defined(function(d) { return d.index>tsSlider.value()-1; })
-									.x(function(d) { return x(d.date); })
-									.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
-
-							svg1.select('#overall_ma_line')
-									.attr('d', overallMALine)
-									.style('stroke', overallModelColor)
-									.style('stroke-opacity', 1);
-						}
-
-						if ( svg3.select('#ts_filter_check_mark').style('opacity')!=1 ) {
-
-							svg1.select('#hover_legend_null').style('opacity', 1);
-							svg1.select('#hover_legend_line').style('stroke-opacity', 0);
-							svg1.select('#overall_legend_null').style('opacity', 1);
-							svg1.select('#overall_legend_line').style('stroke-opacity', 0);
-							selectHide(svg1, 'overall_ma_line');
-							selectHide(svg1, 'hover_ma_line');
-						}
-						else if ( svg3.select('#ts_filter_check_mark').style('opacity')==1 && hoverYear<maxYearObserved ) {
-
-							svg1.select('#hover_legend_null').style('opacity', 0);
-							svg1.select('#hover_legend_line').style('stroke-opacity', 1);
-							svg1.select('#overall_legend_null').style('opacity', 0);
-							svg1.select('#overall_legend_line').style('stroke-opacity', 1);
-							svg1.select('#overall_ma_line').style('stroke', overallModelColor);
-
-							// Redefine the hover line and add path
-							hoverMALine = d3.line()
-									.defined(function(d) { return d.index>tsSlider.value()-1; })
-									.x(function(d) { return x(d.date); })
-									.y(function(d) { return y(tsMADic[String(hoverYear) + '_' + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
-
-							svg1.select('#hover_ma_line')
-									.attr('d', hoverMALine)
-									.style('stroke', hoverModelColor)
-									.style('stroke-opacity', 0.85);
-						}
-						else {
-
-							svg1.select('#hover_legend_null').style('opacity', 1);
-							svg1.select('#hover_legend_line').style('stroke-opacity', 0);
-							svg1.select('#overall_legend_null').style('opacity', 0);
-							svg1.select('#overall_legend_line').style('stroke-opacity', 1);
-							svg1.select('#overall_ma_line').style('stroke', overallModelColor);
-							selectHide(svg1, 'hover_ma_line');
-						};
-
-						var updateHoverMetrics = function(d) {
-							if ( hoverYear!=maxYearObserved ) {
-								if ( dropDownSelected==overallTimeFrame )
-								{ updatePastHoverMetrics(hoverYear); }
-								else
-								{ updateFutureHoverMetrics(hoverYear); }
-							}
-							else
-							{ addHoverInstruction(); }
-						};
-
-						updateHoverMetrics();
-				  });
+					updateHoverMetrics();
 
 					function updatePastHoverMetrics(hoverYear) {
 

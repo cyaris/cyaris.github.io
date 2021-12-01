@@ -347,13 +347,14 @@
 				addStdText(svg2, null, 'comparing_graph_header', ((fullWidth - leftMarginAdj)/2)-95, 17.5, '13.5px', 'italic', 0, 0.25, 'Comparing Historical Forecasts...');
 
 				function filterClick() {
-						rectID = d3.select(this)['_groups'][0][0]['id'];
-						checkMarkID = '#' + String(rectID) + '_check_mark';
-						if ( svg3.select(checkMarkID).style('opacity')==1 )
-						{ svg3.select(checkMarkID).style('opacity', 0); }
-						else
-						{ svg3.select(checkMarkID).style('opacity', 1); }
-						updateGraph(maxYearObserved, rectID);
+
+					rectID = d3.select(this)['_groups'][0][0]['id'];
+					checkMarkID = '#' + String(rectID) + '_check_mark';
+					if ( svg3.select(checkMarkID).style('opacity')==1 )
+					{ svg3.select(checkMarkID).style('opacity', 0); }
+					else
+					{ svg3.select(checkMarkID).style('opacity', 1); }
+					updateGraph(maxYearObserved, rectID);
 				};
 
 				updateGraphMO = function(d) {
@@ -399,28 +400,28 @@
 				};
 
 				var dropDownSelectedClick = function(d) {
-							svg4.selectAll('#dropdown_option').remove();
-							dropDownSelectedMO();
+						svg4.selectAll('#dropdown_option').remove();
+						dropDownSelectedMO();
 				},
 						dropDownOptionClick = function(d) {
-							svg4.selectAll('#dropdown_option').remove();
-							svg4.select('#dropdown_selected_text').remove();
+						svg4.selectAll('#dropdown_option').remove();
+						svg4.select('#dropdown_selected_text').remove();
 
-							if ( dropDownSelected==overallTimeFrame ) {
-								svg4.selectAll('#past_prediction_specific').remove();
-								futurePredictionSpecific();
-								dropDownSelected = 'Next ' + String(numFuturePredDays) + ' Days';
-								dropDownOption = overallTimeFrame;
-								d3.select('#metrics_methodology_tooltip').style('height', '92.5px').html(futurePredText);
-							}
-							else {
-								svg4.selectAll('#future_prediction_specific').remove();
-								pastPredictionSpecific();
-								dropDownSelected = overallTimeFrame;
-								dropDownOption = 'Next ' + String(numFuturePredDays) + ' Days';
-								d3.select('#metrics_methodology_tooltip').style('height', '100px').html(pastPredText);
-							}
-							addStdText(svg4, null, 'dropdown_selected_text', leftMarginAdj + 6, 27.5, '12px', 'normal', 1, 0, dropDownSelected);
+						if ( dropDownSelected==overallTimeFrame ) {
+							svg4.selectAll('#past_prediction_specific').remove();
+							futurePredictionSpecific();
+							dropDownSelected = 'Next ' + String(numFuturePredDays) + ' Days';
+							dropDownOption = overallTimeFrame;
+							d3.select('#metrics_methodology_tooltip').style('height', '92.5px').html(futurePredText);
+						}
+						else {
+							svg4.selectAll('#future_prediction_specific').remove();
+							pastPredictionSpecific();
+							dropDownSelected = overallTimeFrame;
+							dropDownOption = 'Next ' + String(numFuturePredDays) + ' Days';
+							d3.select('#metrics_methodology_tooltip').style('height', '100px').html(pastPredText);
+						}
+						addStdText(svg4, null, 'dropdown_selected_text', leftMarginAdj + 6, 27.5, '12px', 'normal', 1, 0, dropDownSelected);
 				};
 
 				addStdRect(svg4, null, null, 0, 0, fullWidth, 125, 'transparent', 0, 1, 'transparent', 1, updateGraphMO, null, null);
@@ -793,14 +794,16 @@
 							};
 					},
 							yearRectML = function(d) {
-								svg1.select('#hover_region_rect').remove();
-								svg2.select('#hover_graph_header').style('opacity', 1);
-								svg2.select('#comparing_graph_header').style('opacity', 0);
+
+							svg1.select('#hover_region_rect').remove();
+							svg2.select('#hover_graph_header').style('opacity', 1);
+							svg2.select('#comparing_graph_header').style('opacity', 0);
 					},
 							marginMO = function(d) {
-								// dropdown option remove doubled in case of failure with removal in svg4
-								svg4.selectAll('#dropdown_option').remove();
-								updateGraph(maxYearObserved, null);
+								
+							// dropdown option remove doubled in case of failure with removal in svg4
+							svg4.selectAll('#dropdown_option').remove();
+							updateGraph(maxYearObserved, null);
 					};
 
 					// Add the year rect boundaries

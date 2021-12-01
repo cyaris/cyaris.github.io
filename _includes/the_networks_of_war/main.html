@@ -170,10 +170,10 @@
 
 					// creating the labels for the menu (everything in the top row)
 					addStdRect(svg1, null, null, 0,  0, width, topRowHeight, 'black', 1, 0.15, 'black', 0.075, null, null, null);
-					addStdText(svg1, null, null, 10, 25, menuTextSize, 0.75, 'normal', 1, 'Name');
-					addStdText(svg1, null, null, warNameMaxLength + 60, 25, menuTextSize, 0.75, 'normal', 1, 'Timeframe');
-					addStdText(svg1, null, null, warNameMaxLength + 192.5, 25, menuTextSize, 0.75, 'normal', 1, 'Length in Days');
-					addStdText(svg1, null, null, warNameMaxLength + 337.5, 25, menuTextSize, 0.75, 'normal', 1, 'Participating Forces');
+					addStdText(svg1, null, null, 10, 25, menuTextSize, 'normal', 1, 0.75, 'Name');
+					addStdText(svg1, null, null, warNameMaxLength + 60, 25, menuTextSize, 'normal', 1, 0.75, 'Timeframe');
+					addStdText(svg1, null, null, warNameMaxLength + 192.5, 25, menuTextSize, 'normal', 1, 0.75, 'Length in Days');
+					addStdText(svg1, null, null, warNameMaxLength + 337.5, 25, menuTextSize, 'normal', 1, 0.75, 'Participating Forces');
 
 					// Three function that change the tooltip when user hover / move / leave a rectangle on the menu
 					var mainMenuMouseOver = function(d) {
@@ -205,18 +205,18 @@
 					for ( var i = 0; i <= Object.keys(fileDic['file_name']).length-1; i++ ) {
 
 						addStdRect(svg1, null, fileDic['file_name'][i], 0, topRowHeight+(i*menuRowHeight), width, menuRowHeight, 'black', 1, 0.15, 'black', 0.075, mainMenuMouseOver, mainMenuMouseLeave, mainMenuClick);
-						addStdText(svg1, null, null, 10, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['war_name'][i]);
+						addStdText(svg1, null, null, 10, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 'normal', 1, 0, fileDic['war_name'][i]);
 
 						// calculating days since war began if the war is ongoing
 						if ( fileDic['ongoing_conflict'][i]==1 )
-						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['start_year'][i] + '–Present'); }
+						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 'normal', 1, 0, fileDic['start_year'][i] + '–Present'); }
 						else if ( fileDic['start_year'][i]==fileDic['end_year'][i] )
-						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['start_year'][i]); }
+						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 'normal', 1, 0, fileDic['start_year'][i]); }
 						else
-						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['start_year'][i] + '–' + fileDic['end_year'][i]); }
+						{ addStdText(svg1, null, null, warNameMaxLength + 55, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 'normal', 1, 0, fileDic['start_year'][i] + '–' + fileDic['end_year'][i]); }
 
-						addStdText(svg1, null, null, warNameMaxLength + 230, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['days_in_war'][i].toLocaleString());
-						addStdText(svg1, null, null, warNameMaxLength + 395, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 0, 'normal', 0, fileDic['participants'][i].toLocaleString());
+						addStdText(svg1, null, null, warNameMaxLength + 230, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 'normal', 1, 0, fileDic['days_in_war'][i].toLocaleString());
+						addStdText(svg1, null, null, warNameMaxLength + 395, topRowHeight+(i*menuRowHeight)+17.5, menuTextSize, 'normal', 1, 0, fileDic['participants'][i].toLocaleString());
 					};
 			};
 			// calling the war menu function upon page load
@@ -272,7 +272,7 @@
 
 					// creating a rect for a back to menu button
 					addStdRect(svg2, null, 'back_to_menu', 1,  10, 70, 30, 'black', 1, null, 'transparent', null, generalRectMO, generalRectML, backToMenuClick);
-					addStdText(svg2, null, null, 6, 31.5, graphMenuTextSize, 0, 'normal', 0, '↖ Menu');
+					addStdText(svg2, null, null, 6, 31.5, graphMenuTextSize, 'normal', 1, 0, '↖ Menu');
 
 					// obtaining array for all war fields in the json file
 					// these will be iterated through to fill the warDic dictionary
@@ -296,8 +296,8 @@
 						warDic['timeFrame'] = warDic['start_year'] + '–' + warDic['end_year'];
 					}
 
-					addStdText(svg2, null, null, 0, 85, graphMenuTextSize, 0, 'normal', 0, warDic['war_name']);
-					addStdText(svg2, null, null, 0, 102.5, graphMenuTextSize, 0, 'normal', 0, warDic['timeFrame']);
+					addStdText(svg2, null, null, 0, 85, graphMenuTextSize, 'normal', 1, 0, warDic['war_name']);
+					addStdText(svg2, null, null, 0, 102.5, graphMenuTextSize, 'normal', 1, 0, warDic['timeFrame']);
 
 					// obtaining arrays of all participant/link fields in the json file.
 					// these will be used to fill the descriptiveFields and descriptorNameLengths arrays.
@@ -1241,7 +1241,7 @@
 									{ dropdownBackgroundColor = 'white'; }
 
 									addStdRect(svg2, groupingType + '_descriptor_dropdowns', dropdownSelected, descriptorRectXLoc, yAdjustmentInput + descriptorRectYLoc + ((i+1)*descriptorRectHeight), descriptorRectWidth, descriptorRectHeight, 'black', 1, null, dropdownBackgroundColor, null, generalRectMO, generalRectML, clickFunction);
-									addStdText(svg2, groupingType + '_descriptor_dropdowns', null, descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc + ((i+1)*descriptorRectHeight), graphMenuTextSize, 0, 'normal', 0, dropdownSelected);
+									addStdText(svg2, groupingType + '_descriptor_dropdowns', null, descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc + ((i+1)*descriptorRectHeight), graphMenuTextSize, 'normal', 1, 0, dropdownSelected);
 								}
 							}
 					};
@@ -1293,7 +1293,7 @@
 							svg2.selectAll('.' + groupingType + '_descriptor_dropdowns').remove();
 							svg2.selectAll('#' + groupingType + '_descriptor_selected_text').remove();
 
-							addStdText(svg2, null, groupingType + '_descriptor_selected_text', descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc, graphMenuTextSize, 0, 'normal', 0, descriptorName);
+							addStdText(svg2, null, groupingType + '_descriptor_selected_text', descriptorTextXLoc, yAdjustmentInput + descriptorTextYLoc, graphMenuTextSize, 'normal', 1, 0, descriptorName);
 
 							if ( groupingType=='link' && defaultSelectorCheck('link', descriptorName) )
 							{ linkDescriptiveValues = getLinkDescriptiveValues(null); }
@@ -1306,12 +1306,12 @@
 					descriptiveMenuClick('link', linkDescriptorSelected, linkMenuMouseOver, 0);
 					descriptiveMenuClick('node', nodeDescriptorSelected, nodeMenuMouseOver, yAdjustment);
 
-					addStdText(svg2, null, 'node_descriptor_selected_title', descriptorRectXLoc, yAdjustment + descriptorTitleYLoc, graphMenuTextSize, 0, 'normal', 0, nodeMenuTitle);
-					addStdText(svg2, null, 'link_descriptor_selected_title', descriptorRectXLoc, descriptorTitleYLoc, graphMenuTextSize, 0, 'normal', 0, linkMenuTitle);
+					addStdText(svg2, null, 'node_descriptor_selected_title', descriptorRectXLoc, yAdjustment + descriptorTitleYLoc, graphMenuTextSize, 'normal', 1, 0, nodeMenuTitle);
+					addStdText(svg2, null, 'link_descriptor_selected_title', descriptorRectXLoc, descriptorTitleYLoc, graphMenuTextSize, 'normal', 1, 0, linkMenuTitle);
 					addStdRect(svg2, null, 'link_descriptor_selected_rect', descriptorRectXLoc, descriptorRectYLoc, descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'transparent', null, linkMenuMouseOver, generalRectML, null);
 					addStdRect(svg2, null, 'node_descriptor_selected_rect', descriptorRectXLoc, yAdjustment + descriptorRectYLoc, descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'transparent', null, nodeMenuMouseOver, generalRectML, null);
-					addStdText(svg2, null, 'link_descriptor_selected_text', descriptorTextXLoc, descriptorTextYLoc, graphMenuTextSize, 0, 'normal', 0, linkDescriptorSelected);
-					addStdText(svg2, null, 'node_descriptor_selected_text', descriptorTextXLoc, yAdjustment + descriptorTextYLoc, graphMenuTextSize, 0, 'normal', 0, nodeDescriptorSelected);
+					addStdText(svg2, null, 'link_descriptor_selected_text', descriptorTextXLoc, descriptorTextYLoc, graphMenuTextSize, 'normal', 1, 0, linkDescriptorSelected);
+					addStdText(svg2, null, 'node_descriptor_selected_text', descriptorTextXLoc, yAdjustment + descriptorTextYLoc, graphMenuTextSize, 'normal', 1, 0, nodeDescriptorSelected);
 
 					// descriptorTooltipSymbolXLoc = descriptorRectXLoc-15;
 					// addStdRect(svg4, 'link_descriptor_tooltip_rect', descriptorTooltipSymbolXLoc, descriptorTextYLoc-1, 20, 20, 'black', tooltipMO, tooltipML, null);
@@ -1350,8 +1350,8 @@
 								else if ( nodeDescriptorSelected=='days_at_war_z' ) {}
 								else if ( nodeDescriptorSelected=='days_not_at_war_z' ) {}
 								else
-							 	{ textInput+='<br>'+nodeDescriptorSelected + ': ' + nodeDescriptiveValues[i].toLocaleString(); }
-								defineTooltip('war_network_analysis_graph', 'node_tooltip_' + i, 0, 0, toolTipWidth, toolTipHeight, textInput);
+							 	{ textInput+='<br>' + nodeDescriptorSelected + ': ' + nodeDescriptiveValues[i].toLocaleString(); }
+								defineTooltip('war_network_analysis_graph', 'node_tooltip_' + i, 0, 0, toolTipWidth, toolTipHeight, 0, textInput);
 						};
 					};
 

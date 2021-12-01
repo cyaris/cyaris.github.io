@@ -105,15 +105,17 @@
 							yTextLoc = Number(d3.select('#' + toolTip + '_i').attr('y')) + 0.5;
 							d3.select('#' + toolTip + '_i').attr('y', yTextLoc).style('fill', tooltipSymbolColor).style('stroke', tooltipSymbolColor).style('font-size', '13px');
 							if ( toolTip=='lv_tooltip' ) {
-								updateGraph(maxYearObserved, true, true, false);
+
+								svg1.selectAll('#circle_obs')
+									.filter(function(d) { return d.num_harmed==maxOb; })
+						 				.style('fill', obsColor)
+						 				.style('stroke', 'black')
+										.style('stroke-width', 7.5);
+
 								addStdRect(svg3, null, 'tooltip_region_hide_rect', 0, 35, 100, 25, 'transparent', 0, 1, 'white', 1, null, null, null);
 							}
-							else if ( toolTip =='metrics_tooltip' ) {
-								updateGraph(maxYearObserved, false, true, false);
-								addStdRect(svg4, null, 'tooltip_region_hide_rect', 200, 0, 215, 130, 'transparent', 0, 1, 'white', 1, null, null, null);
-							}
-							else
-							{ updateGraph(maxYearObserved, false, true, false); };
+							else if ( toolTip =='metrics_tooltip' )
+							{ addStdRect(svg4, null, 'tooltip_region_hide_rect', 200, 0, 215, 130, 'transparent', 0, 1, 'white', 1, null, null, null); }
 				},
 						tooltipML = function(d) {
 							rectID = d3.select(this)['_groups'][0][0]['id'];
@@ -123,8 +125,24 @@
 							yTextLoc = Number(d3.select('#' + toolTip + '_i').attr('y')) - 0.5;
 							d3.select('#' + toolTip + '_i').attr('y', yTextLoc).style('fill', 'white').style('stroke', 'white').style('font-size', '11.5px');
 							d3.select('#tooltip_region_hide_rect').remove();
-							if ( toolTip=='lv_tooltip' )
-							{ updateGraph(maxYearObserved, false, true, false); }
+							if ( toolTip=='lv_tooltip' ) {
+
+								svg1.selectAll('#circle_obs')
+									.filter(function(d) { return d.num_harmed==maxOb; })
+										.style('fill', function() {
+											if ( svg3.select('#obs_filter_check_mark').style('opacity')==1 && obsSlider.value()==0 )
+											{ return obsColor; }
+											else
+											{ return 'transparent'; }
+										})
+						 				.style('stroke', function() {
+											if ( svg3.select('#obs_filter_check_mark').style('opacity')==1 && obsSlider.value()==0 )
+											{ return 'black'; }
+											else
+											{ return 'transparent'; }
+										})
+										.style('stroke-width', 0.5);
+							}
 				};
 
 				maxYearObserved = [],
@@ -141,8 +159,11 @@
 				numObsCumCount = 0,
 				numVictimsCumCount = 0;
 
+				// originalObsColor = 'rgb(112,128,144)',
 				obsColor = 'rgb(112,128,144)',
+				// originalOverallModelColor = 'rgb(250,98,95)',
 				overallModelColor = 'rgb(250,98,95)',
+				// originalHoverModelColor = 'rgb(0,192,127)',
 				hoverModelColor = 'rgb(0,192,127)',
 				tooltipSymbolColor = 'rgb(0,122,255)';
 
@@ -194,33 +215,46 @@
 				console.log('Today\'s date is ' + today.toLocaleDateString('en-US') + '.');
 				console.log('The most recent date recorded is ' + mostRecObsDate + ', ' + daysSinceMostRecObs + ' days ago.');
 
-				sliderData = [0, 5, 10, 15, 20, 25, 30],
-				sliderDefault = 10,
+				sliderData = {
+					'obs': {
+						'ticks': [0, 5, 10, 15, 20, 25, 30],
+						'step': 5,
+						'default': 0,
+						'width': 120
+					},
+					'ts': {
+						'ticks': [5, 10, 15, 20, 25, 30],
+						'step': 5,
+						'default': 15,
+						'width': 112.5
+					}
+				},
 				obsSlider = d3.sliderBottom()
-							.min(d3.min(sliderData))
-	  					.max(d3.max(sliderData))
-	  					.width(120)
-							.step(5)
-							.tickValues(sliderData)
-							.default(0)
+							.min(d3.min(sliderData['obs']['ticks']))
+	  					.max(d3.max(sliderData['obs']['ticks']))
+	  					.width(sliderData['obs']['width'])
+							.step(sliderData['obs']['step'])
+							.tickValues(sliderData['obs']['ticks'])
+							.default(sliderData['obs']['default'])
 							.on('onchange', function(d) {
-								updateGraph(maxYearObserved, false, false, false);
+								updateGraph(maxYearObserved, 'obs_slider');
 							}),
 				tsSlider = d3.sliderBottom()
-							.min(d3.min(sliderData))
-	  					.max(d3.max(sliderData))
-	  					.width(120)
-							.step(5)
-							.tickValues(sliderData)
-							.default(sliderDefault)
+							.min(d3.min(sliderData['ts']['ticks']))
+							.max(d3.max(sliderData['ts']['ticks']))
+							.width(sliderData['ts']['width'])
+							.step(sliderData['ts']['step'])
+							.tickValues(sliderData['ts']['ticks'])
+							.default(sliderData['ts']['default'])
 							.on('onchange', function(d) {
-								updateGraph(maxYearObserved, false, false, false);
+								updateGraph(maxYearObserved, 'ts_slider');
 							});
 
-				for ( var i = 1; i <= sliderData.length-1; i++ ) {
-					obsMADic[sliderData[i]] = sma(allObs, sliderData[i]).map(Number);
+				for ( var i = 1; i <= sliderData['obs']['ticks'].length-1; i++ ) {
+					obsMADic[sliderData['obs']['ticks'][i]] = sma(allObs, sliderData['obs']['ticks'][i]).map(Number);
 					for ( var z = minYear; z <= maxYear; z++ ) {
-						tsMADic[String(z) + '_' + String(sliderData[i])] = sma(tsPredDic[z], sliderData[i]).map(Number);
+						// using 'obs' instead of 'ts' here so an error isn't thrown.
+						tsMADic[String(z) + '_' + String(sliderData['obs']['ticks'][i])] = sma(tsPredDic[z], sliderData['obs']['ticks'][i]).map(Number);
 					};
 				};
 
@@ -268,10 +302,6 @@
 				svg1.select('#hover_legend_line').style('stroke-opacity', 0);
 
 				addStdCircle(svg1, 'obs_legend_circle', (margin.right/2) + 6, 6, obsColor);
-				addStdCircle(svg1, 'overall_legend_circle', (margin.right/2) + 6, 21, overallModelColor);
-				svg1.select('#overall_legend_circle').style('opacity', 0);
-				addStdCircle(svg1, 'hover_legend_circle', (margin.right/2) + 6, 36, hoverModelColor);
-				svg1.select('#hover_legend_circle').style('opacity', 0);
 
 				addStdText(svg1, null, 'obs_legend_null', (margin.right/2) + 0.75, 10.5, '15px', 'normal', 0, 0.5, '∅');
 				addStdText(svg1, null, 'overall_legend_null', (margin.right/2) + 0.75, 25.5, '15px', 'normal', 0, 0.5, '∅');
@@ -286,12 +316,6 @@
 				textInput = 'Next ' + String(numFuturePredDays) + ' days...',
 				textWidth = getTextWidth(svg1, textInput, 12);
 				addStdText(svg1, null, null, futureTimeFrameXLoc + 0.7 + ((width - futureTimeFrameXLoc - textWidth)/2), 10, '12px', 'italic', 1, 0, textInput);
-
-				// defining obsMALine early as null so that it's placement will be correct when slider is used
-				obsMALine = d3.line()
-		        .x(function(d) { return null; })
-		        .y(function(d) { return null; });
-				addStdPath(svg1, [data], 'obs_ma_line', obsMALine, 'transparent');
 
 				function addGunViolenceObservations(svgInput, dataInput, idInput, trueObservation, yVariable, fillColor, strokeColor) {
 
@@ -321,19 +345,24 @@
 
 		    // Add the circles.
 				addGunViolenceObservations(svg1, data, 'circle_obs', true, 'num_harmed', obsColor, 'black');
+				// defining all three lines (not including legend lines).
+				// all three are affected by moving averages.
+				obsMALine = d3.line()
+		        .x(function(d) { return null; })
+		        .y(function(d) { return null; });
+				addStdPath(svg1, [data], 'obs_ma_line', obsMALine, obsColor, 0);
 
-		    // define the overall line and add path
 				overallMALine = d3.line()
-						.defined(function(d) { return d.index>tsSlider.value()-2; })
+						// CHECK OUT: Revisit what the line below does.
+						.defined(function(d) { return d.index>tsSlider.value()-1; })
 						.x(function(d) { return x(d.date); })
-						.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(sliderDefault)][d.index-(tsSlider.value()-1)]); });
-				addStdPath(svg1, [data], 'overall_ma_line', overallMALine, overallModelColor);
+						.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(sliderData['ts']['default'])][d.index-(tsSlider.value()-1)]); });
+				addStdPath(svg1, [data], 'overall_ma_line', overallMALine, overallModelColor, 1);
 
-				// defining hover/comparison early as null so that it's placement will be correct
 				hoverMALine = d3.line()
 		        .x(function(d) { return null; })
 		        .y(function(d) { return null; });
-				addStdPath(svg1, [data], 'hover_ma_line', hoverMALine, 'transparent');
+				addStdPath(svg1, [data], 'hover_ma_line', hoverMALine, hoverModelColor, 0);
 
 				addStdRect(svg1, null, 'graph_rect_outline', -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), 'black', 1, 1, 'transparent', 1, null, null, null);
 				addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0]) + 5}, -5.5, 'black', 2, ('4, 4'));
@@ -357,38 +386,25 @@
 
 				function filterClick() {
 						rectID = d3.select(this)['_groups'][0][0]['id'];
-						checkMarkID = '#' + String(rectID) + '_mark';
-						if ( d3.select(checkMarkID).style('fill')=='black' ) {
-							d3.select(checkMarkID).style('fill', 'transparent');
-							if ( rectID=='lv_check' ) {
-								yMax = allObsSrtd[1];
-							 	updateGraph(maxYearObserved, false, false, true);
-							}
-							else
-							{ updateGraph(maxYearObserved, false, false, false); };
-						}
-						else {
-							svg3.select(checkMarkID).style('fill', 'black');
-							if ( rectID=='lv_check' ) {
-								yMax = maxOb;
-							 	updateGraph(maxYearObserved, false, false, true);
-							}
-							else
-							{ updateGraph(maxYearObserved, false, false, false); };
-						};
+						checkMarkID = '#' + String(rectID) + '_check_mark';
+						if ( svg3.select(checkMarkID).style('opacity')==1 )
+						{ svg3.select(checkMarkID).style('opacity', 0); }
+						else
+						{ svg3.select(checkMarkID).style('opacity', 1); }
+						updateGraph(maxYearObserved, rectID);
 				};
 
-				function cursorPointer() {
-						d3.select(this).style('cursor', 'pointer');
-						// updating graph here in case of failure with marginmouseover/marginmouseleave in svg1
-						updateGraph(maxYearObserved, false, true, false);
+				updateGraphMO = function(d) {
+					svg4.selectAll('#dropdown_option').remove();
+					// updating graph here in case of failure with marginmouseover/marginmouseleave in svg1
+					updateGraph(maxYearObserved, null);
 				};
 
 				// rect needed between rects to run cursorPointer function.
-				addStdRect(svg3, null, null, 1, 0, checkFilterWidth, 108.5 + checkFilterHeight + 1, 'transparent', 0, 1, 'transparent', 1, cursorPointer, null, null);
+				addStdRect(svg3, null, null, 1, 0, checkFilterWidth, 108.5 + checkFilterHeight + 1, 'transparent', 0, 1, 'transparent', 1, updateGraphMO, null, null);
 
-				addStdRect(svg3, null, 'lv_check', 1, 3.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
-				addStdText(svg3, null, 'lv_check_mark', 6, 22.5, '20px', 'normal', 1, 0, '✓');
+				addStdRect(svg3, null, 'lv_filter', 1, 3.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
+				addStdText(svg3, null, 'lv_filter_check_mark', 6, 22.5, '20px', 'normal', 1, 0, '✓');
 				addStdText(svg3, null, null, 34, 12, '12px', 'normal', 1, 0, 'Scaling includes the');
 				addStdText(svg3, null, null, 34, 26.5, '12px', 'normal', 1, 0, 'Las Vegas Shooting');
 
@@ -398,13 +414,13 @@
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg3, 'lv_tooltip', 158.5, 21.5, 157, 25.5, null);
 
-				addStdRect(svg3, null, 'obs_check', 1, 38.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
-				addStdText(svg3, null, 'obs_check_mark', 6, 57.5, '20px', 'normal', 1, 0, '✓');
+				addStdRect(svg3, null, 'obs_filter', 1, 38.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
+				addStdText(svg3, null, 'obs_filter_check_mark', 6, 57.5, '20px', 'normal', 1, 0, '✓');
 				addStdText(svg3, null, null, 34, 47.5, '12px', 'normal', 1, 0, 'Displaying');
 				addStdText(svg3, null, null, 34, 62, '12px', 'normal', 1, 0, 'Daily Observations');
 
-				addStdRect(svg3, null, 'ts_check', 1, 73.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
-				addStdText(svg3, null, 'ts_check_mark', 6, 92.5, '20px', 'normal', 1, 0, '✓');
+				addStdRect(svg3, null, 'ts_filter', 1, 73.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
+				addStdText(svg3, null, 'ts_filter_check_mark', 6, 92.5, '20px', 'normal', 1, 0, '✓');
 				addStdText(svg3, null, null, 34, 82.5, '12px', 'normal', 1, 0, 'Displaying');
 				addStdText(svg3, null, null, 34, 97, '12px', 'normal', 1, 0, 'Time Series Models');
 	/////////////////////////////////////////////
@@ -444,14 +460,9 @@
 								d3.select('#metrics_methodology_tooltip').style('height', '100px').html(pastPredText);
 							}
 							addStdText(svg4, null, 'dropdown_selected_text', leftMarginAdj + 6, 27.5, '12px', 'normal', 1, 0, dropDownSelected);
-				},
-						svg4BodyMO = function(d) {
-							svg4.selectAll('#dropdown_option').remove();
-							// updating graph here in case of failure with marginmouseover/marginmouseleave in svg1
-							updateGraph(maxYearObserved, false, true, false);
 				};
 
-				addStdRect(svg4, null, null, 0, 0, fullWidth, 125, 'transparent', 0, 1, 'transparent', 1, svg4BodyMO, null, null);
+				addStdRect(svg4, null, null, 0, 0, fullWidth, 125, 'transparent', 0, 1, 'transparent', 1, updateGraphMO, null, null);
 
 				addStdText(svg4, null, null, leftMarginAdj, 9.25, '12px', 'normal', 1, 0, 'Prediction Timeframe');
 				addStdRect(svg4, null, null, leftMarginAdj + 1, 15, 91, 17.5, 'black', 1, 1, 'transparent', 1, dropDownSelectedMO, generalRectML, dropDownSelectedClick);
@@ -536,7 +547,6 @@
 					textInput = overallYearlyTrendFuture,
 					textWidth = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, null, 'future_prediction_specific', 296.875 - textWidth, 100, '12px', 'normal', 1, 0, textInput);
-
 				};
 
 				function addHoverInstruction() {
@@ -580,220 +590,152 @@
 	/////////////////////////////////////////////
 	/////////////////////////////////////////////
 
-				function updateGraph(hoverYear, highlightMaxOb, hoverUpdate, axisUpdate) {
+				function updateGraph(hoverYear, sourceObject) {
 				  d3.csv('/assets/csv/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv', function(data) {
 
-						if ( highlightMaxOb ) {
-							if ( obsSlider.value()>0 || (obsSlider.value()==0 && svg3.select('#obs_check_mark').style('fill')=='transparent') ) {
+						if ( sourceObject=='lv_filter' ) {
 
-								svg1.selectAll('#circle_obs')
-										.style('fill', function(d) {
-											if ( d.num_harmed==maxOb )
-											{ return obsColor; }
-											else
-											{ return 'transparent'; }
-										})
-										.style('stroke', function(d) {
-											if ( d.num_harmed==maxOb )
-											{ return 'black'; }
-											else
-											{ return 'transparent'; }
-										})
-										.style('stroke-width', function(d) {
-											if ( d.num_harmed==maxOb )
-											{ return 7.5; }
-											else
-											{ return 0.5; }});
-							}
-							else {
+							if ( svg3.select('#lv_filter_check_mark').style('opacity')==1 )
+							{ yMax = maxOb; }
+							else
+							{ yMax = allObsSrtd[1]; }
+							// Rescale the range of the data vertically
+							y.domain([0, yMax + 15]);
+							// Update the Y Axis
+							svg1.select('.y_axis').call(d3.axisLeft(y));
+							// Update the circles.
+							svg1.selectAll('#circle_obs').attr('cy', function(d) { return y(d.num_harmed); });
 
-								svg1.selectAll('#circle_obs')
-										.style('stroke-width', function(d) {
-											if ( d.num_harmed==maxOb )
-											{ return 7.5; }
-											else
-											{ return 0.5; }
-										});
-							}
-						}
-						else if ( obsSlider.value()==0 && svg3.select('#obs_check_mark').style('fill')=='black' ) {
+							// Redefine the overall Pred line path.
+							overallMALine = d3.line()
+									.defined(function(d) { return d.index>tsSlider.value()-1; })
+									.x(function(d) { return x(d.date); })
+									.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
 
-								svg1.selectAll('#circle_obs')
-										.style('fill', function(d) {
-											if ( d.non_observation==1 )
-											{ return 'transparent'; }
-											else
-											{ return obsColor; }
-										})
-										.style('stroke', function(d) {
-											if ( d.non_observation==1 )
-											{ return 'transparent'; }
-											else
-											{ return 'black'; }
-										})
-										.style('stroke-width',  0.5);
-							}
-						else {
-							svg1.selectAll('#circle_obs')
-								.style('fill', 'transparent')
-								.style('stroke', 'transparent')
-								.style('stroke-width',  0.5);
+							svg1.select('#overall_ma_line')
+									.attr('d', overallMALine);
 						};
 
-				    if ( hoverUpdate==false ) {
+						if ( svg3.select('#obs_filter_check_mark').style('opacity')==0 ) {
 
-							if ( axisUpdate ) {
-								// Rescale the range of the data vertically
-								y.domain([0, yMax + 15]);
-								// Update the Y Axis
-								svg1.select('.y_axis').call(d3.axisLeft(y));
-								// Update the circles.
-								svg1.selectAll('#circle_obs').attr('cy', function(d) { return y(d.num_harmed); });
-							};
+							svg1.select('#obs_legend_null').style('opacity', 1);
+							svg1.select('#obs_legend_line').style('stroke-opacity', 0);
+							svg1.select('#obs_legend_circle').style('opacity', 0);
+							selectHide(svg1, 'obs_ma_line');
 
-							if ( svg3.select('#obs_check_mark').style('fill')=='black' ) {
+							svg1.selectAll('#circle_obs')
+								.style('fill', 'transparent')
+								.style('stroke', 'transparent');
+					 	}
+						else if ( obsSlider.value()==0 ) {
 
-								svg1.select('#obs_legend_null').style('opacity', 0);
+							svg1.select('#obs_legend_null').style('opacity', 0);
+							svg1.select('#obs_legend_line').style('stroke-opacity', 0);
+							svg1.select('#obs_legend_circle').style('opacity', 1);
+							selectHide(svg1, 'obs_ma_line');
 
-								if ( obsSlider.value()>0 ) {
-
-									svg1.select('#obs_legend_line').style('stroke-opacity', 1);
-									svg1.select('#obs_legend_circle').style('opacity', 0);
-									selectAllHide(svg1, 'circle_obs');
-									// Redefine the overall Pred line path.
-									obsMALine = d3.line()
-											.defined(function(d) { return d.index>obsSlider.value()-2 && d.non_observation!=1; })
-											.x(function(d) { return x(d.date); })
-											.y(function(d) { return y(obsMADic[obsSlider.value()][d.index-(obsSlider.value()-1)]); });
-
-									svg1.select('#obs_ma_line')
-											.attr('d', obsMALine)
-											.style('stroke', obsColor);
-								}
-								else {
-
-									svg1.select('#obs_legend_line').style('stroke-opacity', 0);
-									svg1.select('#obs_legend_circle').style('opacity', 1);
-									selectHide(svg1, 'obs_ma_line');
-									// Update the circles.
-									svg1.selectAll('#circle_obs')
-											.style('fill', function(d) {
-												if ( d.non_observation==1 )
-												{ return 'transparent' }
-												else
-												{ return obsColor }
-											})
-											.style('stroke', function(d) {
-												if ( d.non_observation==1 )
-												{ return 'transparent' }
-												else
-												{ return 'black' };});
-								};
-							}
-							else {
-
-								svg1.select('#obs_legend_null').style('opacity', 1);
-								svg1.select('#obs_legend_line').style('stroke-opacity', 0);
-								svg1.select('#obs_legend_circle').style('opacity', 0);
-								selectHide(svg1, 'obs_ma_line');
-								selectAllHide(svg1, 'circle_obs');
-							};
-
-							if ( svg3.select('#ts_check_mark').style('fill')=='black' ) {
-
-								svg1.select('#overall_legend_null').style('opacity', 0);
-
-									if ( tsSlider.value()>0 ) {
-
-										svg1.select('#overall_legend_line').style('stroke-opacity', 1);
-										svg1.select('#overall_legend_circle').style('opacity', 0);
-										// Redefine the overall Pred line path.
-								    overallMALine = d3.line()
-												.defined(function(d) { return d.index>tsSlider.value()-2; })
-								        .x(function(d) { return x(d.date); })
-								        .y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
-
-								    svg1.select('#overall_ma_line')
-								        .attr('d', overallMALine)
-								        .style('stroke', overallModelColor)
-												.style('stroke-opacity', 1);
-									}
-									else {
-										svg1.select('#overall_legend_line').style('stroke-opacity', 0);
-										svg1.select('#overall_legend_circle').style('opacity', 1);
-										selectHide(svg1, 'overall_ma_line');
-									};
-								}
-							else {
-								svg1.select('#overall_legend_null').style('opacity', 1);
-								svg1.select('#overall_legend_line').style('stroke-opacity', 0);
-								svg1.select('#overall_legend_circle').style('opacity', 0);
-								selectHide(svg1, 'overall_ma_line');
-							};
+							svg1.selectAll('#circle_obs')
+									.style('fill', function(d) {
+										if ( d.non_observation==1 )
+										{ return 'transparent'; }
+										else
+										{ return obsColor; }
+									})
+									.style('stroke', function(d) {
+										if ( d.non_observation==1 )
+										{ return 'transparent'; }
+										else
+										{ return 'black'; }
+									})
+									.style('opacity', function(d) {
+										if ( d.year <= hoverYear )
+										{ return 1 }
+										else
+										{ return 0.4 }
+									})
+									.style('stroke-width', 0.5);
 						}
 						else {
 
-							if ( obsSlider.value()==0 && svg3.select('#obs_check_mark').style('fill')=='black' ) {
-								// Update the circles.
-								svg1.selectAll('#circle_obs')
-										.style('opacity', function(d) {
-											if ( d.year > hoverYear )
-											{ return 0.4 }
-											else
-											{ return null }
-										});
-							};
+							svg1.select('#obs_legend_null').style('opacity', 0);
+							svg1.select('#obs_legend_line').style('stroke-opacity', 1);
+				 			svg1.select('#obs_legend_circle').style('opacity', 0);
+				 			selectAllHide(svg1, 'circle_obs');
+			 			 	// Redefine the overall line path.
+							obsMALine = d3.line()
+				 					.defined(function(d) { return d.index>obsSlider.value()-1 && d.non_observation!=1; })
+				 					.x(function(d) { return x(d.date); })
+				 					.y(function(d) { return y(obsMADic[obsSlider.value()][d.index-(obsSlider.value()-1)]); });
 
-							if ( hoverYear!=maxYearObserved && svg3.select('#ts_check_mark').style('fill')=='black' ) {
+				 			svg1.select('#obs_ma_line')
+				 					.attr('d', obsMALine)
+									.style('stroke', obsColor)
+									.style('stroke-opacity', 1);
+						};
 
-								svg1.select('#hover_legend_null').style('opacity', 0);
+						if ( sourceObject=='ts_slider' ) {
 
-								if ( tsSlider.value()>0 ) {
+							svg1.select('#overall_legend_null').style('opacity', 0);
+							svg1.select('#overall_legend_line').style('stroke-opacity', 1);
 
-									svg1.select('#overall_ma_line').style('stroke-opacity', 0.85);
-									svg1.select('#hover_legend_line').style('stroke-opacity', 1);
-									svg1.select('#hover_legend_circle').style('opacity', 0);
-									// Redefine the hover line and add path
-							    hoverMALine = d3.line()
-											.defined(function(d) { return d.index>tsSlider.value()-2; })
-							        .x(function(d) { return x(d.date); })
-							        .y(function(d) { return y(tsMADic[String(hoverYear) + '_' + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
+							// Redefine the overall Pred line path.
+							overallMALine = d3.line()
+									.defined(function(d) { return d.index>tsSlider.value()-1; })
+									.x(function(d) { return x(d.date); })
+									.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
 
-									svg1.select('#hover_ma_line')
-											.attr('d', hoverMALine)
-											.style('stroke', hoverModelColor)
-											.style('stroke-opacity', 0.85);
-								}
-								else {
-									hoverYearCol = 'pred_' + String(hoverYear);
-
-									svg1.select('#hover_legend_line').style('stroke-opacity', 0);
-									svg1.select('#hover_legend_circle').style('opacity', 1);
-								};
+							svg1.select('#overall_ma_line')
+									.attr('d', overallMALine)
+									.style('stroke', overallModelColor)
+									.style('stroke-opacity', 1);
 						}
-						else {
 
-							svg1.select('#overall_ma_line').style('stroke-opacity', 1);
+						if ( svg3.select('#ts_filter_check_mark').style('opacity')!=1 ) {
+
 							svg1.select('#hover_legend_null').style('opacity', 1);
 							svg1.select('#hover_legend_line').style('stroke-opacity', 0);
-							svg1.select('#hover_legend_circle').style('opacity', 0);
+							svg1.select('#overall_legend_null').style('opacity', 1);
+							svg1.select('#overall_legend_line').style('stroke-opacity', 0);
+							selectHide(svg1, 'overall_ma_line');
+							selectHide(svg1, 'hover_ma_line');
+						}
+						else if ( svg3.select('#ts_filter_check_mark').style('opacity')==1 && hoverYear<maxYearObserved ) {
 
+							svg1.select('#hover_legend_null').style('opacity', 0);
+							svg1.select('#hover_legend_line').style('stroke-opacity', 1);
+							svg1.select('#overall_ma_line').style('stroke', overallModelColor);
+
+							// Redefine the hover line and add path
+							hoverMALine = d3.line()
+									.defined(function(d) { return d.index>tsSlider.value()-1; })
+									.x(function(d) { return x(d.date); })
+									.y(function(d) { return y(tsMADic[String(hoverYear) + '_' + String(tsSlider.value())][d.index-(tsSlider.value()-1)]); });
+
+							svg1.select('#hover_ma_line')
+									.attr('d', hoverMALine)
+									.style('stroke', hoverModelColor)
+									.style('stroke-opacity', 0.85);
+						}
+						else {
+
+							svg1.select('#hover_legend_null').style('opacity', 1);
+							svg1.select('#hover_legend_line').style('stroke-opacity', 0);
+							svg1.select('#overall_ma_line').style('stroke', overallModelColor);
 							selectHide(svg1, 'hover_ma_line');
 						};
 
-							var updateHoverMetrics = function(d) {
-								if ( hoverYear!=maxYearObserved ) {
-									if ( dropDownSelected==overallTimeFrame )
-									{ updatePastHoverMetrics(hoverYear); }
-									else
-									{ updateFutureHoverMetrics(hoverYear); }
-								}
+						var updateHoverMetrics = function(d) {
+							if ( hoverYear!=maxYearObserved ) {
+								if ( dropDownSelected==overallTimeFrame )
+								{ updatePastHoverMetrics(hoverYear); }
 								else
-								{ addHoverInstruction(); }
-							};
-
-							updateHoverMetrics();
+								{ updateFutureHoverMetrics(hoverYear); }
+							}
+							else
+							{ addHoverInstruction(); }
 						};
+
+						updateHoverMetrics();
 				  });
 
 					function updatePastHoverMetrics(hoverYear) {
@@ -853,9 +795,10 @@
 				    data.forEach(function(d) {
 							d[hoverYearCol] = +d[hoverYearCol];
 							d[hoverYearlyTrendCol] = +d[hoverYearlyTrendCol];
-							if ( d.non_observation==1 )
-							{ hoverPredFuture+=d[hoverYearCol];
-								hoverYearlyTrendFuture+=d[hoverYearlyTrendCol] };
+							if ( d.non_observation==1 ) {
+								hoverPredFuture+=d[hoverYearCol];
+								hoverYearlyTrendFuture+=d[hoverYearlyTrendCol];
+							};
 				    });
 
 						hoverPredFuturePerDay = parseInt(Math.round(hoverPredFuture/numFuturePredDays)).toLocaleString();
@@ -895,11 +838,11 @@
 							if ( allYears[Number(d)] < maxYearObserved ) {
 								addComparingGraphHeader();
 								addStdRect(svg1, null, 'hover_region_rect', 0.7, -7.5, (width/numRows)*obsCumDic[allYears[Number(d)]], height + 7.5, 'black', 1, 1, 'transparent', 1, null, null, null);
-								updateGraph(allYears[Number(d)], false, true, false);
+								updateGraph(allYears[Number(d)], null);
 							 }
 							else {
 								addGraphHoverHeader();
-								updateGraph(maxYearObserved, false, true, false);
+								updateGraph(maxYearObserved, null);
 							};
 					},
 							yearRectML = function(d) {
@@ -910,7 +853,7 @@
 							marginMO = function(d) {
 								// dropdown option remove doubled in case of failure with removal in svg4
 								svg4.selectAll('#dropdown_option').remove();
-								updateGraph(maxYearObserved, false, true, false);
+								updateGraph(maxYearObserved, null);
 					};
 
 					// Add the year rect boundaries

@@ -96,7 +96,7 @@ function addStdCircle(svgInput, idInput, circX, circY, fillColor) {
 };
 
 
-function addStdPath(svgInput, dataInput, pathID, pathName, strokeColor) {
+function addStdPath(svgInput, dataInput, pathID, pathName, strokeColor, strokeOpacity) {
 
 	svgInput.append('path')
 			.data(dataInput)
@@ -104,7 +104,8 @@ function addStdPath(svgInput, dataInput, pathID, pathName, strokeColor) {
 			.attr('class', 'path')
 			.attr('id', pathID)
 			.attr('d', pathName)
-			.style('stroke', strokeColor);
+			.style('stroke', strokeColor)
+			.style('stroke-opacity', strokeOpacity);
 };
 
 

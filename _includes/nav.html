@@ -3,8 +3,7 @@
   {%- if site.title-img -%}
     <a class="navbar-brand navbar-brand-logo" href="{{ '' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
   {%- elsif site.title -%}
-		<!-- custom edit: importing libraries for fireworks launch. changing top left nav link to Launch Fireworks instead of site title -->
-		<script type="text/javascript" src="{{ site.url }}/assets/js/fireworks/fireworks_launch.js"></script>
+		<!-- custom edit: changing top left nav link to Launch Fireworks instead of site title. adding second anchor tag for mobile. triggering firework launch onclick. -->
     <a class="navbar-brand navbar-brand-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()">Fireworks<img src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img></a>
 		<a class="navbar-brand navbar-brand-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()"><img src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img><img src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img><img src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img></a>
 		<!-- end of custom edit -->

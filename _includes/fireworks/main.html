@@ -1,0 +1,26 @@
+<!-- <!DOCTYPE html> -->
+<html>
+	<head>
+	  <style type="text/css">
+
+			#fireworks {
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  width: 100%;
+			  height: 100%;
+			  z-index: 99;
+			}
+
+	  </style>
+	</head>
+	<body>
+		<div class="no_selection no_events" id="fireworks" align="center"></div>
+		<script type="text/javascript" src="{{ site.url }}/assets/js/fireworks/fireworks_launch.js"></script>
+		<script type='text/javascript'>
+			// set the dimensions and margins of the graph
+			margin = {top: 0, bottom: 0, left: 0, right: 0};
+			addStdSVG('svgFW', 'fireworks', getBodyDimenstions()[0], getBodyDimenstions()[1], margin.left, margin.top, null);
+		</script>
+	</body>
+</html>

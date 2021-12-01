@@ -41,7 +41,6 @@
 		</style>
 	</head>
 	<body>
-		<script src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
 		<div id='hidden_project_explained' align='left' style='margin-bottom:150px;'>
 			<p>While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!</p>
 		</div>
@@ -94,7 +93,7 @@
 			addStdSVG('svg3', 'check_mark_filters', 175, 102.5, 210, 142, 'auto');
 			addStdSVG('svg4', 'metrics_and_sliders', fullWidth, 125, 0, 0, 'auto');
 
-			d3.csv('/assets/csv/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv', function(data) {
+			d3.csv('{{site.url}}/assets/csv/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv', function(data) {
 
 				var tooltipMO = function(d) {
 							d3.select(this).style('cursor', 'help');
@@ -108,9 +107,8 @@
 
 								svg1.selectAll('#circle_obs')
 									.filter(function(d) { return d.num_harmed==maxOb; })
-						 				.style('fill', obsColor)
-						 				.style('stroke', 'black')
-										.style('stroke-width', 7.5);
+									.style('stroke-width', 7.5)
+									.style('opacity', 1);
 
 								addStdRect(svg3, null, 'tooltip_region_hide_rect', 0, 35, 100, 25, 'transparent', 0, 1, 'white', 1, null, null, null);
 							}
@@ -129,17 +127,11 @@
 
 								svg1.selectAll('#circle_obs')
 									.filter(function(d) { return d.num_harmed==maxOb; })
-										.style('fill', function() {
+										.style('opacity', function() {
 											if ( svg3.select('#obs_filter_check_mark').style('opacity')==1 && obsSlider.value()==0 )
-											{ return obsColor; }
+											{ return 1; }
 											else
-											{ return 'transparent'; }
-										})
-						 				.style('stroke', function() {
-											if ( svg3.select('#obs_filter_check_mark').style('opacity')==1 && obsSlider.value()==0 )
-											{ return 'black'; }
-											else
-											{ return 'transparent'; }
+											{ return 0; }
 										})
 										.style('stroke-width', 0.5);
 							}
@@ -159,11 +151,8 @@
 				numObsCumCount = 0,
 				numVictimsCumCount = 0;
 
-				// originalObsColor = 'rgb(112,128,144)',
 				obsColor = 'rgb(112,128,144)',
-				// originalOverallModelColor = 'rgb(250,98,95)',
 				overallModelColor = 'rgb(250,98,95)',
-				// originalHoverModelColor = 'rgb(0,192,127)',
 				hoverModelColor = 'rgb(0,192,127)',
 				tooltipSymbolColor = 'rgb(0,122,255)';
 
@@ -296,11 +285,9 @@
 				/////////////////////////////////////////////
 				/////////////////////////////////////////////
 
-				addStdLine(svg1, 'obs_legend_line', (margin.right/2), (margin.right/2) + 12.5, 6, 6, obsColor, 3.5, null);
-				svg1.select('#obs_legend_line').style('stroke-opacity', 0);
-				addStdLine(svg1, 'overall_legend_line', (margin.right/2), (margin.right/2) + 12.5, 21, 21, overallModelColor, 3.5, null);
-				addStdLine(svg1, 'hover_legend_line', (margin.right/2), (margin.right/2) + 12.5, 36, 36, hoverModelColor, 3.5, null);
-				svg1.select('#hover_legend_line').style('stroke-opacity', 0);
+				addStdLine(svg1, 'obs_legend_line', (margin.right/2), (margin.right/2) + 12.5, 6, 6, obsColor, 3.5, null, 0);
+				addStdLine(svg1, 'overall_legend_line', (margin.right/2), (margin.right/2) + 12.5, 21, 21, overallModelColor, 3.5, null, 1);
+				addStdLine(svg1, 'hover_legend_line', (margin.right/2), (margin.right/2) + 12.5, 36, 36, hoverModelColor, 3.5, null, 0);
 
 				addStdCircle(svg1, 'obs_legend_circle', (margin.right/2) + 6, 6, obsColor);
 
@@ -335,7 +322,7 @@
 								.style('stroke-width', 0.5);
 				};
 
-		    // Add the circles.
+		    // add the raw observations as circles.
 				addGunViolenceObservations(svg1, data, 'circle_obs', true, 'num_harmed', obsColor, 'black');
 				// defining all three lines (not including legend lines).
 				// all three are affected by moving averages.
@@ -352,24 +339,12 @@
 				addStdPath(svg1, [data], 'hover_ma_line', hoverMALine, hoverModelColor, 0);
 
 				addStdRect(svg1, null, 'graph_rect_outline', -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), 'black', 1, 1, 'transparent', 1, null, null, null);
-				addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0]) + 5}, -5.5, 'black', 2, ('4, 4'));
-				addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, width, -7.5, -7.5, 'black', 2, ('4, 4'));
-
-				/////////////////////////////////////////////
-				/////////////////////////////////////////////
+				addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0]) + 5}, -5.5, 'black', 2, ('4, 4'), 1);
+				addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, width, -7.5, -7.5, 'black', 2, ('4, 4'), 1);
 
 				// Add header text for svg2
-				function addGraphHoverHeader() {
-					addStdText(svg2, null, 'graph_header', ((fullWidth - leftMarginAdj)/2)-120, 17.5, '13.5px', 'normal', 1, 0.25, 'Hover to Compare Historical Forecasts');
-				};
-
-				function addComparingGraphHeader() {
-					addStdText(svg2, null, 'graph_header', ((fullWidth - leftMarginAdj)/2)-95, 17.5, '13.5px', 'italic', 1, 0.25, 'Comparing Historical Forecasts...');
-				};
-
-				addGraphHoverHeader();
-				/////////////////////////////////////////////
-				/////////////////////////////////////////////
+				addStdText(svg2, null, 'hover_graph_header', ((fullWidth - leftMarginAdj)/2)-120, 17.5, '13.5px', 'normal', 1, 0.25, 'Hover to Compare Historical Forecasts');
+				addStdText(svg2, null, 'comparing_graph_header', ((fullWidth - leftMarginAdj)/2)-95, 17.5, '13.5px', 'italic', 0, 0.25, 'Comparing Historical Forecasts...');
 
 				function filterClick() {
 						rectID = d3.select(this)['_groups'][0][0]['id'];
@@ -469,9 +444,9 @@
 				addStdText(svg4, null, 'metrics_methodology_tooltip_label', -95, leftMarginAdj-12.5, '15px', 'normal', 1, 0.25, 'Metrics');
 				svg4.select('#metrics_methodology_tooltip_label').attr('transform', 'rotate(-90)').style('text-anchor', 'middle');
 
-				addStdLine(svg4, null, leftMarginAdj, 197.75, 40, 40, 'black', 3.5, null);
-				addStdLine(svg4, null, 197.75, 296.875, 40, 40, overallModelColor, 3.5, null);
-				addStdLine(svg4, null, 296.875, 396, 40, 40, hoverModelColor, 3.5, null);
+				addStdLine(svg4, null, leftMarginAdj, 197.75, 40, 40, 'black', 3.5, null, 1);
+				addStdLine(svg4, null, 197.75, 296.875, 40, 40, overallModelColor, 3.5, null, 1);
+				addStdLine(svg4, null, 296.875, 396, 40, 40, hoverModelColor, 3.5, null, 1);
 				textWidth = getTextWidth(svg1, 'Overall', 12);
 				addStdText(svg4, null, null, 296.875 - textWidth, 15, '12px', 'normal', 1, 0, 'Overall');
 				textWidth = getTextWidth(svg1, 'Model', 12);
@@ -598,32 +573,28 @@
 								.x(function(d) { return x(d.date); })
 								.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-tsSlider.value()]); });
 
-						svg1.select('#overall_ma_line')
-								.attr('d', overallMALine);
+						svg1.select('#overall_ma_line').attr('d', overallMALine);
 					};
 
 					if ( svg3.select('#obs_filter_check_mark').style('opacity')==0 ) {
 
 						svg1.select('#obs_legend_null').style('opacity', 1);
-						svg1.select('#obs_legend_line').style('stroke-opacity', 0);
+						svg1.select('#obs_legend_line').style('opacity', 0);
 						svg1.select('#obs_legend_circle').style('opacity', 0);
-						selectHide(svg1, 'obs_ma_line');
-
-						svg1.selectAll('#circle_obs')
-							.style('fill', 'transparent')
-							.style('stroke', 'transparent');
+						svg1.select('#obs_ma_line').style('opacity', 0);
+						svg1.selectAll('#circle_obs').style('opacity', 0);
 				 	}
 					else if ( obsSlider.value()==0 ) {
 
 						svg1.select('#obs_legend_null').style('opacity', 0);
-						svg1.select('#obs_legend_line').style('stroke-opacity', 0);
+						svg1.select('#obs_legend_line').style('opacity', 0);
 						svg1.select('#obs_legend_circle').style('opacity', 1);
-						selectHide(svg1, 'obs_ma_line');
+						svg1.select('#obs_ma_line').style('opacity', 0);
 
 						svg1.selectAll('#circle_obs')
 								.filter(function(d) { return d.non_observation!=1; })
 								.style('fill', obsColor)
-								.style('non_observation', 'black')
+								.style('stroke', 'black')
 								.style('opacity', function(d) {
 									if ( d.year <= hoverYear )
 									{ return 1 }
@@ -635,25 +606,25 @@
 					else {
 
 						svg1.select('#obs_legend_null').style('opacity', 0);
-						svg1.select('#obs_legend_line').style('stroke-opacity', 1);
+						svg1.select('#obs_legend_line').style('opacity', 1);
 			 			svg1.select('#obs_legend_circle').style('opacity', 0);
-			 			selectAllHide(svg1, 'circle_obs');
+						svg1.select('#obs_ma_line').style('opacity', 1);
+						svg1.selectAll('#circle_obs').style('opacity', 0);
+
 		 			 	// Redefine the overall line path.
 						obsMALine = d3.line()
 			 					.defined(function(d) { return d.index>obsSlider.value()-1 && d.non_observation!=1; })
 			 					.x(function(d) { return x(d.date); })
 			 					.y(function(d) { return y(obsMADic[obsSlider.value()][d.index-obsSlider.value()]); });
 
-			 			svg1.select('#obs_ma_line')
-			 					.attr('d', obsMALine)
-								.style('stroke', obsColor)
-								.style('stroke-opacity', 1);
+			 			svg1.select('#obs_ma_line').attr('d', obsMALine);
 					};
 
 					if ( sourceObject=='ts_slider' ) {
 
 						svg1.select('#overall_legend_null').style('opacity', 0);
-						svg1.select('#overall_legend_line').style('stroke-opacity', 1);
+						svg1.select('#overall_legend_line').style('opacity', 1);
+						svg1.select('#overall_ma_line').style('opacity', 1);
 
 						// Redefine the overall Pred line path.
 						overallMALine = d3.line()
@@ -661,28 +632,26 @@
 								.x(function(d) { return x(d.date); })
 								.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-tsSlider.value()]); });
 
-						svg1.select('#overall_ma_line')
-								.attr('d', overallMALine)
-								.style('stroke', overallModelColor)
-								.style('stroke-opacity', 1);
+						svg1.select('#overall_ma_line').attr('d', overallMALine);
 					}
 
 					if ( svg3.select('#ts_filter_check_mark').style('opacity')!=1 ) {
 
 						svg1.select('#hover_legend_null').style('opacity', 1);
-						svg1.select('#hover_legend_line').style('stroke-opacity', 0);
 						svg1.select('#overall_legend_null').style('opacity', 1);
-						svg1.select('#overall_legend_line').style('stroke-opacity', 0);
-						selectHide(svg1, 'overall_ma_line');
-						selectHide(svg1, 'hover_ma_line');
+						svg1.select('#hover_legend_line').style('opacity', 0);
+						svg1.select('#overall_legend_line').style('opacity', 0);
+						svg1.select('#hover_ma_line').style('opacity', 0);
+						svg1.select('#overall_ma_line').style('opacity', 0);
 					}
 					else if ( svg3.select('#ts_filter_check_mark').style('opacity')==1 && hoverYear<maxYearObserved ) {
 
 						svg1.select('#hover_legend_null').style('opacity', 0);
-						svg1.select('#hover_legend_line').style('stroke-opacity', 1);
 						svg1.select('#overall_legend_null').style('opacity', 0);
-						svg1.select('#overall_legend_line').style('stroke-opacity', 1);
-						svg1.select('#overall_ma_line').style('stroke', overallModelColor);
+						svg1.select('#hover_legend_line').style('opacity', 1);
+						svg1.select('#overall_legend_line').style('opacity', 1);
+						svg1.select('#overall_ma_line').style('opacity', 1);
+						svg1.select('#hover_ma_line').style('opacity', 0.85);
 
 						// Redefine the hover line and add path
 						hoverMALine = d3.line()
@@ -690,19 +659,16 @@
 								.x(function(d) { return x(d.date); })
 								.y(function(d) { return y(tsMADic[String(hoverYear) + '_' + String(tsSlider.value())][d.index-tsSlider.value()]); });
 
-						svg1.select('#hover_ma_line')
-								.attr('d', hoverMALine)
-								.style('stroke', hoverModelColor)
-								.style('stroke-opacity', 0.85);
+						svg1.select('#hover_ma_line').attr('d', hoverMALine);
 					}
 					else {
 
 						svg1.select('#hover_legend_null').style('opacity', 1);
-						svg1.select('#hover_legend_line').style('stroke-opacity', 0);
 						svg1.select('#overall_legend_null').style('opacity', 0);
-						svg1.select('#overall_legend_line').style('stroke-opacity', 1);
-						svg1.select('#overall_ma_line').style('stroke', overallModelColor);
-						selectHide(svg1, 'hover_ma_line');
+						svg1.select('#hover_legend_line').style('opacity', 0);
+						svg1.select('#overall_legend_line').style('opacity', 1);
+						svg1.select('#overall_ma_line').style('opacity', 1);
+						svg1.select('#hover_ma_line').style('opacity', 0);
 					};
 
 					var updateHoverMetrics = function(d) {
@@ -812,23 +778,24 @@
 
 					var yearRectMO = function(d) {
 
-							svg2.select('#graph_header').remove();
 							svg4.selectAll('#dropdown_option').remove();
 
 							if ( allYears[Number(d)] < maxYearObserved ) {
-								addComparingGraphHeader();
+								svg2.select('#hover_graph_header').style('opacity', 0);
+								svg2.select('#comparing_graph_header').style('opacity', 1);
 								addStdRect(svg1, null, 'hover_region_rect', 0.7, -7.5, (width/numRows)*obsCumDic[allYears[Number(d)]], height + 7.5, 'black', 1, 1, 'transparent', 1, null, null, null);
 								updateGraph(allYears[Number(d)], null);
 							 }
 							else {
-								addGraphHoverHeader();
+								svg2.select('#hover_graph_header').style('opacity', 1);
+								svg2.select('#comparing_graph_header').style('opacity', 0);
 								updateGraph(maxYearObserved, null);
 							};
 					},
 							yearRectML = function(d) {
 								svg1.select('#hover_region_rect').remove();
-								svg2.select('#graph_header').remove();
-								addGraphHoverHeader();
+								svg2.select('#hover_graph_header').style('opacity', 1);
+								svg2.select('#comparing_graph_header').style('opacity', 0);
 					},
 							marginMO = function(d) {
 								// dropdown option remove doubled in case of failure with removal in svg4

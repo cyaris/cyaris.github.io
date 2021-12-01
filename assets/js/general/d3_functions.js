@@ -68,7 +68,7 @@ function addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rect
 };
 
 
-function addStdLine(svgInput, idInput, lineX1, lineX2, lineY1, lineY2, strokeColor, strokeWidth, strokeDashArray) {
+function addStdLine(svgInput, idInput, lineX1, lineX2, lineY1, lineY2, color, strokeWidth, strokeDashArray, opacity) {
 
 	svgInput.append('line')
 			.attr('pointer-events', 'none')
@@ -77,10 +77,11 @@ function addStdLine(svgInput, idInput, lineX1, lineX2, lineY1, lineY2, strokeCol
 			.attr('x2', lineX2)
 			.attr('y1', lineY1)
 			.attr('y2', lineY2)
-			.style('fill', 'none')
-			.style('stroke', strokeColor)
+			.style('fill', color)
+			.style('stroke', color)
 			.style('stroke-width', strokeWidth)
-			.style('stroke-dasharray', strokeDashArray);
+			.style('stroke-dasharray', strokeDashArray)
+			.style('opacity', opacity);
 };
 
 
@@ -98,7 +99,7 @@ function addStdCircle(svgInput, idInput, circX, circY, fillColor) {
 };
 
 
-function addStdPath(svgInput, dataInput, pathID, pathName, strokeColor, strokeOpacity) {
+function addStdPath(svgInput, dataInput, pathID, pathName, strokeColor, opacity) {
 
 	svgInput.append('path')
 			.data(dataInput)
@@ -107,7 +108,7 @@ function addStdPath(svgInput, dataInput, pathID, pathName, strokeColor, strokeOp
 			.attr('id', pathID)
 			.attr('d', pathName)
 			.style('stroke', strokeColor)
-			.style('stroke-opacity', strokeOpacity);
+			.style('opacity', opacity);
 };
 
 
@@ -152,21 +153,6 @@ function addTooltipSymbol(svgInput, idInput, circX, circY, textX, textY, textRot
 					.style('stroke', 'white')
 					.style('font-size', '11.5px')
 					.style('font-weight', 500);
-};
-
-
-function selectAllHide(svgInput, idInput) {
-
-	svgInput.selectAll('#' + String(idInput))
-					.style('fill', 'transparent')
-					.style('stroke', 'transparent');
-};
-
-
-function selectHide(svgInput, idInput) {
-
-	svgInput.select('#' + String(idInput))
-					.style('stroke', 'transparent');
 };
 
 

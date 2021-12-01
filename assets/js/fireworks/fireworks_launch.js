@@ -116,7 +116,7 @@ function launchFireworkBurst() {
 		//		// adjusted above to remove one or more colors
 		['#f53473', '#93135d', '#5595c1', '#77def1']
 	];
-	
+
 	// defining y parameter for the getBodyDimenstions()[1] of the launch
 	// the is the distance from the top of the pange
 	LaunchYLoc = chance.floating({ min: getBodyDimenstions()[1]*0.10, max: getBodyDimenstions()[1]*0.20 }),
@@ -153,7 +153,7 @@ function launchFireworkBurst() {
 	launchColor = randomPallete[getRandomInt(0, randomPallete.length)],
 	fireWorkPaletteFunc = d3.scaleOrdinal().domain([Math.min(explosionData['x']), Math.max(explosionData['x'])]).range(randomPallete);
 
-	console.log(randomPallete);
+	// console.log(randomPallete);
 
 	launchRadius = 3,
 	launchDuration = 1000,

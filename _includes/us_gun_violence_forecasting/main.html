@@ -96,45 +96,45 @@
 			d3.csv('{{site.url}}/assets/csv/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv', function(data) {
 
 				var tooltipMO = function(d) {
-							d3.select(this).style('cursor', 'help');
-							rectID = d3.select(this)['_groups'][0][0]['id'];
-							toolTip = rectID.substring(0, rectID.length - 5);
-							d3.select('#' + toolTip).style('opacity', 1);
-							d3.select('#' + toolTip + '_circle').style('fill', 'white').style('stroke', tooltipSymbolColor).attr('r', 9);
-							yTextLoc = Number(d3.select('#' + toolTip + '_i').attr('y')) + 0.5;
-							d3.select('#' + toolTip + '_i').attr('y', yTextLoc).style('fill', tooltipSymbolColor).style('stroke', tooltipSymbolColor).style('font-size', '13px');
-							if ( toolTip=='lv_tooltip' ) {
+						d3.select(this).style('cursor', 'help');
+						rectID = d3.select(this)['_groups'][0][0]['id'];
+						toolTip = rectID.substring(0, rectID.length - 5);
+						d3.select('#' + toolTip).style('opacity', 1);
+						d3.select('#' + toolTip + '_circle').style('fill', 'white').style('stroke', tooltipSymbolColor).attr('r', 9);
+						yTextLoc = Number(d3.select('#' + toolTip + '_i').attr('y')) + 0.5;
+						d3.select('#' + toolTip + '_i').attr('y', yTextLoc).style('fill', tooltipSymbolColor).style('stroke', tooltipSymbolColor).style('font-size', '13px');
+						if ( toolTip=='lv_tooltip' ) {
 
-								svg1.selectAll('#circle_obs')
-									.filter(function(d) { return d.num_harmed==maxOb; })
-									.style('stroke-width', 7.5)
-									.style('opacity', 1);
+							svg1.selectAll('#circle_obs')
+								.filter(function(d) { return d.num_harmed==maxOb; })
+								.style('stroke-width', 7.5)
+								.style('opacity', 1);
 
-								addStdRect(svg3, null, 'tooltip_region_hide_rect', 0, 35, 100, 25, 'transparent', 0, 1, 'white', 1, null, null, null);
-							}
-							else if ( toolTip =='metrics_tooltip' )
-							{ addStdRect(svg4, null, 'tooltip_region_hide_rect', 200, 0, 215, 130, 'transparent', 0, 1, 'white', 1, null, null, null); }
+							addStdRect(svg3, null, 'tooltip_region_hide_rect', 0, 35, 100, 25, 'transparent', 0, 1, 'white', 1, null, null, null);
+						}
+						else if ( toolTip =='metrics_tooltip' )
+						{ addStdRect(svg4, null, 'tooltip_region_hide_rect', 200, 0, 215, 130, 'transparent', 0, 1, 'white', 1, null, null, null); }
 				},
 						tooltipML = function(d) {
-							rectID = d3.select(this)['_groups'][0][0]['id'];
-							toolTip = rectID.substring(0, rectID.length - 5);
-							d3.select('#' + toolTip).style('opacity', 0);
-							d3.select('#' + toolTip + '_circle').style('fill', tooltipSymbolColor).style('stroke', 'transparent').attr('r', 7.5);
-							yTextLoc = Number(d3.select('#' + toolTip + '_i').attr('y')) - 0.5;
-							d3.select('#' + toolTip + '_i').attr('y', yTextLoc).style('fill', 'white').style('stroke', 'white').style('font-size', '11.5px');
-							d3.select('#tooltip_region_hide_rect').remove();
-							if ( toolTip=='lv_tooltip' ) {
+						rectID = d3.select(this)['_groups'][0][0]['id'];
+						toolTip = rectID.substring(0, rectID.length - 5);
+						d3.select('#' + toolTip).style('opacity', 0);
+						d3.select('#' + toolTip + '_circle').style('fill', tooltipSymbolColor).style('stroke', 'transparent').attr('r', 7.5);
+						yTextLoc = Number(d3.select('#' + toolTip + '_i').attr('y')) - 0.5;
+						d3.select('#' + toolTip + '_i').attr('y', yTextLoc).style('fill', 'white').style('stroke', 'white').style('font-size', '11.5px');
+						d3.select('#tooltip_region_hide_rect').remove();
+						if ( toolTip=='lv_tooltip' ) {
 
-								svg1.selectAll('#circle_obs')
-									.filter(function(d) { return d.num_harmed==maxOb; })
-										.style('opacity', function() {
-											if ( svg3.select('#obs_filter_check_mark').style('opacity')==1 && obsSlider.value()==0 )
-											{ return 1; }
-											else
-											{ return 0; }
-										})
-										.style('stroke-width', 0.5);
-							}
+							svg1.selectAll('#circle_obs')
+								.filter(function(d) { return d.num_harmed==maxOb; })
+									.style('opacity', function() {
+										if ( svg3.select('#obs_filter_check_mark').style('opacity')==1 && obsSlider.value()==0 )
+										{ return 1; }
+										else
+										{ return 0; }
+									})
+									.style('stroke-width', 0.5);
+						}
 				};
 
 				maxYearObserved = [],

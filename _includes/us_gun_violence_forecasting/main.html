@@ -218,26 +218,8 @@
 					}
 				};
 
-				obsSlider = d3.sliderBottom()
-							.min(d3.min(sliderData['obs']['ticks']))
-	  					.max(d3.max(sliderData['obs']['ticks']))
-	  					.width(sliderData['obs']['width'])
-							.step(sliderData['obs']['step'])
-							.tickValues(sliderData['obs']['ticks'])
-							.default(sliderData['obs']['default'])
-							.on('onchange', function(d) {
-								updateGraph(maxYearObserved, 'obs_slider');
-							}),
-				tsSlider = d3.sliderBottom()
-							.min(d3.min(sliderData['ts']['ticks']))
-							.max(d3.max(sliderData['ts']['ticks']))
-							.width(sliderData['ts']['width'])
-							.step(sliderData['ts']['step'])
-							.tickValues(sliderData['ts']['ticks'])
-							.default(sliderData['ts']['default'])
-							.on('onchange', function(d) {
-								updateGraph(maxYearObserved, 'ts_slider');
-							});
+				obsSlider = defineSlider(sliderData['obs'], function(d) { updateGraph(maxYearObserved, 'obs_slider')});
+				tsSlider = defineSlider(sliderData['ts'], function(d) { updateGraph(maxYearObserved, 'ts_slider')});
 
 				for ( var i = 1; i <= sliderData['obs']['ticks'].length-1; i++ ) {
 					obsMADic[sliderData['obs']['ticks'][i]] = sma(allObs, sliderData['obs']['ticks'][i]).map(Number);
@@ -283,18 +265,9 @@
 		    x.domain(d3.extent(data, function(d) { return d.date; }));
 		    y.domain([0, d3.max(data, function(d) { return d.num_harmed + 15; })]);
 
-				// Add the X Axis
-				svg1.append('g')
-						.attr('pointer-events', 'none')
-						.attr('transform', 'translate(0,' + height + ')')
-						.style('font-size', '12px')
-					.call(d3.axisBottom(x));
-				// Add the Y Axis
-				svg1.append('g')
-						.attr('pointer-events', 'none')
-						.attr('class', 'y_axis')
-						.style('font-size', '12px')
-					.call(d3.axisLeft(y));
+				// Add the X and Y Axes
+				callGroupSVG(svg1, null, null, '12px', 'translate(0,'+height+')', d3.axisBottom(x), 'none');
+				callGroupSVG(svg1, 'y_axis', null, '12px', null, d3.axisLeft(y), 'none');
 				/////////////////////////////////////////////
 				/////////////////////////////////////////////
 
@@ -554,17 +527,18 @@
 				textInput = 'Hover to',
 				textWidth = getTextWidth(svg1, textInput, 12);
 				addStdText(svg4, 'hover_metrics', 'hover_metrics_instruction', 396 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
-				textInput = 'Compare',
+				textInput = 'compare.',
 				textWidth = getTextWidth(svg1, textInput, 12);
 				addStdText(svg4, 'hover_metrics', 'hover_metrics_instruction', 396 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
 
-				svg4.append('g')
-						.attr('transform', 'translate(436,45)')
-						.call(obsSlider);
+				callGroupSVG(svg4, null, null, null, 'translate(436,45)', obsSlider, 'auto');
+				callGroupSVG(svg4, null, null, null, 'translate(616,45)', tsSlider, 'auto');
 
-				svg4.append('g')
-						.attr('transform', 'translate(616,45)')
-						.call(tsSlider);
+				// REMOVE WITH CSS
+				// overriding feature in built-in function that makes current selection invisible
+				d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('fill', 'black').style('opacity', 0.75);
+				// making ticks on axis black
+				d3.selectAll('.axis line').style('stroke', 'black').style('opacity', 0.25);
 
 				addStdText(svg4, null, null, 425, 15, '12px', 'normal', 1, 0, 'Moving Average for');
 				addStdText(svg4, null, null, 425, 30, '12px', 'normal', 1, 0, 'Daily Observations');
@@ -614,8 +588,6 @@
 					else if ( hoverYear!=allYears[0] )
 					{ textInput = String(allYears[0]) + '–' + String(hoverYear); }
 
-					svg4.selectAll('#hover_metrics').remove();
-
 					textWidth = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
 					textInput = hoverPredPast,
@@ -657,8 +629,6 @@
 					else if ( hoverYear!=allYears[0] )
 					{ textInput = String(allYears[0]) + '–' + String(hoverYear); }
 
-					svg4.selectAll('#hover_metrics').remove();
-
 					textWidth = getTextWidth(svg1, textInput, 12);
 					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
 					textInput = hoverPredFuture,
@@ -674,6 +644,7 @@
 
 				function updateGraph(hoverYear, sourceObject) {
 
+					////////////
 					if ( svg3.select('#obs_filter_check_mark').style('opacity')==0 ) {
 
 						svg1.select('#obs_legend_null').style('opacity', 1);
@@ -691,15 +662,12 @@
 
 						svg1.selectAll('#circle_obs')
 								.filter(function(d) { return d.non_observation!=1; })
-								.style('fill', obsColor)
-								.style('stroke', 'black')
 								.style('opacity', function(d) {
 									if ( d.year <= hoverYear )
-									{ return 1 }
+									{ return 1; }
 									else
-									{ return 0.4 }
-								})
-								.style('stroke-width', 0.5);
+									{ return 0.4; }
+								});
 					}
 					else {
 
@@ -717,6 +685,7 @@
 
 			 			svg1.select('#obs_ma_line').attr('d', obsMALine);
 					};
+					////////////
 
 					if ( sourceObject=='ts_slider' ) {
 
@@ -732,19 +701,21 @@
 
 						svg1.select('#overall_ma_line').attr('d', overallMALine);
 					}
+					////////////
+					var updateHoverMetrics = function(d) {
 
-					if ( svg3.select('#ts_filter_check_mark').style('opacity')!=1 ) {
-
-						svg1.select('#hover_legend_null').style('opacity', 1);
-						svg1.select('#overall_legend_null').style('opacity', 1);
-						svg1.select('#hover_legend_line').style('opacity', 0);
-						svg1.select('#overall_legend_line').style('opacity', 0);
-						svg1.select('#hover_ma_line').style('opacity', 0);
-						svg1.select('#overall_ma_line').style('opacity', 0);
-						svg4.selectAll('#hover_metrics_instruction').style('opacity', 0);
 						svg4.selectAll('#hover_metrics').remove();
-					}
-					else if ( svg3.select('#ts_filter_check_mark').style('opacity')==1 && hoverYear<maxYearObserved ) {
+
+						if ( hoverYear!=maxYearObserved ) {
+							if ( dropDownSelected==overallTimeFrame )
+							{ updatePastHoverMetrics(hoverYear); }
+							else
+							{ updateFutureHoverMetrics(hoverYear); }
+						}
+					};
+					////////////
+
+					if ( hoverYear<maxYearObserved && svg3.select('#ts_filter_check_mark').style('opacity')==1 ) {
 
 						svg1.select('#hover_legend_null').style('opacity', 0);
 						svg1.select('#overall_legend_null').style('opacity', 0);
@@ -753,6 +724,7 @@
 						svg1.select('#overall_ma_line').style('opacity', 1);
 						svg1.select('#hover_ma_line').style('opacity', 0.85);
 						svg4.selectAll('#hover_metrics_instruction').style('opacity', 0);
+						updateHoverMetrics();
 
 						// Redefine the hover line and add path
 						hoverMALine = d3.line()
@@ -762,7 +734,18 @@
 
 						svg1.select('#hover_ma_line').attr('d', hoverMALine);
 					}
-					else {
+					else if ( hoverYear<maxYearObserved && svg3.select('#ts_filter_check_mark').style('opacity')!=1 ) {
+
+						svg1.select('#hover_legend_null').style('opacity', 1);
+						svg1.select('#overall_legend_null').style('opacity', 1);
+						svg1.select('#hover_legend_line').style('opacity', 0);
+						svg1.select('#overall_legend_line').style('opacity', 0);
+						svg1.select('#hover_ma_line').style('opacity', 0);
+						svg1.select('#overall_ma_line').style('opacity', 0);
+						svg4.selectAll('#hover_metrics_instruction').style('opacity', 0);
+						updateHoverMetrics();
+					}
+					else if ( svg3.select('#ts_filter_check_mark').style('opacity')==1 ) {
 
 						svg1.select('#hover_legend_null').style('opacity', 1);
 						svg1.select('#overall_legend_null').style('opacity', 0);
@@ -772,18 +755,18 @@
 						svg1.select('#hover_ma_line').style('opacity', 0);
 						svg4.selectAll('#hover_metrics_instruction').style('opacity', 1);
 						svg4.selectAll('#hover_metrics').remove();
-					};
+					}
+					else {
 
-					var updateHoverMetrics = function(d) {
-						if ( hoverYear!=maxYearObserved ) {
-							if ( dropDownSelected==overallTimeFrame )
-							{ updatePastHoverMetrics(hoverYear); }
-							else
-							{ updateFutureHoverMetrics(hoverYear); }
-						}
+						svg1.select('#hover_legend_null').style('opacity', 1);
+						svg1.select('#overall_legend_null').style('opacity', 1);
+						svg1.select('#hover_legend_line').style('opacity', 0);
+						svg1.select('#overall_legend_line').style('opacity', 0);
+						svg1.select('#hover_ma_line').style('opacity', 0);
+						svg1.select('#overall_ma_line').style('opacity', 0);
+						svg4.selectAll('#hover_metrics_instruction').style('opacity', 1);
+						svg4.selectAll('#hover_metrics').remove();
 					};
-
-					updateHoverMetrics();
 				};
 				/////////////////////////////////////////////
 				/////////////////////////////////////////////

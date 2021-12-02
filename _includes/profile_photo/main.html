@@ -320,41 +320,37 @@
 
 				addPixelRects();
 
-				sliderData = [0, 1, 2],
-				sliderDataLabels = {0: 'Reveal Mode', 1: 'Reveal My Laser Vision Mode', 2: 'Transition Mode'},
-				transitionSlider = d3.sliderBottom()
-										.min(d3.min(sliderData))
-			    					.max(d3.max(sliderData))
-			    					.width(300)
-										.step(1)
-										.ticks(3)
-										.default(d3.min(sliderData))
-										.tickValues(sliderData)
-										.tickFormat(function(d, i) { return sliderDataLabels[i]; })
-										.on('onchange', val => {
+				sliderData = {
+					'ticks': [0, 1, 2],
+					'tick_labels': {0: 'Reveal Mode', 1: 'Reveal My Laser Vision Mode', 2: 'Transition Mode'},
+					'step': 1,
+					'default': 0,
+					'width': 300
+				};
 
-													d3.selectAll('.photo_pixels').remove();
-													addPixelRects();
-													if ( val==1 )
-													// manually inputting a number slightly larger the how long it will take for final laser eye circle will finish transition (delay included).
-													// the final transition was calculated by adding the delay from the highest i value with the duration seconds.
-													{ timer = d3.interval(executeLaserEyes, 3000); }
-													else
-													{ timer.stop(); }
-													// fireworks can be launched again since the percent revealed will be back to zero.
-													launchedAlready = false;
-										});
+				function sliderChangeFunction() {
+					val => {
+						d3.selectAll('.photo_pixels').remove();
+						addPixelRects();
+						if ( val==1 )
+						// manually inputting a number slightly larger the how long it will take for final laser eye circle will finish transition (delay included).
+						// the final transition was calculated by adding the delay from the highest i value with the duration seconds.
+						{ timer = d3.interval(executeLaserEyes, 3000); }
+						else
+						{ timer.stop(); }
+						// fireworks can be launched again since the percent revealed will be back to zero.
+						launchedAlready = false;
+					}
+				};
 
-				svg3.append('g')
-						.attr('id', 'transition_slider')
-						.attr('transform', 'translate(50,10)')
-						.call(transitionSlider);
+				transitionSlider = defineSlider(sliderData, sliderChangeFunction());
+				callGroupSVG(svg3, null, 'transition_slider', null, 'translate(50,10)', transitionSlider, 'auto');
 
+				// REMOVE WITH CSS
 				// overriding feature in built-in function that makes current selection invisible
 				d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', '12px').attr('fill', 'black').style('opacity', 0.75);
 				// making ticks on axis black
-				d3.selectAll('.axis line').style('stroke', 'black');
-
+				d3.selectAll('.axis line').style('stroke', 'black').style('opacity', 0.25);
 			});
 
 		</script>

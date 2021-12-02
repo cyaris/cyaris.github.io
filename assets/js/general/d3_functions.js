@@ -129,6 +129,18 @@ function defineTooltip(divInput, idInput, leftLoc, rightLoc, divWidth, divHeight
 };
 
 
+function callGroupSVG(svgInput, classInput, idInput, fontSize, transform, functionInput, pointerEvents) {
+
+	svgInput.append('g')
+			.attr('pointer-events', pointerEvents)
+			.attr('class', classInput)
+			.attr('id', idInput)
+			.style('font-size', fontSize)
+			.attr('transform', transform)
+			.call(functionInput);
+};
+
+
 function addTooltipSymbol(svgInput, idInput, circX, circY, textX, textY, textRotate) {
 
 	svgInput.append('circle')
@@ -156,18 +168,21 @@ function addTooltipSymbol(svgInput, idInput, circX, circY, textX, textY, textRot
 };
 
 
-function defineSlider(dataInput, widthInput, stepInput, defaultValue, changeFunction) {
+function defineSlider(dataInput, changeFunction) {
 
-	d3.sliderBottom()
-				.min(d3.min(dataInput))
-				.max(d3.max(dataInput))
-				.width(widthInput)
-				.step(stepInput)
-				.tickValues(dataInput)
-				.default(defaultValue)
-				.on('onchange', function(d) {
-					changeFunction
-				});
+		return  d3.sliderBottom()
+							.min(d3.min(dataInput['ticks']))
+							.max(d3.max(dataInput['ticks']))
+							.width(dataInput['width'])
+							.step(dataInput['step'])
+							.tickValues(dataInput['ticks'])
+							.tickFormat(function(d, i) { if ( dataInput['tick_labels']==undefined )
+																			 { return dataInput['ticks'][i]; }
+																			 else
+																			 { return dataInput['tick_labels'][i]; }
+																		 })
+							.default(dataInput['default'])
+							.on('onchange', changeFunction);
 };
 
 var generalRectMO = function(d) {

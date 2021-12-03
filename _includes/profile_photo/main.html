@@ -102,6 +102,11 @@
 				pixelTransDuration = 750,
 				pixelTransLength = (pixelTransDelay * 2) + (pixelTransDuration * 2);
 
+				function getPixelCoordinateString(xCoordinateInput, xAdjustment, yCoordinateInput, yAdjustment) {
+
+					return '#x' + String(xCoordinateInput+xAdjustment) + 'y' + String(yCoordinateInput+yAdjustment);
+				};
+
 				// determining input for selectAll launchXLocd on valid pixels
 				function getTransitionSelect(idInput, mouseFunction) {
 
@@ -114,34 +119,37 @@
 					// each of these will be checked individually to see their current opacity
 					// only those that are not invisible will be needed (since those are already fully transitioned)
 					transitionPixels = Array(currentPixel);
+					transitionPixelCoordinates = [
+						[2, 2],
+						[2, 1],
+						[2, 0],
+						[2, -1],
+						[2, -2],
+						[-2, 2],
+						[-2, 1],
+						[-2, 0],
+						[-2, -1],
+						[-2, -2],
+						[1, 2],
+						[1, -2],
+						[-1, 2],
+						[-1, -2],
+						[0, 2],
+						[0, -2]
+					];
 
-					function getPixelCoordinateString(xCoordinateInput, xAdjustment, yCoordinateInput, yAdjustment) {
+					for ( var i=0; i <= transitionPixelCoordinates.length-1; i++ ) {
 
-						return '#x' + String(xCoordinateInput+xAdjustment) + 'y' + String(yCoordinateInput+yAdjustment);
+						xCoordinate = transitionPixelCoordinates[i][0],
+						yCoordinate = transitionPixelCoordinates[i][1];
+						transitionPixels.push(getPixelCoordinateString(xInput, xCoordinate, yInput, yCoordinate));
 					}
-
-					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, 2)),
-					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, 1)),
-					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, 0)),
-					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, -1)),
-					transitionPixels.push(getPixelCoordinateString(xInput, 2, yInput, -2)),
-					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, 2)),
-					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, 1)),
-					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, 0)),
-					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, -1)),
-					transitionPixels.push(getPixelCoordinateString(xInput, -2, yInput, -2)),
-					transitionPixels.push(getPixelCoordinateString(xInput, 1, yInput, 2)),
-					transitionPixels.push(getPixelCoordinateString(xInput, 1, yInput, -2)),
-					transitionPixels.push(getPixelCoordinateString(xInput, -1, yInput, 2)),
-					transitionPixels.push(getPixelCoordinateString(xInput, -1, yInput, -2)),
-					transitionPixels.push(getPixelCoordinateString(xInput, 0, yInput, 2)),
-					transitionPixels.push(getPixelCoordinateString(xInput, 0, yInput, -2));
 
 					transitionSelect = '';
 
 					// creating conditional for whether it's a mouseover or mouseleave
 					// goal here is to limit transitions that are unnecesarry (ex: transitioning an invisible object)
-					for ( var i=1; i<=transitionPixels.length; i++ ) {
+					for ( var i=0; i<=transitionPixels.length-1; i++ ) {
 
 						if ( d3.select(transitionPixels[i]).empty()==false && (
 							(mouseFunction=='pixelMO' && d3.select(transitionPixels[i]).style('opacity')!=0 )

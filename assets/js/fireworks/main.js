@@ -122,7 +122,7 @@ function launchFireworkBurst() {
 	LaunchYLoc = chance.floating({ min: getBodyDimenstions()[1]*0.10, max: getBodyDimenstions()[1]*0.20 }),
 	// defining adjusted y parameter for delay preceding explosion
 	// new getBodyDimenstions()[1] adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-	explosionDrop = chance.floating({ min: 20, max: 100 }),
+	explosionDrop = chance.floating({ min: 20, max: 130 }),
 	// getBodyDimenstions()[1] all the circles will be at after the drop (and just before exploding)
 	explosionYLoc = LaunchYLoc + explosionDrop,
 	// defining values for the launch of the firework

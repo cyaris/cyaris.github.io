@@ -71,14 +71,30 @@
 			checkFilterHeight = 40/1.65,
 			// set the dimensions of the margin rects
 			marginRectDic = {
-				0: {'x': -(margin.left), 'y': -7.5,
-				'width': margin.left, 'height': height + 7.5},
-				1: {'x': width, 'y': -7.5,
-				'width': margin.right, 'height': height + 7.5},
-				2: {'x': -(margin.left), 'y': -(margin.top),
-				'width': fullWidth, 'height': margin.top - 7.5},
-				3: {'x': -(margin.left), 'y': height,
-				'width': fullWidth, 'height': margin.bottom},
+				0: {
+						'x': -margin.left,
+						'y': -7.5,
+						'width': margin.left,
+						'height': height + 7.5
+					 },
+				1: {
+						'x': width,
+						'y': -7.5,
+						'width': margin.right,
+						'height': height + 7.5
+					 },
+				2: {
+						'x': -margin.left,
+						'y': -margin.top,
+						'width': fullWidth,
+						'height': margin.top - 7.5
+					 },
+				3: {
+						'x': -margin.left,
+						'y': height,
+						'width': fullWidth,
+						'height': margin.bottom
+					 }
 			},
 			marginRectDicKeys = Object.keys(marginRectDic);
 			// parse the date / time and set the ranges

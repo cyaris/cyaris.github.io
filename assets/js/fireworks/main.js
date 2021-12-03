@@ -1,5 +1,6 @@
 // credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5
 // I took what was there, made adjustments on preference/version differences, and added to it.
+
 function launchFireworkBurst() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,4 +231,26 @@ function launchFireworkBurst() {
 				.on('end', function() {
 					d3.select(this).remove();
 				});
+}
+
+
+function launchFireworksShow() {
+	// total fireworks in the regular show
+	totalFireworks1 = 150,
+	// duration per firework of the regular show
+	fireWorkInterval1 = 1500,
+	// total fireworks in the grand finale
+	totalFireWorks2 = 25,
+	// duration per firework of the grand finale show
+	fireWorkInterval2 = 500;
+
+	for ( var i=1; i<=totalFireworks1+totalFireWorks2; i++ ) {
+
+		// all fireworks for the regular show
+		if ( i<=totalFireworks1 )
+		{	d3.timeout(launchFireworkBurst, Math.max(fireWorkInterval1, (fireWorkInterval1*i) + chance.floating({ min: -2500, max: 2500 }))); }
+		else
+		// time for the grand finale!!!
+		{	d3.timeout(launchFireworkBurst, Math.max((fireWorkInterval1*totalFireworks1), (fireWorkInterval1*totalFireworks1) + (fireWorkInterval2*(i-totalFireworks1)) + chance.floating({ min: -2500, max: 2500 }))); }
+	}
 }

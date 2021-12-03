@@ -378,17 +378,3 @@ div.tooltip {
 .cursive {
   font-family: cursive
 }
-
-
-/* overriding feature in built-in function that makes current selection invisible */
-/* .axis .tick text {
-  stroke-width: 0;
-  font-size: '12px';
-  fill: 'black';
-  opacity: 0.75;
-} */
-
-/* making ticks on axis black */
-/* .axis line {
-  stroke: 'black';
-} */

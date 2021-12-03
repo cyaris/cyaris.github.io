@@ -185,6 +185,18 @@ function defineSlider(dataInput, changeFunction) {
 							.on('onchange', changeFunction);
 };
 
+
+// couldn't figure out how to make the function below work as css.
+function formatSlider(sliderTextSize) {
+
+	// overriding feature in built-in function that makes current selection invisible
+	d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', sliderTextSize).attr('fill', 'black').style('opacity', 0.75);
+	// making ticks on axis black
+	d3.selectAll('.axis line').style('stroke', 'black').style('opacity', 0.25);
+
+};
+
+
 var generalRectMO = function(d) {
 		// this will be used as a decorator to other mouseover functions
 		d3.select(this)

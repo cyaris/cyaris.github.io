@@ -710,18 +710,12 @@
 							'default': 2,
 							'width': 130
 						};
-
 						yearSlider = defineSlider(sliderData, sliderChangeFunction());
-						callGroupSVG(svg2, null, 'timeframe_slider', null, 'translate(200,200)', yearSlider, 'auto');
+						callGroupSVG(svg2, 'slider', 'timeframe_slider', null, 'translate(200,200)', yearSlider, 'auto');
+						formatSlider('12px');
+						// FIX: integrate transform below into callGroupSVG function.
 						svg2.select('#timeframe_slider').attr('transform', 'translate(200,20)');
-						timeFrame = yearSlider.value();
-
-						// REMOVE WITH CSS
-						// overriding feature in built-in function that makes current selection invisible
-						sliderTextSize = '12px';
-						d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', sliderTextSize).style('opacity', 0.75);
-						// making ticks on axis black
-						d3.selectAll('.axis line').style('stroke', 'black').style('opacity', 0.25);
+						timeFrame = yearSlider.value()
 					}
 					else {
 						sliderDefined = false;
@@ -1257,7 +1251,6 @@
 							nodeDescriptorSelected = d3.select(this).attr('id');
 							descriptiveMenuClick('node', nodeDescriptorSelected, nodeMenuMouseOver, yAdjustment);
 					};
-
 
 					function defaultSelectorCheck(groupingType, dropdownSelectedInput) {
 

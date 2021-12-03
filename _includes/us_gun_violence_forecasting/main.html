@@ -217,7 +217,6 @@
 						'width': 112.5
 					}
 				};
-
 				obsSlider = defineSlider(sliderData['obs'], function(d) { updateGraph(maxYearObserved, 'obs_slider')});
 				tsSlider = defineSlider(sliderData['ts'], function(d) { updateGraph(maxYearObserved, 'ts_slider')});
 
@@ -242,7 +241,7 @@
 	        d[overallCol] = +d[overallCol];
 					d[overallYearlyTrendCol] = +d[overallYearlyTrendCol];
 					if ( d.non_observation!=1 ) {
-						overallPredPast+=d[overallCol]
+						overallPredPast+=d[overallCol];
 						difference = d[overallCol] - d.num_harmed;
 						overallRMSE+=Math.pow(difference, 2)/obsCumDic[maxYearObserved];
 						overallYearlyTrendPast+=d[overallYearlyTrendCol];
@@ -291,39 +290,47 @@
 				textWidth = getTextWidth(svg1, textInput, 12);
 				addStdText(svg1, null, null, futureTimeFrameXLoc + 0.7 + ((width - futureTimeFrameXLoc - textWidth)/2), 10, '12px', 'italic', 1, 0, textInput);
 
-				function addGunViolenceObservations(svgInput, dataInput, idInput, trueObservation, yVariable, fillColor, strokeColor) {
-
-					svgInput.selectAll('#' + idInput)
-							.data(dataInput)
-							.enter()
-							.append('circle')
-								.filter(function(d) { return d.non_observation!=1; })
-								.attr('pointer-events', 'none')
-								.attr('id', idInput)
-								.attr('r', 2)
-								.attr('cx', function(d) { return x(d.date); })
-								.attr('cy', function(d) { return y(d[yVariable]); })
-								.style('fill', fillColor)
-								.style('stroke', strokeColor)
-								.style('stroke-width', 0.5);
-				};
-
-		    // add the raw observations as circles.
-				addGunViolenceObservations(svg1, data, 'circle_obs', true, 'num_harmed', obsColor, 'black');
+				// add the raw observations as circles.
+				svg1.selectAll()
+						.data(data)
+						.enter()
+						.append('circle')
+							.filter(function(d) { return d.non_observation!=1; })
+							.attr('pointer-events', 'none')
+							.attr('id', 'circle_obs')
+							.attr('r', 2)
+							.attr('cx', function(d) { return x(d.date); })
+							.attr('cy', function(d) { return y(d.num_harmed); })
+							.style('fill', obsColor)
+							.style('stroke', 'black')
+							.style('stroke-width', 0.5);
 
 				// defining all three lines (not including legend lines).
 				// all three are affected by moving averages.
-				obsMALine = d3.line().x(null).y(null);
-				addStdPath(svg1, [data], 'obs_ma_line', obsMALine, obsColor, 0);
+				// only the overall_ma_line will be defined with real values upon page load.
+				// all must be defined from the onset though so can be  stacked in the appropriate order.
+				addStdPath(svg1, [data], 'obs_ma_line', d3.line().x(null).y(null), obsColor, 0);
 
-				overallMALine = d3.line()
-						.defined(function(d) { return d.index>tsSlider.value()-1; })
-						.x(function(d) { return x(d.date); })
-						.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(sliderData['ts']['default'])][d.index-tsSlider.value()]); });
+				function defineMALine(sliderValue, sliderData, maDic, year) {
+
+					return d3.line()
+									// CHECK OUT: No idea why this is needed.
+									.defined(function(d) { if ( year==null )
+																				 { return d.index>sliderValue-1 && d.non_observation!=1; }
+																				 else
+																				 { return d.index>sliderValue-1; }
+																			 })
+									.x(function(d) { return x(d.date); })
+									.y(function(d) { if ( year==null )
+																	 { return y(maDic[sliderValue][d.index-sliderValue]);  }
+																	 else
+																	 { return y(maDic[String(year) + '_' + String(sliderValue)][d.index-sliderValue]); }
+																});
+				};
+
+				overallMALine = defineMALine(tsSlider.value(), sliderData['ts'], tsMADic, maxYearObserved);
 				addStdPath(svg1, [data], 'overall_ma_line', overallMALine, overallModelColor, 1);
-
-				hoverMALine = d3.line().x(null).y(null);
-				addStdPath(svg1, [data], 'hover_ma_line', hoverMALine, hoverModelColor, 0);
+				addStdPath(svg1, [data], 'hover_ma_line', d3.line().x(null).y(null), hoverModelColor, 0);
 
 				addStdRect(svg1, null, 'graph_rect_outline', -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), 'black', 1, 1, 'transparent', 1, null, null, null);
 				addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0]) + 5}, -5.5, 'black', 2, ('4, 4'), 1);
@@ -382,19 +389,13 @@
 						{ yMax = allObsSrtd[1]; }
 						else
 						{ yMax = maxOb; }
-						// Rescale the range of the data vertically
+						// rescale the range of the data vertically
 						y.domain([0, yMax + 15]);
-						// Update the Y Axis
+						// update the y axis
 						svg1.select('.y_axis').call(d3.axisLeft(y));
-						// Update the circles.
 						svg1.selectAll('#circle_obs').attr('cy', function(d) { return y(d.num_harmed); });
-						// Redefine the overall Pred line path.
-						overallMALine = d3.line()
-						// CHECK OUT: No idea why this is needed.
-								.defined(function(d) { return d.index>tsSlider.value()-1; })
-								.x(function(d) { return x(d.date); })
-								.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-tsSlider.value()]); });
-						svg1.select('#overall_ma_line').attr('d', overallMALine);
+						// redefine the overall line path.
+						svg1.select('#overall_ma_line').attr('d', defineMALine(tsSlider.value(), sliderData['ts'], tsMADic, maxYearObserved));
 					}
 					if ( svg3.select(checkMarkID).style('opacity')==1 )
 					{ svg3.select(checkMarkID).style('opacity', 0); }
@@ -531,14 +532,9 @@
 				textWidth = getTextWidth(svg1, textInput, 12);
 				addStdText(svg4, 'hover_metrics', 'hover_metrics_instruction', 396 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
 
-				callGroupSVG(svg4, null, null, null, 'translate(436,45)', obsSlider, 'auto');
-				callGroupSVG(svg4, null, null, null, 'translate(616,45)', tsSlider, 'auto');
-
-				// REMOVE WITH CSS
-				// overriding feature in built-in function that makes current selection invisible
-				d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('fill', 'black').style('opacity', 0.75);
-				// making ticks on axis black
-				d3.selectAll('.axis line').style('stroke', 'black').style('opacity', 0.25);
+				callGroupSVG(svg4, 'slider', null, null, 'translate(436,45)', obsSlider, 'auto');
+				callGroupSVG(svg4, 'slider', null, null, 'translate(616,45)', tsSlider, 'auto');
+				formatSlider('10px');
 
 				addStdText(svg4, null, null, 425, 15, '12px', 'normal', 1, 0, 'Moving Average for');
 				addStdText(svg4, null, null, 425, 30, '12px', 'normal', 1, 0, 'Daily Observations');
@@ -676,14 +672,8 @@
 			 			svg1.select('#obs_legend_circle').style('opacity', 0);
 						svg1.select('#obs_ma_line').style('opacity', 1);
 						svg1.selectAll('#circle_obs').style('opacity', 0);
-
-		 			 	// Redefine the overall line path.
-						obsMALine = d3.line()
-			 					.defined(function(d) { return d.index>obsSlider.value()-1 && d.non_observation!=1; })
-			 					.x(function(d) { return x(d.date); })
-			 					.y(function(d) { return y(obsMADic[obsSlider.value()][d.index-obsSlider.value()]); });
-
-			 			svg1.select('#obs_ma_line').attr('d', obsMALine);
+		 			 	// redefine the observation line path.
+			 			svg1.select('#obs_ma_line').attr('d', defineMALine(obsSlider.value(), sliderData['obs'], obsMADic, null));
 					};
 					////////////
 
@@ -692,14 +682,8 @@
 						svg1.select('#overall_legend_null').style('opacity', 0);
 						svg1.select('#overall_legend_line').style('opacity', 1);
 						svg1.select('#overall_ma_line').style('opacity', 1);
-
-						// Redefine the overall Pred line path.
-						overallMALine = d3.line()
-								.defined(function(d) { return d.index>tsSlider.value()-1; })
-								.x(function(d) { return x(d.date); })
-								.y(function(d) { return y(tsMADic[String(maxYearObserved) + '_' + String(tsSlider.value())][d.index-tsSlider.value()]); });
-
-						svg1.select('#overall_ma_line').attr('d', overallMALine);
+						// redefine the overall line path.
+						svg1.select('#overall_ma_line').attr('d', defineMALine(tsSlider.value(), sliderData['ts'], tsMADic, maxYearObserved));
 					}
 					////////////
 					var updateHoverMetrics = function(d) {
@@ -725,14 +709,8 @@
 						svg1.select('#hover_ma_line').style('opacity', 0.85);
 						svg4.selectAll('#hover_metrics_instruction').style('opacity', 0);
 						updateHoverMetrics();
-
-						// Redefine the hover line and add path
-						hoverMALine = d3.line()
-								.defined(function(d) { return d.index>tsSlider.value()-1; })
-								.x(function(d) { return x(d.date); })
-								.y(function(d) { return y(tsMADic[String(hoverYear) + '_' + String(tsSlider.value())][d.index-tsSlider.value()]); });
-
-						svg1.select('#hover_ma_line').attr('d', hoverMALine);
+						// redefine the hover line path.
+						svg1.select('#hover_ma_line').attr('d', defineMALine(tsSlider.value(), sliderData['ts'], tsMADic, hoverYear));
 					}
 					else if ( hoverYear<maxYearObserved && svg3.select('#ts_filter_check_mark').style('opacity')!=1 ) {
 

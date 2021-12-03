@@ -220,7 +220,7 @@
 				obsSlider = defineSlider(sliderData['obs'], function(d) { updateGraph(maxYearObserved, 'obs_slider'); });
 				tsSlider = defineSlider(sliderData['ts'], function(d) { updateGraph(maxYearObserved, 'ts_slider'); });
 
-				for ( var i = 1; i <= sliderData['obs']['ticks'].length-1; i++ ) {
+				for ( var i=0; i <= sliderData['obs']['ticks'].length; i++ ) {
 					obsMADic[sliderData['obs']['ticks'][i]] = sma(allObs, sliderData['obs']['ticks'][i]).map(Number);
 					for ( var z = minYear; z <= maxYear; z++ ) {
 						// using 'obs' instead of 'ts' here so an error isn't thrown.

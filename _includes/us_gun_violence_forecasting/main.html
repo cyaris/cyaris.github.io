@@ -217,8 +217,8 @@
 						'width': 112.5
 					}
 				};
-				obsSlider = defineSlider(sliderData['obs'], function(d) { updateGraph(maxYearObserved, 'obs_slider')});
-				tsSlider = defineSlider(sliderData['ts'], function(d) { updateGraph(maxYearObserved, 'ts_slider')});
+				obsSlider = defineSlider(sliderData['obs'], function(d) { updateGraph(maxYearObserved, 'obs_slider'); });
+				tsSlider = defineSlider(sliderData['ts'], function(d) { updateGraph(maxYearObserved, 'ts_slider'); });
 
 				for ( var i = 1; i <= sliderData['obs']['ticks'].length-1; i++ ) {
 					obsMADic[sliderData['obs']['ticks'][i]] = sma(allObs, sliderData['obs']['ticks'][i]).map(Number);

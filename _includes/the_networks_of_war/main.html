@@ -683,23 +683,20 @@
 					if ( warDic['single_year_war']==false && (Object.keys(descriptiveFields['node'][0]).length + Object.keys(descriptiveFields['node'][1]).length + Object.keys(descriptiveFields['link'][0]).length + Object.keys(descriptiveFields['link'][1]).length) > 0 ) {
 
 						function sliderChangeFunction() {
-							val => {
-								timeFrame = val;
+							timeFrame = yearSlider.value();
+							// keeping current dropdown selection for links/nodes if they appear in the newly selected timeframe.
+							if ( Object.keys(descriptiveFields['link'][timeFrame]).includes(linkDescriptorSelected.substring(0, linkDescriptorSelected.length-2).concat(descriptiveTags[sliderData['tick_labels'][timeFrame]])) )
+							{ linkDescriptorSelected = linkDescriptorSelected.substring(0, linkDescriptorSelected.length-2).concat(descriptiveTags[sliderData['tick_labels'][timeFrame]])  }
+							else
+							{ linkDescriptorSelected = defaultValues['link'][timeFrame] }
 
-								// keeping current dropdown selection for links/nodes if they appear in the newly selected timeframe.
-								if ( Object.keys(descriptiveFields['link'][timeFrame]).includes(linkDescriptorSelected.substring(0, linkDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]])) )
-								{ linkDescriptorSelected = linkDescriptorSelected.substring(0, linkDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]])  }
-								else
-								{ linkDescriptorSelected = defaultValues['link'][timeFrame] }
+							if ( Object.keys(descriptiveFields['node'][timeFrame]).includes(nodeDescriptorSelected.substring(0, nodeDescriptorSelected.length-2).concat(descriptiveTags[sliderData['tick_labels'][timeFrame]])) )
+							{ nodeDescriptorSelected = nodeDescriptorSelected.substring(0, nodeDescriptorSelected.length-2).concat(descriptiveTags[sliderData['tick_labels'][timeFrame]]); }
+							else
+							{ nodeDescriptorSelected = defaultValues['node'][timeFrame]; }
 
-								if ( Object.keys(descriptiveFields['node'][timeFrame]).includes(nodeDescriptorSelected.substring(0, nodeDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]])) )
-								{ nodeDescriptorSelected = nodeDescriptorSelected.substring(0, nodeDescriptorSelected.length-2).concat(descriptiveTags[sliderDataLabels[timeFrame]]); }
-								else
-								{ nodeDescriptorSelected = defaultValues['node'][timeFrame]; }
-
-								descriptiveMenuClick('link', linkDescriptorSelected, linkMenuMouseOver, 0);
-								descriptiveMenuClick('node', nodeDescriptorSelected, nodeMenuMouseOver, yAdjustment);
-							}
+							descriptiveMenuClick('link', linkDescriptorSelected, linkMenuMouseOver, 0);
+							descriptiveMenuClick('node', nodeDescriptorSelected, nodeMenuMouseOver, yAdjustment);
 						};
 
 						sliderDefined = true,
@@ -710,7 +707,7 @@
 							'default': 2,
 							'width': 130
 						};
-						yearSlider = defineSlider(sliderData, sliderChangeFunction());
+						yearSlider = defineSlider(sliderData, function(d) { sliderChangeFunction(); });
 						callGroupSVG(svg2, 'slider', 'timeframe_slider', null, 'translate(200,200)', yearSlider, 'auto');
 						formatSlider('12px');
 						// FIX: integrate transform below into callGroupSVG function.
@@ -823,7 +820,6 @@
 
 					// this function will be used to check if a given link is in the array firstDegreeLinks
 					function firstDegreeCheck(a, b) {
-
 						return a==b || firstDegreeLinks[a + '-' + b];
 					};
 

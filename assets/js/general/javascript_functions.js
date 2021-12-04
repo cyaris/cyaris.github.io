@@ -109,3 +109,16 @@ Array.prototype.uniqueNonNull = function() {
 
 		return array.sort();
 };
+
+
+Array.prototype.nonNull = function() {
+
+		array = [];
+		for ( var i = 0; i < this.length; i++ ) {
+			if ( isNaN(this[i]) ) {}
+			else
+			{ array.push(this[i]); }
+		}
+
+		return array;
+};

@@ -9,6 +9,7 @@ function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, 
 													.style('cursor', cursorInput);
 };
 
+
 function addStdGroupSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
 
 		window[svgName] = d3.select('#' + divInput)
@@ -188,12 +189,11 @@ function defineSlider(dataInput, changeFunction) {
 
 // couldn't figure out how to make the function below work as css.
 function formatSlider(sliderTextSize) {
-
 	// overriding feature in built-in function that makes current selection invisible
-	d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', sliderTextSize).attr('fill', 'black').style('opacity', 0.75);
+	d3.selectAll('.axis .tick text').style('stroke-width', 0).attr('font-size', sliderTextSize).attr('fill', 'black').style('opacity', 0.8);
 	// making ticks on axis black
-	d3.selectAll('.axis line').style('stroke', 'black').style('opacity', 0.25);
-
+	d3.selectAll('.axis line').style('stroke', 'black').style('opacity', 0.5);
+	d3.selectAll('.handle').style('outline-width', 0);
 };
 
 
@@ -202,8 +202,9 @@ var generalRectMO = function(d) {
 		d3.select(this)
 			.style('stroke-width', 2)
 			.style('cursor', 'pointer');
-},
-		generalRectML = function(d) {
+};
+
+var generalRectML = function(d) {
 		// this will be used as a decorator to other mouseleave
 		d3.select(this)
 			.style('stroke-width', 1);

@@ -135,20 +135,20 @@
 						[-2, -1],
 						[-2, -2],
 						[1, 2],
-						[1, 1],
-						[1, 0],
-						[1, -1],
+						// [1, 1],
+						// [1, 0],
+						// [1, -1],
 						[1, -2],
-						[-1, 2],
-						[-1, 1],
-						[-1, 0],
-						[-1, -1],
-						[-1, -2],
 						[0, 2],
-						[0, 1],
-						[0, 0],
-						[0, -1],
-						[0, -2]
+						// [0, 1],
+						// [0, 0],
+						// [0, -1],
+						[0, -2],
+						[-1, 2],
+						// [-1, 1],
+						// [-1, 0],
+						// [-1, -1],
+						[-1, -2],
 					];
 
 					for ( var i=0; i <= transitionPixelCoordinates.length-1; i++ ) {
@@ -298,7 +298,7 @@
 
 				function sliderChangeFunction() {
 					d3.selectAll('.photo_pixels').remove();
-					createPhotoPixels()
+					createPhotoPixels();
 					// fireworks can be launched again since the percent revealed will be back to zero.
 					launchedAlready = false;
 					if ( transitionSlider.value()==1 )

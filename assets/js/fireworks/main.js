@@ -236,21 +236,21 @@ function launchFireworkBurst() {
 
 function launchFireworksShow() {
 	// total fireworks in the regular show
-	totalFireworks1 = 150,
+	totalFireworksMain = 150,
 	// duration per firework of the regular show
-	fireWorkInterval1 = 1500,
+	fireworkIntervalMain = 1500,
 	// total fireworks in the grand finale
-	totalFireWorks2 = 25,
+	totalFireworksFinale = 25,
 	// duration per firework of the grand finale show
-	fireWorkInterval2 = 500;
+	fireWorkIntervalFinale = 500;
 
-	for ( var i=1; i<=totalFireworks1+totalFireWorks2; i++ ) {
+	for ( var i=1; i<=totalFireworksMain+totalFireworksFinale; i++ ) {
 
 		// all fireworks for the regular show
-		if ( i<=totalFireworks1 )
-		{	d3.timeout(launchFireworkBurst, Math.max(fireWorkInterval1, (fireWorkInterval1*i) + chance.floating({ min: -2500, max: 2500 }))); }
+		if ( i<=totalFireworksMain )
+		{	d3.timeout(launchFireworkBurst, Math.max(fireworkIntervalMain, (fireworkIntervalMain*i) + chance.floating({ min: -2500, max: 2500 }))); }
 		else
 		// time for the grand finale!!!
-		{	d3.timeout(launchFireworkBurst, Math.max((fireWorkInterval1*totalFireworks1), (fireWorkInterval1*totalFireworks1) + (fireWorkInterval2*(i-totalFireworks1)) + chance.floating({ min: -2500, max: 2500 }))); }
+		{	d3.timeout(launchFireworkBurst, Math.max((fireworkIntervalMain*totalFireworksMain), (fireworkIntervalMain*totalFireworksMain) + (fireWorkIntervalFinale*(i-totalFireworksMain)) + chance.floating({ min: -2500, max: 2500 }))); }
 	}
 }

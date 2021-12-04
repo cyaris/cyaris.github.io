@@ -31,33 +31,36 @@
 
 			boolDic = { true: 1, false: 0 },
 			pieceDic = {
-				0: '',
-				1: '.',
-				2: ':',
-				3: ':.',
-				4: '::',
-				5: '★',
-				'.': 1,
-				':': 2,
-				':.': 3,
-				'::': 4,
-				'★': 5,
-				'': 0
-			},
-			numberTextDic = {
-				0: 'Zero',
-				1: 'One',
-				2: 'Two',
-				3: 'Three',
-				4: 'Four',
-				5: 'Five'
-			},
-			fontSizeDic = {
-				'.': 25,
-				':': 25,
-				':.': 25,
-				'::': 25,
-				'★': 12.5
+				0: {
+						'piece': '',
+						'number_text': 'Zero',
+						'font_size': 0
+					},
+				1: {
+						'piece': '.',
+						'number_text': 'One',
+						'font_size': 25
+					},
+				2: {
+						'piece': ':',
+						'number_text': 'Two',
+						'font_size': 25
+					},
+				3: {
+						'piece': ':.',
+						'number_text': 'Three',
+						'font_size': 25
+					},
+				4: {
+						'piece': '::',
+						'number_text': 'Four',
+						'font_size': 25
+					},
+				5: {
+						'piece': '★',
+						'number_text': 'Five',
+						'font_size': 12.5
+					}
 			},
 			levelAddress = window.location.href,
 			level = levelAddress.charAt(levelAddress.length-2);
@@ -250,24 +253,27 @@
  								.style('stroke-width', 3)
  								.style('cursor', 'help');
 
- 							toolNumber = numberTextDic[gameScores[d.column][d.turn-1]];
-
- 							if ( d.column=='W' )
- 							{ colorState = ' wrong'; }
- 							else
- 							{ colorState = ' right'; }
-
- 							if ( toolNumber=='One' )
- 							{ cPlur = ''; }
- 							else
- 							{ cPlur = 's'; }
-
- 							if ( toolNumber==undefined )
+							console.log(currentTurn);
+							if ( currentTurn < d.turn )
 							{ d3.select('#game_board_tooltip').html('This round hasn\'t<br>been played yet.'); }
-							else if ( toolNumber=='Zero' )
-							{ d3.select('#game_board_tooltip').html('No right color' + cPlur + '<br>in the ' + colorState + ' place.'); }
-							else
- 							{ d3.select('#game_board_tooltip').html(toolNumber + ' right color' + cPlur + '<br>in the ' + colorState + ' place.'); }
+							else {
+								toolNumber = pieceDic[gameScores[d.column][d.turn-1]]['number_text'];
+								if ( d.column=='W' )
+								{ colorState = ' wrong'; }
+								else
+								{ colorState = ' right'; }
+
+								if ( toolNumber=='One' )
+								{ cPlur = ''; }
+								else
+								{ cPlur = 's'; }
+
+								if ( toolNumber=='Zero' )
+								{ d3.select('#game_board_tooltip').html('No right color' + cPlur + '<br>in the ' + colorState + ' place.'); }
+								else
+								{ d3.select('#game_board_tooltip').html(toolNumber + ' right color' + cPlur + '<br>in the ' + colorState + ' place.'); }
+							}
+
 
  							d3.select('#game_board_tooltip').style('opacity', 1).style('top', (d3.mouse(this)[1]) + 76.5 + 'px');
  					 	}
@@ -283,8 +289,8 @@
  				};
 
 			  rect = svg1.selectAll()
-			    .data(data, function(d) { return d.column+':'+d.turn; })
-			    .enter();
+				    .data(data, function(d) { return d.column+':'+d.turn; })
+				    .enter();
 
 				rect.append('rect')
 						.attr('class', 'rects')
@@ -326,8 +332,8 @@
 			    .attr('transform', function (d, i) {
 			        return 'translate(' + ((svg2Size/2-circ_radius) * Math.cos((interval*i)
 							* Math.PI/180)) + ',' + ((svg2Size/2-circ_radius) * Math.sin((interval*i)
-							* Math.PI/180)) + ')'}
-						)
+							* Math.PI/180)) + ')'
+						})
 					.style('stroke-width', 2)
 					.style('stroke', 'black')
 			    .on('mouseover', buttonMouseover)
@@ -349,10 +355,10 @@
 
 					new_array = [];
 					for ( i=0; i < gameSettings[level]['code_length']; i++ ) {
-						if ( previousTurnGuesses[i]!=colorCode[i] )
-						{ new_array.push(previousTurnGuesses[i]); }
-						else
+						if ( previousTurnGuesses[i]==colorCode[i] )
 						{ new_array.push(null); }
+						else
+						{ new_array.push(previousTurnGuesses[i]); }
 					}
 					return new_array;
 				};
@@ -371,8 +377,10 @@
 
 					whiteCount = 0;
 					for ( i=0; i < gameSettings[level]['code_length']; i++ ) {
-						if ( nonBlackGuesses[i]!=null && colorCodeCopy.includes(nonBlackGuesses[i]) )
-						{ whiteCount+=1; }
+						if ( nonBlackGuesses[i]!=null && colorCodeCopy.includes(nonBlackGuesses[i]) ) {
+							delete colorCodeCopy[colorCodeCopy.indexOf(nonBlackGuesses[i])];
+						 	whiteCount+=1;
+					 	}
 					}
 					return whiteCount;
 				};
@@ -398,15 +406,15 @@
 								.filter(function(d) { return ( d.column=='W' || d.column=='B' ) && d.turn==currentTurn; })
 							.attr('id', 'rect_text')
 							.attr('x', function(d) { return x(d.column) + gameSettings[level]['rect_text_loc'][0] })
-							.attr('y', function(d) { if ( pieceDic[gameScores[d.column][currentTurn-1]]=='★' )
+							.attr('y', function(d) { if ( pieceDic[gameScores[d.column][currentTurn-1]]['piece']=='★' )
 																			 { return y(d.turn) + gameSettings[level]['rect_text_loc'][1] - 2; }
 																			 else
 																			 { return y(d.turn) + gameSettings[level]['rect_text_loc'][1]; }})
-							.style('font-size', function(d) { return fontSizeDic[pieceDic[gameScores[d.column][currentTurn-1]]]; })
+							.style('font-size', function(d) { return pieceDic[gameScores[d.column][currentTurn-1]]['font_size']; })
 							.style('stroke-width', 1.5)
 							.style('stroke', 'black')
 							.attr('pointer-events', 'none')
-							.text(function(d) { return pieceDic[gameScores[d.column][currentTurn-1]]; });
+							.text(function(d) { return pieceDic[gameScores[d.column][currentTurn-1]]['piece']; });
 
 						if ( gameScores['B'][gameScores['B'].length-1]==gameSettings[level]['code_length'] ) {
 							document.getElementById('color_buttons').style.display = 'none';

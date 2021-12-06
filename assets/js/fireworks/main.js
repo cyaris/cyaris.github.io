@@ -1,3 +1,10 @@
+
+function appendFireworksSVG() {
+	// set the dimensions and margins of the graph
+	margin = {top: 0, bottom: 0, left: 0, right: 0};
+	appendSVG('svgFW', 'fireworks', getBodyDimenstions()[0], getBodyDimenstions()[1], margin.left, margin.top, null);
+}
+
 // credit is due to this blocks page for the process defined below: http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5
 // I took what was there, made adjustments on preference/version differences, and added to it.
 
@@ -139,16 +146,15 @@ function launchFireworkBurst() {
 	totalCircles = Math.round(explosionMagnitude*1.5),
 	// function to determine the x coordinates for all explosion pieces
 	explosionData = d3.range(totalCircles).map(function() {
-			// distance fron the center of the explosion determined at random
-			// explosionSize (magnitude of the explosion) stays the same for each circle
-			explosionDistance = Math.sqrt(~~(chance.floating({ min: 0, max: 1 }) * explosionMagnitude * explosionMagnitude)),
-			// randomly determining the angle by which each circle will be relative to the center of the explosion
-			randomAngle = Math.random() * 2 * Math.PI;
+		// distance fron the center of the explosion determined at random
+		// explosionSize (magnitude of the explosion) stays the same for each circle
+		explosionDistance = Math.sqrt(~~(chance.floating({ min: 0, max: 1 }) * explosionMagnitude * explosionMagnitude)),
+		// randomly determining the angle by which each circle will be relative to the center of the explosion
+		randomAngle = Math.random() * 2 * Math.PI;
 
-			return {
+		return {
 			x: launchXLoc + (explosionDistance * Math.cos(randomAngle)),
-			y: explosionYLoc + (explosionDistance * Math.sin(randomAngle))
-		};
+			y: explosionYLoc + (explosionDistance * Math.sin(randomAngle)) };
 	}),
 	randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length)],
 	launchColor = randomPallete[getRandomInt(0, randomPallete.length)],

@@ -129,7 +129,7 @@
 		<div class='no_selection no_events' id='level_message' align='center'></div>
 		<script type='text/javascript'>
 
-			document.getElementById('level_message').innerHTML = String(gameSettings[level]['max_turns']) + ' tries to crack the ' + gameSettings[level]['code_length_text'] + ' color code.<br>' + String(gameSettings[level]['color_options'].length) + ' possible colors.'
+			document.getElementById('level_message').innerHTML = String(gameSettings[level]['max_turns']) + ' tries to crack the ' + colorCode.length + ' color code.<br>' + String(gameSettings[level]['color_options'].length) + ' possible colors.'
 
 		</script>
 		<!-- Load color palettes -->
@@ -217,8 +217,8 @@
 			interval = 360/gameSettings[level]['color_options'].length;
 
 			// append the svg objects to the body of the page
-			addStdGroupSVG('svg1', 'game_board', width, height, margin.left, margin.top, 'auto');
-			addStdGroupSVG('svg2', 'color_buttons', svg2Size, svg2Size, circ_radius, circ_radius, 'auto');
+			appendGroupSVG('svg1', 'game_board', width, height, margin.left, margin.top, 'auto');
+			appendGroupSVG('svg2', 'color_buttons', svg2Size, svg2Size, circ_radius, circ_radius, 'auto');
 			defineTooltip('game_board', 'game_board_tooltip', '555px', 0, '122.5px', '52.5px', 0, '')
 
 			d3.csv('/assets/csv/mastermind/game_board_' + String(level) + '.csv', function(data) {
@@ -232,49 +232,33 @@
 							.domain(d3.map(data, function(d){ return d.turn; }).keys())
 							.padding(0.05);
 
-				svg1.append('g')
-						.attr('pointer-events', 'none')
-						.style('font-size', 14.5)
-						.call(d3.axisTop(x).tickSize(0))
-							.select('.domain').remove();
-
-				svg1.append('g')
-						.attr('pointer-events', 'none')
-						.style('font-size', 14.5)
-						.call(d3.axisLeft(y).tickSize(0))
-							.select('.domain').remove();
+				callGroupSVG(svg1, null, null, 14.5, null, d3.axisTop(x).tickSize(0), 'none');
+				callGroupSVG(svg1, null, null, 14.5, null, d3.axisLeft(y).tickSize(0), 'none');
+				svg1.selectAll('.domain').remove();
 
 				// Three function that change the tooltip when user hover / move / leave a cell
  				var rectMouseover = function(d) {
 
  						if ( d.column=='W' || d.column=='B' ) {
 
- 							d3.select(this)
- 								.style('stroke-width', 3)
- 								.style('cursor', 'help');
-
-							console.log(currentTurn);
-							if ( currentTurn < d.turn )
+							if ( clickCount < d.turn*colorCode.length )
 							{ d3.select('#game_board_tooltip').html('This round hasn\'t<br>been played yet.'); }
 							else {
-								toolNumber = pieceDic[gameScores[d.column][d.turn-1]]['number_text'];
+								tooltipNumber = pieceDic[gameScores[d.column][d.turn-1]]['number_text'];
 								if ( d.column=='W' )
 								{ colorState = ' wrong'; }
 								else
 								{ colorState = ' right'; }
 
-								if ( toolNumber=='One' )
-								{ cPlur = ''; }
+								// if ( tooltipNumber=='Zero' )
+								// { d3.select('#game_board_tooltip').html('No right colors<br>in the ' + colorState + ' place.'); }
+								if ( tooltipNumber=='One' )
+								{ d3.select('#game_board_tooltip').html(tooltipNumber + ' right color<br>in the ' + colorState + ' place.'); }
 								else
-								{ cPlur = 's'; }
-
-								if ( toolNumber=='Zero' )
-								{ d3.select('#game_board_tooltip').html('No right color' + cPlur + '<br>in the ' + colorState + ' place.'); }
-								else
-								{ d3.select('#game_board_tooltip').html(toolNumber + ' right color' + cPlur + '<br>in the ' + colorState + ' place.'); }
+								{ d3.select('#game_board_tooltip').html(tooltipNumber + ' right colors<br>in the ' + colorState + ' place.'); }
 							}
 
-
+							d3.select(this).style('stroke-width', 3).style('cursor', 'help');
  							d3.select('#game_board_tooltip').style('opacity', 1).style('top', (d3.mouse(this)[1]) + 76.5 + 'px');
  					 	}
  			 	},
@@ -342,51 +326,19 @@
 		          clickCount+=1;
 							rgbColorGuess = d3.select(this).style('fill');
 							gameGuesses.push(colorDic[rgbColorGuess]);
-							svg1.selectAll('.rects').filter(function(d) { return d.color_index==clickCount; }).style('fill', rgbColorGuess);
-							updateBoard();
-							if ( clickCount >= gameSettings[level]['code_length'] && clickCount%gameSettings[level]['code_length']==1 )
+							updateGameBoardColors(rgbColorGuess);
+							if ( clickCount>=colorCode.length && clickCount%colorCode.length==0 )
+							{ scorePreviousRound(); }
+							else if ( clickCount>=colorCode.length && clickCount%colorCode.length==1 )
 							{ currentTurn+=1; }
 						});
 
-				addStdText(svg2, 'cursive', null, -21.5, -5, '17px', 'normal', 1, 0.5, 'Choose');
-				addStdText(svg2, 'cursive', null, -23, 16.5, '17px', 'normal', 1, 0.5, 'a Color');
+				appendText(svg2, 'cursive', null, -21.5, -5, '17px', 'normal', 1, 0.5, 'Choose');
+				appendText(svg2, 'cursive', null, -23, 16.5, '17px', 'normal', 1, 0.5, 'a Color');
 
-				function removeBlackGuesses(previousTurnGuesses) {
+				function updateGameBoardColors(rgbColorGuess) {
 
-					new_array = [];
-					for ( i=0; i < gameSettings[level]['code_length']; i++ ) {
-						if ( previousTurnGuesses[i]==colorCode[i] )
-						{ new_array.push(null); }
-						else
-						{ new_array.push(previousTurnGuesses[i]); }
-					}
-					return new_array;
-				};
-
-				function countWhiteGuesses(nonBlackGuesses) {
-
-					colorCodeCopy = [];
-					for ( i=1; i < gameSettings[level]['code_length']+1; i++ ) {
-						colorCodeCopy.push(window['color' + i]);
-					}
-
-					for ( i=0; i < gameSettings[level]['code_length']; i++ ) {
-						if ( nonBlackGuesses[i]==null )
-						{ delete colorCodeCopy[i]; }
-					}
-
-					whiteCount = 0;
-					for ( i=0; i < gameSettings[level]['code_length']; i++ ) {
-						if ( nonBlackGuesses[i]!=null && colorCodeCopy.includes(nonBlackGuesses[i]) ) {
-							delete colorCodeCopy[colorCodeCopy.indexOf(nonBlackGuesses[i])];
-						 	whiteCount+=1;
-					 	}
-					}
-					return whiteCount;
-				};
-
-				function updateBoard() {
-
+					svg1.selectAll('.rects').filter(function(d) { return d.color_index==clickCount; }).style('fill', rgbColorGuess);
 					svg1.selectAll('.rects')
 						.style('stroke-width', function(d) {
 							if ( d.color_index==clickCount+1 )
@@ -394,66 +346,106 @@
 							else
 							{ return 1; }
 						});
+				};
 
-					if ( clickCount%gameSettings[level]['code_length']==0 ) {
+				function countBGuesses(previousTurnGuesses) {
 
-						previousTurnGuesses = gameGuesses.slice(Math.max(gameGuesses.length-gameSettings[level]['code_length'], 0));
-						nonBlackGuesses = removeBlackGuesses(previousTurnGuesses);
-						gameScores['B'].push(nonBlackGuesses.nonNull().length);
-						gameScores['W'].push(countWhiteGuesses(nonBlackGuesses));
+					nonBGuesses = [],
+					bCount = 0;
+					for ( i=0; i < colorCode.length; i++ ) {
+						if ( previousTurnGuesses[i]==colorCode[i] )
+						{ nonBGuesses.push(null);
+						bCount+=1}
+						else
+						{ nonBGuesses.push(previousTurnGuesses[i]); }
+					}
+					return [bCount, nonBGuesses];
+				};
 
-						rect.append('text')
-								.filter(function(d) { return ( d.column=='W' || d.column=='B' ) && d.turn==currentTurn; })
-							.attr('id', 'rect_text')
-							.attr('x', function(d) { return x(d.column) + gameSettings[level]['rect_text_loc'][0] })
-							.attr('y', function(d) { if ( pieceDic[gameScores[d.column][currentTurn-1]]['piece']=='★' )
-																			 { return y(d.turn) + gameSettings[level]['rect_text_loc'][1] - 2; }
-																			 else
-																			 { return y(d.turn) + gameSettings[level]['rect_text_loc'][1]; }})
-							.style('font-size', function(d) { return pieceDic[gameScores[d.column][currentTurn-1]]['font_size']; })
-							.style('stroke-width', 1.5)
-							.style('stroke', 'black')
-							.attr('pointer-events', 'none')
-							.text(function(d) { return pieceDic[gameScores[d.column][currentTurn-1]]['piece']; });
+				function countWGuesses(nonBGuesses) {
 
-						if ( gameScores['B'][gameScores['B'].length-1]==gameSettings[level]['code_length'] ) {
-							document.getElementById('color_buttons').style.display = 'none';
-							document.getElementById('hidden_button_win').style.display = 'block';
-						}
-						else if ( gameScores['B'][gameScores['B'].length-1]!=gameSettings[level]['code_length'] && clickCount==gameSettings[level]['max_clicks'] ) {
+					// creating new array colorCodeCopy because deletions will be made and original array cannot be affected.
+					colorCodeCopy = [];
+					for ( i=1; i < colorCode.length+1; i++ ) {
+						colorCodeCopy.push(window['color' + i]);
+					}
 
-							document.getElementById('color_buttons').style.display = 'none';
-							document.getElementById('hidden_button_lose').style.display = 'block';
+					// removing all correct guesses for the previous turn from colorCodeCopy.
+					for ( i=0; i < colorCode.length; i++ ) {
+						if ( nonBGuesses[i]==null )
+						{ delete colorCodeCopy[i]; }
+					}
 
-							// set the dimensions and margins of the graph
-							margin = {
-								top: 23.5,
-								right: gameSettings[level]['code_reveal_right_margin'],
-								bottom: 150,
-								left: 25
-							},
-						  width = 350,
-						  height = 200;
+					// counting total w pieces by comparing remaining guesses to remaining color code.
+					wCount = 0;
+					for ( i=0; i < colorCode.length; i++ ) {
+						if ( nonBGuesses[i]!=null && colorCodeCopy.includes(nonBGuesses[i]) ) {
+							delete colorCodeCopy[colorCodeCopy.indexOf(nonBGuesses[i])];
+						 	wCount+=1;
+					 	}
+					}
+					return wCount;
+				};
 
-							addStdGroupSVG('svg3', 'color_code_reveal', width, height, margin.left, margin.top, 'auto');
+				function scorePreviousRound() {
 
-							reveal = svg3.selectAll()
-										    .data(data, function(d) { return d.column+':'+d.turn; })
-									    	.enter();
+					previousTurnGuesses = gameGuesses.slice(Math.max(gameGuesses.length-colorCode.length, 0));
+					bGuessesAssessment = countBGuesses(previousTurnGuesses);
+					nonBGuesses = bGuessesAssessment[1];
+					gameScores['B'].push(bGuessesAssessment[0]);
+					gameScores['W'].push(countWGuesses(nonBGuesses));
 
-							reveal.append('rect')
-										.filter(function(d) { return d.color_index<=gameSettings[level]['code_length']; })
-										.attr('x', function(d) { return x(d.column); })
-										.attr('y', function(d) { return y(d.turn) + 33; })
-										.attr('rx', 3)
-							      .attr('ry', 3)
-							      .attr('width', x.bandwidth())
-							      .attr('height', y.bandwidth())
-							      .style('fill', function(d, i) { return colorDic[colorCode[i]]; } )
-										.style('stroke-width', 1)
-										.style('stroke', 'black');
-						}
-					};
+					rect.append('text')
+							.filter(function(d) { return ( d.column=='W' || d.column=='B' ) && d.turn==currentTurn; })
+						.attr('id', 'rect_text')
+						.attr('x', function(d) { return x(d.column) + gameSettings[level]['rect_text_loc'][0] })
+						.attr('y', function(d) { if ( pieceDic[gameScores[d.column][currentTurn-1]]['piece']=='★' )
+																		 { return y(d.turn) + gameSettings[level]['rect_text_loc'][1] - 2; }
+																		 else
+																		 { return y(d.turn) + gameSettings[level]['rect_text_loc'][1]; }})
+						.style('font-size', function(d) { return pieceDic[gameScores[d.column][currentTurn-1]]['font_size']; })
+						.style('stroke-width', 1.5)
+						.style('stroke', 'black')
+						.attr('pointer-events', 'none')
+						.text(function(d) { return pieceDic[gameScores[d.column][currentTurn-1]]['piece']; });
+
+					if ( gameScores['B'][gameScores['B'].length-1]==colorCode.length ) {
+						document.getElementById('color_buttons').style.display = 'none';
+						document.getElementById('hidden_button_win').style.display = 'block';
+					}
+					else if ( gameScores['B'][gameScores['B'].length-1]!=colorCode.length && clickCount==gameSettings[level]['max_clicks'] ) {
+
+						document.getElementById('color_buttons').style.display = 'none';
+						document.getElementById('hidden_button_lose').style.display = 'block';
+
+						// set the dimensions and margins of the graph
+						margin = {
+							top: 23.5,
+							right: gameSettings[level]['code_reveal_right_margin'],
+							bottom: 150,
+							left: 25
+						},
+					  width = 350,
+					  height = 200;
+
+						appendGroupSVG('svg3', 'color_code_reveal', width, height, margin.left, margin.top, 'auto');
+
+						reveal = svg3.selectAll()
+									    .data(data, function(d) { return d.column+':'+d.turn; })
+								    	.enter();
+
+						reveal.append('rect')
+									.filter(function(d) { return d.color_index<=colorCode.length; })
+									.attr('x', function(d) { return x(d.column); })
+									.attr('y', function(d) { return y(d.turn) + 33; })
+									.attr('rx', 3)
+						      .attr('ry', 3)
+						      .attr('width', x.bandwidth())
+						      .attr('height', y.bandwidth())
+						      .style('fill', function(d, i) { return colorDic[colorCode[i]]; } )
+									.style('stroke-width', 1)
+									.style('stroke', 'black');
+					}
 				};
 			});
 

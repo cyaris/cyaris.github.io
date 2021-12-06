@@ -102,12 +102,12 @@
 			x = d3.scaleTime().range([0, width]),
 			y = d3.scaleLinear().range([height, 0]);
 			// append the svg object to the body of the page
-			addStdGroupSVG('svg1', 'graph', fullWidth, topBody + margin.bottom, margin.left, margin.top, 'auto');
+			appendGroupSVG('svg1', 'graph', fullWidth, topBody + margin.bottom, margin.left, margin.top, 'auto');
 			// adding svg2 here so it becomes a global variable that can be accessed by svg1
-			addStdSVG('svg2', 'graph_hover_status', fullWidth - leftMarginAdj, 25, 12.5, 2.5, 'auto');
+			appendSVG('svg2', 'graph_hover_status', fullWidth - leftMarginAdj, 25, 12.5, 2.5, 'auto');
 			// append the svg objects to the body of the page
-			addStdSVG('svg3', 'check_mark_filters', 175, 102.5, 210, 142, 'auto');
-			addStdSVG('svg4', 'metrics_and_sliders', fullWidth, 125, 0, 0, 'auto');
+			appendSVG('svg3', 'check_mark_filters', 175, 102.5, 210, 142, 'auto');
+			appendSVG('svg4', 'metrics_and_sliders', fullWidth, 125, 0, 0, 'auto');
 
 			d3.csv('{{site.url}}/assets/csv/us_gun_violence_forecasting/us_harmed_victim_forecast_data.csv', function(data) {
 
@@ -126,10 +126,10 @@
 								.style('stroke-width', 7.5)
 								.style('opacity', 1);
 
-							addStdRect(svg3, null, 'tooltip_region_hide_rect', 0, 35, 100, 25, 'transparent', 0, 1, 'white', 1, null, null, null);
+							appendRect(svg3, null, 'tooltip_region_hide_rect', 0, 35, 100, 25, 'transparent', 0, 1, 'white', 1, null, null, null);
 						}
 						else if ( toolTip =='metrics_tooltip' )
-						{ addStdRect(svg4, null, 'tooltip_region_hide_rect', 200, 0, 215, 130, 'transparent', 0, 1, 'white', 1, null, null, null); }
+						{ appendRect(svg4, null, 'tooltip_region_hide_rect', 200, 0, 215, 130, 'transparent', 0, 1, 'white', 1, null, null, null); }
 				},
 						tooltipML = function(d) {
 						rectID = d3.select(this)['_groups'][0][0]['id'];
@@ -286,25 +286,25 @@
 				/////////////////////////////////////////////
 				/////////////////////////////////////////////
 
-				addStdLine(svg1, 'obs_legend_line', (margin.right/2), (margin.right/2) + 12.5, 6, 6, obsColor, 3.5, null, 0);
-				addStdLine(svg1, 'overall_legend_line', (margin.right/2), (margin.right/2) + 12.5, 21, 21, overallModelColor, 3.5, null, 1);
-				addStdLine(svg1, 'hover_legend_line', (margin.right/2), (margin.right/2) + 12.5, 36, 36, hoverModelColor, 3.5, null, 0);
+				appendLine(svg1, 'obs_legend_line', (margin.right/2), (margin.right/2) + 12.5, 6, 6, obsColor, 3.5, null, 0);
+				appendLine(svg1, 'overall_legend_line', (margin.right/2), (margin.right/2) + 12.5, 21, 21, overallModelColor, 3.5, null, 1);
+				appendLine(svg1, 'hover_legend_line', (margin.right/2), (margin.right/2) + 12.5, 36, 36, hoverModelColor, 3.5, null, 0);
 
-				addStdCircle(svg1, 'obs_legend_circle', (margin.right/2) + 6, 6, obsColor);
+				appendCircle(svg1, 'obs_legend_circle', (margin.right/2) + 6, 6, obsColor);
 
-				addStdText(svg1, null, 'obs_legend_null', (margin.right/2) + 0.75, 10.5, '15px', 'normal', 0, 0.5, '∅');
-				addStdText(svg1, null, 'overall_legend_null', (margin.right/2) + 0.75, 25.5, '15px', 'normal', 0, 0.5, '∅');
-				addStdText(svg1, null, 'hover_legend_null', (margin.right/2) + 0.75, 40.5, '15px', 'normal', 1, 0.5, '∅');
+				appendText(svg1, null, 'obs_legend_null', (margin.right/2) + 0.75, 10.5, '15px', 'normal', 0, 0.5, '∅');
+				appendText(svg1, null, 'overall_legend_null', (margin.right/2) + 0.75, 25.5, '15px', 'normal', 0, 0.5, '∅');
+				appendText(svg1, null, 'hover_legend_null', (margin.right/2) + 0.75, 40.5, '15px', 'normal', 1, 0.5, '∅');
 
-				addStdText(svg1, null, null, (margin.right/2) + 17.5, 10, '12px', 'normal', 1, 0, 'Daily Observations');
-				addStdText(svg1, null, null, (margin.right/2) + 17.5, 25, '12px', 'normal', 1, 0, 'Overall Model');
-				addStdText(svg1, null, null, (margin.right/2) + 17.5, 40, '12px', 'normal', 1, 0, 'Comparative Model');
+				appendText(svg1, null, null, (margin.right/2) + 17.5, 10, '12px', 'normal', 1, 0, 'Daily Observations');
+				appendText(svg1, null, null, (margin.right/2) + 17.5, 25, '12px', 'normal', 1, 0, 'Overall Model');
+				appendText(svg1, null, null, (margin.right/2) + 17.5, 40, '12px', 'normal', 1, 0, 'Comparative Model');
 
 				futureTimeFrameXLoc = (width/numRows)*obsCumDic[allYears[allYears.length-1]];
-				addStdRect(svg1, null, 'future_pred_days_rect', futureTimeFrameXLoc + 0.7, -7.5, width - futureTimeFrameXLoc, height + 7.5, 'transparent', 0, 1, 'black', 0.075, null, null, null);
+				appendRect(svg1, null, 'future_pred_days_rect', futureTimeFrameXLoc + 0.7, -7.5, width - futureTimeFrameXLoc, height + 7.5, 'transparent', 0, 1, 'black', 0.075, null, null, null);
 				textInput = 'Next ' + String(numFuturePredDays) + ' days...',
 				textWidth = getTextWidth(svg1, textInput, 12);
-				addStdText(svg1, null, null, futureTimeFrameXLoc + 0.7 + ((width - futureTimeFrameXLoc - textWidth)/2), 10, '12px', 'italic', 1, 0, textInput);
+				appendText(svg1, null, null, futureTimeFrameXLoc + 0.7 + ((width - futureTimeFrameXLoc - textWidth)/2), 10, '12px', 'italic', 1, 0, textInput);
 
 				// add the raw observations as circles.
 				svg1.selectAll()
@@ -325,7 +325,7 @@
 				// all three are affected by moving averages.
 				// only the overall_ma_line will be defined with real values upon page load.
 				// all must be defined from the onset though so can be  stacked in the appropriate order.
-				addStdPath(svg1, [data], 'obs_ma_line', d3.line().x(null).y(null), obsColor, 0);
+				appendPath(svg1, [data], 'obs_ma_line', d3.line().x(null).y(null), obsColor, 0);
 
 				function defineMALine(sliderValue, sliderData, maDic, year) {
 
@@ -345,16 +345,16 @@
 				};
 
 				overallMALine = defineMALine(tsSlider.value(), sliderData['ts'], tsMADic, maxYearObserved);
-				addStdPath(svg1, [data], 'overall_ma_line', overallMALine, overallModelColor, 1);
-				addStdPath(svg1, [data], 'hover_ma_line', d3.line().x(null).y(null), hoverModelColor, 0);
+				appendPath(svg1, [data], 'overall_ma_line', overallMALine, overallModelColor, 1);
+				appendPath(svg1, [data], 'hover_ma_line', d3.line().x(null).y(null), hoverModelColor, 0);
 
-				addStdRect(svg1, null, 'graph_rect_outline', -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), 'black', 1, 1, 'transparent', 1, null, null, null);
-				addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0]) + 5}, -5.5, 'black', 2, ('4, 4'), 1);
-				addStdLine(svg1, null, futureTimeFrameXLoc + 0.7, width, -7.5, -7.5, 'black', 2, ('4, 4'), 1);
+				appendRect(svg1, null, 'graph_rect_outline', -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), 'black', 1, 1, 'transparent', 1, null, null, null);
+				appendLine(svg1, null, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0]) + 5}, -5.5, 'black', 2, ('4, 4'), 1);
+				appendLine(svg1, null, futureTimeFrameXLoc + 0.7, width, -7.5, -7.5, 'black', 2, ('4, 4'), 1);
 
 				// Add header text for svg2
-				addStdText(svg2, null, 'hover_graph_header', ((fullWidth - leftMarginAdj)/2)-120, 17.5, '13.5px', 'normal', 1, 0.25, 'Hover to Compare Historical Forecasts');
-				addStdText(svg2, null, 'comparing_graph_header', ((fullWidth - leftMarginAdj)/2)-95, 17.5, '13.5px', 'italic', 0, 0.25, 'Comparing Historical Forecasts...');
+				appendText(svg2, null, 'hover_graph_header', ((fullWidth - leftMarginAdj)/2)-120, 17.5, '13.5px', 'normal', 1, 0.25, 'Hover to Compare Historical Forecasts');
+				appendText(svg2, null, 'comparing_graph_header', ((fullWidth - leftMarginAdj)/2)-95, 17.5, '13.5px', 'italic', 0, 0.25, 'Comparing Historical Forecasts...');
 
 
 				/////////////////////////////////////////////
@@ -366,34 +366,34 @@
 					updateGraph(maxYearObserved, null);
 				};
 
-				addStdRect(svg4, null, null, 0, 0, fullWidth, 125, 'transparent', 0, 1, 'transparent', 1, updateGraphMO, null, null);
+				appendRect(svg4, null, null, 0, 0, fullWidth, 125, 'transparent', 0, 1, 'transparent', 1, updateGraphMO, null, null);
 				/////////////////////////////////////////////
 				/////////////////////////////////////////////
 
 
 				// rect needed between rects to run cursorPointer function.
-				addStdRect(svg3, null, null, 1, 0, checkFilterWidth, 108.5 + checkFilterHeight + 1, 'transparent', 0, 1, 'transparent', 1, updateGraphMO, null, null);
+				appendRect(svg3, null, null, 1, 0, checkFilterWidth, 108.5 + checkFilterHeight + 1, 'transparent', 0, 1, 'transparent', 1, updateGraphMO, null, null);
 
-				addStdRect(svg3, null, 'lv_filter', 1, 3.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
-				addStdText(svg3, null, 'lv_filter_check_mark', 6, 22.5, '20px', 'normal', 1, 0, '✓');
-				addStdText(svg3, null, null, 34, 12, '12px', 'normal', 1, 0, 'Scaling includes the');
-				addStdText(svg3, null, null, 34, 26.5, '12px', 'normal', 1, 0, 'Las Vegas Shooting');
+				appendRect(svg3, null, 'lv_filter', 1, 3.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
+				appendText(svg3, null, 'lv_filter_check_mark', 6, 22.5, '20px', 'normal', 1, 0, '✓');
+				appendText(svg3, null, null, 34, 12, '12px', 'normal', 1, 0, 'Scaling includes the');
+				appendText(svg3, null, null, 34, 26.5, '12px', 'normal', 1, 0, 'Las Vegas Shooting');
 
 				textInput = 'The Las Vegas shooting is the deadliest mass shooting in US history. With 548 total victims killed/injured, it is a major outlier in this dataset. Filter to see how this observation affects the scaling of the entire graph.';
 				defineTooltip('check_mark_filters', 'lv_tooltip', '780px', '67.5px', '210px', '145px', 0, textInput);
-				addStdRect(svg3, null, 'lv_tooltip_rect', 148.5, 11.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
+				appendRect(svg3, null, 'lv_tooltip_rect', 148.5, 11.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg3, 'lv_tooltip', 158.5, 21.5, 157, 25.5, null);
 
-				addStdRect(svg3, null, 'obs_filter', 1, 38.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
-				addStdText(svg3, null, 'obs_filter_check_mark', 6, 57.5, '20px', 'normal', 1, 0, '✓');
-				addStdText(svg3, null, null, 34, 47.5, '12px', 'normal', 1, 0, 'Displaying');
-				addStdText(svg3, null, null, 34, 62, '12px', 'normal', 1, 0, 'Daily Observations');
+				appendRect(svg3, null, 'obs_filter', 1, 38.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
+				appendText(svg3, null, 'obs_filter_check_mark', 6, 57.5, '20px', 'normal', 1, 0, '✓');
+				appendText(svg3, null, null, 34, 47.5, '12px', 'normal', 1, 0, 'Displaying');
+				appendText(svg3, null, null, 34, 62, '12px', 'normal', 1, 0, 'Daily Observations');
 
-				addStdRect(svg3, null, 'ts_filter', 1, 73.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
-				addStdText(svg3, null, 'ts_filter_check_mark', 6, 92.5, '20px', 'normal', 1, 0, '✓');
-				addStdText(svg3, null, null, 34, 82.5, '12px', 'normal', 1, 0, 'Displaying');
-				addStdText(svg3, null, null, 34, 97, '12px', 'normal', 1, 0, 'Time Series Models');
+				appendRect(svg3, null, 'ts_filter', 1, 73.5, checkFilterWidth, checkFilterHeight, 'black', 1, 1, 'transparent', 1, generalRectMO, generalRectML, filterClick);
+				appendText(svg3, null, 'ts_filter_check_mark', 6, 92.5, '20px', 'normal', 1, 0, '✓');
+				appendText(svg3, null, null, 34, 82.5, '12px', 'normal', 1, 0, 'Displaying');
+				appendText(svg3, null, null, 34, 97, '12px', 'normal', 1, 0, 'Time Series Models');
 
 				function filterClick() {
 
@@ -427,8 +427,8 @@
 						generalRectMO;
 						d3.select(this)
 							.style('stroke', 'black');
-						addStdRect(svg4, null, 'dropdown_option', leftMarginAdj + 1, 32.5, 91, 17.5, 'black', 1, 1, 'white', 1, generalRectMO, generalRectML, dropDownOptionClick);
-						addStdText(svg4, null, 'dropdown_option', leftMarginAdj + 6, 45, '12px', 'normal', 1, 0, dropDownOption);
+						appendRect(svg4, null, 'dropdown_option', leftMarginAdj + 1, 32.5, 91, 17.5, 'black', 1, 1, 'white', 1, generalRectMO, generalRectML, dropDownOptionClick);
+						appendText(svg4, null, 'dropdown_option', leftMarginAdj + 6, 45, '12px', 'normal', 1, 0, dropDownOption);
 				},
 
 						dropDownSelectedClick = function(d) {
@@ -453,77 +453,77 @@
 							dropDownOption = 'Next ' + String(numFuturePredDays) + ' Days';
 							d3.select('#metrics_methodology_tooltip').style('height', '100px').html(pastPredText);
 						}
-						addStdText(svg4, null, 'dropdown_selected_text', leftMarginAdj + 6, 27.5, '12px', 'normal', 1, 0, dropDownSelected);
+						appendText(svg4, null, 'dropdown_selected_text', leftMarginAdj + 6, 27.5, '12px', 'normal', 1, 0, dropDownSelected);
 				};
 
-				addStdText(svg4, null, null, leftMarginAdj, 9.25, '12px', 'normal', 1, 0, 'Prediction Timeframe');
-				addStdRect(svg4, null, null, leftMarginAdj + 1, 15, 91, 17.5, 'black', 1, 1, 'transparent', 1, dropDownSelectedMO, generalRectML, dropDownSelectedClick);
-				addStdText(svg4, null, 'dropdown_selected_text', leftMarginAdj + 6, 27.5, '12px', 'normal', 1, 0, dropDownSelected);
+				appendText(svg4, null, null, leftMarginAdj, 9.25, '12px', 'normal', 1, 0, 'Prediction Timeframe');
+				appendRect(svg4, null, null, leftMarginAdj + 1, 15, 91, 17.5, 'black', 1, 1, 'transparent', 1, dropDownSelectedMO, generalRectML, dropDownSelectedClick);
+				appendText(svg4, null, 'dropdown_selected_text', leftMarginAdj + 6, 27.5, '12px', 'normal', 1, 0, dropDownSelected);
 
 				textInput = 'Use dropdown to compare time series model predictions for dates that took place in the past, or, take place in the next year (' + String(numFuturePredDays) + ' days).';
 				defineTooltip('metrics_and_sliders', 'metrics_tooltip', '210px', '480px', '220px', '95px', 0, textInput);
-				addStdRect(svg4, null, 'metrics_tooltip_rect', 123.5, 13.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
+				appendRect(svg4, null, 'metrics_tooltip_rect', 123.5, 13.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg4, 'metrics_tooltip', 133.5, 23.5, 132, 27.5, null);
 
 				pastPredText = 'Model Input: What years of data were used to generate these predictions?<br>Total Victims: How many total victims does the model think there been since 1/1/14?<br>Avg Victims per Day: How many victims does the model think there have been daily since 1/1/14?<br>Avg Yearly Trend: What is the average change between these predictions annually?<br>RMSE: How do these predictions compare to the actual number of victims recorded daily since 1/1/14?',
 				futurePredText = 'Model Input: What years of data were used to generate these predictions?<br>Total Victims: How many total victims does the model think there will be in the next 365 days?<br>Avg Victims per Day: How many victims does the model think there will be daily for the next 365 days?<br>Avg Yearly Trend: What is the average change between these predictions annually?';
 				defineTooltip('metrics_and_sliders', 'metrics_methodology_tooltip', '40.5px', '513.5px', '600px', '112.5px', 0, pastPredText);
-				addStdRect(svg4, null, 'metrics_methodology_tooltip_rect', leftMarginAdj-27.5, (height/2)-139, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
+				appendRect(svg4, null, 'metrics_methodology_tooltip_rect', leftMarginAdj-27.5, (height/2)-139, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg4, 'metrics_methodology_tooltip', leftMarginAdj-17.5, (height/2)-129, -55, 13.5, 'rotate(-90)');
-				addStdText(svg4, null, 'metrics_methodology_tooltip_label', -95, leftMarginAdj-12.5, '15px', 'normal', 1, 0.25, 'Metrics');
+				appendText(svg4, null, 'metrics_methodology_tooltip_label', -95, leftMarginAdj-12.5, '15px', 'normal', 1, 0.25, 'Metrics');
 				svg4.select('#metrics_methodology_tooltip_label').attr('transform', 'rotate(-90)').style('text-anchor', 'middle');
 
-				addStdLine(svg4, null, leftMarginAdj, 197.75, 40, 40, 'black', 3.5, null, 1);
-				addStdLine(svg4, null, 197.75, 296.875, 40, 40, overallModelColor, 3.5, null, 1);
-				addStdLine(svg4, null, 296.875, 396, 40, 40, hoverModelColor, 3.5, null, 1);
+				appendLine(svg4, null, leftMarginAdj, 197.75, 40, 40, 'black', 3.5, null, 1);
+				appendLine(svg4, null, 197.75, 296.875, 40, 40, overallModelColor, 3.5, null, 1);
+				appendLine(svg4, null, 296.875, 396, 40, 40, hoverModelColor, 3.5, null, 1);
 				textWidth = getTextWidth(svg1, 'Overall', 12);
-				addStdText(svg4, null, null, 296.875 - textWidth, 15, '12px', 'normal', 1, 0, 'Overall');
+				appendText(svg4, null, null, 296.875 - textWidth, 15, '12px', 'normal', 1, 0, 'Overall');
 				textWidth = getTextWidth(svg1, 'Model', 12);
-				addStdText(svg4, null, null, 296.875 - textWidth, 30, '12px', 'normal', 1, 0, 'Model');
+				appendText(svg4, null, null, 296.875 - textWidth, 30, '12px', 'normal', 1, 0, 'Model');
 				textWidth = getTextWidth(svg1, 'Comparative', 12);
-				addStdText(svg4, null, null, 396 - textWidth, 15, '12px', 'normal', 1, 0, 'Comparative');
+				appendText(svg4, null, null, 396 - textWidth, 15, '12px', 'normal', 1, 0, 'Comparative');
 				textWidth = getTextWidth(svg1, 'Model', 12);
-				addStdText(svg4, null, null, 396 - textWidth, 30, '12px', 'normal', 1, 0, 'Model');
+				appendText(svg4, null, null, 396 - textWidth, 30, '12px', 'normal', 1, 0, 'Model');
 
-				addStdText(svg4, null, null, leftMarginAdj, 55, '12px', 'normal', 1, 0, 'Model Input:');
-				addStdText(svg4, null, null, leftMarginAdj, 70, '12px', 'normal', 1, 0, 'Total Victims:');
-				addStdText(svg4, null, null, leftMarginAdj, 85, '12px', 'normal', 1, 0, 'Avg Victims per Day:');
-				addStdText(svg4, null, null, leftMarginAdj, 100, '12px', 'normal', 1, 0, 'Avg Yearly Trend');
+				appendText(svg4, null, null, leftMarginAdj, 55, '12px', 'normal', 1, 0, 'Model Input:');
+				appendText(svg4, null, null, leftMarginAdj, 70, '12px', 'normal', 1, 0, 'Total Victims:');
+				appendText(svg4, null, null, leftMarginAdj, 85, '12px', 'normal', 1, 0, 'Avg Victims per Day:');
+				appendText(svg4, null, null, leftMarginAdj, 100, '12px', 'normal', 1, 0, 'Avg Yearly Trend');
 				textInput = 'Avg Yearly Trend',
 				textWidth = getTextWidth(svg1, textInput, 12);
-				addStdText(svg4, null, null, leftMarginAdj + textWidth + 4, 100, '12px', 'italic', 1, 0, '(Rounded)');
+				appendText(svg4, null, null, leftMarginAdj + textWidth + 4, 100, '12px', 'italic', 1, 0, '(Rounded)');
 				textInput = 'Avg Yearly Trend (Rounded)',
 				textWidth = getTextWidth(svg1, textInput, 12);
-				addStdText(svg4, null, null, leftMarginAdj + textWidth - 2, 100, '12px', 'normal', 1, 0, ':');
+				appendText(svg4, null, null, leftMarginAdj + textWidth - 2, 100, '12px', 'normal', 1, 0, ':');
 
 				textInput = overallTimeFrame,
 				textWidth = getTextWidth(svg1, textInput, 12);
-				addStdText(svg4, null, null, 296.875 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
+				appendText(svg4, null, null, 296.875 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
 
 				function pastPredictionSpecific() {
 
-					addStdText(svg4, null, 'past_prediction_specific', leftMarginAdj, 115, '12px', 'normal', 1, 0, 'RMSE');
+					appendText(svg4, null, 'past_prediction_specific', leftMarginAdj, 115, '12px', 'normal', 1, 0, 'RMSE');
 					textInput = 'RMSE',
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'past_prediction_specific', leftMarginAdj + textWidth + 4, 115, '12px', 'italic', 1, 0, '(Rounded)');
+					appendText(svg4, null, 'past_prediction_specific', leftMarginAdj + textWidth + 4, 115, '12px', 'italic', 1, 0, '(Rounded)');
 					textInput = 'RMSE (Rounded)',
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'past_prediction_specific', leftMarginAdj + textWidth - 2, 115, '12px', 'normal', 1, 0, ':');
+					appendText(svg4, null, 'past_prediction_specific', leftMarginAdj + textWidth - 2, 115, '12px', 'normal', 1, 0, ':');
 
 					textInput = overallPredPast,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'past_prediction_specific', 296.875 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'past_prediction_specific', 296.875 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
 					textInput = overallTotalVictims,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'past_prediction_specific', 296.875 - textWidth, 85, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'past_prediction_specific', 296.875 - textWidth, 85, '12px', 'normal', 1, 0, textInput);
 					textInput = overallYearlyTrendPast,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'past_prediction_specific', 296.875 - textWidth, 100, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'past_prediction_specific', 296.875 - textWidth, 100, '12px', 'normal', 1, 0, textInput);
 					textInput = String(overallRMSE),
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'past_prediction_specific', 296.875 - textWidth, 115, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'past_prediction_specific', 296.875 - textWidth, 115, '12px', 'normal', 1, 0, textInput);
 				};
 
 				pastPredictionSpecific();
@@ -532,40 +532,40 @@
 
 					textInput = overallPredFuture,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'future_prediction_specific', 296.875 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'future_prediction_specific', 296.875 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
 					textInput = overallPredFuturePerDay,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'future_prediction_specific', 296.875 - textWidth, 85, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'future_prediction_specific', 296.875 - textWidth, 85, '12px', 'normal', 1, 0, textInput);
 					textInput = overallYearlyTrendFuture,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'future_prediction_specific', 296.875 - textWidth, 100, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'future_prediction_specific', 296.875 - textWidth, 100, '12px', 'normal', 1, 0, textInput);
 				};
 
 				textInput = 'Hover to',
 				textWidth = getTextWidth(svg1, textInput, 12);
-				addStdText(svg4, 'hover_metrics', 'hover_metrics_instruction', 396 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
+				appendText(svg4, 'hover_metrics', 'hover_metrics_instruction', 396 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
 				textInput = 'compare.',
 				textWidth = getTextWidth(svg1, textInput, 12);
-				addStdText(svg4, 'hover_metrics', 'hover_metrics_instruction', 396 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
+				appendText(svg4, 'hover_metrics', 'hover_metrics_instruction', 396 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
 
 				callGroupSVG(svg4, null, null, null, 'translate(436,45)', obsSlider, 'auto');
 				callGroupSVG(svg4, null, null, null, 'translate(616,45)', tsSlider, 'auto');
 				formatSlider('10px');
 
-				addStdText(svg4, null, null, 425, 15, '12px', 'normal', 1, 0, 'Moving Average for');
-				addStdText(svg4, null, null, 425, 30, '12px', 'normal', 1, 0, 'Daily Observations');
-				addStdText(svg4, null, null, 605, 15, '12px', 'normal', 1, 0, 'Moving Average for');
-				addStdText(svg4, null, null, 605, 30, '12px', 'normal', 1, 0, 'Time Series Models');
+				appendText(svg4, null, null, 425, 15, '12px', 'normal', 1, 0, 'Moving Average for');
+				appendText(svg4, null, null, 425, 30, '12px', 'normal', 1, 0, 'Daily Observations');
+				appendText(svg4, null, null, 605, 15, '12px', 'normal', 1, 0, 'Moving Average for');
+				appendText(svg4, null, null, 605, 30, '12px', 'normal', 1, 0, 'Time Series Models');
 
 				textInput = 'Adjust the slider to specify a moving average for displaying daily observations. Units are in days, with 0 days displaying the actual/recorded observation.'
 				defineTooltip('metrics_and_sliders', 'obs_ma_tooltip', '605px', '472.5px', '205px', '110px', 0, textInput);
-				addStdRect(svg4, null, 'obs_ma_tooltip_rect', 539.5, 14.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
+				appendRect(svg4, null, 'obs_ma_tooltip_rect', 539.5, 14.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg4, 'obs_ma_tooltip', 549.5, 23.5, 548, 27.5, null);
 
 				textInput = 'Adjust the slider to specify a moving average for displaying time series models. Units are in days, with 0 days displaying the exact prediction on a given day.'
 				defineTooltip('metrics_and_sliders', 'ts_ma_tooltip', '420px', '472.5px', '192.5px', '130px', 0, textInput);
-				addStdRect(svg4, null, 'ts_ma_tooltip_rect', 722, 14.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
+				appendRect(svg4, null, 'ts_ma_tooltip_rect', 722, 14.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg4, 'ts_ma_tooltip', 732, 23.5, 730.5, 27.5, null);
 				/////////////////////////////////////////////
@@ -601,19 +601,19 @@
 					{ textInput = String(allYears[0]) + '–' + String(hoverYear); }
 
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'hover_metrics', 396 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
 					textInput = hoverPredPast,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'hover_metrics', 396 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
 					textInput = hoverPredPastPerDay,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 85, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'hover_metrics', 396 - textWidth, 85, '12px', 'normal', 1, 0, textInput);
 					textInput = hoverYearlyTrendPast,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 100, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'hover_metrics', 396 - textWidth, 100, '12px', 'normal', 1, 0, textInput);
 					textInput = hoverRMSE,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 115, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'hover_metrics', 396 - textWidth, 115, '12px', 'normal', 1, 0, textInput);
 				};
 
 				function updateFutureHoverMetrics(hoverYear) {
@@ -642,16 +642,16 @@
 					{ textInput = String(allYears[0]) + '–' + String(hoverYear); }
 
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'hover_metrics', 396 - textWidth, 55, '12px', 'normal', 1, 0, textInput);
 					textInput = hoverPredFuture,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'hover_metrics', 396 - textWidth, 70, '12px', 'normal', 1, 0, textInput);
 					textInput = hoverPredFuturePerDay,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 85, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'hover_metrics', 396 - textWidth, 85, '12px', 'normal', 1, 0, textInput);
 					textInput = hoverYearlyTrendFuture,
 					textWidth = getTextWidth(svg1, textInput, 12);
-					addStdText(svg4, null, 'hover_metrics', 396 - textWidth, 100, '12px', 'normal', 1, 0, textInput);
+					appendText(svg4, null, 'hover_metrics', 396 - textWidth, 100, '12px', 'normal', 1, 0, textInput);
 				};
 
 				function updateGraph(hoverYear, sourceObject) {
@@ -772,7 +772,7 @@
 						if ( allYears[Number(d)] < maxYearObserved ) {
 							svg2.select('#hover_graph_header').style('opacity', 0);
 							svg2.select('#comparing_graph_header').style('opacity', 1);
-							addStdRect(svg1, null, 'hover_region_rect', 0.7, -7.5, (width/numRows)*obsCumDic[allYears[Number(d)]], height + 7.5, 'black', 1, 1, 'transparent', 1, null, null, null);
+							appendRect(svg1, null, 'hover_region_rect', 0.7, -7.5, (width/numRows)*obsCumDic[allYears[Number(d)]], height + 7.5, 'black', 1, 1, 'transparent', 1, null, null, null);
 							updateGraph(allYears[Number(d)], null);
 						 }
 						else {
@@ -825,18 +825,18 @@
 				// Add label and tooltip for x axis
 				textInput = 'Individual incidents are summed together and grouped by date.'
 				defineTooltip('graph', 'x_axis_tooltip', '457.5px', '407.5px',  '150px', '75px', 0, textInput);
-				addStdRect(svg1, null, 'x_axis_tooltip_rect', (width/2) + 11, topBody + 21.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
+				appendRect(svg1, null, 'x_axis_tooltip_rect', (width/2) + 11, topBody + 21.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg1, 'x_axis_tooltip', (width/2) + 21, topBody + 31.5, (width/2) + 19.5, topBody + 35.5, null);
-				addStdText(svg1, null, 'x_axis_tooltip_label', -32.5, null, '18px', 'normal', 1, 0.25, 'Date');
+				appendText(svg1, null, 'x_axis_tooltip_label', -32.5, null, '18px', 'normal', 1, 0.25, 'Date');
 				svg1.select('#x_axis_tooltip_label').attr('transform', 'translate(' + (width/2) + ' ,' + (topBody + 37.5) + ')');
 				// Add label and tooltip for y axis
 				textInput = 'Includes all victims reported as injured or killed. Victims with unreported health statuses are not included.';
 				defineTooltip('graph', 'y_axis_tooltip', '50px', '105px', '185px', '90px', 0, textInput);
-				addStdRect(svg1, null, 'y_axis_tooltip_rect', -65, (height/2) - 81.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
+				appendRect(svg1, null, 'y_axis_tooltip_rect', -65, (height/2) - 81.5, 20, 20, 'transparent', 0, 1, 'transparent', 1, tooltipMO, tooltipML, null);
 				// more specific ids will be added in the function itself.
 				addTooltipSymbol(svg1, 'y_axis_tooltip', -55, (height/2)-71.5, -112.5, -51, 'rotate(-90)');
-				addStdText(svg1, null, 'y_axis_tooltip_label', -(height/2), 15-margin.left, '18px', 'normal', 1, 0.25, 'Total Victims');
+				appendText(svg1, null, 'y_axis_tooltip_label', -(height/2), 15-margin.left, '18px', 'normal', 1, 0.25, 'Total Victims');
 				svg1.select('#y_axis_tooltip_label').attr('transform', 'rotate(-90)').style('text-anchor', 'middle');
 			});
 

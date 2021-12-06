@@ -1,5 +1,5 @@
 
-function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
+function appendSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
 
 		window[svgName] = d3.select('#' + divInput)
 												.append('svg')
@@ -10,7 +10,7 @@ function addStdSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, 
 };
 
 
-function addStdGroupSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, cursorInput) {
+function appendGroupSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, marginTopInput, pointerEvents, cursorInput) {
 
 		window[svgName] = d3.select('#' + divInput)
 												.append('svg')
@@ -22,7 +22,7 @@ function addStdGroupSVG(svgName, divInput, widthInput, heightInput, marginLeftIn
 };
 
 
-function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, fontStyle, opacity, strokeWidth, textInput) {
+function appendText(svgInput, classInput, idInput, textX, textY, fontSize, fontStyle, opacity, strokeWidth, textInput) {
 
 		svgInput.append('text')
 			.attr('class', classInput)
@@ -44,7 +44,7 @@ function addStdText(svgInput, classInput, idInput, textX, textY, fontSize, fontS
 };
 
 
-function addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
+function appendRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rectHeight, rectStroke, rectStrokeWidth, rectStrokeOpacity, rectFill, rectFillOpacity, rMO, rML, rClick) {
 
 		svgInput.append('rect')
 					.attr('class', classInput)
@@ -69,7 +69,7 @@ function addStdRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rect
 };
 
 
-function addStdLine(svgInput, idInput, lineX1, lineX2, lineY1, lineY2, color, strokeWidth, strokeDashArray, opacity) {
+function appendLine(svgInput, idInput, lineX1, lineX2, lineY1, lineY2, color, strokeWidth, strokeDashArray, opacity) {
 
 	svgInput.append('line')
 			.attr('pointer-events', 'none')
@@ -86,7 +86,7 @@ function addStdLine(svgInput, idInput, lineX1, lineX2, lineY1, lineY2, color, st
 };
 
 
-function addStdCircle(svgInput, idInput, circX, circY, fillColor) {
+function appendCircle(svgInput, idInput, circX, circY, fillColor) {
 
 	svgInput.append('circle')
 				.attr('pointer-events', 'none')
@@ -100,7 +100,7 @@ function addStdCircle(svgInput, idInput, circX, circY, fillColor) {
 };
 
 
-function addStdPath(svgInput, dataInput, pathID, pathName, strokeColor, opacity) {
+function appendPath(svgInput, dataInput, pathID, pathName, strokeColor, opacity) {
 
 	svgInput.append('path')
 			.data(dataInput)
@@ -171,19 +171,19 @@ function addTooltipSymbol(svgInput, idInput, circX, circY, textX, textY, textRot
 
 function defineSlider(dataInput, changeFunction) {
 
-		return  d3.sliderBottom()
-							.min(d3.min(dataInput['ticks']))
-							.max(d3.max(dataInput['ticks']))
-							.width(dataInput['width'])
-							.step(dataInput['step'])
-							.tickValues(dataInput['ticks'])
-							.tickFormat(function(d, i) { if ( dataInput['tick_labels']==undefined )
-																			 { return dataInput['ticks'][i]; }
-																			 else
-																			 { return dataInput['tick_labels'][i]; }
-																		 })
-							.default(dataInput['default'])
-							.on('onchange', changeFunction);
+		return d3.sliderBottom()
+						.min(d3.min(dataInput['ticks']))
+						.max(d3.max(dataInput['ticks']))
+						.width(dataInput['width'])
+						.step(dataInput['step'])
+						.tickValues(dataInput['ticks'])
+						.tickFormat(function(d, i) { if ( dataInput['tick_labels']==undefined )
+																		 { return dataInput['ticks'][i]; }
+																		 else
+																		 { return dataInput['tick_labels'][i]; }
+																	 })
+						.default(dataInput['default'])
+						.on('onchange', changeFunction);
 };
 
 

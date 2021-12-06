@@ -42,12 +42,12 @@
 			svg3Height = 120;
 
 			// append the svg object to the body of the page.
-			addStdSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, 'auto');
+			appendSVG('svg1', 'profile_photo', width, height, margin.left, margin.top, 'auto');
 			// a separate svg is needed for the pixels so that they will always be on top, even while objects are appended to the original image (laser eyes).
-			addStdSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, 'auto');
-			addStdSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, 'auto');
+			appendSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, 'auto');
+			appendSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, 'auto');
 
-			addStdText(svg3, null, 'hover_instructions', 130, 85, '18px', 'normal', 0.80, 0, 'Hover on my face!');
+			appendText(svg3, null, 'hover_instructions', 130, 85, '18px', 'normal', 0.80, 0, 'Hover on my face!');
 
 			// credit is due to this blocks page for the process defined below: http://bl.ocks.org/mrtriangle/11222485
 			// I took what was there and made adjustments launchXLocd on preference and version differences, but the basic foundation was all set up on that page.
@@ -183,7 +183,7 @@
 
 					// labelling dynamically the percent of the non-pixelated photo that's fully visible.
 					svg3.select('#percent_revealed').remove();
-					addStdText(svg3, null, 'percent_revealed', 117.5, 110, '15px', 'normal', 0.80, 0, textInput);
+					appendText(svg3, null, 'percent_revealed', 117.5, 110, '15px', 'normal', 0.80, 0, textInput);
 
 					return percentRevealed;
 				}
@@ -199,7 +199,7 @@
 					if ( transitionSlider.value()==2 ) {
 						// labelling dynamically the percent of the non-pixelated photo that's fully visible.
 						svg3.select('#percent_revealed').remove();
-						addStdText(svg3, null, 'percent_revealed', 117.5, 110, '15px', 'normal', 0.80, 0, 'Percent Revealed: N/A');
+						appendText(svg3, null, 'percent_revealed', 117.5, 110, '15px', 'normal', 0.80, 0, 'Percent Revealed: N/A');
 					}
 					else {
 						percentRevealed = countInvisiblePixels();

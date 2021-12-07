@@ -4,6 +4,7 @@ layout: null
 
 /* --- Body --- */
 
+
 body {
   /* changed font for body */
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -13,17 +14,14 @@ body {
 
 a:hover,
 a:focus {
-  /* changed hover-col to link-hover-col  */
   color: {{ site.link-hover-col | default: "#0085A1" }};
 }
 
 ::-moz-selection, {
-  /* changed hover-col to link-hover-col  */
   background-color: {{ site.link-hover-col | default: "#0085A1" }};
 }
 
 ::selection {
-  /* changed hover-col to link-hover-col  */
   background-color: {{ site.link-hover-col | default: "#0085A1" }};
 }
 
@@ -45,9 +43,6 @@ a:focus {
   .navbar-custom {
     padding-top: 0.7375rem;
     padding-bottom: 0.7375rem;
-  }
-  .navbar-custom .navbar-nav .nav-item.dropdown:hover {
-    background-color: {{ site.navbar-dropdown-background-hover-col | default: "#DDDDDD" }};
   }
 }
 
@@ -73,7 +68,7 @@ a:focus {
   font-size: 1.25rem;
 }
 
-@keyframes cursor_animate {
+@keyframes kidpix_cursor_animate {
    0% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
    50% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
    51% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
@@ -82,9 +77,8 @@ a:focus {
 
 .navbar-brand:hover {
   cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
-  /* animation: cursor_animate 0.5s infinite; */
-  -webkit-animation: cursor_animate 0.25s infinite;
-  animation: cursor_animate 0.25s infinite;
+  -webkit-animation: kidpix_cursor_animate 0.25s infinite;
+  animation: kidpix_cursor_animate 0.25s infinite;
 }
 
 .navbar-custom .navbar-nav .nav-item {
@@ -95,13 +89,15 @@ a:focus {
 }
 
 .navbar-custom .navbar-brand,
-.navbar-custom .navbar-nav .nav-link {
+.navbar-custom .navbar-brand:focus,
+.navbar-custom .navbar-nav .nav-link,
+.navbar-custom .navbar-nav .nav-item.dropdown .nav-link:focus {
   /* changed variable name navbar-text-col to navbar-link-col */
   color: {{ site.navbar-link-col | default: "#404040" }};
 }
 
 /* increasing size of projects navbar section width */
-.navbar-custom .nav-item.dropdown {
+.navbar-custom .navbar-nav .nav-item.dropdown {
   padding-left: 0.7375rem;
   padding-right: 0.7375rem;
   /* added transparent border to project links section, which will become visible later on */
@@ -109,7 +105,10 @@ a:focus {
   border-width: 2.75px 2.75px 3px 2.75px;
 }
 
-.navbar-custom .nav-item.dropdown:hover {
+.navbar-custom .navbar-nav .nav-item.dropdown:hover,
+.navbar-custom .navbar-nav .nav-item.dropdown:focus,
+.navbar-custom .navbar-nav .nav-item.dropdown.show {
+  background-color: {{ site.navbar-dropdown-background-hover-col | default: "#DDDDDD" }};
   border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
 
@@ -118,19 +117,19 @@ a:focus {
   cursor: default;
 }
 
-.navbar-custom .nav-item.dropdown .dropdown-menu {
+.navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
+  /* making dropdown execute on hover instead of click */
+  display: block;
+}
+
+.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
   /* changed font-size for navbar dropdown items */
   font-size: 0.825em;
   width: 103.5%;
   transform: translate(-2.75px, 2px);
 }
 
-.navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
-  /* making dropdown execute on hover instead of click */
-  display: block;
-}
-
-.navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
+.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
   /* changed variable name navbar-text-col to navbar-link-col */
   color: {{ site.navbar-link-col | default: "#404040" }};
   font-size: 1.025em;
@@ -140,21 +139,23 @@ a:focus {
 }
 
 .navbar-custom .navbar-brand:hover,
-.navbar-custom .navbar-brand:focus,
 .navbar-custom .navbar-nav .nav-link:hover,
 .navbar-custom .navbar-nav .nav-link:focus,
-.navbar-custom .navbar-nav .dropdown-menu .dropdown-item:hover,
-.navbar-custom .navbar-nav .dropdown-menu .dropdown-item:focus {
+.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover,
+.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:focus {
   /* added individual hover color variable for navbar  */
   color: {{ site.navbar-link-hover-col | default: "#0085A1" }};
 }
-
 
 /* --- Footer --- */
 
 footer {
   /* added top border */
   border-top: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
+}
+
+footer a:focus {
+  color: {{ site.footer-link-col | default: "#404040" }};
 }
 
 footer a:hover {
@@ -164,7 +165,8 @@ footer a:hover {
   text-decoration: none;
 }
 
-.list-inline a {
+.list-inline a,
+.list-inline a:focus {
   /* added individual color for social in footer */
   color: {{ site.social-icon-background-col | default: "#0085A1" }};
  }
@@ -174,7 +176,8 @@ footer a:hover {
   color: {{ site.social-icon-background-hover-col | default: "#0085A1" }};
  }
 
-.fa-stack-1x {
+.fa-stack-1x,
+.fa-stack-1x:focus {
   /* changed color of font-awesome icon */
   color: {{ site.social-icon-col | default: "#0085A1" }};
  }
@@ -208,8 +211,8 @@ footer a:hover {
   color: {{ site.post-title-link-col | default: "#0085A1" }};
 }
 
-.post-preview a:focus,
-.post-preview a:hover {
+.post-preview a:hover,
+.post-preview a:focus {
   /* making title of the post the color of links (rather than black) on hover  */
   color: {{ site.post-title-link-hover-col | default: "#0085A1" }};
 }
@@ -228,7 +231,8 @@ footer a:hover {
   color: {{ site.tag-link-col | default: "#404040" }};
 }
 
-.blog-tags a:hover {
+.blog-tags a:hover,
+.blog-tags a:focus {
   color: {{ site.tag-link-hover-col | default: "#404040" }};
   border-color: {{ site.tag-border-hover-col | default: "#0085A1" }};
   background-color: {{ site.tag-background-hover-col | default: "#0085A1" }};
@@ -254,7 +258,8 @@ footer a:hover {
   width: 205px;
 }
 
-.btn-group:hover {
+.btn-group:hover,
+.btn-group:focus {
   color: {{ site.btn-link-hover-col | default: "#0085A1" }};
   background-color: {{ site.btn-background-hover-col | default: "#0085A1" }};
   border-color: {{ site.btn-border-hover-col | default: "#0085A1" }};
@@ -312,8 +317,9 @@ footer a:hover {
   background-color: {{ site.pagination-background-hover-col | default: "#0085A1" }};
   border: 4.5px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};
   font-weight: 750;
+  box-shadow: none;
+  -webkit-box-shadow: none;
 }
-
 
 /* --- Thumbnails --- */
 
@@ -365,16 +371,16 @@ div.tooltip {
   pointer-events: none;
 }
 
-.blinking_text {
-  animation: blinkingText 1s infinite;
-}
-
 @keyframes blinkingText {
   0% { color: #000; }
   49% { color: #000; }
   50% { color: transparent; }
   99% { color: transparent; }
   100% { color: #000; }
+}
+
+.blinking_text {
+  animation: blinkingText 1s infinite;
 }
 
 .cursive {

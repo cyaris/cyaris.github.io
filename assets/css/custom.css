@@ -90,8 +90,7 @@ a:focus {
 
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-brand:focus,
-.navbar-custom .navbar-nav .nav-link,
-.navbar-custom .navbar-nav .nav-item.dropdown .nav-link:focus {
+.navbar-custom .navbar-nav .nav-link {
   /* changed variable name navbar-text-col to navbar-link-col */
   color: {{ site.navbar-link-col | default: "#404040" }};
 }
@@ -107,18 +106,33 @@ a:focus {
 
 .navbar-custom .navbar-nav .nav-item.dropdown:hover,
 .navbar-custom .navbar-nav .nav-item.dropdown:focus,
-.navbar-custom .navbar-nav .nav-item.dropdown.show {
+.navbar-custom .navbar-nav .nav-item.dropdown.show:hover {
   background-color: {{ site.navbar-dropdown-background-hover-col | default: "#DDDDDD" }};
   border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
 
-.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover {
+.navbar-custom .navbar-nav .nav-item.dropdown.show {
+
+  background-color: {{ site.navbar-col | default: "#DDDDDD" }};
+  border-color: {{ site.navbar-col | default: "#DDDDDD" }};
+}
+
+.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
+.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
   color: {{ site.navbar-link-col | default: "#DDDDDD" }};
   cursor: default;
 }
 
 .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
   /* making dropdown execute on hover instead of click */
+  display: block;
+}
+
+.navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-menu {
+  display: none;
+}
+
+.navbar-custom .navbar-nav .nav-item.dropdown.show:hover > .dropdown-menu {
   display: block;
 }
 
@@ -145,6 +159,7 @@ a:focus {
 .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:focus {
   /* added individual hover color variable for navbar  */
   color: {{ site.navbar-link-hover-col | default: "#0085A1" }};
+  cursor: pointer;
 }
 
 /* --- Footer --- */

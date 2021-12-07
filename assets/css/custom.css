@@ -302,6 +302,18 @@ footer a:hover {
   }
 }
 
+.rotate {
+  transform: rotate(180deg);
+  /* Safari */
+  -webkit-transform: rotate(180deg);
+  /* Firefox */
+  -moz-transform: rotate(180deg);
+  /* IE */
+  -ms-transform: rotate(180deg);
+  /* Opera */
+  -o-transform: rotate(180deg);
+}
+
 .pagination .page-item .page-link {
   /* changed pagination color */
   color: {{ site.pagination-link-col | default: "#0085A1" }};

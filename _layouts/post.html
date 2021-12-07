@@ -71,7 +71,7 @@ layout: base
         <li class="page-item previous">
         <!-- custom edit: added additional pagination button for desktop vs mobile. -->
           <a class="page-link page-link-desktop" href="{{ page.previous.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title | strip_html | xml_escape}}">&larr; Previous Post</a>
-          <a class="page-link page-link-mobile" href="{{ page.previous.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title | strip_html | xml_escape}}">&larr;</a>
+          <a class="page-link page-link-mobile rotate" href="{{ page.previous.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title | strip_html | xml_escape}}">➔</a>
         <!-- end of custom edit -->
         </li>
         {% endif %}
@@ -79,7 +79,7 @@ layout: base
         <li class="page-item next">
         <!-- custom edit: added additional pagination button for desktop vs mobile. -->
           <a class="page-link page-link-desktop" href="{{ page.next.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title | strip_html | xml_escape}}">Next Post &rarr;</a>
-          <a class="page-link page-link-mobile" href="{{ page.next.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title | strip_html | xml_escape}}">&rarr;</a>
+          <a class="page-link page-link-mobile" href="{{ page.next.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title | strip_html | xml_escape}}">➔</a>
         <!-- end of custom edit -->
         </li>
         {% endif %}

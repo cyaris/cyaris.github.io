@@ -256,7 +256,7 @@
 								{ d3.select('#game_board_tooltip').html(tooltipNumber + ' right colors<br>in the ' + colorState + ' place.'); }
 							}
 
-							d3.select(this).style('stroke-width', 3).style('cursor', 'help');
+							d3.select(this).style('stroke-width', 3.5).style('cursor', 'help');
  							d3.select('#game_board_tooltip').style('opacity', 1).style('top', (d3.mouse(this)[1]) + 76.5 + 'px');
  					 	}
  			 	},
@@ -327,7 +327,7 @@
 							updateGameBoardColors(rgbColorGuess);
 							if ( clickCount>=colorCode.length && clickCount%colorCode.length==0 )
 							{ scorePreviousRound(); }
-							else if ( clickCount>=colorCode.length && clickCount%colorCode.length==1 )
+							else if ( clickCount>=colorCode.length && clickCount%colorCode.length==1 && currentTurn!=gameSettings[level]['max_turns'] )
 							{ currentTurn+=1; }
 						});
 
@@ -340,7 +340,7 @@
 					svg1.selectAll('.rects')
 						.style('stroke-width', function(d) {
 							if ( d.color_index==clickCount+1 )
-							{ return 3 }
+							{ return 3.5 }
 							else
 							{ return 1; }
 						});
@@ -413,7 +413,8 @@
 						document.getElementById('color_buttons').style.display = 'none';
 						document.getElementById('hidden_button_win').style.display = 'block';
 						svg1.selectAll('.rects').style('stroke-width', 1);
-						launchFireworksShow(10, 10, 2500);
+						svg1.selectAll('.rects').filter(function(d) { return d.turn==currentTurn && d.column!='W' && d.column!='B'; }).style('stroke-width', 3.5);
+						launchFireworksShow(5, 5, 2500);
 					}
 					// conditions for a losing game below.
 					else if ( gameScores['B'][gameScores['B'].length-1]!=colorCode.length && clickCount==gameSettings[level]['max_clicks'] ) {

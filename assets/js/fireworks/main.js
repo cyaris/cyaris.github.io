@@ -1,7 +1,12 @@
 
 function appendFireworksSVG() {
 	// set the dimensions and margins of the graph
-	margin = {top: 0, bottom: 0, left: 0, right: 0};
+	margin = {
+		'top': 0,
+		'bottom': 0,
+		'left': 0,
+		'right': 0
+	};
 	appendSVG('svgFW', 'fireworks', getBodyDimenstions()[0], getBodyDimenstions()[1], margin.left, margin.top, null);
 }
 
@@ -240,23 +245,25 @@ function launchFireworkBurst() {
 }
 
 
-function launchFireworksShow() {
-	// total fireworks in the regular show
-	totalFireworksMain = 150,
+function launchFireworksShow(totalFireworksMain, totalFireworksFinale, randomIntervalMsInput) {
+	// totalFireworksMain: total fireworks in the regular show
+	// totalFireworksFinale: total fireworks in the grand finale
 	// duration per firework of the regular show
 	fireworkIntervalMain = 1500,
-	// total fireworks in the grand finale
-	totalFireworksFinale = 25,
+	// totalFireworksFinale: total fireworks in the grand finale
 	// duration per firework of the grand finale show
 	fireWorkIntervalFinale = 500;
 
-	for ( var i=1; i<=totalFireworksMain+totalFireworksFinale; i++ ) {
+	for ( var i=0; i<=totalFireworksMain+totalFireworksFinale-1; i++ ) {
 
+		randomInterval = chance.floating({ min: -randomIntervalMsInput, max: randomIntervalMsInput });
+		// subtracting one from totalFireworksMain so that the first firework comes without any delay.
+		regularShowMinDuration = (fireworkIntervalMain*(totalFireworksMain-1));
 		// all fireworks for the regular show
 		if ( i<=totalFireworksMain )
-		{	d3.timeout(launchFireworkBurst, Math.max(fireworkIntervalMain, (fireworkIntervalMain*i) + chance.floating({ min: -2500, max: 2500 }))); }
+		{	d3.timeout(launchFireworkBurst, Math.max(0, (fireworkIntervalMain*i) + randomInterval)); }
 		else
 		// time for the grand finale!!!
-		{	d3.timeout(launchFireworkBurst, Math.max((fireworkIntervalMain*totalFireworksMain), (fireworkIntervalMain*totalFireworksMain) + (fireWorkIntervalFinale*(i-totalFireworksMain)) + chance.floating({ min: -2500, max: 2500 }))); }
+		{	d3.timeout(launchFireworkBurst, Math.max(regularShowMinDuration-randomIntervalMsInput, regularShowMinDuration + (fireWorkIntervalFinale*(i-(totalFireworksMain-1))) + randomInterval)); }
 	}
 }

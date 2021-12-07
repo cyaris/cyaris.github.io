@@ -69,10 +69,11 @@ function appendRect(svgInput, classInput, idInput, rectX, rectY, rectWidth, rect
 };
 
 
-function appendLine(svgInput, idInput, lineX1, lineX2, lineY1, lineY2, color, strokeWidth, strokeDashArray, opacity) {
+function appendLine(svgInput, classInput, idInput, lineX1, lineX2, lineY1, lineY2, color, strokeWidth, strokeDashArray, strokeDashOffset, opacity) {
 
 	svgInput.append('line')
 			.attr('pointer-events', 'none')
+			.attr('class', classInput)
 			.attr('id', idInput)
 			.attr('x1', lineX1)
 			.attr('x2', lineX2)
@@ -82,6 +83,7 @@ function appendLine(svgInput, idInput, lineX1, lineX2, lineY1, lineY2, color, st
 			.style('stroke', color)
 			.style('stroke-width', strokeWidth)
 			.style('stroke-dasharray', strokeDashArray)
+			.style('stroke-dashoffset', strokeDashOffset)
 			.style('opacity', opacity);
 };
 

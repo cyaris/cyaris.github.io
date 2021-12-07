@@ -73,17 +73,19 @@ a:focus {
   font-size: 1.25rem;
 }
 
-/* .navbar-brand:hover {
-  cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
-  animation: cursor_animate 0.5s linear infinite;
-}
-
-@keyframes cursor_animate{
+@keyframes cursor_animate {
    0% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
    50% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
    51% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
    100% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
-} */
+}
+
+.navbar-brand:hover {
+  cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
+  /* animation: cursor_animate 0.5s infinite; */
+  -webkit-animation: cursor_animate 0.25s infinite;
+  animation: cursor_animate 0.25s infinite;
+}
 
 .navbar-custom .navbar-nav .nav-item {
   /* changed transform to capitalize */

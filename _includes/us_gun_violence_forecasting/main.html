@@ -286,9 +286,9 @@
 				/////////////////////////////////////////////
 				/////////////////////////////////////////////
 
-				appendLine(svg1, 'obs_legend_line', (margin.right/2), (margin.right/2) + 12.5, 6, 6, obsColor, 3.5, null, 0);
-				appendLine(svg1, 'overall_legend_line', (margin.right/2), (margin.right/2) + 12.5, 21, 21, overallModelColor, 3.5, null, 1);
-				appendLine(svg1, 'hover_legend_line', (margin.right/2), (margin.right/2) + 12.5, 36, 36, hoverModelColor, 3.5, null, 0);
+				appendLine(svg1, null, 'obs_legend_line', (margin.right/2), (margin.right/2) + 12.5, 6, 6, obsColor, 3.5, null, null, 0);
+				appendLine(svg1, null, 'overall_legend_line', (margin.right/2), (margin.right/2) + 12.5, 21, 21, overallModelColor, 3.5, null, null, 1);
+				appendLine(svg1, null, 'hover_legend_line', (margin.right/2), (margin.right/2) + 12.5, 36, 36, hoverModelColor, 3.5, null, null, 0);
 
 				appendCircle(svg1, 'obs_legend_circle', (margin.right/2) + 6, 6, obsColor);
 
@@ -349,8 +349,8 @@
 				appendPath(svg1, [data], 'hover_ma_line', d3.line().x(null).y(null), hoverModelColor, 0);
 
 				appendRect(svg1, null, 'graph_rect_outline', -(margin.left/2)-5.5, -(margin.top)+.5, width+(margin.left/2)+margin.right+5, height+margin.top+(margin.bottom/2), 'black', 1, 1, 'transparent', 1, null, null, null);
-				appendLine(svg1, null, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0]) + 5}, -5.5, 'black', 2, ('4, 4'), 1);
-				appendLine(svg1, null, futureTimeFrameXLoc + 0.7, width, -7.5, -7.5, 'black', 2, ('4, 4'), 1);
+				appendLine(svg1, null, null, futureTimeFrameXLoc + 0.7, futureTimeFrameXLoc + 0.7, function(d) { return y(y.domain()[0]) + 5}, -5.5, 'black', 2, ('4, 4'), null, 1);
+				appendLine(svg1, null, null, futureTimeFrameXLoc + 0.7, width, -7.5, -7.5, 'black', 2, ('4, 4'), null, 1);
 
 				// Add header text for svg2
 				appendText(svg2, null, 'hover_graph_header', ((fullWidth - leftMarginAdj)/2)-120, 17.5, '13.5px', 'normal', 1, 0.25, 'Hover to Compare Historical Forecasts');
@@ -475,9 +475,9 @@
 				appendText(svg4, null, 'metrics_methodology_tooltip_label', -95, leftMarginAdj-12.5, '15px', 'normal', 1, 0.25, 'Metrics');
 				svg4.select('#metrics_methodology_tooltip_label').attr('transform', 'rotate(-90)').style('text-anchor', 'middle');
 
-				appendLine(svg4, null, leftMarginAdj, 197.75, 40, 40, 'black', 3.5, null, 1);
-				appendLine(svg4, null, 197.75, 296.875, 40, 40, overallModelColor, 3.5, null, 1);
-				appendLine(svg4, null, 296.875, 396, 40, 40, hoverModelColor, 3.5, null, 1);
+				appendLine(svg4, null, null, leftMarginAdj, 197.75, 40, 40, 'black', 3.5, null, null, 1);
+				appendLine(svg4, null, null, 197.75, 296.875, 40, 40, overallModelColor, 3.5, null, null, 1);
+				appendLine(svg4, null, null, 296.875, 396, 40, 40, hoverModelColor, 3.5, null, null, 1);
 				textWidth = getTextWidth(svg1, 'Overall', 12);
 				appendText(svg4, null, null, 296.875 - textWidth, 15, '12px', 'normal', 1, 0, 'Overall');
 				textWidth = getTextWidth(svg1, 'Model', 12);
@@ -796,31 +796,29 @@
 				};
 
 				// Add the year rect boundaries
-				yearRect = svg1.selectAll()
-						.data(nydKeys, function(d) { return d; })
-							.enter()
-						.append('rect')
-							.attr('x', function(d) { return x(allDates[newYearsDayDic[d]]) + 0.7; })
-							.attr('y', -7.5)
-							.attr('width', function(d) { return (width/numRows)*obsPerYearDic[allYears[Number(d)]]; } )
-							.attr('height', height + 7.5)
-							.style('fill', 'transparent')
-							.style('stroke', 'transparent')
-						.on('mouseover', yearRectMO)
-						.on('mouseleave', yearRectML);
+				svg1.selectAll()
+					.data(nydKeys)
+						.enter()
+					.append('rect')
+						.attr('x', function(d) { return x(allDates[newYearsDayDic[d]]) + 0.7; })
+						.attr('y', -7.5)
+						.attr('width', function(d) { return (width/numRows)*obsPerYearDic[allYears[Number(d)]]; } )
+						.attr('height', height + 7.5)
+						.style('fill', 'transparent')
+					.on('mouseover', yearRectMO)
+					.on('mouseleave', yearRectML);
 
 				// Add the margin rect boundaries
 				svg1.selectAll()
-						.data(marginRectDicKeys, function(d) { return d; })
-							.enter()
-						.append('rect')
-							.attr('x', function(d) { return marginRectDic[d]['x']; })
-							.attr('y', function(d) { return marginRectDic[d]['y']; })
-							.attr('width', function(d) { return marginRectDic[d]['width']; })
-							.attr('height', function(d) { return marginRectDic[d]['height']; })
-							.style('fill', 'transparent')
-							.style('stroke', 'transparent')
-						.on('mouseover', marginMO);
+					.data(marginRectDicKeys)
+						.enter()
+					.append('rect')
+						.attr('x', function(d) { return marginRectDic[d]['x']; })
+						.attr('y', function(d) { return marginRectDic[d]['y']; })
+						.attr('width', function(d) { return marginRectDic[d]['width']; })
+						.attr('height', function(d) { return marginRectDic[d]['height']; })
+						.style('fill', 'transparent')
+					.on('mouseover', marginMO);
 
 				// Add label and tooltip for x axis
 				textInput = 'Individual incidents are summed together and grouped by date.'

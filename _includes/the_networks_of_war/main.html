@@ -85,7 +85,7 @@
 			function createMenu() {
 
 				// reading in the data to create the war menu
-				d3.csv(csvDirectory).then(function(data) {
+				d3.csv('{{ site.url }}/assets/csv/the_networks_of_war/war_file_list.csv').then(function(data) {
 
 					parseTime = d3.timeParse('%Y-%m-%d');
 
@@ -219,7 +219,6 @@
 				});
 			};
 
-			csvDirectory = '{{ site.url }}/assets/csv/the_networks_of_war/war_file_list.csv';
 			// calling the war menu function upon page load
 			createMenu();
 
@@ -232,7 +231,12 @@
 					color = d3.scaleLinear().domain([1, 2]).range(['lightgreen', 'violet']);
 
 					// set the dimensions and margins of the graph
-					margin = {top: 0, bottom: 15, left: 0, right: 0},
+					margin = {
+						'top': 0,
+						'bottom': 15,
+						'left': 0,
+						'right': 0
+					},
 					width = 800,
 					height = 700,
 					graphMenuHeight = height * 0.175,
@@ -823,7 +827,7 @@
 					// I have no idea why but this line doesn't work if I move it anywhere else.
 					firstDegreeLinks = [];
 
-					graph.links.forEach(function(d) {
+					graph.links.forEach(function(d, i) {
 							firstDegreeLinks[d.source.index + '-' + d.target.index] = true;
 							firstDegreeLinks[d.target.index + '-' + d.source.index] = true;
 					});
@@ -837,21 +841,13 @@
 					nodeStrokeWidth = 1,
 					linkDashStrokeWidth = 3;
 
-			    link.append('line')
-						.attr('class', 'link')
-				    .attr('stroke', '#aaaaaa')
-				    .attr('stroke-width', linkStrokeWidth);
-
+					appendLine(link, 'link', null, null, null, null, null, '#aaaaaa', linkStrokeWidth, null, null, 1);
 					// overlaying lines of different styles
 					// this will be used to accent interactions between nodes
 					// identifying all dyads that shouldn't be included with a class assignment.
 					// these will be removed immediately after creation.
-					link.append('line')
-						.attr('class', 'link_dash')
-						.attr('stroke', 'blue')
-						.attr('stroke-dasharray', ('2.5, 15'))
-						.attr('stroke-dashoffset', -7.5)
-						.attr('stroke-width', linkDashStrokeWidth)
+					appendLine(link, 'link_dash', null, null, null, null, null, null, linkDashStrokeWidth, ('2.5, 15'), -7.5, 1);
+					svg.selectAll('.link_dash')
 						.attr('stroke', function(d, i) {
 							if ( linkDescriptiveValues[i]==0 || defaultValues['link'][timeFrame]==linkDescriptorSelected )
 							{ return 'transparent'; }
@@ -941,11 +937,10 @@
 						.attr('stroke', 'black')
 						.attr('stroke-width', nodeStrokeWidth)
 			      .attr('r', function(d) { return nodeMargins['radius_size'][d.id]; })
-						// .attr('opacity', 0.5)
 			      .style('fill', function(d) {
-							if ( parseInt(d.side)==3 )
 							// returning a color in the middle of the spectrum if the side is 3
 							// this would mean they were on side 1 and side 2 (1 + 2)
+							if ( parseInt(d.side)==3 )
 							{ return color(1.5); }
 							else
 							{ return color(parseInt(d.side)); }
@@ -956,7 +951,7 @@
 							.attr('id', function(d) { return 'node_name_' + d.id; })
 				      .attr('text-anchor', 'middle')
 							.style('font-size', graphTextSize)
-							.style('stroke', 'black')
+							.style('fill', 'black')
 							.style('stroke-width', 0)
 							.style('pointer-events', 'auto')
 				      .text(function(d) { return d.participant; });
@@ -968,7 +963,7 @@
 							.attr('id', function(d) { return 'node_size_warning_' + d.id; })
 							.attr('text-anchor', 'middle')
 							.style('font-size', graphTextSize)
-							.style('stroke', 'black')
+							.style('fill', 'black')
 							.style('stroke-width', 0)
 							.style('opacity', 0)
 				      .text('?');
@@ -1142,9 +1137,7 @@
 								.transition().delay(50).duration(1000)
 									.attr('stroke-width', linkDashStrokeWidth + 4)
 									.attr('stroke', function(d, i) {
-										if ( defaultSelection )
-										{ return 'transparent'; }
-										else if ( linkDescriptiveValues[i]==0 )
+										if ( defaultSelection || linkDescriptiveValues[i]==0 )
 										{ return 'transparent'; }
 										else
 										{ return 'blue'; }

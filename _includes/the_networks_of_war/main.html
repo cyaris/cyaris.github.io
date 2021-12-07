@@ -303,7 +303,7 @@
 						warDic['timeFrame'] = warDic['start_year'] + '–' + warDic['end_year'];
 					}
 
-					console.log(warDic);
+					console.log('warDic: ', warDic);
 
 					appendText(svg, null, null, 0, 85, graphMenuTextSize, 'normal', 1, 0, warDic['war_name']);
 					appendText(svg, null, null, 0, 102.5, graphMenuTextSize, 'normal', 1, 0, warDic['timeFrame']);
@@ -636,10 +636,8 @@
 						// nothing to compare if all the values are the same (for the same reason).
 						else if ( allPartFields[i]=='days_at_war_z' && daysAtWarUniqueValues.length==1 ) {}
 						else if ( allPartFields[i]=='days_not_at_war_z' && daysNotAtWarUniqueValues.length==1 ) {}
-						// // only showing land_mass_exchange_gain if there was a land_mass_exchange_loss in the war.
-						// // only showing land_mass_exchange_loss if there was a land_mass_exchange_gain in the war.
-						// // only showing population_exchange_gain if there was a population_exchange_loss in the war.
-						// // only showing population_exchange_loss if there was a population_exchange_gain in the war.
+						// // only showing land_mass_exchange_gain if there was a land_mass_exchange_loss in the war and vice versa.
+						// // only showing population_exchange_gain if there was a population_exchange_loss in the war and vice versa.
 						// else if ( ['land_mass_exchange_gain_x', 'land_mass_exchange_gain_y', 'land_mass_exchange_gain_z', 'population_exchange_gain_x', 'population_exchange_gain_y', 'population_exchange_gain_z'].includes(allPartFields[i]) && maxLandMassLoss==0 ) {}
 						// else if ( ['land_mass_exchange_loss_x', 'land_mass_exchange_loss_y', 'land_mass_exchange_loss_z', 'population_exchange_loss_x', 'population_exchange_loss_y', 'population_exchange_loss_z'].includes(allPartFields[i]) && maxLandMassGain==0 ) {}
 						// dyads cannot be less than or equal to total nodes (must contain information other than what's being looked at.)
@@ -667,7 +665,7 @@
 						}
 					};
 
-					console.log(descriptiveFields);
+					console.log('descriptiveFields: ', descriptiveFields);
 
 					function adjustForOneYearWars(groupingType, fieldName, overAllFields) {
 
@@ -729,7 +727,7 @@
 						callGroupSVG(svg, 'slider', 'timeframe_slider', null, 'translate(200,200)', yearSlider, 'auto');
 						// FIX: integrate transform below into callGroupSVG function.
 						svg.select('#timeframe_slider').attr('transform', 'translate(200,20)');
-						formatSlider('12px');
+						formatSlider(graphTextSize);
 						timeFrame = yearSlider.value();
 					}
 					else {
@@ -752,6 +750,7 @@
 						linkCount = linkCombinations.length,
 						// floating nodes are total nodes without links.
 						floatingNodeCount = nodeCount - linkCombinations.flat().coalesceZeroUnique().length;
+						console.log('floatingNodeCount: ', floatingNodeCount);
 
 						if ( linkCount<=1 )
 						{ return null; }
@@ -772,12 +771,13 @@
 					};
 
 					primaryNode = identifyPrimaryNode();
-					console.log('primaryNode', primaryNode);
 
 					if ( primaryNode!=null )
 					{ onlyOnePrimaryNode = true; }
 					else
 					{ onlyOnePrimaryNode = false; }
+
+					console.log('onlyOnePrimaryNode: ', onlyOnePrimaryNode);
 
 					function createGraphLayout() {
 

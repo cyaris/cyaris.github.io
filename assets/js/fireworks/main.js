@@ -256,7 +256,11 @@ function launchFireworksShow(totalFireworksMain, totalFireworksFinale, randomInt
 
 	for ( var i=0; i<=totalFireworksMain+totalFireworksFinale-1; i++ ) {
 
-		randomInterval = chance.floating({ min: -randomIntervalMsInput, max: randomIntervalMsInput });
+		// setting random variable manually for first iteration only.
+		if ( i==0 )
+		{ randomInterval = 0.5; }
+		else
+		{ randomInterval = chance.floating({ min: -randomIntervalMsInput, max: randomIntervalMsInput }); }
 		// subtracting one from totalFireworksMain so that the first firework comes without any delay.
 		regularShowMinDuration = (fireworkIntervalMain*(totalFireworksMain-1));
 		// all fireworks for the regular show

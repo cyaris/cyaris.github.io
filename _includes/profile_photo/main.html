@@ -21,22 +21,23 @@
 			  background: white;
 			}
 
-		 	/* #profile_photo {
-				cursor: url({{site.url}}/assets/img/pizza_cursor.png), auto;
-			} */
-
 		</style>
 	</head>
 	<body>
-		<!-- Creating two overlapping divs for the photo and the animated pixels on top. -->
+		<!-- creating two overlapping divs for the photo and the animated pixels on top. -->
 		<div id='profile_photo' align='center' style='margin-bottom:-406.25px;'></div>
 		<div id='profile_photo_pixels' align='center' style='margin-bottom:15px;'></div>
-		<!-- Create a div where the slider will be -->
+		<!-- creating a div where the slider will be.  -->
 		<div id='transition_menu' align='center' style='margin-bottom:25px;'></div>
 		<script type='text/javascript'>
 
-			// set the dimensions and margins of the graph
-			margin = {top: 0, bottom: 15, left: 0, right: 0},
+			// set the dimensions and margins of the graph.
+			margin = {
+				'top': 0,
+				'bottom': 15,
+				'left': 0,
+				'right': 0
+			},
 		  width = 405,
 		  height = 405,
 			svg3Height = 120;

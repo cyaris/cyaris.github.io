@@ -148,28 +148,24 @@
 			</div>
 			<div class='center'>
 				<a href='{{ site.url }}/mastermind/play/' class='btn-group'>Play Again</a>
-				<br>
-				<br>
-				<br>
+				<br><br><br>
 			</div>
 		</div>
 		<div class='no_selection' id='hidden_button_lose'>
 			<div class='no_selection no_events' id='color_code_reveal' align='center'></div>
 			<div id='hidden_button_lose_text'>
 				<span class='blinking_text'>
-					<p align='center' style='margin-left:-190px; margin-top:-220px;'>
+					<p align='center' style='margin-left:-187.5px; margin-top:-220px;'>
 						<font size='5.5'>
 							<b>You lose!</b>
 						</font>
 					</p>
 				</span>
-				<p align='center' style='margin-left:-175px; margin-top:-30px; margin-bottom:70px;'>Here's the code:</p>
+				<p align='center' style='margin-left:-177.5px; margin-top:-30px; margin-bottom:70px;'>Here's the code:</p>
 			</div>
 			<div class='center'>
 				<a href='{{ site.url }}/mastermind/play/' class='btn-group' style='margin-top:20px;'>Play Again</a>
-				<br>
-				<br>
-				<br>
+				<br><br><br>
 			</div>
 		</div>
 		<!-- Create a div where the color selection will take place -->
@@ -256,7 +252,7 @@
 								{ d3.select('#game_board_tooltip').html(tooltipNumber + ' right colors<br>in the ' + colorState + ' place.'); }
 							}
 
-							d3.select(this).style('stroke-width', 3.5).style('cursor', 'help');
+							d3.select(this).style('stroke-width', 4).style('cursor', 'help');
  							d3.select('#game_board_tooltip').style('opacity', 1).style('top', (d3.mouse(this)[1]) + 76.5 + 'px');
  					 	}
  			 	},
@@ -340,7 +336,7 @@
 					svg1.selectAll('.rects')
 						.style('stroke-width', function(d) {
 							if ( d.color_index==clickCount+1 )
-							{ return 3.5 }
+							{ return 4; }
 							else
 							{ return 1; }
 						});
@@ -413,7 +409,7 @@
 						document.getElementById('color_buttons').style.display = 'none';
 						document.getElementById('hidden_button_win').style.display = 'block';
 						svg1.selectAll('.rects').style('stroke-width', 1);
-						svg1.selectAll('.rects').filter(function(d) { return d.turn==currentTurn && d.column!='W' && d.column!='B'; }).style('stroke-width', 3.5);
+						svg1.selectAll('.rects').filter(function(d) { return d.turn==currentTurn && d.column!='W' && d.column!='B'; }).style('stroke-width', 4);
 						launchFireworksShow(5, 5, 2500);
 					}
 					// conditions for a losing game below.
@@ -424,10 +420,10 @@
 
 						// set the dimensions and margins of the graph
 						margin = {
-							top: 23.5,
-							right: gameSettings[level]['code_reveal_right_margin'],
-							bottom: 150,
-							left: 25
+							'top': 23.5,
+							'right': gameSettings[level]['code_reveal_right_margin'],
+							'bottom': 150,
+							'left': 25
 						},
 					  width = 350,
 					  height = 200;

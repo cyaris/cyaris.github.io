@@ -44,10 +44,12 @@ layout: page
       {% endif %}
     </a>
 
+    <!-- custom edit: removed "Posted on" -->
     <p class="post-meta">
       {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
-      Posted on {{ post.date | date: date_format }}
+      {{ post.date | date: date_format }}
     </p>
+    <!-- end of custom edit -->
 
     {% if thumbnail != "" %}
     <div class="post-image post-image-small">

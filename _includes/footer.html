@@ -20,9 +20,11 @@
       {% if site.url-pretty %}
         <!-- custom edit: removed bullet -->
         <!-- &nbsp;&bull;&nbsp; -->
+        <!-- end of custom edit -->
         <span class="author-site">
           <!-- custom edit: added line break -->
           <br>
+          <!-- end of custom edit -->
           <a href="{% if site.url-canonical %}{{ site.url-canonical }}{% else %}{{ '' | absolute_url }}{% endif %}">{{ site.url-pretty }}</a>
         </span>
       {% endif %}
@@ -39,6 +41,7 @@
         Powered by
         <!-- custom edit: target _blank -->
         <a href="https://beautifuljekyll.com" target="_blank">Beautiful Jekyll</a>
+        <!-- end of custom edit -->
       </p>{% endunless %}
       </div>
     </div>

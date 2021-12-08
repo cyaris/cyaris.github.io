@@ -33,24 +33,6 @@ a:focus,
 
 /* --- Navbar --- */
 
-.navbar-custom {
-  /* added bottom border */
-  border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
-}
-
-@keyframes kidpix_cursor_animate {
-   0% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
-   50% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
-   51% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
-   100% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
-}
-
-.navbar-brand:hover {
-  cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
-  -webkit-animation: kidpix_cursor_animate 0.25s infinite;
-  animation: kidpix_cursor_animate 0.25s infinite;
-}
-
 @media (min-width: 1200px) {
 
   .navbar-brand-mobile {
@@ -96,14 +78,14 @@ a:focus,
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    /* changed font-size for navbar dropdown items */
     font-size: 0.825em;
+    font-weight: 700;
     border-width: 0px 2.75px 2px 2.75px;
     border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1199px) {
 
   .navbar-brand-desktop,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:focus > .dropdown-menu {
@@ -117,7 +99,7 @@ a:focus,
   .navbar-custom .navbar-toggler[aria-expanded="true"] {
     background-color: {{ site.navbar-dropdown-background-hover-col | default: "#DDDDDD" }};
   }
-  
+
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
     transform: translate(-15px, 0px);
   }
@@ -126,6 +108,9 @@ a:focus,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:focus {
     color: {{ site.navbar-link-col | default: "#404040" }};
     background-color: {{ site.navbar-col | default: "#404040" }};;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
@@ -135,12 +120,33 @@ a:focus,
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
     font-size: 1em;
+    font-weight: 750;
   }
+}
+
+.navbar-custom {
+  /* added bottom border */
+  border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
+}
+
+@keyframes kidpix_cursor_animate {
+   0% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
+   50% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
+   51% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
+   100% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
+}
+
+.navbar-brand:hover {
+  cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
+  -webkit-animation: kidpix_cursor_animate 0.25s infinite;
+  animation: kidpix_cursor_animate 0.25s infinite;
 }
 
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-brand:focus,
-.navbar-custom .navbar-nav .nav-link {
+.navbar-custom .navbar-nav .nav-link,
+.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle,
+.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
   /* changed variable name navbar-text-col to navbar-link-col */
   color: {{ site.navbar-link-col | default: "#404040" }};
 }
@@ -170,16 +176,8 @@ a:focus,
   border-width: 2.75px 2.75px 3px 2.75px;
 }
 
-.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-  /* changed variable name navbar-text-col to navbar-link-col */
-  color: {{ site.navbar-link-col | default: "#404040" }};
-  /* changed font-size for navbar dropdown items */
-  font-weight: 700;
-}
-
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
-  color: {{ site.navbar-link-col | default: "#DDDDDD" }};
   cursor: default;
 }
 
@@ -375,6 +373,7 @@ footer a:hover {
   border: 4.5px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};
   font-weight: 750;
   box-shadow: none;
+  -moz-box-shadow: none;
   -webkit-box-shadow: none;
 }
 
@@ -383,6 +382,7 @@ footer a:hover {
 
 .btn-social-icon:focus {
   box-shadow: none;
+  -moz-box-shadow: none;
   -webkit-box-shadow: none;
 }
 

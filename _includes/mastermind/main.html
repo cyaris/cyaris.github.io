@@ -18,10 +18,7 @@
 	      }
 	    }
 
-			#hidden_button_win {
-				display: none;
-			}
-
+			#hidden_button_win,
 			#hidden_button_lose {
 				display: none;
 			}
@@ -401,7 +398,6 @@
 						.style('font-size', function(d) { return pieceDic[gameScores[d.column][currentTurn-1]]['font_size']; })
 						.style('stroke-width', 1.5)
 						.style('stroke', 'black')
-						.attr('pointer-events', 'none')
 						.text(function(d) { return pieceDic[gameScores[d.column][currentTurn-1]]['piece']; });
 
 					// conditions for a winning game below.

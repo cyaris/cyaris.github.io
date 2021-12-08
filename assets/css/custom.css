@@ -83,6 +83,13 @@ a:focus,
     border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
   }
 
+  .navbar-custom .navbar-nav .nav-item.dropdown.show,
+  .navbar-custom .navbar-nav .nav-item.dropdown.show:focus {
+    /* colors below must be transparent because they are overlapping with other elements. */
+    background-color: transparent;
+    border-color: transparent;
+  }
+
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
     width: 103.5%;
     transform: translate(-3px, 2px);
@@ -110,14 +117,15 @@ a:focus,
   .navbar-custom .navbar-toggler[aria-expanded="true"] {
     background-color: {{ site.navbar-dropdown-background-hover-col | default: "#DDDDDD" }};
   }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown.show:hover {
-    background-color: {{ site.navbar-col | default: "#DDDDDD" }};
-    border-color: {{ site.navbar-col | default: "#DDDDDD" }};
-  }
-
+  
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
     transform: translate(-15px, 0px);
+  }
+
+  .navbar-custom .navbar-nav .nav-item.dropdown.show,
+  .navbar-custom .navbar-nav .nav-item.dropdown.show:focus {
+    color: {{ site.navbar-link-col | default: "#404040" }};
+    background-color: {{ site.navbar-col | default: "#404040" }};;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
@@ -167,14 +175,6 @@ a:focus,
   color: {{ site.navbar-link-col | default: "#404040" }};
   /* changed font-size for navbar dropdown items */
   font-weight: 700;
-}
-
-.navbar-custom .navbar-nav .nav-item.dropdown.show,
-.navbar-custom .navbar-nav .nav-item.dropdown.show:focus {
-  color: {{ site.navbar-link-col | default: "#404040" }};
-  /* colors below must be transparent because they are overlapping with other elements. */
-  background-color: transparent;
-  border-color: transparent;
 }
 
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,

@@ -38,9 +38,11 @@ a:focus,
   border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
 
-.navbar-custom .navbar-brand {
-  /* changed font-size for navbar title link */
-  font-size: 1.25rem;
+/* .navbar-custom, */
+.navbar-custom.top-nav-short,
+.navbar-custom.top-nav-short-permanent {
+  padding-top: 0.55rem;
+  height: 3.45rem;
 }
 
 @keyframes kidpix_cursor_animate {
@@ -170,8 +172,10 @@ a:focus,
 
 .navbar-custom .navbar-nav .nav-item.dropdown.show,
 .navbar-custom .navbar-nav .nav-item.dropdown.show:focus {
-  background-color: {{ site.navbar-col | default: "#DDDDDD" }};
-  border-color: {{ site.navbar-col | default: "#DDDDDD" }};
+  color: {{ site.navbar-link-col | default: "#404040" }};
+  /* colors below must be transparent because they are overlapping with other elements. */
+  background-color: transparent;
+  border-color: transparent;
 }
 
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,

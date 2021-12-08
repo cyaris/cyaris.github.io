@@ -58,17 +58,21 @@ a:focus,
 
 @media (min-width: 1200px) {
 
-  .navbar-custom {
-    padding-top: 0.7375rem;
-    padding-bottom: 0.7375rem;
-  }
-
   .navbar-brand-mobile {
     display: none;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown.show:hover > .dropdown-menu {
     display: block;
+  }
+
+  .navbar-custom {
+    padding-top: 0.7375rem;
+    padding-bottom: 0.7375rem;
+  }
+
+  .navbar-custom .navbar-nav .nav-item.dropdown {
+    transform: translate(0px, -3px);
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown:hover,
@@ -80,7 +84,7 @@ a:focus,
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
     width: 103.5%;
-    transform: translate(-2.75px, 2px);
+    transform: translate(-3px, 2px);
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
@@ -98,15 +102,26 @@ a:focus,
     display: none;
   }
 
+  .navbar-custom .navbar-collapse {
+    border-width: 2px;
+  }
+
+  .navbar-custom .navbar-toggler[aria-expanded="true"] {
+    background-color: {{ site.navbar-dropdown-background-hover-col | default: "#DDDDDD" }};
+  }
+
   .navbar-custom .navbar-nav .nav-item.dropdown.show:hover {
     background-color: {{ site.navbar-col | default: "#DDDDDD" }};
     border-color: {{ site.navbar-col | default: "#DDDDDD" }};
-    box-shadow: none;
-    -webkit-box-shadow: none;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
     transform: translate(-15px, 0px);
+  }
+
+  .navbar-custom .navbar-nav .nav-item.dropdown:show .nav-link.dropdown-toggle {
+    box-shadow: none;
+    -webkit-box-shadow: none;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
@@ -115,8 +130,7 @@ a:focus,
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    font-size: 0.85em;
-    border: none;
+    font-size: 1em;
   }
 }
 
@@ -160,18 +174,17 @@ a:focus,
 }
 
 .navbar-custom .navbar-nav .nav-item.dropdown.show,
-.navbar-custom .navbar-nav .nav-item.dropdown.show:focus
-{
+.navbar-custom .navbar-nav .nav-item.dropdown.show:focus {
   background-color: {{ site.navbar-col | default: "#DDDDDD" }};
   border-color: {{ site.navbar-col | default: "#DDDDDD" }};
-  box-shadow: none;
-  -webkit-box-shadow: none;
 }
 
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
   color: {{ site.navbar-link-col | default: "#DDDDDD" }};
   cursor: default;
+  box-shadow: none;
+  -webkit-box-shadow: none;
 }
 
 .navbar-custom .navbar-brand:hover,
@@ -183,6 +196,7 @@ a:focus,
   color: {{ site.navbar-link-hover-col | default: "#0085A1" }};
   cursor: pointer;
 }
+
 
 /* --- Footer --- */
 
@@ -202,21 +216,10 @@ footer a:hover {
   text-decoration: none;
 }
 
-.list-inline a,
-.list-inline a:focus {
-  /* added individual color for social in footer */
-  color: {{ site.social-icon-background-col | default: "#0085A1" }};
- }
-
-.list-inline a:hover {
-  /* added individual color for social hover in footer */
-  color: {{ site.social-icon-background-hover-col | default: "#0085A1" }};
- }
-
 .fa-stack-1x {
   /* changed color of font-awesome icon */
   color: {{ site.social-icon-col | default: "#0085A1" }};
- }
+}
 
 .fa-stack-1x:hover,
 .fa-stack-1x:focus {
@@ -224,6 +227,21 @@ footer a:hover {
  color: {{ site.social-icon-hover-col | default: "#0085A1" }};
 }
 
+.list-inline a,
+.list-inline a:focus {
+  /* added individual color for social in footer */
+  color: {{ site.social-icon-background-col | default: "#0085A1" }};
+}
+
+.list-inline a:hover {
+  /* added individual color for social hover in footer */
+  color: {{ site.social-icon-background-hover-col | default: "#0085A1" }};
+}
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 .author-site a,
 .theme-by a {
   /* added slight bold to link */
@@ -366,6 +384,15 @@ footer a:hover {
   -webkit-box-shadow: none;
 }
 
+
+/* --- Social Share Icons --- */
+
+.btn-social-icon:focus {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+
 /* --- Thumbnails --- */
 
 /* .post-preview .post-image .post-image-short { */
@@ -375,21 +402,15 @@ footer a:hover {
 
 /* --- General D3 --- */
 
-svg text {
+svg text,
+.no_selection,
+div.tooltip {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
-}
-
-.no_selection {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 .no_events {
@@ -407,13 +428,6 @@ div.tooltip {
   border: solid;
   border-width: 2px;
   border-radius: 5px;
-
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  pointer-events: none;
 }
 
 @keyframes blinkingText {

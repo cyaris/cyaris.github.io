@@ -38,13 +38,6 @@ a:focus,
   border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
 }
 
-/* .navbar-custom, */
-.navbar-custom.top-nav-short,
-.navbar-custom.top-nav-short-permanent {
-  padding-top: 0.55rem;
-  height: 3.45rem;
-}
-
 @keyframes kidpix_cursor_animate {
    0% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
    50% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
@@ -71,6 +64,12 @@ a:focus,
   .navbar-custom {
     padding-top: 0.7375rem;
     padding-bottom: 0.7375rem;
+  }
+
+  .navbar-custom.top-nav-short,
+  .navbar-custom.top-nav-short-permanent {
+    padding-top: 0.55rem;
+    height: 3.45rem;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown {

@@ -105,13 +105,13 @@ a:focus,
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus-visible {
-    outline: 0px
+    outline-width: 0px;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown.show,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:focus {
     color: {{ site.navbar-link-col | default: "#404040" }};
-    background-color: {{ site.navbar-col | default: "#404040" }};;
+    background-color: {{ site.navbar-col | default: "#404040" }};
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {

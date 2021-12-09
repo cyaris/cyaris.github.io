@@ -83,6 +83,33 @@ a:focus,
     border-width: 0px 2.75px 2px 2.75px;
     border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
   }
+
+  /* making projects triangle down when the dropdown is being shown. */
+  .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-toggle::after {
+    transform: rotate(0deg) translate(2.5px, 0px);
+    /* Safari */
+    -webkit-transform: rotate(0deg) translate(2.5px, 0px);
+    /* Firefox */
+    -moz-transform: rotate(0deg) translate(2.5px, 0px);
+    /* IE */
+    -ms-transform: rotate(0deg) translate(2.5px, 0px);
+    /* Opera */
+    -o-transform: rotate(0deg) translate(2.5px, 0px);
+  }
+
+  /* making projects triangle up when the dropdown is not being shown. */
+  .dropdown-toggle::after {
+    transform: rotate(180deg) translate(-2.5px, 0px);
+    /* Safari */
+    -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
+    /* Firefox */
+    -moz-transform: rotate(180deg) translate(-2.5px, 0px);
+    /* IE */
+    -ms-transform: rotate(180deg) translate(-2.5px, 0px);
+    /* Opera */
+    -o-transform: rotate(180deg) translate(-2.5px, 0px);
+  }
+
 }
 
 @media (max-width: 1199px) {
@@ -123,6 +150,34 @@ a:focus,
     font-size: 1em;
     font-weight: 800;
   }
+
+  /* making projects triangle down when the dropdown is being shown. */
+  .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-toggle::after{
+    transform: rotate(0deg) translate(2.5px, 0px);
+    /* Safari */
+    -webkit-transform: rotate(0deg) translate(2.5px, 0px);
+    /* Firefox */
+    -moz-transform: rotate(0deg) translate(2.5px, 0px);
+    /* IE */
+    -ms-transform: rotate(0deg) translate(2.5px, 0px);
+    /* Opera */
+    -o-transform: rotate(0deg) translate(2.5px, 0px);
+  }
+
+  /* making projects triangle up when the dropdown is not being shown. */
+  .navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-toggle::after,
+  .dropdown-toggle::after {
+    transform: rotate(180deg) translate(-2.5px, 0px);
+    /* Safari */
+    -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
+    /* Firefox */
+    -moz-transform: rotate(180deg) translate(-2.5px, 0px);
+    /* IE */
+    -ms-transform: rotate(180deg) translate(-2.5px, 0px);
+    /* Opera */
+    -o-transform: rotate(180deg) translate(-2.5px, 0px);
+  }
+
 }
 
 .navbar-custom {
@@ -192,35 +247,6 @@ a:focus,
   animation: kidpix_cursor_animate 0.25s infinite;
   -webkit-animation: kidpix_cursor_animate 0.25s infinite;
 }
-
-/* making projects triangle down when the dropdown is being shown. */
-.navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-toggle::after,
-.navbar-custom .navbar-nav .nav-item.dropdown:focus > .dropdown-toggle::after {
-  transform: rotate(0deg) translate(2.5px, 0px);
-  /* Safari */
-  -webkit-transform: rotate(0deg) translate(2.5px, 0px);
-  /* Firefox */
-  -moz-transform: rotate(0deg) translate(2.5px, 0px);
-  /* IE */
-  -ms-transform: rotate(0deg) translate(2.5px, 0px);
-  /* Opera */
-  -o-transform: rotate(0deg) translate(2.5px, 0px);
-}
-
-/* making projects triangle up when the dropdown is not being shown. */
-.navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-toggle::after,
-.dropdown-toggle::after {
-  transform: rotate(180deg) translate(-2.5px, 0px);
-  /* Safari */
-  -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
-  /* Firefox */
-  -moz-transform: rotate(180deg) translate(-2.5px, 0px);
-  /* IE */
-  -ms-transform: rotate(180deg) translate(-2.5px, 0px);
-  /* Opera */
-  -o-transform: rotate(180deg) translate(-2.5px, 0px);
-}
-
 
 /* --- Footer --- */
 

@@ -108,21 +108,6 @@ a:focus,
     outline: none;
   }
 
-  /* :focus-visible {
-      outline: -webkit-focus-ring-color auto 0px;
-  } */
-
-  /* .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus-visible {
-    outline-width: 0px;
-  } */
-
-  /* :focus-visible {
-    outline: -webkit-focus-ring-color auto 0px;
-  }
-  a:-webkit-any-link:focus-visible {
-      outline-offset: 0px;
-  } */
-
   .navbar-custom .navbar-nav .nav-item.dropdown.show,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:focus {
     color: {{ site.navbar-link-col | default: "#404040" }};
@@ -131,7 +116,7 @@ a:focus,
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
     transform: translate(0px, 0px);
-    border-left: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
+    border-left: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
@@ -143,19 +128,6 @@ a:focus,
 .navbar-custom {
   /* added bottom border */
   border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
-}
-
-@keyframes kidpix_cursor_animate {
-   0% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
-   50% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
-   51% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
-   100% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
-}
-
-.navbar-brand:hover {
-  cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
-  -webkit-animation: kidpix_cursor_animate 0.25s infinite;
-  animation: kidpix_cursor_animate 0.25s infinite;
 }
 
 .navbar-custom .navbar-brand,
@@ -173,6 +145,7 @@ a:focus,
   /* changed transform to capitalize */
   text-transform: capitalize;
 }
+
 
 .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
   /* making dropdown execute on hover instead of click */
@@ -205,6 +178,47 @@ a:focus,
   /* added individual hover color variable for navbar  */
   color: {{ site.navbar-link-hover-col | default: "#0085A1" }};
   cursor: pointer;
+}
+
+@keyframes kidpix_cursor_animate {
+   0% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
+   50% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
+   51% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
+   100% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
+}
+
+.navbar-custom .navbar-brand:hover {
+  cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
+  animation: kidpix_cursor_animate 0.25s infinite;
+  -webkit-animation: kidpix_cursor_animate 0.25s infinite;
+}
+
+/* making projects triangle down when the dropdown is being shown. */
+.navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-toggle::after,
+.navbar-custom .navbar-nav .nav-item.dropdown:focus > .dropdown-toggle::after {
+  transform: rotate(0deg) translate(2.5px, 0px);
+  /* Safari */
+  -webkit-transform: rotate(0deg) translate(2.5px, 0px);
+  /* Firefox */
+  -moz-transform: rotate(0deg) translate(2.5px, 0px);
+  /* IE */
+  -ms-transform: rotate(0deg) translate(2.5px, 0px);
+  /* Opera */
+  -o-transform: rotate(0deg) translate(2.5px, 0px);
+}
+
+/* making projects triangle up when the dropdown is not being shown. */
+.navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-toggle::after,
+.dropdown-toggle::after {
+  transform: rotate(180deg) translate(-2.5px, 0px);
+  /* Safari */
+  -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
+  /* Firefox */
+  -moz-transform: rotate(180deg) translate(-2.5px, 0px);
+  /* IE */
+  -ms-transform: rotate(180deg) translate(-2.5px, 0px);
+  /* Opera */
+  -o-transform: rotate(180deg) translate(-2.5px, 0px);
 }
 
 

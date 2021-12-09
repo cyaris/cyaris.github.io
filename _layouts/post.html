@@ -13,7 +13,9 @@ layout: base
         {% assign gh_user =  gh_split[0]  %}
         {% assign gh_repo =  gh_split[1]  %}
 
-        <div id="header-gh-btns">
+        <!-- custom edit: added no_selection class to div. -->
+        <div class='no_selection' id="header-gh-btns">
+        <!-- end of custom edit -->
           {% if page.gh-badge.size > 0 %}
             {% for badge in page.gh-badge %}
               {% case badge %}

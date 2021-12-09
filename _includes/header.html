@@ -62,6 +62,20 @@
   <div class="container-md">
     <div class="row">
       <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
+      <!-- custom edit: different formatting for page.title and page.subtitle on home page only. -->
+      <!-- this will be made possible by new classes assigned below. -->
+      {% if page.subtitle=="Data Discoveries" %}
+        <div class="{{ include.type }}-heading">
+          <h1 id="home_page_heading">{% if page.title %}{{ page.title | strip_html }}{% else %}<br/>{% endif %}</h1>
+          {% if page.subtitle %}
+            <hr class="large">
+            <div class="home_page_subheading">
+              <span class="{{ include.type }}-heading">{{ page.subtitle | strip_html }}</span>
+            </div>
+          {% endif %}
+        </div>
+      <!-- end of area added. not end of custom edit since the else below is what was previously there. -->
+      {% else %}
         <div class="{{ include.type }}-heading">
           <h1>{% if page.title %}{{ page.title | strip_html }}{% else %}<br/>{% endif %}</h1>
           {% if page.subtitle %}
@@ -88,6 +102,8 @@
             {% endif %}
           {% endif %}
         </div>
+      {% endif %}
+      <!-- end of custom edit -->
       </div>
     </div>
   </div>

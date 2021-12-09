@@ -471,9 +471,10 @@ div.tooltip {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  pointer-events: none;
 }
 
+svg text,
+div.tooltip,
 .no_events {
   pointer-events: none;
 }

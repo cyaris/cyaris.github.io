@@ -33,9 +33,20 @@ a:focus,
 
 /* --- Navbar --- */
 
+/* making projects triangle down when the dropdown is being shown. */
+.navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-toggle::after {
+  transform: rotate(0deg) translate(2.5px, 0px);
+  /* Safari, Firefox IE & Opera below. */
+  -webkit-transform: rotate(0deg) translate(2.5px, 0px);
+  -moz-transform: rotate(0deg) translate(2.5px, 0px);
+  -ms-transform: rotate(0deg) translate(2.5px, 0px);
+  -o-transform: rotate(0deg) translate(2.5px, 0px);
+}
+
 @media (min-width: 1200px) {
 
-  .navbar-brand-mobile {
+  .navbar-brand-mobile,
+  .dropdown-item-mobile {
     display: none;
   }
 
@@ -84,39 +95,28 @@ a:focus,
     border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
   }
 
-  /* making projects triangle down when the dropdown is being shown. */
-  .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-toggle::after {
-    transform: rotate(0deg) translate(2.5px, 0px);
-    /* Safari */
-    -webkit-transform: rotate(0deg) translate(2.5px, 0px);
-    /* Firefox */
-    -moz-transform: rotate(0deg) translate(2.5px, 0px);
-    /* IE */
-    -ms-transform: rotate(0deg) translate(2.5px, 0px);
-    /* Opera */
-    -o-transform: rotate(0deg) translate(2.5px, 0px);
-  }
-
   /* making projects triangle up when the dropdown is not being shown. */
+  /* the same definitions can be used between desktop and mobile for when the dropdown IS being shown. */
   .dropdown-toggle::after {
     transform: rotate(180deg) translate(-2.5px, 0px);
-    /* Safari */
     -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
-    /* Firefox */
     -moz-transform: rotate(180deg) translate(-2.5px, 0px);
-    /* IE */
     -ms-transform: rotate(180deg) translate(-2.5px, 0px);
-    /* Opera */
     -o-transform: rotate(180deg) translate(-2.5px, 0px);
   }
-
 }
 
 @media (max-width: 1199px) {
 
   .navbar-brand-desktop,
+  .dropdown-item-desktop,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:focus > .dropdown-menu {
     display: none;
+  }
+
+  .navbar-custom .navbar-nav .nav-link {
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
   }
 
   .navbar-custom .navbar-collapse {
@@ -143,41 +143,26 @@ a:focus,
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
     transform: translate(0px, 0px);
-    border-left: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
     font-size: 1em;
     font-weight: 800;
-  }
-
-  /* making projects triangle down when the dropdown is being shown. */
-  .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-toggle::after{
-    transform: rotate(0deg) translate(2.5px, 0px);
-    /* Safari */
-    -webkit-transform: rotate(0deg) translate(2.5px, 0px);
-    /* Firefox */
-    -moz-transform: rotate(0deg) translate(2.5px, 0px);
-    /* IE */
-    -ms-transform: rotate(0deg) translate(2.5px, 0px);
-    /* Opera */
-    -o-transform: rotate(0deg) translate(2.5px, 0px);
+    padding-left: 1rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
   }
 
   /* making projects triangle up when the dropdown is not being shown. */
   .navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-toggle::after,
   .dropdown-toggle::after {
     transform: rotate(180deg) translate(-2.5px, 0px);
-    /* Safari */
+    /* Safari, Firefox IE & Opera below. */
     -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
-    /* Firefox */
     -moz-transform: rotate(180deg) translate(-2.5px, 0px);
-    /* IE */
     -ms-transform: rotate(180deg) translate(-2.5px, 0px);
-    /* Opera */
     -o-transform: rotate(180deg) translate(-2.5px, 0px);
   }
-
 }
 
 .navbar-custom {
@@ -194,21 +179,15 @@ a:focus,
   color: {{ site.navbar-link-col | default: "#404040" }};
 }
 
+.navbar-custom .navbar-brand {
+  font-size: 1.4rem;
+}
+
 .navbar-custom .navbar-nav .nav-item {
   /* changed font-size for navbar links (not including title link or dropdown links) */
   font-size: 1rem;
   /* changed transform to capitalize */
   text-transform: capitalize;
-}
-
-
-.navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
-  /* making dropdown execute on hover instead of click */
-  display: block;
-}
-
-.navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-menu {
-  display: none;
 }
 
 /* increasing size of projects navbar section width */
@@ -218,11 +197,6 @@ a:focus,
   /* added transparent border to project links section, which will become visible later on */
   border: 2.75px solid transparent;
   border-width: 2.75px 2.75px 3px 2.75px;
-}
-
-.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
-.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
-  cursor: default;
 }
 
 .navbar-custom .navbar-brand:hover,
@@ -235,11 +209,25 @@ a:focus,
   cursor: pointer;
 }
 
+.navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
+  /* making dropdown execute on hover instead of click */
+  display: block;
+}
+
+.navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-menu {
+  display: none;
+}
+
+.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
+.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
+  cursor: default;
+}
+
 @keyframes kidpix_cursor_animate {
-   0% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
-   50% { cursor: url(../img/kidpix_dynamite_eraser_1.png), auto; }
-   51% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
-   100% { cursor: url(../img/kidpix_dynamite_eraser_2.png), auto; }
+   0% { cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto; }
+   50% { cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto; }
+   51% { cursor: url(../img/kidpix_dynamite_eraser_large_2.png), auto; }
+   100% { cursor: url(../img/kidpix_dynamite_eraser_large_2.png), auto; }
 }
 
 .navbar-custom .navbar-brand:hover {
@@ -247,6 +235,33 @@ a:focus,
   animation: kidpix_cursor_animate 0.25s infinite;
   -webkit-animation: kidpix_cursor_animate 0.25s infinite;
 }
+
+.kidpix_png_top {
+  animation-name: fade;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 0.125s;
+  animation-direction: alternate;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  51% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* .kidpix_gif {
+  height: 1.25rem;
+} */
 
 /* --- Footer --- */
 
@@ -410,13 +425,10 @@ footer a:hover {
 
 .rotate {
   transform: rotate(180deg);
-  /* Safari */
+  /* Safari, Firefox IE & Opera below. */
   -webkit-transform: rotate(180deg);
-  /* Firefox */
   -moz-transform: rotate(180deg);
-  /* IE */
   -ms-transform: rotate(180deg);
-  /* Opera */
   -o-transform: rotate(180deg);
 }
 

@@ -459,51 +459,55 @@ footer a:hover {
 }
 
 
-/* --- Home Page --- */
+/* --- Home Page Title and Subtitle --- */
+/* Changing how the page title and page subbtitle are formatted. */
+
+hr.large {
+  border-color: inherit;
+  border-radius: 0.1875rem;
+  margin: 1rem auto;
+}
+
+#home_page_heading {
+  margin-top: 0.5rem;
+}
+
+.home_page_subheading {
+  font-weight: 800;
+  line-height: 1.1;
+}
 
 /* defining classes differently for mobile and desktop that will dictate how the headers/subheaders look on the home page ONLY. */
 @media (min-width: 1200px) {
   hr.large {
-    max-width: 24rem;
+    max-width: 26rem;
     /* max-width: 21rem; */
-    margin: 1rem auto;
     border-width: 0.25rem;
-    border-color: inherit;
-    border-radius: 0.1875rem;
   }
 
   #home_page_heading {
     font-size: 3.25rem;
-    margin-top: 0.5rem;
   }
 
   .home_page_subheading {
     font-size: 4.5rem;
-    font-weight: 800;
-    line-height: 1.1;
     margin-bottom: 2rem;
   }
 }
 
 @media (max-width: 1199px) {
   hr.large {
-    max-width: 16rem;
+    max-width: 16.5rem;
     /* max-width: 13rem; */
-    margin: 1rem auto;
-    border-width: 0.25rem;
-    border-color: inherit;
-    border-radius: 0.1875rem;
+    border-width: 0.2rem;
   }
 
   #home_page_heading {
     font-size: 2rem;
-    margin-top: 0.5rem;
   }
 
   .home_page_subheading {
     font-size: 2.5rem;
-    font-weight: 800;
-    line-height: 1.1;
     margin-bottom: 0.5rem;
   }
 }
@@ -515,7 +519,7 @@ footer a:hover {
 /* } */
 
 
-/* --- General D3 --- */
+/* --- General D3, Interactivity & Animations --- */
 
 svg text,
 .no_selection,
@@ -524,6 +528,7 @@ svg text,
 .blog-tags,
 .pagination .page-item .page-link,
 #social-share-section,
+footer,
 div.tooltip {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

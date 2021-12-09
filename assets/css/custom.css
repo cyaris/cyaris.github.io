@@ -104,13 +104,24 @@ a:focus,
     transform: translate(-15px, 0px);
   }
 
+  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
+    outline: none;
+  }
+
+  /* :focus-visible {
+      outline: -webkit-focus-ring-color auto 0px;
+  } */
+
   /* .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus-visible {
     outline-width: 0px;
   } */
 
-  :focus-visible {
+  /* :focus-visible {
     outline: -webkit-focus-ring-color auto 0px;
   }
+  a:-webkit-any-link:focus-visible {
+      outline-offset: 0px;
+  } */
 
   .navbar-custom .navbar-nav .nav-item.dropdown.show,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:focus {

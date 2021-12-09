@@ -45,8 +45,7 @@ a:focus,
 
 @media (min-width: 1200px) {
 
-  .navbar-brand-mobile,
-  .dropdown-item-mobile {
+  .navbar-brand-mobile {
     display: none;
   }
 
@@ -57,6 +56,11 @@ a:focus,
   .navbar-custom {
     padding-top: 0.7375rem;
     padding-bottom: 0.7375rem;
+  }
+
+  .navbar-custom .navbar-brand {
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
   }
 
   .navbar-custom.top-nav-short,
@@ -109,7 +113,6 @@ a:focus,
 @media (max-width: 1199px) {
 
   .navbar-brand-desktop,
-  .dropdown-item-desktop,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:focus > .dropdown-menu {
     display: none;
   }
@@ -179,10 +182,6 @@ a:focus,
   color: {{ site.navbar-link-col | default: "#404040" }};
 }
 
-.navbar-custom .navbar-brand {
-  font-size: 1.4rem;
-}
-
 .navbar-custom .navbar-nav .nav-item {
   /* changed font-size for navbar links (not including title link or dropdown links) */
   font-size: 1rem;
@@ -223,6 +222,9 @@ a:focus,
   cursor: default;
 }
 
+/* using png photos with transitions for firework on navbar for desktop. */
+/* using a gif in the same spot on mobile. */
+/* the same transition/animation is being used for the navbar cursor on desktop. */
 @keyframes kidpix_cursor_animate {
    0% { cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto; }
    50% { cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto; }
@@ -259,9 +261,6 @@ a:focus,
   }
 }
 
-/* .kidpix_gif {
-  height: 1.25rem;
-} */
 
 /* --- Footer --- */
 

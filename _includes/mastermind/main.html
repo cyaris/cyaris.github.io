@@ -406,7 +406,7 @@
 						document.getElementById('hidden_button_win').style.display = 'block';
 						svg1.selectAll('.rects').style('stroke-width', 1);
 						svg1.selectAll('.rects').filter(function(d) { return d.turn==currentTurn && d.column!='W' && d.column!='B'; }).style('stroke-width', 4);
-						launchFireworksShow(5, 5, 2500);
+						launchFireworkShow(5, 5, 2500);
 					}
 					// conditions for a losing game below.
 					else if ( gameScores['B'][gameScores['B'].length-1]!=colorCode.length && clickCount==gameSettings[level]['max_clicks'] ) {

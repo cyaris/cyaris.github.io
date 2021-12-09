@@ -245,7 +245,7 @@ function launchFireworkBurst() {
 }
 
 
-function launchFireworksShow(totalFireworksMain, totalFireworksFinale, randomIntervalMsInput) {
+function launchFireworkShow(totalFireworksMain, totalFireworksFinale, randomIntervalMsInput) {
 	// totalFireworksMain: total fireworks in the regular show
 	// totalFireworksFinale: total fireworks in the grand finale
 	// duration per firework of the regular show

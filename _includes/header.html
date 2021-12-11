@@ -64,7 +64,7 @@
       <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
       <!-- custom edit: different formatting for page.title and page.subtitle on home page only. -->
       <!-- this will be made possible by new classes assigned below. -->
-      {% if page.subtitle=="Data Discoveries" %}
+      {% if page.layout=="home" %}
         <div class="{{ include.type }}-heading">
           <h1 id="home_page_heading">{% if page.title %}{{ page.title | strip_html }}{% else %}<br/>{% endif %}</h1>
           {% if page.subtitle %}

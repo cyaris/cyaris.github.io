@@ -12,8 +12,12 @@ body {
   font-size: 1rem;
 }
 
+/* not sure why this doesn't work when combined witg the selection elements */
 a:hover,
-a:focus,
+a:focus {
+  color: {{ site.link-hover-col | default: "#0085A1" }};
+}
+
 ::-moz-selection,
 ::selection {
   color: {{ site.link-hover-col | default: "#0085A1" }};
@@ -462,6 +466,10 @@ footer a:hover {
 /* --- Home Page Title and Subtitle --- */
 /* Changing how the page title and page subbtitle are formatted. */
 
+/* hr.small {
+  max-width: 14rem;
+} */
+
 hr.large {
   border-color: inherit;
   border-radius: 0.1875rem;
@@ -469,7 +477,7 @@ hr.large {
 }
 
 #home_page_heading {
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .home_page_subheading {
@@ -492,6 +500,8 @@ hr.large {
   .home_page_subheading {
     font-size: 4.5rem;
     margin-bottom: 2rem;
+    /* transform: perspective(130px) rotateX(20deg); */
+    /* -webkit-transform: perspective(100px) rotateX(20deg); */
   }
 }
 

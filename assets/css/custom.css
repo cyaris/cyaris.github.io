@@ -347,10 +347,6 @@ footer a:hover {
   color: {{ site.post-title-link-hover-col | default: "#0085A1" }};
 }
 
-.post-preview .blog-tags {
-  opacity: 0.8;
-}
-
 .post-preview .post-image-small {
   display: block;
 }
@@ -382,7 +378,7 @@ footer a:hover {
   }
 }
 
-/* --- Tags --- */
+/* --- Tag Links --- */
 
 .blog-tags a {
   /* changed tag border radius to be consistent with site buttons */
@@ -398,6 +394,22 @@ footer a:hover {
   background-color: {{ site.tag-background-hover-col | default: "#0085A1" }};
 }
 
+.post-preview .blog-tags {
+  opacity: 0.8;
+}
+
+
+/* --- Tags Page --- */
+
+.linked-section {
+  margin-left: 1.5rem;
+}
+
+@media (min-width: 1200px) {
+  .post-list {
+    margin-left: 2.75rem;
+  }
+}
 
 /* --- Buttons --- */
 

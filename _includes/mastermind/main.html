@@ -5,13 +5,13 @@
 
 			@media (min-width:800px){
 				#color_buttons {
-					margin-left:13.5%;
+					margin-left: 13.5%;
 				}
 			}
 
 			@media (max-width:800px){
         #color_buttons {
-					margin-left:22.5%;
+					margin-left: 22.5%;
         }
 	      div.tooltip {
 					display: none;
@@ -71,6 +71,7 @@
 						'max_turns': 8,
 						'max_clicks': 32,
 						'rect_text_loc': Array(17.5, 23.5),
+						'code_reveal_left_margin': 12.5,
 						'code_reveal_right_margin': 123,
 						'button_spacer': 3,
 						'game_board_height': 354
@@ -83,8 +84,9 @@
 						'max_turns': 9,
 						'max_clicks': 36,
 						'rect_text_loc': Array(17.5, 23.5),
+						'code_reveal_left_margin': 12.5,
 						'code_reveal_right_margin': 123,
-						'button_spacer': 2.2,
+						'button_spacer': 2,
 						'game_board_height': 390.5
 					 },
 				3: {
@@ -95,6 +97,7 @@
 						'max_turns': 9,
 						'max_clicks': 45,
 						'rect_text_loc': Array(14, 23.5),
+						'code_reveal_left_margin': 12.5,
 						'code_reveal_right_margin': 108,
 						'button_spacer': 3,
 						'game_board_height': 390.5
@@ -107,8 +110,9 @@
 						'max_turns': 10,
 						'max_clicks': 50,
 						'rect_text_loc': Array(14, 23.5),
+						'code_reveal_left_margin': 12.5,
 						'code_reveal_right_margin': 108,
-						'button_spacer': 2.2,
+						'button_spacer': 2,
 						'game_board_height': 427
 					 }
 			};
@@ -190,8 +194,13 @@
 			};
 
 			// set the dimensions and margins of the svg1 graph
-			margin = { top: 30, right: 25, bottom: 30, left: 25 },
-			width = 350,
+			margin = {
+				'top': 30,
+				'right': 25,
+				'bottom': 30,
+				'left': 25
+			},
+			width = 345,
 			height = gameSettings[level]['game_board_height'];
 
 			// Define global variables for svg1
@@ -419,9 +428,9 @@
 							'top': 23.5,
 							'right': gameSettings[level]['code_reveal_right_margin'],
 							'bottom': 150,
-							'left': 25
+							'left': gameSettings[level]['code_reveal_left_margin']
 						},
-					  width = 350,
+					  width = 325,
 					  height = 200;
 
 						appendGroupSVG('svg3', 'color_code_reveal', width, height, margin.left, margin.top, 'auto');

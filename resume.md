@@ -7,7 +7,7 @@ title: Resume
 
 ### Certifications ##
 
-* AWS
+* Amazon Web Services (AWS)
   * [Certified Cloud Practitioner, 2021]({{ site.url }}/assets/pdf/certifications/aws_certified_cloud_practitioner_certification.pdf){:target="_blank"}
 
 * Metis

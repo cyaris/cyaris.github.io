@@ -5,7 +5,6 @@
   {%- elsif site.title -%}
 		<!-- custom edit: changing top left nav link to Launch Fireworks instead of site title. adding second anchor tag for mobile. triggering firework launch onclick. -->
     <a class="navbar-brand navbar-brand-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()">Fireworks<img class="kidpix_png kidpix_png_top" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_1.png" style="margin-left: 10px; margin-bottom: 2.5px;"</img><img class="kidpix_png kidpix_png_bottom" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_2.png" style="margin-left: -10.5px; margin-bottom: 2.5px;"</img></a>
-		<!-- <a class="navbar-brand navbar-brand-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()"><img class="kidpix_png kidpix_png_top" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_1.png" style="margin-left: 10px"</img><img class="kidpix_png kidpix_png_bottom" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_2.png" style="margin-left: -10px"</img><img class="kidpix_png kidpix_png_top" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_1.png" style="margin-left: 10px"</img><img class="kidpix_png kidpix_png_bottom" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_2.png" style="margin-left: -10.25px"</img><img class="kidpix_png kidpix_png_top" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_1.png" style="margin-left: 9.5px"</img><img class="kidpix_png kidpix_png_bottom" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_2.png" style="margin-left: -10px"</img></a> -->
 		<a class="navbar-brand navbar-brand-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()"><img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif"</img><img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img><img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img></a>
 		<!-- end of custom edit -->
   {%- endif -%}
@@ -19,20 +18,18 @@
       {%- for link in site.navbar-links -%}
         {%- if link[1].first %}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
+						<!-- custom edit: changed href link for dropdown toggle. -->
+            <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
+						<!-- end of custom edit -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               {%- for childlink in link[1] -%}
                 {%- for linkparts in childlink %}
 									<a class="dropdown-item" href="{{ linkparts[1] | relative_url }}">{{ linkparts[0] }}</a>
-									<!-- custom edit: created new classes for mobile and desktop. added bullets and spaces to dropdown items -->
-									<!-- <a class="dropdown-item dropdown-item-desktop" href="{{ linkparts[1] | relative_url }}">{{ linkparts[0] }}</a> -->
-                	<!-- <a class="dropdown-item dropdown-item-mobile" href="{{ linkparts[1] | relative_url }}">•&nbsp;&nbsp;&nbsp;{{ linkparts[0] }}</a> -->
-									<!-- end of custom edit -->
                 {%- endfor -%}
               {%- endfor %}
             </div>
           </li>
-				<!-- custom edit: making Posts go back to home page. -->
+				<!-- custom edit: making href for Posts navigate back to home page. -->
 				{% elsif link[0]=="Posts" %}
           <li class="nav-item">
             <a class="nav-link" href="{{ site.url }}">{{ link[0] }}</a>

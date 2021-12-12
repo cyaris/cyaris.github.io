@@ -317,6 +317,16 @@ footer a:hover {
   font-weight: 625;
 }
 
+/* decreasing size of footer on mobile */
+@media (max-width: 1199px) {
+  footer .list-inline {
+    margin-bottom: 1rem;
+  }
+  footer {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
 
 /* --- Posts Preview Page --- */
 
@@ -341,6 +351,36 @@ footer a:hover {
   opacity: 0.8;
 }
 
+.post-preview .post-image-small {
+  display: block;
+}
+
+.post-preview .post-image-small img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (min-width: 1200px) {
+  .post-preview .post-image-small {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .post-preview .post-image-small img {
+    max-height: 20rem;
+  }
+}
+
+@media (max-width: 1199px) {
+  .post-preview .post-image-small {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-preview .post-image-small img {
+    max-height: 12.5rem;
+  }
+}
 
 /* --- Tags --- */
 

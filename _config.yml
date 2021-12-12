@@ -22,7 +22,7 @@ navbar-links:
     - Mastermind: "mastermind"
     - US Gun Violence Forecasting: "us_gun_violence_forecasting"
     - The Networks of War: "the_networks_of_war"
-  Posts: "https://cyaris.github.io/"
+  Posts: ""
   Resume: "resume"
 
 # paginate_path: "/posts/page:num/"
@@ -88,7 +88,6 @@ keywords: "cyaris, charlie yaris, charlieyaris"
 # --- Colours / background image --- #
 
 # Personalize the colours in your website. Colour values can be any valid CSS colour
-
 
 # custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links
 # custom edit: added several individual color variables below
@@ -224,7 +223,7 @@ timezone: "America/Chicago"
 markdown: kramdown
 highlighter: rouge
 permalink: /:year-:month-:day-:title/
-paginate: 10
+paginate: 15
 
 kramdown:
   input: GFM
@@ -257,6 +256,10 @@ exclude:
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
+
+# –––––Custom Variables–––––
+
+hidden_project_explanation: While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!
 
 # Beautiful Jekyll / Dean Attali
 # 2fc73a3a967e97599c9763d05e564189

@@ -24,7 +24,9 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               {%- for childlink in link[1] -%}
                 {%- for linkparts in childlink %}
-									<a class="dropdown-item" href="{{ linkparts[1] | absolute_url }}">{{ linkparts[0] }}</a>
+									<!-- custom edit: changed syntax for href -->
+									<a class="dropdown-item" href="{{ site.url | concat: linkparts[1] }}">{{ linkparts[0] }}</a>
+									<!-- end of custom edit -->
                 {%- endfor -%}
               {%- endfor %}
             </div>
@@ -37,7 +39,9 @@
 				<!-- end of custom edit -->
         {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="{{ link[1] | absolute_url }}">{{ link[0] }}</a>
+						<!-- custom edit: changed syntax for href -->
+            <a class="nav-link" href="{{ site.url | concat: link[1] }}">{{ link[0] }}</a>
+						<!-- end of custom edit -->
           </li>
         {%- endif -%}
       {%- endfor -%}

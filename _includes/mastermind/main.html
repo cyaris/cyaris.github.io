@@ -9,7 +9,7 @@
 				}
 			}
 
-			@media (max-width:800px){
+			@media (max-width:799px){
         #color_buttons {
 					margin-left: 22.5%;
         }
@@ -241,7 +241,7 @@
 				// Three function that change the tooltip when user hover / move / leave a cell
  				var rectMouseover = function(d) {
 
- 						if ( d.column=='W' || d.column=='B' ) {
+ 						if ( (d.column=='W' || d.column=='B') && getBodyDimenstions()[0]>=800 ) {
 
 							if ( clickCount < d.turn*colorCode.length )
 							{ d3.select('#game_board_tooltip').html('This round hasn\'t<br>been played yet.'); }

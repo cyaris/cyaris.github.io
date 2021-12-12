@@ -4,6 +4,7 @@ _site
 .vagrant
 beautiful-jekyll-theme.gemspec
 Gemfile.lock
+Gemfile
 
 # general
 .DS_Store

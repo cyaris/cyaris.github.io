@@ -121,8 +121,7 @@ a:focus {
 
 @media (max-width: 1199px) {
 
-  .navbar-brand-desktop,
-  .navbar-custom .navbar-nav .nav-item.dropdown.show:focus > .dropdown-menu {
+  .navbar-brand-desktop {
     display: none;
   }
 
@@ -141,9 +140,6 @@ a:focus {
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
     transform: translate(-15px, 0px);
-  }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
     outline: none;
   }
 

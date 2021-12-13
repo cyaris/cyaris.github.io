@@ -85,7 +85,7 @@ layout: page
       <span>Tags:</span>
       {% for tag in post.tags %}
       <!-- custom edit: replacing spaces with non-breaking spaces and hyphens with non-breaking hyphens. -->
-      <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag - | replace: " ", "&nbsp;" | replace: "-", "&#8209;" }}</a>
+      <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{ tag | replace: " ", "&nbsp;" | replace: "-", "&#8209;" }}</a>
       <!-- end of custom edit -->
       {% endfor %}
     </div>

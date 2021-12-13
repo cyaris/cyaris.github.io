@@ -3,25 +3,13 @@
 	<head>
 		<style type='text/css'>
 
-			/* @media (max-width:500px){
+			@media (max-width:500px){
 		      #profile_photo,
 					#profile_photo_pixels,
 					#transition_menu {
 							display: none;
-	      }
-			} */
-
-			@media (min-width:1200px){
-				#profile_photo {
-						margin-bottom: -406.25px;
-	      }
-			}
-
-			@media (max-width:1199px){
-				#profile_photo {
-						margin-bottom: -276.25px;
-	      }
-			}
+		      }
+				}
 
 			svg text {
 				stroke: black;
@@ -33,10 +21,10 @@
 	</head>
 	<body>
 		<!-- creating two overlapping divs for the photo and the animated pixels on top. -->
-		<div id='profile_photo' align='center'></div>
+		<div id='profile_photo' align='center' style='margin-bottom:-406.25px;'></div>
 		<div id='profile_photo_pixels' align='center' style='margin-bottom:15px;'></div>
 		<!-- creating a div where the slider will be.  -->
-		<div id='transition_menu' align='center' style='margin-bottom:30px;'></div>
+		<div id='transition_menu' align='center' style='margin-bottom:25px;'></div>
 		<script type='text/javascript'>
 
 			// set the dimensions and margins of the graph.
@@ -45,20 +33,9 @@
 				'bottom': 15,
 				'left': 0,
 				'right': 0
-			};
-
-			if ( getBodyDimenstions()[0] >= 1200 ) {
-				width = 405,
-				height = 405,
-				textXLoc = 130,
-				textYLoc = 85;
-			}
-			else {
-				width = 275,
-				height = 275,
-				textXLoc = 60,
-				textYLoc = 75;
-			}
+			},
+		  width = 405,
+		  height = 405,
 			svg3Height = 120;
 
 			// append the svg object to the body of the page.
@@ -67,7 +44,7 @@
 			appendSVG('svg2', 'profile_photo_pixels', width, height, margin.left, margin.top, 'auto');
 			appendSVG('svg3', 'transition_menu', width, svg3Height, margin.left, margin.top, 'auto');
 
-			appendText(svg3, null, 'hover_instructions', textXLoc, textYLoc, '18px', 'normal', 0.80, 0, 'Hover on my face!');
+			appendText(svg3, null, 'hover_instructions', 130, 85, '18px', 'normal', 0.80, 0, 'Hover on my face!');
 
 			// credit is due to this blocks page for the process defined below: http://bl.ocks.org/mrtriangle/11222485
 			// I took what was there and made adjustments launchXLocd on preference and version differences, but the basic foundation was all set up on that page.
@@ -203,7 +180,7 @@
 
 					// labelling dynamically the percent of the non-pixelated photo that's fully visible.
 					svg3.select('#percent_revealed').remove();
-					appendText(svg3, null, 'percent_revealed', textXLoc-12.5, textYLoc+25, '15px', 'normal', 0.80, 0, textInput);
+					appendText(svg3, null, 'percent_revealed', 117.5, 110, '15px', 'normal', 0.80, 0, textInput);
 
 					return percentRevealed;
 				}
@@ -219,7 +196,7 @@
 					if ( transitionSlider.value()==2 ) {
 						// labelling dynamically the percent of the non-pixelated photo that's fully visible.
 						svg3.select('#percent_revealed').remove();
-						appendText(svg3, null, 'percent_revealed', textXLoc-2.5, 110, '15px', 'normal', 0.80, 0, 'Percent Revealed: N/A');
+						appendText(svg3, null, 'percent_revealed', 130, 110, '15px', 'normal', 0.80, 0, 'Percent Revealed: N/A');
 					}
 					else {
 						percentRevealed = countInvisiblePixels();
@@ -331,22 +308,13 @@
 
 				sliderData = {
 					'ticks': [0, 1, 2],
+					'tick_labels': {0: 'Reveal Mode', 1: 'Reveal My Laser Vision Mode', 2: 'Transition Mode'},
 					'step': 1,
-					'default': 0
+					'default': 0,
+					'width': 300
 				};
-
-				if ( getBodyDimenstions()[0] >= 1200 ) {
-					sliderData['tick_labels'] = { 0: 'Reveal Mode', 1: 'Reveal My Laser Vision Mode', 2: 'Transition Mode' };
-					sliderData['width'] = 300;
-					sliderXLoc = 50;
-				}
-				else {
-					sliderData['tick_labels'] = { 0: '', 1: '', 2: '' };
-					sliderData['width'] = 200;
-					sliderXLoc = 35;
-				}
 				transitionSlider = defineSlider(sliderData, function(d) { sliderChangeFunction(); });
-				callGroupSVG(svg3, 'slider', 'transition_slider', null, 'translate(' + sliderXLoc + ',10)', transitionSlider, 'auto');
+				callGroupSVG(svg3, 'slider', 'transition_slider', null, 'translate(50,10)', transitionSlider, 'auto');
 				formatSlider('12px');
 			});
 

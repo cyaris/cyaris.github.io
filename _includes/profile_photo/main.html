@@ -24,7 +24,7 @@
 		<div id='profile_photo' align='center' style='margin-bottom:-406.25px;'></div>
 		<div id='profile_photo_pixels' align='center' style='margin-bottom:15px;'></div>
 		<!-- creating a div where the slider will be.  -->
-		<div id='transition_menu' align='center' style='margin-bottom:25px;'></div>
+		<div id='transition_menu' align='center' style='margin-bottom:30px;'></div>
 		<script type='text/javascript'>
 
 			// set the dimensions and margins of the graph.
@@ -132,20 +132,22 @@
 						[-2, -1],
 						[-2, -2],
 						[1, 2],
-						// [1, 1],
-						// [1, 0],
-						// [1, -1],
 						[1, -2],
 						[0, 2],
-						// [0, 1],
-						// [0, 0],
-						// [0, -1],
 						[0, -2],
 						[-1, 2],
-						// [-1, 1],
-						// [-1, 0],
-						// [-1, -1],
 						[-1, -2],
+
+						// below are the coordinates inside of the main box.
+						[1, 1],
+						[1, 0],
+						[1, -1],
+						[0, 1],
+						[0, 0],
+						[0, -1],
+						[-1, 1],
+						[-1, 0],
+						[-1, -1]
 					];
 
 					for ( var i=0; i <= transitionPixelCoordinates.length-1; i++ ) {
@@ -196,7 +198,7 @@
 					if ( transitionSlider.value()==2 ) {
 						// labelling dynamically the percent of the non-pixelated photo that's fully visible.
 						svg3.select('#percent_revealed').remove();
-						appendText(svg3, null, 'percent_revealed', 130, 110, '15px', 'normal', 0.80, 0, 'Percent Revealed: N/A');
+						appendText(svg3, null, 'percent_revealed', 129, 110, '15px', 'normal', 0.80, 0, 'Percent Revealed: N/A');
 					}
 					else {
 						percentRevealed = countInvisiblePixels();

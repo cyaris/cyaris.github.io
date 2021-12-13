@@ -194,10 +194,6 @@ a:focus {
   text-transform: capitalize;
 }
 
-.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
-  background-color: transparent;
-}
-
 /* increasing size of projects navbar section width */
 .navbar-custom .navbar-nav .nav-item.dropdown {
   padding-left: 0.7375rem;
@@ -205,6 +201,10 @@ a:focus {
   /* added transparent border to project links section, which will become visible later on */
   border: 2.75px solid transparent;
   border-width: 2.75px 2.75px 3px 2.75px;
+}
+
+.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
+  background-color: transparent;
 }
 
 .navbar-custom .navbar-brand:hover,
@@ -248,26 +248,18 @@ a:focus {
 }
 
 .kidpix_png_top {
-  animation-name: fade;
+  animation-name: kidpix_png_animate;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-duration: 0.125s;
   animation-direction: alternate;
 }
 
-@keyframes fade {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 1;
-  }
-  51% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
+@keyframes kidpix_png_animate {
+  0% { opacity: 1; }
+  50% { opacity: 1; }
+  51% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 

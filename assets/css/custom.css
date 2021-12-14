@@ -42,22 +42,14 @@ a:focus {
 
 /* --- Navbar --- */
 
-/* making projects triangle down when the dropdown is being shown. */
-.navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-toggle::after {
-  transform: rotate(0deg) translate(2.5px, 0px);
-  /* Safari, Firefox IE & Opera below. */
-  -webkit-transform: rotate(0deg) translate(2.5px, 0px);
-  -moz-transform: rotate(0deg) translate(2.5px, 0px);
-  -ms-transform: rotate(0deg) translate(2.5px, 0px);
-  -o-transform: rotate(0deg) translate(2.5px, 0px);
-}
-
 @media (min-width: 1200px) {
 
+  .navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-menu,
   .navbar-brand-mobile {
     display: none;
   }
 
+  .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:hover > .dropdown-menu {
     display: block;
   }
@@ -107,16 +99,6 @@ a:focus {
     border-width: 0px 2.75px 2px 2.75px;
     border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
   }
-
-  /* making projects triangle up when the dropdown is not being shown. */
-  /* the same definitions can be used between desktop and mobile for when the dropdown IS being shown. */
-  .dropdown-toggle::after {
-    transform: rotate(180deg) translate(-2.5px, 0px);
-    -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
-    -moz-transform: rotate(180deg) translate(-2.5px, 0px);
-    -ms-transform: rotate(180deg) translate(-2.5px, 0px);
-    -o-transform: rotate(180deg) translate(-2.5px, 0px);
-  }
 }
 
 @media (max-width: 1199px) {
@@ -159,17 +141,6 @@ a:focus {
     padding-left: 1rem;
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
-  }
-
-  /* making projects triangle up when the dropdown is not being shown. */
-  .navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-toggle::after,
-  .dropdown-toggle::after {
-    transform: rotate(180deg) translate(-2.5px, 0px);
-    /* Safari, Firefox IE & Opera below. */
-    -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
-    -moz-transform: rotate(180deg) translate(-2.5px, 0px);
-    -ms-transform: rotate(180deg) translate(-2.5px, 0px);
-    -o-transform: rotate(180deg) translate(-2.5px, 0px);
   }
 }
 
@@ -217,19 +188,22 @@ a:focus {
   cursor: pointer;
 }
 
-.navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
-  /* making dropdown execute on hover instead of click */
-  display: block;
-}
-
-.navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-menu {
-  display: none;
-}
-
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
   cursor: default;
 }
+
+/* making projects triangle up when the dropdown is not being shown. */
+/*
+.dropdown-toggle::after {
+  position: relative;
+  transform: rotate(180deg) translate(-2.5px, 0px); */
+  /* Safari, Firefox IE & Opera below. */
+  /* -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
+  -moz-transform: rotate(180deg) translate(-2.5px, 0px);
+  -ms-transform: rotate(180deg) translate(-2.5px, 0px);
+  -o-transform: rotate(180deg) translate(-2.5px, 0px);
+} */
 
 /* using png photos with transitions for firework on navbar for desktop. */
 /* using a gif in the same spot on mobile. */

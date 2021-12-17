@@ -8,7 +8,7 @@ subtitle:
 
 ### Friendly Bio
 
-Hi there!<br><br>My name is Charlie. I live in Chicago and work for Navarc as a Data Engineer. I attended Washington University in St. Louis for undergrad and have been learning data tools ever since (currently working towards earning a MongoDB Certified Developer certification). I’m particularly passionate about creating interactive tools for data storytelling. Aside from data, my interests include propagating plants, playing music, reading my kindle and eating pizza.<br><br>Feel free to reach out or [read my resume](../resume/) to learn more!
+Hi there!<br><br>My name is Charlie. I live in Chicago and work for Disney as a Data Engineer. I attended Washington University in St. Louis for undergrad and have been learning data tools ever since (currently working towards earning a MongoDB Certified Developer certification). I’m particularly passionate about creating interactive tools for data storytelling. Aside from data, my interests include propagating plants, playing music, reading my kindle and eating pizza.<br><br>Feel free to reach out or [read my resume](../resume/) to learn more!
 
 ### Contact
 

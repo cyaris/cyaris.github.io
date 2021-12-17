@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Mastermind
+subtitle: The Classic Code-Cracking Game
 gh-repo: cyaris/mastermind/
 gh-badge: [follow, star]
 social-share: true

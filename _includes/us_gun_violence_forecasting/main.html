@@ -3,7 +3,13 @@
 	<head>
 		<style type='text/css'>
 
-			@media (max-width:990px){
+			@media (min-width:990px) {
+				#hidden_project_explained {
+					display: none;
+				}
+			}
+
+			@media (max-width:989px) {
 	      #check_mark_filters,
 				#graph_hover_status,
 				#graph,
@@ -11,12 +17,6 @@
 				#gva_data_credit {
 						display: none;
 	      }
-		  }
-
-		  @media (min-width:990px){
-				#hidden_project_explained {
-					display: none;
-		    }
 		  }
 
 			.path {
@@ -42,7 +42,7 @@
 			<div id='graph' align='center'></div>
 			<div id='metrics_and_sliders' align='center'></div>
 			<div id='gva_data_credit' align='left'>
-				<p>All data compiled by <a href='https://gunviolencearchive.org' target='_blank'>Gun Violence Archive (GVA)</a>, a not for profit corporation formed in 2013 to provide online public access to accurate information about gun-related violence in the United States.</p>
+				<p>All data compiled by <a href='https://gunviolencearchive.org' target='_blank'>Gun Violence Archive (GVA)</a>, a not-for-profit corporation formed in 2013 to provide online public access to accurate information about gun-related violence in the United States.</p>
 			</div>
 		</div>
 		<script type='text/javascript' src='{{site.url}}/assets/js/sma/index.js'></script>

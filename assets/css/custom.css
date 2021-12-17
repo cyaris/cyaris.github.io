@@ -28,6 +28,10 @@ a:focus {
   margin-top: 0.5rem;
 }
 
+em {
+  opacity: 0.875;
+}
+
 
 /* --- Center --- */
 
@@ -191,16 +195,15 @@ a:focus {
 }
 
 /* making projects triangle up when the dropdown is not being shown. */
-/*
-.dropdown-toggle::after {
-  position: relative;
-  transform: rotate(180deg) translate(-2.5px, 0px); */
+/* .dropdown-toggle::after { */
+  /* position: relative; */
+  /* transform: rotate(180deg) translate(-2.5px, 0px);  */
   /* Safari, Firefox IE & Opera below. */
-  /* -webkit-transform: rotate(180deg) translate(-2.5px, 0px);
-  -moz-transform: rotate(180deg) translate(-2.5px, 0px);
-  -ms-transform: rotate(180deg) translate(-2.5px, 0px);
-  -o-transform: rotate(180deg) translate(-2.5px, 0px);
-} */
+  /* -webkit-transform: rotate(180deg) translate(-2.5px, 0px); */
+  /* -moz-transform: rotate(180deg) translate(-2.5px, 0px); */
+  /* -ms-transform: rotate(180deg) translate(-2.5px, 0px); */
+  /* -o-transform: rotate(180deg) translate(-2.5px, 0px); */
+/* } */
 
 /* using png photos with transitions for firework on navbar for desktop. */
 /* using a gif in the same spot on mobile. */

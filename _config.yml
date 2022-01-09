@@ -257,7 +257,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
 
-# –––––Custom Variables–––––
+# -----Custom Variables-----
 
 hidden_project_explanation: While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!
 

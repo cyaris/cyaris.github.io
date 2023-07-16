@@ -22,24 +22,16 @@ common-js:
 
 <!DOCTYPE html>
 <html lang="{{ page.language | default: site.language | default: 'en' }}">
-<!-- Beautiful Jekyll 5.0.0 | Copyright Dean Attali 2020 -->
-{% include head.html %}
+  <!-- Beautiful Jekyll 5.0.0 | Copyright Dean Attali 2020 -->
+  {% include head.html %}
 
-<body>
+  <body>
+    {% include gtm_body.html %} {% include nav.html %}
 
-  {% include gtm_body.html %}
+    <!-- custom edit: added div for fireworks -->
+    {% include fireworks/main.html %}
+    <!-- end of custom edit -->
 
-  {% include nav.html %}
-
-  <!-- custom edit: added div for fireworks -->
-  {% include fireworks/main.html %}
-  <!-- end of custom edit -->
-
-  {{ content }}
-
-  {% include footer.html %}
-
-  {% include footer-scripts.html %}
-
-</body>
+    {{ content }} {% include footer.html %} {% include footer-scripts.html %}
+  </body>
 </html>

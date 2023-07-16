@@ -1,12 +1,19 @@
-# project
 _site
 .sass-cache
 .vagrant
 beautiful-jekyll-theme.gemspec
 Gemfile.lock
-Gemfile
 
-# general
-.DS_Store
-Thumbs.db
-ehthumbs.db
+# hidden files.
+**/.DS_Store
+
+# hidden folders.
+.git
+.svelte-kit
+
+**/__pycache__
+**/*.egg-info
+
+!**/.gitkeep
+
+node_modules

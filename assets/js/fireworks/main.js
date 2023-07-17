@@ -1,6 +1,6 @@
 function appendFireworksSVG() {
   // set the dimensions and margins of the graph
-  margin = {
+  let margin = {
     top: 0,
     bottom: 0,
     left: 0,
@@ -55,7 +55,7 @@ function launchFireworkBurst() {
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   // creating an array of separate color palettes for each firework
-  fireWorksColorPalettes = [
+  let fireWorksColorPalettes = [
     // https://htmlcolorcodes.com/
     //		// ['#dfff00', '#ffbf00', '#ff7f50', '#de3163', '#9fe2bf', '#40e0d0', '#6495ed', '#ccccff'],
     //		// adjusted above to remove one or more colors
@@ -130,53 +130,51 @@ function launchFireworkBurst() {
 
   // defining y parameter for the getBodyDimenstions()[1] of the launch
   // the is the distance from the top of the pange
-  ;(LaunchYLoc = chance.floating({ min: getBodyDimenstions()[1] * 0.1, max: getBodyDimenstions()[1] * 0.2 })),
-    // defining adjusted y parameter for delay preceding explosion
-    // new getBodyDimenstions()[1] adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
-    (explosionDrop = chance.floating({ min: 20, max: 130 })),
-    // getBodyDimenstions()[1] all the circles will be at after the drop (and just before exploding)
-    (explosionYLoc = LaunchYLoc + explosionDrop),
-    // defining values for the launch of the firework
-    // function below will be used to determine the x location for launching the rocket
-    (randomXStart = d3.randomNormal(getBodyDimenstions()[0] / 2, getBodyDimenstions()[0] / 8)),
-    // x coordinate for the ascending (and descending) rocket
-    (launchXLoc = randomXStart()),
-    // determining the magnitude of the explosion (value to be squared) at random
-    // the actual distance from the explosion will be a combination of this value and another random value determined for each piece
-    // this will also be used to decide the total circles for the explosion
-    (explosionMagnitude = chance.floating({ min: 140, max: 180 })),
-    // total circles for the explosion
-    (totalCircles = Math.round(explosionMagnitude * 1.5)),
-    // function to determine the x coordinates for all explosion pieces
-    (explosionData = d3.range(totalCircles).map(function () {
-      // distance fron the center of the explosion determined at random
-      // explosionSize (magnitude of the explosion) stays the same for each circle
-      ;(explosionDistance = Math.sqrt(
-        ~~(chance.floating({ min: 0, max: 1 }) * explosionMagnitude * explosionMagnitude)
-      )),
-        // randomly determining the angle by which each circle will be relative to the center of the explosion
-        (randomAngle = Math.random() * 2 * Math.PI)
+  let LaunchYLoc = chance.floating({ min: getBodyDimenstions()[1] * 0.1, max: getBodyDimenstions()[1] * 0.2 })
+  // defining adjusted y parameter for delay preceding explosion
+  // new getBodyDimenstions()[1] adjusting for the distance by which the rocket will descend after reaching its peak (prior to exploding)
+  let explosionDrop = chance.floating({ min: 20, max: 130 })
+  // getBodyDimenstions()[1] all the circles will be at after the drop (and just before exploding)
+  let explosionYLoc = LaunchYLoc + explosionDrop
+  // defining values for the launch of the firework
+  // function below will be used to determine the x location for launching the rocket
+  let randomXStart = d3.randomNormal(getBodyDimenstions()[0] / 2, getBodyDimenstions()[0] / 8)
+  // x coordinate for the ascending (and descending) rocket
+  let launchXLoc = randomXStart()
+  // determining the magnitude of the explosion (value to be squared) at random
+  // the actual distance from the explosion will be a combination of this value and another random value determined for each piece
+  // this will also be used to decide the total circles for the explosion
+  let explosionMagnitude = chance.floating({ min: 140, max: 180 })
+  // total circles for the explosion
+  let totalCircles = Math.round(explosionMagnitude * 1.5)
+  // function to determine the x coordinates for all explosion pieces
+  let explosionData = d3.range(totalCircles).map(() => {
+    // distance fron the center of the explosion determined at random
+    // explosionSize (magnitude of the explosion) stays the same for each circle
+    let explosionDistance = Math.sqrt(~~(chance.floating({ min: 0, max: 1 }) * explosionMagnitude * explosionMagnitude))
+    // randomly determining the angle by which each circle will be relative to the center of the explosion
+    let randomAngle = Math.random() * 2 * Math.PI
 
-      return {
-        x: launchXLoc + explosionDistance * Math.cos(randomAngle),
-        y: explosionYLoc + explosionDistance * Math.sin(randomAngle),
-      }
-    })),
-    (randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length)]),
-    (launchColor = randomPallete[getRandomInt(0, randomPallete.length)]),
-    (fireWorkPaletteFunc = d3
-      .scaleOrdinal()
-      .domain([Math.min(explosionData["x"]), Math.max(explosionData["x"])])
-      .range(randomPallete))
+    return {
+      x: launchXLoc + explosionDistance * Math.cos(randomAngle),
+      y: explosionYLoc + explosionDistance * Math.sin(randomAngle),
+    }
+  })
+  let randomPallete = fireWorksColorPalettes[getRandomInt(0, fireWorksColorPalettes.length)]
+  let launchColor = randomPallete[getRandomInt(0, randomPallete.length)]
+  let fireWorkPaletteFunc = d3
+    .scaleOrdinal()
+    .domain([Math.min(explosionData["x"]), Math.max(explosionData["x"])])
+    .range(randomPallete)
 
-  // console.log(randomPallete);
-  ;(launchRadius = 3),
-    (launchDuration = 1000),
-    (launchSpeed = launchDuration / (getBodyDimenstions()[1] + launchRadius - LaunchYLoc)),
-    (dropDuration = launchSpeed * explosionDrop)
+  let launchRadius = 3
+  let launchDuration = 1000
+  let launchSpeed = launchDuration / (getBodyDimenstions()[1] + launchRadius - LaunchYLoc)
+  let dropDuration = launchSpeed * explosionDrop
 
   // these two variables will help create the tail effect with delay
-  ;(fireWorkTailSize = 90), (tailDelaySize = 2.5)
+  let fireWorkTailSize = 90
+  let tailDelaySize = 2.5
 
   svgFW
     .selectAll()
@@ -187,22 +185,10 @@ function launchFireworkBurst() {
     .attr("cx", launchXLoc)
     .attr("cy", getBodyDimenstions()[1] + launchRadius)
     .style("fill", launchColor)
-    .style("opacity", function (d, i) {
-      if (i > 0 && i <= fireWorkTailSize) {
-        return 0.15
-      } else {
-        return 1
-      }
-    })
+    .style("opacity", (d, i) => (i > 0 && i <= fireWorkTailSize ? 0.15 : 1))
     .transition()
     // delay here is to create the ascending tail
-    .delay(function (d, i) {
-      if (i > 0 && i <= fireWorkTailSize) {
-        return i * tailDelaySize
-      } else {
-        return 0
-      }
-    })
+    .delay((d, i) => (i > 0 && i <= fireWorkTailSize ? i * tailDelaySize : 0))
     .ease(d3.easeCircle)
     .duration(launchDuration)
     .attr("cy", LaunchYLoc)
@@ -213,48 +199,28 @@ function launchFireworkBurst() {
     .attr("cy", explosionYLoc)
     .transition()
     // delay here is to allow all objects to catch up
-    .delay(function (d, i) {
-      if (i > 0 && i <= fireWorkTailSize) {
-        return fireWorkTailSize * tailDelaySize - i * tailDelaySize
-      } else {
-        return fireWorkTailSize * tailDelaySize
-      }
-    })
+    .delay((d, i) =>
+      i > 0 && i <= fireWorkTailSize
+        ? fireWorkTailSize * tailDelaySize - i * tailDelaySize
+        : fireWorkTailSize * tailDelaySize
+    )
     .duration(0)
     .style("opacity", 1)
     .transition()
     .duration(500)
     .ease(d3.easeCircle)
-    .attr("cx", function (d) {
-      return d.x
-    })
-    .attr("cy", function (d) {
-      return d.y
-    })
+    .attr("cx", d => d.x)
+    .attr("cy", d => d.y)
     .attr("r", 10)
     // .attr('r', function(d) { return chance.floating({ min: 0.5, max: 15 }); })
-    .style("fill", function (d) {
-      return fireWorkPaletteFunc(d.x)
-    })
+    .style("fill", d => fireWorkPaletteFunc(d.x))
     .transition()
     .duration(1750 + chance.floating({ min: -750, max: 750 }))
     .ease(d3.easeCircle)
     .style("opacity", 0)
-    .attr("cx", function (d) {
-      if (d.x > launchXLoc) {
-        return d.x + (d.x - launchXLoc)
-      } else {
-        return d.x - (-d.x + launchXLoc)
-      }
-    })
-    .attr("cy", function (d) {
-      if (d.y > explosionYLoc) {
-        return d.y + (d.y - explosionYLoc)
-      } else {
-        return d.y - (-d.y + explosionYLoc)
-      }
-    })
-    .on("end", function () {
+    .attr("cx", d => (d.x > launchXLoc ? d.x + (d.x - launchXLoc) : d.x - (-d.x + launchXLoc)))
+    .attr("cy", d => (d.y > explosionYLoc ? d.y + (d.y - explosionYLoc) : d.y - (-d.y + explosionYLoc)))
+    .on("end", () => {
       d3.select(this).remove()
     })
 }

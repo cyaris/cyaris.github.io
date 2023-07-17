@@ -1,43 +1,31 @@
 <!-- <!DOCTYPE html> -->
 <html>
-  <head>
-    <style type="text/css">
-      @media (min-width: 800px) {
-        #dashboard_link {
-          display: none;
-        }
-      }
+	<head>
+	  <style type="text/css">
 
-      @media (max-width: 799px) {
-        #dashboard_view {
-          display: none;
-        }
-      }
+			@media (min-width:800px){
+				#dashboard_link {
+					display: none;
+				}
+			}
 
-      #link_text {
-        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-weight: 800;
-      }
-    </style>
-  </head>
-  <body>
-    <iframe
-      id="dashboard_view"
-      src="https://public.tableau.com/views/CourtSentencinginCookCountyIL/Question?/Splash?:showVizHome=no&:embed=true"
-      width="800"
-      height="645"
-    ></iframe>
-    <div id="dashboard_link" style="margin-top: 0px; margin-bottom: 0px">
-      <font size="5.5"
-        ><b
-          ><a
-            id="link_text"
-            href="https://public.tableau.com/profile/charlie.yaris#!/vizhome/CourtSentencinginCookCountyIL/Question"
-            target="_blank"
-            >View Tableau Dashboard</a
-          ></b
-        ></font
-      >
-    </div>
-  </body>
+			@media (max-width:799px){
+				#dashboard_view {
+					display: none;
+				}
+			}
+
+			#link_text {
+				font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				font-weight: 800;
+			}
+
+	  </style>
+	</head>
+	<body>
+		<iframe id="dashboard_view" src="https://public.tableau.com/views/CourtSentencinginCookCountyIL/Question?/Splash?:showVizHome=no&:embed=true" width="800" height="645"></iframe>
+		<div id="dashboard_link" style="margin-top:0px; margin-bottom:0px;">
+			<font size="5.5"><b><a id="link_text" href="https://public.tableau.com/profile/charlie.yaris#!/vizhome/CourtSentencinginCookCountyIL/Question" target="_blank">View Tableau Dashboard</a></b></font>
+		</div>
+	</body>
 </html>

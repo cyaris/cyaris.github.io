@@ -1,43 +1,51 @@
 <!-- <!DOCTYPE html> -->
 <html>
-  <head>
-    <style type="text/css">
-      @media (min-width: 990px) {
-        #hidden_project_explained {
-          display: none;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Load d3.js -->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <div id="hidden_project_explained" align="left" style="margin-bottom: 150px">
-      <p>{{ site.hidden_project_explanation }}</p>
-    </div>
-    <div class="message">
-      <p>Hey there! This project is currently in progress. Stay tuned for updates on my falling pizza adventures!</p>
-    </div>
-    <!-- Create a div where the graph will take place -->
-    <div id="falling_pizza"></div>
-    <script type="text/javascript">
-      var svg = d3.select("#falling_pizza").append("svg").attr("width", 750).attr("height", 400),
-        pizzaImage =
-          "https://www.clipartkey.com/mpngs/m/58-588307_cheese-pizza-png-cheese-pizza-transparent-background.png"
+	<head>
+		<style type="text/css">
 
-      var pizza1 = svg
-        .append("image")
-        .attr("xlink:href", pizzaImage)
-        .attr("x", 0)
-        .attr("y", -1000)
-        .attr("height", 50)
-        .attr("width", 50)
+			@media (min-width:990px){
+				#hidden_project_explained {
+					display: none;
+		    }
+		  }
 
-      fall()
+		</style>
+	</head>
+	<body>
+		<!-- Load d3.js -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<div id="hidden_project_explained" align="left" style="margin-bottom:150px;">
+			<p>{{ site.hidden_project_explanation }}</p>
+		</div>
+		<div class="message">
+		  <p>Hey there! This project is currently in progress. Stay tuned for updates on my falling pizza adventures!</p>
+		</div>
+		<!-- Create a div where the graph will take place -->
+		<div id="falling_pizza"></div>
+		<script type="text/javascript">
 
-      function fall() {
-        pizza1.transition().ease(d3.easeLinear).duration(6000).attr("y", 400)
-      }
-    </script>
-  </body>
+			 var svg = d3.select("#falling_pizza")
+	         .append("svg")
+	         .attr("width", 750)
+	         .attr("height", 400),
+					 pizzaImage = "https://www.clipartkey.com/mpngs/m/58-588307_cheese-pizza-png-cheese-pizza-transparent-background.png";
+
+	     var pizza1 = svg.append("image")
+	          .attr("xlink:href", pizzaImage)
+	         .attr("x", 0)
+	         .attr("y", -1000)
+	         .attr("height", 50)
+	         .attr("width", 50);
+
+	     fall();
+
+			 function fall() {
+			     pizza1.transition()
+			         .ease(d3.easeLinear)
+			         .duration(6000)
+			         .attr("y", 400)
+			 };
+
+		</script>
+	</body>
 </html>

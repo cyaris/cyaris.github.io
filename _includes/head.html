@@ -1,19 +1,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- custom edit: added favicon.ico links -->
-  <link rel="shortcut icon" media="all" type="image/x-icon" href="{{ site.url }}/favicon.ico" />
-  <link rel="icon" media="all" type="image/x-icon" href="{{ site.url }}/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ site.url }}/favicon.ico" />
-  <!-- end of custom edit -->
+	<!-- custom edit: added favicon.ico links -->
+	<link rel= "shortcut icon" media="all" type="image/x-icon" href="{{ site.url }}/favicon.ico">
+	<link rel= "icon" media="all" type="image/x-icon" href="{{ site.url }}/favicon.ico">
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ site.url }}/favicon.ico">
+	<!-- end of custom edit -->
   <!-- custom edit: added javascript functions -->
-  <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
-  <script type="text/javascript" src="https://chancejs.com/chance.min.js"></script>
-  <script type="text/javascript" src="https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js"></script>
-  <script type="text/javascript" src="{{ site.url }}/assets/js/javascript_functions.js"></script>
-  <script type="text/javascript" src="{{ site.url }}/assets/js/d3_functions.js"></script>
+  <script type='text/javascript' src='https://d3js.org/d3.v4.min.js'></script>
+  <script type='text/javascript' src='https://chancejs.com/chance.min.js'></script>
+	<script type='text/javascript' src='https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js'></script>
+  <script type='text/javascript' src='{{ site.url }}/assets/js/general/javascript_functions.js'></script>
+  <script type='text/javascript' src='{{ site.url }}/assets/js/general/d3_functions.js'></script>
   <!-- end of custom edit -->
+
   {% capture title %}
     {%- if page.share-title -%}
       {{ page.share-title | strip_html | xml_escape }}

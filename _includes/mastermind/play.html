@@ -1,91 +1,91 @@
 <!-- <!DOCTYPE html> -->
 <html>
-  <head>
-    <style type="text/css">
+	<head>
+		<style type="text/css">
 
-      .btn-group {
-        width: 160px;
-      }
+			.btn-group {
+			  width: 160px;
+			}
 
-      #levels_overview {
-      	/* font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; */
-      	font-weight: 800;
-      	cursor: pointer;
-      	color: {{ site.link-hover-col | default: "#404040" }};
-         -webkit-touch-callout: none;
-         -webkit-user-select: none;
-         -khtml-user-select: none;
-         -moz-user-select: none;
-         -ms-user-select: none;
-         user-select: none;
-      }
+			#levels_overview {
+				/* font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; */
+				font-weight: 800;
+				cursor: pointer;
+				color: {{ site.link-hover-col | default: "#404040" }};
+		    -webkit-touch-callout: none;
+		    -webkit-user-select: none;
+		    -khtml-user-select: none;
+		    -moz-user-select: none;
+		    -ms-user-select: none;
+		    user-select: none;
+			}
 
-      #levels_overview:hover {
-      	text-decoration: underline;
-      }
+			#levels_overview:hover {
+				text-decoration: underline;
+			}
 
-      #levels_list {
-      	display: none;
-      }
+			#levels_list {
+				display: none;
+			}
 
-      #levels_list ul {
-      	display: inline-block;
-         padding-left: 0;
-         text-align: left;
-      	margin-left: 115px;
-      }
-    </style>
-    <script type="text/javascript">
-      function toggleLevelsList() {
-        if (document.getElementById("levels_list").style.display == "none") {
-          document.getElementById("levels_list").style.display = "block"
-        } else {
-          document.getElementById("levels_list").style.display = "none"
-        }
-      }
-    </script>
-  </head>
-  <body>
-    <div class="center" style="margin-bottom: 15px">
-      <a href="./level_1/" class="btn-group">Level 1</a>
-      <a href="./level_2/" class="btn-group">Level 2</a>
-    </div>
-    <div class="center" style="margin-bottom: 0px">
-      <a href="./level_3/" class="btn-group">Level 3</a>
-      <a href="./level_4/" class="btn-group">Level 4</a>
-    </div>
-    <div id="levels_toggle" style="margin-top: 15px; margin-bottom: 30px">
-      <div id="levels_overview" align="center">
-        <font size="5.5"
-          ><b><a onclick="toggleLevelsList()">Levels Overview</a></b></font
-        >
-      </div>
-      <div id="levels_list" align="center" style="margin-left: -160px; margin-top: 15px">
-        <h4>Level 1</h4>
-        <ul>
-          <li>4 color code</li>
-          <li>6 possible colors</li>
-          <li>8 guesses</li>
-        </ul>
-        <h4>Level 2</h4>
-        <ul>
-          <li>4 color code</li>
-          <li>8 possible colors</li>
-          <li>8 guesses</li>
-        </ul>
-        <h4>Level 3</h4>
-        <ul>
-          <li>5 color code</li>
-          <li>6 possible colors</li>
-          <li>9 guesses</li>
-        </ul>
-        <h4>Level 4</h4>
-        <ul>
-          <li>5 color code</li>
-          <li>8 possible colors</li>
-          <li>10 guesses</li>
-        </ul>
-      </div>
-    </div>
-  </body>
+			#levels_list ul {
+				display: inline-block;
+		    padding-left: 0;
+		    text-align: left;
+				margin-left: 115px;
+			}
+
+	  </style>
+		<script type="text/javascript" >
+
+			function toggleLevelsList() {
+				if ( document.getElementById("levels_list").style.display=="none" )
+				{ document.getElementById("levels_list").style.display = "block" }
+				else
+				{ document.getElementById("levels_list").style.display = "none" }
+			};
+
+		</script>
+	</head>
+	<body>
+		<div class="center" style="margin-bottom:15px;">
+			<a href="./level_1/" class="btn-group">Level 1</a>
+			<a href="./level_2/" class="btn-group">Level 2</a>
+		</div>
+		<div class="center" style="margin-bottom:0px;">
+			<a href="./level_3/" class="btn-group">Level 3</a>
+			<a href="./level_4/" class="btn-group">Level 4</a>
+		</div>
+		<div id="levels_toggle" style="margin-top:15px; margin-bottom:30px;">
+			<div id="levels_overview" align="center">
+				<font size="5.5"><b><a onclick="toggleLevelsList()">Levels Overview</a></b></font>
+			</div>
+			<div id="levels_list" align="center" style="margin-left:-160px; margin-top:15px;">
+				<h4>Level 1</h4>
+				<ul>
+				  <li>4 color code</li>
+					<li>6 possible colors</li>
+				  <li>8 guesses</li>
+				</ul>
+				<h4>Level 2</h4>
+				<ul>
+				  <li>4 color code</li>
+					<li>8 possible colors</li>
+				  <li>8 guesses</li>
+				</ul>
+				<h4>Level 3</h4>
+				<ul>
+				  <li>5 color code</li>
+					<li>6 possible colors</li>
+				  <li>9 guesses</li>
+				</ul>
+				<h4>Level 4</h4>
+				<ul>
+				  <li>5 color code</li>
+					<li>8 possible colors</li>
+				  <li>10 guesses</li>
+				</ul>
+			</div>
+		</div>
+	</body>
 </html>

@@ -236,9 +236,9 @@ function launchFireworkShow(totalFireworksMain, totalFireworksFinale, randomInte
 
   for (var i = 0; i <= totalFireworksMain + totalFireworksFinale - 1; i++) {
     // setting random variable manually for first iteration only.
-    randomInterval = i == 0 ? 0.5 : chance.floating({ min: -randomIntervalMsInput, max: randomIntervalMsInput })
+    let randomInterval = i == 0 ? 0.5 : chance.floating({ min: -randomIntervalMsInput, max: randomIntervalMsInput })
     // subtracting one from totalFireworksMain so that the first firework comes without any delay.
-    regularShowMinDuration = fireworkIntervalMain * (totalFireworksMain - 1)
+    let regularShowMinDuration = fireworkIntervalMain * (totalFireworksMain - 1)
     // all fireworks for the regular show
     if (i <= totalFireworksMain) {
       d3.timeout(launchFireworkBurst, Math.max(0, fireworkIntervalMain * i + randomInterval))

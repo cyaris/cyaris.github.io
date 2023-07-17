@@ -186,7 +186,7 @@ function launchFireworkBurst() {
     .style("opacity", (d, i) => (i > 0 && i <= fireWorkTailSize ? 0.15 : 1))
     .transition()
     // delay here is to create the ascending tail
-    .delay((d, i) => (i > 0 && i <= fireWorkTailSize ? i * tailDelaySize : 0))
+    .delay((d, i) => (i <= fireWorkTailSize ? i * tailDelaySize : 0))
     .ease(d3.easeCircle)
     .duration(launchDuration)
     .attr("cy", LaunchYLoc)

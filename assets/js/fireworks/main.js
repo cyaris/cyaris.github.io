@@ -127,7 +127,6 @@ function launchFireworkBurst() {
     //		// adjusted above to remove one or more colors
     ["#f53473", "#93135d", "#5595c1", "#77def1"],
   ]
-
   // defining y parameter for the getBodyDimenstions()[1] of the launch
   // the is the distance from the top of the pange
   let LaunchYLoc = chance.floating({ min: getBodyDimenstions()[1] * 0.1, max: getBodyDimenstions()[1] * 0.2 })
@@ -171,7 +170,6 @@ function launchFireworkBurst() {
   let launchDuration = 1000
   let launchSpeed = launchDuration / (getBodyDimenstions()[1] + launchRadius - LaunchYLoc)
   let dropDuration = launchSpeed * explosionDrop
-
   // these two variables will help create the tail effect with delay
   let fireWorkTailSize = 90
   let tailDelaySize = 2.5

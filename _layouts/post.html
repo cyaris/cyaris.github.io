@@ -59,11 +59,7 @@ layout: base
       <div class="blog-tags">
         <span>Tags:</span>
         {% for tag in page.tags %}
-        <!-- custom edit: replacing spaces with non-breaking spaces and hyphens with non-breaking hyphens. changed syntax for href. -->
-        <a href="{{ site.url | append: '/tags/#' | append: tag }}"
-          >{{ tag | replace: " ", "&nbsp;" | replace: "-", "&#8209;" }}</a
-        >
-        <!-- end of custom edit -->
+        <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
         {% endfor %}
       </div>
       {% endif %} {% if page.after-content %}
@@ -74,6 +70,7 @@ layout: base
         {% if page.previous.url %}
         <li class="page-item previous">
           <!-- custom edit: added additional pagination button for desktop vs mobile. -->
+          <!-- to do: fix below so it can be done in one element. -->
           <a
             class="page-link page-link-desktop"
             href="{{ page.previous.url | relative_url }}"
@@ -95,6 +92,7 @@ layout: base
         {% endif %} {% if page.next.url %}
         <li class="page-item next">
           <!-- custom edit: added additional pagination button for desktop vs mobile. -->
+          <!-- to do: fix below so it can be done in one element. -->
           <a
             class="page-link page-link-desktop"
             href="{{ page.next.url | relative_url }}"

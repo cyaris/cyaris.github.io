@@ -1,21 +1,17 @@
 ---
 layout: page
-title: "Tags"
+title: "Tag Index"
 ---
 
 {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
 
 <!-- custom edit: removed tags index -->
-<!-- {%- capture site_tags -%}
-    {%- for tag in site.tags -%}
-        {{- tag | first -}}{%- unless forloop.last -%},{%- endunless -%}
-    {%- endfor -%}
-{%- endcapture -%}
-{%- assign tags_list = site_tags | split:',' | sort -%}
-
-{%- for tag in tags_list -%}
-    <a href="#{{- tag -}}" class="btn btn-primary tag-btn"><i class="fas fa-tag" aria-hidden="true"></i>&nbsp;{{- tag -}}&nbsp;({{site.tags[tag].size}})</a>
-{%- endfor -%} -->
+{%- capture site_tags -%} {%- for tag in site.tags -%} {{- tag | first -}}{%- unless forloop.last -%},{%- endunless -%}
+{%- endfor -%} {%- endcapture -%} {%- assign tags_list = site_tags | split:',' | sort -%} {%- for tag in tags_list -%}
+<a href="#{{- tag -}}" class="btn btn-primary tag-btn"
+  ><i class="fas fa-tag" aria-hidden="true"></i>&nbsp;{{- tag -}}&nbsp;({{site.tags[tag].size}})</a
+>
+{%- endfor -%}
 <!-- end of custom edit -->
 
 <div id="full-tags-list">

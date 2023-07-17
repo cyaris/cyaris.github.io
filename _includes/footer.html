@@ -22,14 +22,23 @@
             >
           </span>
           {% endif %} {% if site.matomo %} {% if site.matomo.opt-out %} &nbsp;&bull;&nbsp;
-          <!-- custom edit: target _blank -->
           <a
             href="http://{{- site.matomo.uri -}}/index.php?module=CoreAdminHome&action=optOut"
             target="_blank"
             class="text_muted"
             >Do-not-Track</a
           >
-          {% endif %} {% endif%}
+          {% endif %} {% endif%} {% if site.edit_page_button and site.github.repository_url %} &nbsp;&bull;&nbsp;
+          <!-- custom edit: target _blank -->
+          <a
+            title="Edit this page on GitHub"
+            href="{{ site.github.repository_url }}/edit/{{ site.github.source.branch }}/{{ page.path }}"
+            class="text_muted"
+            target="_blank"
+            >Edit page</a
+          >
+          <!-- end of custom edit -->
+          {% endif%}
         </p>
         {% unless site.remove-ads %}
         <p class="theme-by text-muted">

@@ -1,6 +1,5 @@
 _site
-.sass-cache
-.vagrant
+
 beautiful-jekyll-theme.gemspec
 Gemfile.lock
 
@@ -10,6 +9,8 @@ Gemfile.lock
 # hidden folders.
 .git
 .svelte-kit
+.sass-cache
+.vagrant
 
 **/__pycache__
 **/*.egg-info

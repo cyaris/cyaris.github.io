@@ -205,14 +205,11 @@
           (tsPredDic = {}),
           (tsMADic = {}),
           (obsCumDic = {})
-
         ;(numObsCumCount = 0), (numVictimsCumCount = 0)
-
         ;(obsColor = "rgb(112,128,144)"),
           (overallModelColor = "rgb(250,98,95)"),
           (hoverModelColor = "rgb(0,192,127)"),
           (tooltipSymbolColor = "rgb(0,122,255)")
-
         ;(numRows = data.length),
           (minYear = d3.min(data, function (d) {
             return d.year
@@ -316,7 +313,6 @@
             overallYearlyTrendFuture += d[overallYearlyTrendCol]
           }
         })
-
         ;(overallTotalVictims = parseInt(Math.round(overallPredPast / obsCumDic[maxYearObserved])).toLocaleString()),
           (overallPredFuturePerDay = parseInt(Math.round(overallPredFuture / numFuturePredDays)).toLocaleString()),
           (overallPredPast = parseInt(Math.round(overallPredPast)).toLocaleString()),
@@ -829,7 +825,6 @@
         )
         // more specific ids will be added in the function itself.
         addTooltipSymbol(svg4, "metrics_tooltip", 133.5, 23.5, 132, 27.5, null)
-
         ;(pastPredText =
           "Model Input: What years of data were used to generate these predictions?<br>Total Victims: How many total victims does the model think there been since 1/1/14?<br>Avg Victims per Day: How many victims does the model think there have been daily since 1/1/14?<br>Avg Yearly Trend: What is the average change between these predictions annually?<br>RMSE: How do these predictions compare to the actual number of victims recorded daily since 1/1/14?"),
           (futurePredText =
@@ -908,7 +903,6 @@
         appendText(svg4, null, null, leftMarginAdj + textWidth + 4, 100, "12px", "italic", 1, 0, "(Rounded)")
         ;(textInput = "Avg Yearly Trend (Rounded)"), (textWidth = getTextWidth(svg1, textInput, 12))
         appendText(svg4, null, null, leftMarginAdj + textWidth - 2, 100, "12px", "normal", 1, 0, ":")
-
         ;(textInput = overallTimeFrame), (textWidth = getTextWidth(svg1, textInput, 12))
         appendText(svg4, null, null, 296.875 - textWidth, 55, "12px", "normal", 1, 0, textInput)
 
@@ -940,7 +934,6 @@
             0,
             ":"
           )
-
           ;(textInput = overallPredPast), (textWidth = getTextWidth(svg1, textInput, 12))
           appendText(svg4, null, "past_prediction_specific", 296.875 - textWidth, 70, "12px", "normal", 1, 0, textInput)
           ;(textInput = overallTotalVictims), (textWidth = getTextWidth(svg1, textInput, 12))

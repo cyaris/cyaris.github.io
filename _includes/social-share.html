@@ -22,7 +22,7 @@ any-share-links = true %} {% endif %} {% endfor %} {% if any-share-links %}
   <!-- custom edit: target _blank -->
   <!-- custom edit: added logo image -->
   <a
-    href="https://twitter.com/intent/tweet?text={{ page.title | url_encode }}&url={{ page.url | absolute_url | url_encode }}"
+    href="https://twitter.com/intent/tweet?text={{ page.title | strip_html | url_encode }}&url={{ page.url | absolute_url | url_encode }}"
     target="_blank"
     class="btn btn-social-icon btn-twitter"
     title="Share on Twitter"

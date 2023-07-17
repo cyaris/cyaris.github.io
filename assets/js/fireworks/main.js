@@ -170,7 +170,6 @@ function launchFireworkBurst() {
       .range(randomPallete))
 
   // console.log(randomPallete);
-
   ;(launchRadius = 3),
     (launchDuration = 1000),
     (launchSpeed = launchDuration / (getBodyDimenstions()[1] + launchRadius - LaunchYLoc)),

@@ -1,41 +1,39 @@
 <!-- <!DOCTYPE html> -->
 <html>
-	<head>
-		<style type="text/css">
+  <head>
+    <style type="text/css">
+      .btn-group {
+        width: 222.5px;
+      }
 
-			.btn-group {
-			  width: 222.5px;
-			}
+      @media (min-width: 767px) {
+        .custom-btn-adjustment2 {
+          margin-top: 10px;
+          margin-bottom: 40px;
+        }
+      }
 
-			@media (min-width: 767px) {
-				.custom-btn-adjustment2 {
-					margin-top: 10px;
-			    margin-bottom: 40px;
-			  }
-			}
+      @media (max-width: 766px) {
+        .custom-btn-adjustment1 {
+          margin-bottom: 7.5px;
+        }
 
-			@media (max-width: 766px) {
-			  .custom-btn-adjustment1 {
-			    margin-bottom: 7.5px;
-			  }
-
-				.custom-btn-adjustment2 {
-					margin-top: 0px;
-			    margin-bottom: 40px;
-			  }
-			}
-
-		</style>
-	</head>
-	<body>
-		<div style="margin-top:15px">
-			<div class="center custom-btn-adjustment1">
-				<a href="./tool/" class="btn-group">Start Forecasting</a>
-			</div>
-			<div class="center custom-btn-adjustment2">
-				<a href="./development/" class="btn-group custom-btn-adjustment1">Development</a>
-				<a href="./documentation/" class="btn-group custom-btn-adjustment1">Documentation</a>
-			</div>
-		</div>
-	</body>
+        .custom-btn-adjustment2 {
+          margin-top: 0px;
+          margin-bottom: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div style="margin-top: 15px">
+      <div class="center custom-btn-adjustment1">
+        <a href="./tool/" class="btn-group">Start Forecasting</a>
+      </div>
+      <div class="center custom-btn-adjustment2">
+        <a href="./development/" class="btn-group custom-btn-adjustment1">Development</a>
+        <a href="./documentation/" class="btn-group custom-btn-adjustment1">Documentation</a>
+      </div>
+    </div>
+  </body>
 </html>

@@ -1,4 +1,4 @@
-'use strict';
+"use strict"
 
 /**
  * Calculate the simple moving average of an array. A new array is returned with the average
@@ -23,18 +23,18 @@
 
 function sma(arr, range, format) {
   if (!Array.isArray(arr)) {
-    throw TypeError('expected first argument to be an array');
+    throw TypeError("expected first argument to be an array")
   }
 
-  var fn = typeof format === 'function' ? format : toFixed;
-  var num = range || arr.length;
-  var res = [];
-  var len = arr.length + 1;
-  var idx = num - 1;
+  var fn = typeof format === "function" ? format : toFixed
+  var num = range || arr.length
+  var res = []
+  var len = arr.length + 1
+  var idx = num - 1
   while (++idx < len) {
-    res.push(fn(avg(arr, idx, num)));
+    res.push(fn(avg(arr, idx, num)))
   }
-  return res;
+  return res
 }
 
 /**
@@ -51,7 +51,7 @@ function sma(arr, range, format) {
  */
 
 function avg(arr, idx, range) {
-  return sum(arr.slice(idx - range, idx)) / range;
+  return sum(arr.slice(idx - range, idx)) / range
 }
 
 /**
@@ -61,10 +61,10 @@ function avg(arr, idx, range) {
  */
 
 function sum(arr) {
-  var len = arr.length;
-  var num = 0;
-  while (len--) num += Number(arr[len]);
-  return num;
+  var len = arr.length
+  var num = 0
+  while (len--) num += Number(arr[len])
+  return num
 }
 
 /**
@@ -74,7 +74,7 @@ function sum(arr) {
  */
 
 function toFixed(n) {
-  return n.toFixed(2);
+  return n.toFixed(2)
 }
 
 /**

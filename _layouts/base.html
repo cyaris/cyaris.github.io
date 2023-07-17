@@ -20,17 +20,26 @@ common-js:
   - "/assets/js/beautifuljekyll.js"
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ page.language | default: site.language | default: 'en' }}">
-  <!-- Beautiful Jekyll 6.0.1 | Copyright Dean Attali 2023 -->
-  {% include head.html %}
+<!-- Beautiful Jekyll 5.0.0 | Copyright Dean Attali 2020 -->
+{% include head.html %}
 
-  <body>
-    {% include gtm_body.html %} {% include nav.html %}
+<body>
 
-    <!-- custom edit: added div for fireworks -->
-    {% include fireworks/main.html %}
-    <!-- end of custom edit -->
-    {{ content }} {% include footer.html %} {% include footer-scripts.html %}
-  </body>
+  {% include gtm_body.html %}
+
+  {% include nav.html %}
+
+  <!-- custom edit: added div for fireworks -->
+  {% include fireworks/main.html %}
+  <!-- end of custom edit -->
+
+  {{ content }}
+
+  {% include footer.html %}
+
+  {% include footer-scripts.html %}
+
+</body>
 </html>

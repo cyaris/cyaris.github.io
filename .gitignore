@@ -19,5 +19,5 @@ Gemfile.lock
 
 node_modules
 
-assets/js/ssr.js
-assets/css/ssr.css
+assets/js/bundle.js
+assets/css/bundle.css

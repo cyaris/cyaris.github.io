@@ -594,6 +594,9 @@ svg text,
   font-family: cursive
 }
 
+
+/* --- Svelte/Rollup fixes --- */
+
 .tooltip {
   opacity: 1 !important;
   padding: 0.75rem !important;

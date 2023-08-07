@@ -574,7 +574,7 @@ footer {
 }
 
 svg text,
-.no_events {
+.non_reactive {
   pointer-events: none;
 }
 
@@ -588,10 +588,6 @@ svg text,
 
 .blinking_text {
   animation: blinkingText 1s infinite;
-}
-
-.cursive {
-  font-family: cursive
 }
 
 /* --- Svelte/Rollup fixes --- */

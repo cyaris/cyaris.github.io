@@ -26,11 +26,18 @@ common-js:
   {% include head.html %}
 
   <body>
-    {% include gtm_body.html %} {% include nav.html %}
+    {% include gtm_body.html %}
+
+    {% include nav.html %}
 
     <!-- custom edit: added div for fireworks -->
     {% include fireworks/main.html %}
     <!-- end of custom edit -->
-    {{ content }} {% include footer.html %} {% include footer-scripts.html %}
+
+    {{ content }}
+
+    {% include footer.html %}
+
+    {% include footer-scripts.html %}
   </body>
 </html>

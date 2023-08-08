@@ -1,7 +1,6 @@
 ---
 layout: page
 ---
-
 <!-- custom edit: forcing any refresh on this page to top scroll. this is needed because pulling navbar for refresh on mobile often reloads in an odd place. -->
 <script type="text/javascript">
   if (history.scrollRestoration) {
@@ -12,7 +11,8 @@ layout: page
 </script>
 <!-- end of custom edit -->
 
-{{ content }} {% assign posts = paginator.posts | default: site.posts %}
+{{ content }}
+{% assign posts = paginator.posts | default: site.posts %}
 
 <!-- role="list" needed so that `list-style: none` in Safari doesn't remove the list semantics -->
 <ul class="posts-list list-unstyled" role="list">

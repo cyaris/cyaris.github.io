@@ -1,50 +1,59 @@
 <!-- Check if any share-links are active -->
-{% assign any-share-links = false %} {% for links in site.share-links-active %} {% if links[1] == true %} {% assign
-any-share-links = true %} {% endif %} {% endfor %} {% if any-share-links %}
-<section id="social-share-section">
-  <span class="sr-only">Share: </span>
+{% assign any-share-links = false %}
+{% for links in site.share-links-active %}
+  {% if links[1] == true %}
+    {% assign any-share-links = true %}
+    {% endif %}
+{% endfor %}
+{% if any-share-links %}
+  <section id="social-share-section">
+    <span class="sr-only">Share: </span>
 
-  {% if site.share-links-active.linkedin %}
-  <!-- custom edit: target _blank -->
-  <!-- custom edit: added logo image -->
-  <!-- custom edit: changed icon for linkedin -->
-  <a
-    href="https://www.linkedin.com/shareArticle?mini=true&url={{ page.url | absolute_url | url_encode }}"
-    target="_blank"
-    class="btn btn-social-icon btn-linkedin"
-    title="Share on LinkedIn"
-  >
-    <span class="fab fa-fw fa-linkedin-in" aria-hidden="true"></span>
-    <!-- end of custom edit -->
-    <span class="sr-only">LinkedIn</span>
-  </a>
-  {% endif %} {% if site.share-links-active.twitter %}
-  <!-- custom edit: target _blank -->
-  <!-- custom edit: added logo image -->
-  <a
-    href="https://twitter.com/intent/tweet?text={{ page.title | strip_html | url_encode }}&url={{ page.url | absolute_url | url_encode }}"
-    target="_blank"
-    class="btn btn-social-icon btn-twitter"
-    title="Share on Twitter"
-  >
-    <span class="fab fa-fw fa-twitter" aria-hidden="true"></span>
-    <span class="sr-only">Twitter</span>
-    <!-- end of custom edit -->
-  </a>
-  {% endif %} {% if site.share-links-active.facebook %}
-  <!-- custom edit: target _blank -->
-  <!-- custom edit: edited logo image -->
-  <a
-    href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url | url_encode }}"
-    target="_blank"
-    class="btn btn-social-icon btn-facebook"
-    title="Share on Facebook"
-  >
-    <span class="fab fa-fw fa-facebook-f" aria-hidden="true"></span>
-    <span class="sr-only">Facebook</span>
-    <!-- end of custom edit -->
-  </a>
-  {% endif %}
-</section>
+    {% if site.share-links-active.linkedin %}
+      <!-- custom edit: target _blank -->
+      <!-- custom edit: added logo image -->
+      <!-- custom edit: changed icon for linkedin -->
+      <a
+        href="https://www.linkedin.com/shareArticle?mini=true&url={{ page.url | absolute_url | url_encode }}"
+        target="_blank"
+        class="btn btn-social-icon btn-linkedin"
+        title="Share on LinkedIn"
+      >
+        <span class="fab fa-fw fa-linkedin-in" aria-hidden="true"></span>
+        <!-- end of custom edit -->
+        <span class="sr-only">LinkedIn</span>
+      </a>
+    {% endif %}
+
+    {% if site.share-links-active.twitter %}
+      <!-- custom edit: target _blank -->
+      <!-- custom edit: added logo image -->
+      <a
+        href="https://twitter.com/intent/tweet?text={{ page.title | strip_html | url_encode }}&url={{ page.url | absolute_url | url_encode }}"
+        target="_blank"
+        class="btn btn-social-icon btn-twitter"
+        title="Share on Twitter"
+      >
+        <span class="fab fa-fw fa-twitter" aria-hidden="true"></span>
+        <span class="sr-only">Twitter</span>
+        <!-- end of custom edit -->
+      </a>
+    {% endif %}
+
+    {% if site.share-links-active.facebook %}
+      <!-- custom edit: target _blank -->
+      <!-- custom edit: edited logo image -->
+      <a
+        href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url | url_encode }}"
+        target="_blank"
+        class="btn btn-social-icon btn-facebook"
+        title="Share on Facebook"
+      >
+        <span class="fab fa-fw fa-facebook-f" aria-hidden="true"></span>
+        <span class="sr-only">Facebook</span>
+        <!-- end of custom edit -->
+      </a>
+    {% endif %}
+  </section>
 
 {% endif %}

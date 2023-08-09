@@ -15,7 +15,8 @@
 
   <div class="collapse navbar-collapse" id="main-navbar">
     <ul class="navbar-nav ml-auto">
-      {%- for link in site.navbar-links -%}
+
+			{%- for link in site.navbar-links -%}
         {%- if link[1].first %}
           <li class="nav-item dropdown">
 						<!-- custom edit: changed href link for dropdown toggle. -->
@@ -43,6 +44,7 @@
           </li>
         {%- endif -%}
       {%- endfor -%}
+
       {% if site.post_search %}
         <li class="nav-item">
           <a class="nav-link" id="nav-search-link" href="#" title="Search">
@@ -51,6 +53,7 @@
           </a>
         </li>
       {%- endif -%}
+			
     </ul>
   </div>
 

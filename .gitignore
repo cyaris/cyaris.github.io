@@ -9,11 +9,6 @@ Gemfile.lock
 # hidden folders.
 .git
 .svelte-kit
-.sass-cache
-.vagrant
-
-**/__pycache__
-**/*.egg-info
 
 !**/.gitkeep
 

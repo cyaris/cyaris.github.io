@@ -8,7 +8,6 @@ Gemfile.lock
 
 # hidden folders.
 .git
-.svelte-kit
 
 !**/.gitkeep
 

@@ -11,14 +11,14 @@
               {% include {{ file }} %}
             {% endfor %}
           </div>
-
         {% endif %}
-        <p class="copyright text-muted">
 
+        <p class="copyright text-muted">
           {% if site.author %}
             {{ site.author }}
             &nbsp;&bull;&nbsp;
           {% endif %}
+
           {{ site.time | date: '%Y' }}
 
           {% if site.url-pretty %}
@@ -59,7 +59,6 @@
             >
             <!-- end of custom edit -->
           {% endif%}
-
         </p>
 
         {% unless site.remove-ads %}

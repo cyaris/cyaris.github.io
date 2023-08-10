@@ -162,12 +162,6 @@ social-icon-hover-col: "#f26419"
 social-icon-background-hover-col: "#ffffff"
 # social-icon-background-border-hover-col: "#f26419"
 
-btn-link-col: "#ffffff"
-btn-background-col: "#f07b41"
-btn-link-hover-col: "#ffffff"
-btn-background-hover-col: "#f07b41"
-btn-border-hover-col: "#c44536"
-
 pagination-link-col: "#ffffff"
 pagination-background-col: "#20b3a1"
 pagination-border-col: "#20b3a1"

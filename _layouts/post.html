@@ -8,7 +8,9 @@ layout: base
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
 
+      <!-- custom edit: adding github-badges.html from includes. -->
       {% include github-badges.html %}
+      <!-- end of custom edit. -->
 
       {% if page.before-content %}
         <div class="before-content">

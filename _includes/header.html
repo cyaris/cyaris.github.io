@@ -6,7 +6,6 @@
 
   {% if page.cover-img %}
     <div id="header-big-imgs" data-num-img=
-
       {% if page.cover-img.first %}
         {{ page.cover-img.size }}
       {% else %}
@@ -29,7 +28,7 @@
 
 
   <header class="header-section {% if page.cover-img %}has-img{% endif %}">
-    
+
     {% if page.cover-img %}
       <div class="big-img intro-header">
         <div class="container-md">
@@ -141,6 +140,13 @@
         </div>
       </div>
     </div>
+
+  {% if page.header-extra %}
+    {% for file in page.header-extra %}
+      {% include {{ file }} %}
+    {% endfor %}
+  {% endif %}
+
   </header>
 
 {% else %}

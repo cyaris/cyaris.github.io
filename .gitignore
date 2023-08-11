@@ -11,7 +11,5 @@ Gemfile.lock
 
 !**/.gitkeep
 
-node_modules
-
 assets/js/bundle.js
 assets/css/bundle.css

@@ -1,7 +1,6 @@
 ---
 layout: page
 title: About Me
-subtitle:
 ---
 
 {% include profile_photo/main.html %}

@@ -348,6 +348,41 @@ footer a:hover {
   }
 }
 
+
+/* --- Buttons --- */
+
+/* added btn-group and btn-group elements css formatting */
+.btn-group {
+  background-color: {{ site.btn-background-col | default: "#0085A1" }};
+  display: inline-block;
+  cursor: pointer;
+  color: {{ site.btn-link-col | default: "#0085A1" }};
+  font-size: 17px;
+  font-weight: 750;
+  padding: 16px 31px;
+  text-decoration: none;
+  border-radius: 28px;
+  border: 4.5px solid transparent;
+  /* static button sizes across all buttons. */
+  height: 65px;
+  width: 205px;
+}
+
+.btn-group:hover,
+.btn-group:focus {
+  color: {{ site.btn-link-hover-col | default: "#0085A1" }};
+  background-color: {{ site.btn-background-hover-col | default: "#0085A1" }};
+  border-color: {{ site.btn-border-hover-col | default: "#0085A1" }};
+  text-decoration: none;
+  font-weight: 750;
+}
+
+.btn-group:active {
+  position: relative;
+  top: 1px;
+}
+
+
 /* --- Tag Links --- */
 
 .blog-tags a {
@@ -542,27 +577,4 @@ footer {
 svg text,
 .non_reactive {
   pointer-events: none;
-}
-
-@keyframes blinkingText {
-  0% { color: #000; }
-  49% { color: #000; }
-  50% { color: transparent; }
-  99% { color: transparent; }
-  100% { color: #000; }
-}
-
-.blinking_text {
-  animation: blinkingText 1s infinite;
-}
-
-/* --- Svelte/Rollup fixes --- */
-
-.tooltip {
-  opacity: 1 !important;
-  padding: 0.75rem !important;
-}
-
-body {
-  position: unset !important;
 }

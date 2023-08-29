@@ -382,6 +382,39 @@ footer a:hover {
   top: 1px;
 }
 
+/*
+.btn-twitter,
+.btn-twitter:hover,
+.btn-twitter:focus {
+  background-color: black;
+  border-color: black;
+  opacity: 0.75;
+}
+
+.btn-twitter:hover {
+  opacity: 0.85;
+}
+
+.btn-facebook,
+.btn-facebook:focus {
+  background-color:#1977F2;
+  border-color: #0161E0;
+}
+
+.btn-facebook:hover {
+  background-color:#0161E0;
+  border-color: #0161E0;
+}
+
+.btn-linkedin,
+.btn-linkedin:focus {
+  background-color:#0D65C2;
+  border-color: #004182;
+}
+
+.btn-linkedin:hover {
+  background-color: #004182;
+} */
 
 /* --- Tag Links --- */
 
@@ -402,7 +435,6 @@ footer a:hover {
 .post-preview .blog-tags {
   opacity: 0.8;
 }
-
 
 /* --- Tags Page --- */
 

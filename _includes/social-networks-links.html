@@ -59,13 +59,13 @@
       <a
         href="https://public.tableau.com/profile/{{ site.social-network-links.tableau }}"
         target="_blank"
-        title="Tableau"
+        title="Tableau Public"
       >
         <span class="fa-stack fa-lg" aria-hidden="true">
           <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fas fa-chart-bar fa-stack-1x fa-inverse"></i>
+          <i class="fas fa-chart-simple fa-stack-1x fa-inverse"></i>
         </span>
-        <span class="sr-only">Tableau</span>
+        <span class="sr-only">Tableau Public</span>
       </a>
     </li>
   {%- endif -%}
@@ -84,21 +84,4 @@
     </li>
   {%- endif -%}
 
-  {%- if site.social-network-links.buymeacoffee -%}
-    <li class="list-inline-item">
-      <!-- custom edit: target _blank -->
-      <!-- custom edit: chose icon for buymeacoffee -->
-      <a
-        href="https://buymeacoffee.com/{{ site.social-network-links.buymeacoffee }}"
-        target="_blank"
-        title="Buy Me Pizza"
-      >
-        <span class="fa-stack fa-lg" aria-hidden="true">
-          <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fas fa-pizza-slice fa-stack-1x fa-inverse"></i>
-        </span>
-        <span class="sr-only">Buy Me Pizza</span>
-      </a>
-    </li>
-  {%- endif -%}
 </ul>

@@ -26,7 +26,6 @@ navbar-links:
   # Defaulting clickiing on projects tab to bringing the user to Mastermind.
   Projects:
     # Draft project below
-    # - Falling Pizza: falling_pizza
     - Mastermind: mastermind
     - US Gun Violence Forecasting: us_gun_violence_forecasting
     - The Networks of War: the_networks_of_war
@@ -57,12 +56,11 @@ round-avatar: true
 # You can change the order that they show up on the page by changing the order here.
 # Uncomment the links you want to show and add your information to each one.
 social-network-links:
-  # email: "charlieyaris@gmail.com"
+  email: "charlieyaris@gmail.com"
   linkedin: charlieyaris
   github: cyaris
   kaggle: cyaris
   tableau: charlie.yaris#!
-  buymeacoffee: charlieyaris
 #  medium: yourname
 #  reddit: yourname
 #  xing: yourname
@@ -117,7 +115,7 @@ feed_show_tags: true
 post_search: false
 
 # Add a button in the footer to edit the current page. Only works if your website is hosted on GitHub
-edit_page_button: true
+edit_page_button: false
 
 # Allow sub-menu items (second-level navigation menu items) to be longer than the top-level menu
 # If this setting is off, then long sub-menu words might get cut off

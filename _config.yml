@@ -23,12 +23,11 @@ author: Charlie Yaris
 
 navbar-links:
   About Me: about_me
-  # Defaulting clickiing on projects tab to bringing the user to Mastermind.
   Projects:
-    # Draft project below
     - Mastermind: mastermind
     - US Gun Violence Forecasting: us_gun_violence_forecasting
     - The Networks of War: the_networks_of_war
+    - Tableau Gallery: tableau_gallery
   Posts: ""
   Resume: resume
 
@@ -123,7 +122,7 @@ edit_page_button: false
 navbar-var-length: false
 
 # The keywords to associate with your website, for SEO purposes
-keywords: cyaris, charlie yaris, charlieyaris
+keywords: cyaris, charlie yaris, charlieyaris, yaris
 
 ######################################
 # --- Colours / background image --- #

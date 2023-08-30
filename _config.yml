@@ -322,8 +322,11 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
 
-# -----Custom Variables-----
-hidden_project_explanation: While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!
-
 # Beautiful Jekyll / Dean Attali
 # 2fc73a3a967e97599c9763d05e564189
+
+################
+# --- Custom Variables --- #
+################
+
+hidden_project_explanation: While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!

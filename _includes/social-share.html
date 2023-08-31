@@ -26,21 +26,6 @@
       </a>
     {% endif %}
 
-    {% if site.share-links-active.twitter %}
-      <!-- custom edit: target _blank -->
-      <!-- custom edit: added logo image -->
-      <a
-        href="https://twitter.com/intent/tweet?text={{ page.title | strip_html | url_encode }}&url={{ page.url | absolute_url | url_encode }}"
-        target="_blank"
-        class="btn btn-social-icon btn-twitter"
-        title="Share on Twitter"
-      >
-        <span class="fab fa-fw fa-x-twitter" aria-hidden="true"></span>
-        <span class="sr-only">Twitter</span>
-        <!-- end of custom edit -->
-      </a>
-    {% endif %}
-
     {% if site.share-links-active.facebook %}
       <!-- custom edit: target _blank -->
       <!-- custom edit: edited logo image -->
@@ -56,5 +41,20 @@
       </a>
     {% endif %}
 
+    {% if site.share-links-active.twitter %}
+      <!-- custom edit: target _blank -->
+      <!-- custom edit: added logo image -->
+      <a
+        href="https://twitter.com/intent/tweet?text={{ page.title | strip_html | url_encode }}&url={{ page.url | absolute_url | url_encode }}"
+        target="_blank"
+        class="btn btn-social-icon btn-twitter"
+        title="Share on Twitter"
+      >
+        <span class="fab fa-fw fa-x-twitter" aria-hidden="true"></span>
+        <span class="sr-only">Twitter</span>
+        <!-- end of custom edit -->
+      </a>
+    {% endif %}
+    
   </section>
 {% endif %}

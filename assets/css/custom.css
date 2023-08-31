@@ -596,6 +596,7 @@ svg text,
 .blog-tags,
 .pagination .page-item .page-link,
 #social-share-section,
+.tooltip,
 footer {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

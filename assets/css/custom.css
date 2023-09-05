@@ -162,8 +162,8 @@ em {
   border-bottom: 2.5px solid {{ site.navbar-border-col }};
 }
 
-.navbar-brand,
 .navbar-custom .navbar-brand,
+.navbar-custom .navbar-brand:focus,
 .navbar-custom .navbar-nav .nav-link,
 .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
   /* changed variable name navbar-text-col to navbar-link-col */
@@ -206,6 +206,7 @@ em {
     cursor: default;
   }
 }
+
 
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
   /* added individual hover color variable for navbar  */

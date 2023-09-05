@@ -114,9 +114,17 @@ em {
     padding-bottom: 0.45rem;
   }
 
+  .navbar-custom .navbar-toggler {
+    border-width: 1.5px;
+  }
+
   .navbar-custom .navbar-collapse {
     border-width: 2px;
   }
+
+  .navbar-toggler:hover {
+    border-color: #439aa5;
+   }
 
   .navbar-custom .navbar-toggler[aria-expanded="true"] {
     background-color: {{ site.navbar-dropdown-background-hover-col }};

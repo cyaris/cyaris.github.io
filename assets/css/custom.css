@@ -101,6 +101,11 @@ em {
     border-width: 0px 2.75px 2px 2.75px;
     border-color: {{ site.navbar-border-col }};
   }
+
+  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
+  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
+    cursor: default;
+  }
 }
 
 @media (max-width: 1199px) {
@@ -194,11 +199,6 @@ em {
 .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:focus {
   /* added individual hover color variable for navbar  */
   color: {{ site.navbar-link-hover-col }};
-  cursor: pointer;
-}
-
-.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
-.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
   cursor: pointer;
 }
 

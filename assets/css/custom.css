@@ -294,6 +294,10 @@ footer a:hover {
   }
 }
 
+.fa-lg {
+  font-size: 1.33em;
+}
+
 /* --- Posts Preview Page --- */
 
 .post-preview .post-meta,
@@ -348,38 +352,6 @@ footer a:hover {
   }
 }
 
-/* --- Tag Links --- */
-
-.blog-tags a {
-  /* changed tag border radius to be consistent with site buttons */
-  border-radius: 28px;
-  border: 2.5px solid transparent;
-  color: {{ site.tag-link-col | default: "#404040" }};
-}
-
-.blog-tags a:hover,
-.blog-tags a:focus {
-  color: {{ site.tag-link-hover-col | default: "#404040" }};
-  border-color: {{ site.tag-border-hover-col | default: "#0085A1" }};
-  background-color: {{ site.tag-background-hover-col | default: "#0085A1" }};
-}
-
-.post-preview .blog-tags {
-  opacity: 0.8;
-}
-
-
-/* --- Tags Page --- */
-
-.linked-section {
-  margin-left: 1.5rem;
-}
-
-@media (min-width: 1200px) {
-  .post-list {
-    margin-left: 2.78rem;
-  }
-}
 
 /* --- Buttons --- */
 
@@ -414,6 +386,71 @@ footer a:hover {
   top: 1px;
 }
 
+/*
+.btn-twitter,
+.btn-twitter:hover,
+.btn-twitter:focus {
+  background-color: black;
+  border-color: black;
+  opacity: 0.75;
+}
+
+.btn-twitter:hover {
+  opacity: 0.85;
+}
+
+.btn-facebook,
+.btn-facebook:focus {
+  background-color:#1977F2;
+  border-color: #0161E0;
+}
+
+.btn-facebook:hover {
+  background-color:#0161E0;
+  border-color: #0161E0;
+}
+
+.btn-linkedin,
+.btn-linkedin:focus {
+  background-color:#0D65C2;
+  border-color: #004182;
+}
+
+.btn-linkedin:hover {
+  background-color: #004182;
+} */
+
+/* --- Tag Links --- */
+
+.blog-tags a {
+  /* changed tag border radius to be consistent with site buttons */
+  border-radius: 28px;
+  border: 2.5px solid transparent;
+  color: {{ site.tag-link-col | default: "#404040" }};
+}
+
+.blog-tags a:hover,
+.blog-tags a:focus {
+  color: {{ site.tag-link-hover-col | default: "#404040" }};
+  border-color: {{ site.tag-border-hover-col | default: "#0085A1" }};
+  background-color: {{ site.tag-background-hover-col | default: "#0085A1" }};
+}
+
+.post-preview .blog-tags {
+  opacity: 0.8;
+}
+
+/* --- Tags Page --- */
+
+.linked-section {
+  margin-left: 1.5rem;
+}
+
+@media (min-width: 1200px) {
+  .post-list {
+    margin-left: 2.78rem;
+  }
+}
 
 /* --- Pagination --- */
 
@@ -563,6 +600,7 @@ svg text,
 .blog-tags,
 .pagination .page-item .page-link,
 #social-share-section,
+.tooltip,
 footer {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -574,22 +612,19 @@ footer {
 }
 
 svg text,
-.no_events {
+.non_reactive,
+.tooltip {
   pointer-events: none;
 }
 
-@keyframes blinkingText {
-  0% { color: #000; }
-  49% { color: #000; }
-  50% { color: transparent; }
-  99% { color: transparent; }
-  100% { color: #000; }
-}
-
-.blinking_text {
-  animation: blinkingText 1s infinite;
-}
-
-.cursive {
-  font-family: cursive
+.tooltip {
+  background-color: white;
+  border-color: #ddd;
+  border-style: solid;
+  border-width: 1px;
+  opacity: 1;
+  padding: 0.75rem;
+  border-radius: 0.25rem; /* 4px */
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
 }

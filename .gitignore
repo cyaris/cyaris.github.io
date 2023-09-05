@@ -8,16 +8,8 @@ Gemfile.lock
 
 # hidden folders.
 .git
-.svelte-kit
-.sass-cache
-.vagrant
-
-**/__pycache__
-**/*.egg-info
 
 !**/.gitkeep
-
-node_modules
 
 assets/js/bundle.js
 assets/css/bundle.css

@@ -9,28 +9,28 @@ img = Image.open("../../assets/img/profile_photo.jpeg")
 # Resize smoothly down to 48x48 pixels
 xMax = 48
 yMax = 48
-imgSmall = img.resize((48,48),resample=Image.BILINEAR)
+imgSmall = img.resize((48, 48), resample=Image.BILINEAR)
 
 # Scale back up using NEAREST to original size
-result = imgSmall.resize(img.size,Image.NEAREST)
+result = imgSmall.resize(img.size, Image.NEAREST)
 
 # Save pixel photo
-result.save('../assets/img/profile_photo_pixelated.png')
+result.save("../assets/img/profile_photo_pixelated.png")
 
 # creating a dataframe with rgb codes for each pixel.
 pixel_df = pd.DataFrame()
 row = 0
 for x in np.arange(0, xMax):
     for y in np.arange(0, yMax):
-        pixel_rgb = deepcopy(imgSmall.getpixel((int(x),int(y))))
-        pixel_df.loc[row, 'x_coordinate'] = x + 1
-        pixel_df.loc[row, 'y_coordinate'] = y + 1
-        pixel_df.loc[row, 'r'] = pixel_rgb[0]
-        pixel_df.loc[row, 'g'] = pixel_rgb[1]
-        pixel_df.loc[row, 'b'] = pixel_rgb[2]
-        row+=1
+        pixel_rgb = deepcopy(imgSmall.getpixel((int(x), int(y))))
+        pixel_df.loc[row, "x_coordinate"] = x + 1
+        pixel_df.loc[row, "y_coordinate"] = y + 1
+        pixel_df.loc[row, "r"] = pixel_rgb[0]
+        pixel_df.loc[row, "g"] = pixel_rgb[1]
+        pixel_df.loc[row, "b"] = pixel_rgb[2]
+        row += 1
 
-pixel_df.to_csv('../../assets/csv/profile_photo/proile_photo_pixel_rgb_codes.csv', sep = ',', index=None)
+pixel_df.to_csv("../../assets/csv/profile_photo/proile_photo_pixel_rgb_codes.csv", sep=",", index=None)
 
 
 xMax = 12
@@ -39,8 +39,8 @@ hover_df = pd.DataFrame()
 row = 0
 for x in np.arange(0, xMax):
     for y in np.arange(0, yMax):
-        hover_df.loc[row, 'x_coordinate'] = x + 1
-        hover_df.loc[row, 'y_coordinate'] = y + 1
-        row+=1
+        hover_df.loc[row, "x_coordinate"] = x + 1
+        hover_df.loc[row, "y_coordinate"] = y + 1
+        row += 1
 
-hover_df.to_csv('../../assets/csv/profile_photo/proile_photo_hover_sections.csv', sep = ',', index=None)
+hover_df.to_csv("../../assets/csv/profile_photo/proile_photo_hover_sections.csv", sep=",", index=None)

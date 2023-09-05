@@ -294,6 +294,10 @@ footer a:hover {
   }
 }
 
+.fa-lg {
+  font-size: 1.33em;
+}
+
 /* --- Posts Preview Page --- */
 
 .post-preview .post-meta,

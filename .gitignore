@@ -10,6 +10,3 @@ Gemfile.lock
 .git
 
 !**/.gitkeep
-
-assets/js/bundle.js
-assets/css/bundle.css

@@ -15,12 +15,12 @@ body {
 /* not sure why this doesn't work when combined witg the selection elements */
 a:hover,
 a:focus {
-  color: {{ site.link-hover-col | default: "#0085A1" }};
+  color: {{ site.link-hover-col }};
 }
 
 ::-moz-selection,
 ::selection {
-  color: {{ site.link-hover-col | default: "#0085A1" }};
+  color: {{ site.link-hover-col }};
 }
 
 .intro-header .post-heading h1,
@@ -80,8 +80,8 @@ em {
   .navbar-custom .navbar-nav .nav-item.dropdown:hover,
   .navbar-custom .navbar-nav .nav-item.dropdown:focus,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:hover {
-    background-color: {{ site.navbar-dropdown-background-hover-col | default: "#DDDDDD" }};
-    border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
+    background-color: {{ site.navbar-dropdown-background-hover-col }};
+    border-color: {{ site.navbar-border-col }};
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown.show {
@@ -99,7 +99,7 @@ em {
     font-size: 0.825em;
     font-weight: 700;
     border-width: 0px 2.75px 2px 2.75px;
-    border-color: {{ site.navbar-border-col | default: "#DDDDDD" }};
+    border-color: {{ site.navbar-border-col }};
   }
 }
 
@@ -119,7 +119,7 @@ em {
   }
 
   .navbar-custom .navbar-toggler[aria-expanded="true"] {
-    background-color: {{ site.navbar-dropdown-background-hover-col | default: "#DDDDDD" }};
+    background-color: {{ site.navbar-dropdown-background-hover-col }};
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
@@ -128,8 +128,8 @@ em {
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown.show {
-    color: {{ site.navbar-link-col | default: "#404040" }};
-    background-color: {{ site.navbar-col | default: "#404040" }};
+    color: {{ site.navbar-link-col }};
+    background-color: {{ site.navbar-col }};
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
@@ -147,7 +147,7 @@ em {
 
 .navbar-custom {
   /* added bottom border */
-  border-bottom: 2.5px solid {{ site.navbar-border-col | default: "#DDDDDD" }};
+  border-bottom: 2.5px solid {{ site.navbar-border-col }};
 }
 
 .navbar-custom .navbar-brand,
@@ -156,7 +156,7 @@ em {
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle,
 .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
   /* changed variable name navbar-text-col to navbar-link-col */
-  color: {{ site.navbar-link-col | default: "#404040" }};
+  color: {{ site.navbar-link-col }};
 }
 
 .navbar-custom .navbar-nav .nav-item {
@@ -185,13 +185,13 @@ em {
 .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover,
 .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:focus {
   /* added individual hover color variable for navbar  */
-  color: {{ site.navbar-link-hover-col | default: "#0085A1" }};
+  color: {{ site.navbar-link-hover-col }};
   cursor: pointer;
 }
 
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
-  cursor: default;
+  cursor: pointer;
 }
 
 /* making projects triangle up when the dropdown is not being shown. */
@@ -241,40 +241,40 @@ em {
 
 footer {
   /* added top border */
-  border-top: 2.5px solid {{ site.footer-border-col | default: "#DDDDDD" }};
+  border-top: 2.5px solid {{ site.footer-border-col }};
 }
 
 footer a:focus {
-  color: {{ site.footer-link-col | default: "#404040" }};
+  color: {{ site.footer-link-col }};
 }
 
 footer a:hover {
   /* added individual hover color variable for footer */
-  color: {{ site.footer-link-hover-col | default: "#404040" }};
+  color: {{ site.footer-link-hover-col }};
   /* removing underline for footer links on hover */
   text-decoration: none;
 }
 
 .fa-stack-1x {
   /* changed color of font-awesome icon */
-  color: {{ site.social-icon-col | default: "#0085A1" }};
+  color: {{ site.social-icon-col }};
 }
 
 .fa-stack-1x:hover,
 .fa-stack-1x:focus {
  /* changed color of font-awesome icon */
- color: {{ site.social-icon-hover-col | default: "#0085A1" }};
+ color: {{ site.social-icon-hover-col }};
 }
 
 .list-inline a,
 .list-inline a:focus {
   /* added individual color for social in footer */
-  color: {{ site.social-icon-background-col | default: "#0085A1" }};
+  color: {{ site.social-icon-background-col }};
 }
 
 .list-inline a:hover {
   /* added individual color for social hover in footer */
-  color: {{ site.social-icon-background-hover-col | default: "#0085A1" }};
+  color: {{ site.social-icon-background-hover-col }};
 }
 
 .author-site a,
@@ -312,13 +312,13 @@ footer a:hover {
 
 .post-preview a {
   /* making title of the post the color of links (rather than black) */
-  color: {{ site.post-title-link-col | default: "#0085A1" }};
+  color: {{ site.post-title-link-col }};
 }
 
 .post-preview a:hover,
 .post-preview a:focus {
   /* making title of the post the color of links (rather than black) on hover  */
-  color: {{ site.post-title-link-hover-col | default: "#0085A1" }};
+  color: {{ site.post-title-link-hover-col }};
 }
 
 .post-preview .post-image-small {
@@ -355,12 +355,16 @@ footer a:hover {
 
 /* --- Buttons --- */
 
+button:focus {
+  outline: none;
+}
+
 /* added btn-group and btn-group elements css formatting */
 .btn-group {
-  background-color: {{ site.btn-background-col | default: "#0085A1" }};
+  background-color: {{ site.btn-background-col }};
   display: inline-block;
   cursor: pointer;
-  color: {{ site.btn-link-col | default: "#0085A1" }};
+  color: {{ site.btn-link-col }};
   font-size: 17px;
   font-weight: 750;
   padding: 16px 31px;
@@ -374,9 +378,9 @@ footer a:hover {
 
 .btn-group:hover,
 .btn-group:focus {
-  color: {{ site.btn-link-hover-col | default: "#0085A1" }};
-  background-color: {{ site.btn-background-hover-col | default: "#0085A1" }};
-  border-color: {{ site.btn-border-hover-col | default: "#0085A1" }};
+  color: {{ site.btn-link-hover-col }};
+  background-color: {{ site.btn-background-hover-col }};
+  border-color: {{ site.btn-border-hover-col }};
   text-decoration: none;
   font-weight: 750;
 }
@@ -426,14 +430,14 @@ footer a:hover {
   /* changed tag border radius to be consistent with site buttons */
   border-radius: 28px;
   border: 2.5px solid transparent;
-  color: {{ site.tag-link-col | default: "#404040" }};
+  color: {{ site.tag-link-col }};
 }
 
 .blog-tags a:hover,
 .blog-tags a:focus {
-  color: {{ site.tag-link-hover-col | default: "#404040" }};
-  border-color: {{ site.tag-border-hover-col | default: "#0085A1" }};
-  background-color: {{ site.tag-background-hover-col | default: "#0085A1" }};
+  color: {{ site.tag-link-hover-col }};
+  border-color: {{ site.tag-border-hover-col }};
+  background-color: {{ site.tag-background-hover-col }};
 }
 
 .post-preview .blog-tags {
@@ -468,11 +472,11 @@ footer a:hover {
 
 .pagination .page-item .page-link {
   /* changed pagination color */
-  color: {{ site.pagination-link-col | default: "#0085A1" }};
+  color: {{ site.pagination-link-col }};
   /* changed transform to capitalize */
   text-transform: capitalize;
   /* changed pagination background color */
-  background-color: {{ site.pagination-background-col | default: "#0085A1" }};
+  background-color: {{ site.pagination-background-col }};
   border: 4.5px solid transparent;
   border-radius: 28px;
   padding: 10px 17.5px;
@@ -490,6 +494,19 @@ footer a:hover {
   padding-right: 32.5px;
 }
 
+.pagination .page-item .page-link:hover,
+.pagination .page-item .page-link:focus {
+  /* changed pagination color on hover */
+  color: {{ site.pagination-link-hover-col }};
+  /* changed pagination background color on hover */
+  background-color: {{ site.pagination-background-hover-col }};
+  border: 4.5px solid {{ site.pagination-border-hover-col }};
+  font-weight: 750;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
 .rotate {
   transform: rotate(180deg);
   /* Safari, Firefox IE & Opera below. */
@@ -498,20 +515,6 @@ footer a:hover {
   -ms-transform: rotate(180deg);
   -o-transform: rotate(180deg);
 }
-
-.pagination .page-item .page-link:hover,
-.pagination .page-item .page-link:focus {
-  /* changed pagination color on hover */
-  color: {{ site.pagination-link-hover-col | default: "#404040" }};
-  /* changed pagination background color on hover */
-  background-color: {{ site.pagination-background-hover-col | default: "#0085A1" }};
-  border: 4.5px solid {{ site.pagination-border-hover-col | default: "#0085A1" }};
-  font-weight: 750;
-  box-shadow: none;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-}
-
 
 /* --- Social Share Icons --- */
 

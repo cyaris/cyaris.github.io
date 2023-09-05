@@ -612,6 +612,19 @@ footer {
 }
 
 svg text,
-.non_reactive {
+.non_reactive,
+.tooltip {
   pointer-events: none;
+}
+
+.tooltip {
+  background-color: white;
+  border-color: #ddd;
+  border-style: solid;
+  border-width: 1px;
+  opacity: 1;
+  padding: 0.75rem;
+  border-radius: 0.25rem; /* 4px */
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
 }

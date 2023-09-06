@@ -47,8 +47,8 @@
                   <hr class="{% if page.layout=='paginator' %} large {% else %} small {% endif %}" />
                 {% endif %}
 
-                <div class="{{ page.layout }}-subheading">
-                  <span class="{{ include.type }}-heading">{{ page.subtitle | strip_html }}</span>
+                <div class="{{ page.layout }}-subheading {{ include.type }}-heading">
+									{{ page.subtitle | strip_html }}
                 </div>
               {% endif %}
 

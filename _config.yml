@@ -14,8 +14,6 @@ title: Data Obsessions
 # Your name to show in the footer
 author: Charlie Yaris
 
-# --- List of links in the navigation bar --- #
-
 ###############################################
 # --- List of links in the navigation bar --- #
 ###############################################
@@ -27,7 +25,7 @@ navbar-links:
     - US Gun Violence Forecasting: us_gun_violence_forecasting
     - The Networks of War: the_networks_of_war
     - Tableau Gallery: tableau_gallery
-  Posts: ""
+  blog: blog
   Resume: resume
 
 ################
@@ -132,7 +130,7 @@ keywords: cyaris, charlie yaris, charlieyaris, yaris
 # custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links
 # custom edit: added several individual color variables below
 navbar-col: "#54bdca"
-navbar-dropdown-background-hover-col: "#4aa4b0"
+# navbar-dropdown-background-hover-col: "#4aa4b0"
 navbar-border-col: "#f26419"
 navbar-link-col: "#ffffff"
 navbar-link-hover-col: "#175676"

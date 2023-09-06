@@ -1,14 +1,13 @@
 <nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}">
-
-  {%- if site.title-img -%}
-    <a class="navbar-brand navbar-brand-logo" href="{{ '' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
-  {%- elsif site.title -%}
-		<!-- custom edit: changing top left nav link to Launch Fireworks instead of site title. adding second anchor tag for mobile. triggering firework launch onclick. -->
-		<a class="navbar-brand navbar-brand-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()">Fireworks<img class="kidpix_png kidpix_png_top" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_1.png" style="margin-left: 10px; margin-bottom: 2.5px;"</img><img class="kidpix_png kidpix_png_bottom" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_2.png" style="margin-left: -10.5px; margin-bottom: 2.5px;"</img></a>
-		<a class="navbar-brand navbar-brand-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()"><img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif"</img><img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img><img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img></a>
-		<!-- end of custom edit -->
-  {%- endif -%}
-
+	<!-- custom edit: changing top left nav link to Launch Fireworks instead of site title. adding second anchor tag for mobile. triggering firework launch onclick. -->
+	<!-- {%- if site.title-img -%}
+		<a class="navbar-brand navbar-brand-logo" href="{{ '' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
+	{%- elsif site.title -%}
+		<a class="navbar-brand" href="{{ '' | absolute_url }}">{{ site.title }}</a>
+	{%- endif -%} -->
+	<a class="navbar-brand navbar-brand-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()">Fireworks<img class="kidpix_png kidpix_png_top" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_1.png" style="margin-left: 10px; margin-bottom: 2.5px;"</img><img class="kidpix_png kidpix_png_bottom" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser_large_2.png" style="margin-left: -10.5px; margin-bottom: 2.5px;"</img></a>
+	<a class="navbar-brand navbar-brand-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()"><img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif"</img><img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img><img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img></a>
+	<!-- end of custom edit -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -20,7 +19,7 @@
         {%- if link[1].first %}
           <li class="nav-item dropdown">
 						<!-- custom edit: changed href link for dropdown toggle. -->
-						<a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
+						<a class="nav-link dropdown-toggle" href="{{ link[0] | relative_url }}" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
 						<!-- end of custom edit -->
 						<!-- custom edit: removed 'dropdown-menu-right' class -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -32,16 +31,12 @@
               {%- endfor %}
             </div>
           </li>
-					<!-- custom edit: making href for Posts navigate back to home page. -->
-					{% elsif link[0]=="Posts" %}
-	          <li class="nav-item">
-	            <a class="nav-link" href="{{ site.url }}">{{ link[0] }}</a>
-	          </li>
-					<!-- end of custom edit -->
         {% else %}
+					<!-- custom edit: making href for "" navigate back to home page. -->
           <li class="nav-item">
-            <a class="nav-link" href="{{ link[1] | relative_url }}">{{ link[0] }}</a>
+            <a class="nav-link" href="{% if link[1]=='' %}{{ site.url }}{% else %}{{ link[1] | relative_url }}{% endif %}">{{ link[0] }}</a>
           </li>
+					<!-- end of custom edit -->
         {%- endif -%}
       {%- endfor -%}
 

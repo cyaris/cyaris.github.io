@@ -54,7 +54,7 @@ layout: base
               data-toggle="tooltip"
               data-placement="top"
               title="{{page.previous.title | strip_html | xml_escape}}"
-              >&larr; Previous Post</a
+              >&larr; Previous {{ page.type }}</a
             >
             <a
               class="page-link page-link-mobile rotate"
@@ -78,7 +78,7 @@ layout: base
               data-toggle="tooltip"
               data-placement="top"
               title="{{page.next.title | strip_html | xml_escape}}"
-              >Next Post &rarr;</a
+              >Next {{ page.type }} &rarr;</a
             >
             <a
               class="page-link page-link-mobile"

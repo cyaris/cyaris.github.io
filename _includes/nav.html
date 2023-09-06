@@ -24,8 +24,8 @@
 			{%- for link in site.navbar-links -%}
         {%- if link[1].first %}
           <li class="nav-item dropdown">
-						<!-- custom edit: changed href link for dropdown toggle. -->
-						<a class="nav-link dropdown-toggle" href="{{ link[0] | relative_url }}" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
+						<!-- custom edit: changed href link for dropdown toggle. made href downcase.-->
+						<a class="nav-link dropdown-toggle" href="{{ link[0] | relative_url | downcase }}" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
 						<!-- end of custom edit -->
 						<!-- custom edit: removed 'dropdown-menu-right' class -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">

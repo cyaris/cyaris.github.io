@@ -6,7 +6,8 @@
 		<a class="navbar-brand" href="{{ '' | absolute_url }}">{{ site.title }}</a>
 	{%- endif -%} -->
 	<a class="navbar-brand navbar-brand-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()">Fireworks
-		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 7.5px; margin-bottom: 3px; height: 1.25rem;"</img></a>
+		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 7.5px; margin-bottom: 3px; height: 1.25rem;"</img>
+	</a>
 	<a class="navbar-brand navbar-brand-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()">
 		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif"</img>
 		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img>
@@ -39,7 +40,7 @@
         {% else %}
 					<!-- custom edit: making href for "" navigate back to home page. -->
           <li class="nav-item">
-            <a class="nav-link" href="{% if link[1]=='' %} {{ site.url }} {% else %} {{ link[1] | relative_url }} {% endif %}">{{ link[0] }}</a>
+            <a class="nav-link" href="{% if link[1]=='' %} {{ site.url }} {% else %} {{ link[1] | relative_url }}{% endif %}">{{ link[0] }}</a>
           </li>
 					<!-- end of custom edit -->
         {%- endif -%}

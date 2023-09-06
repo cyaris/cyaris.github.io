@@ -209,7 +209,7 @@ em {
   color: {{ site.navbar-link-col }};
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1200px) {
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover {
     color: {{ site.navbar-link-hover-col }};
   }
@@ -305,7 +305,7 @@ footer a:hover {
 }
 
 /* decreasing size of footer on mobile */
-@media (max-width: 1199px) {
+@media (max-width: 1200px) {
   footer .list-inline {
     margin-bottom: 1rem;
   }
@@ -362,7 +362,7 @@ footer a:hover {
   }
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1200px) {
   .post-preview .post-image-small {
     margin-top: 1rem;
     margin-bottom: 1rem;

@@ -6,7 +6,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min)
 }
 
-function getBodyDimenstions() {
+function getBodyDimensions() {
   var w = window,
     d = document,
     e = d.documentElement,

@@ -110,6 +110,11 @@ em {
     display: none;
   }
 
+  .navbar-custom .avatar-container .avatar-img-border {
+    width: 125%;
+    margin-left: -75%;
+  }
+
   .navbar-custom .navbar-nav .nav-item.dropdown > .dropdown-menu {
     display: block;
   }

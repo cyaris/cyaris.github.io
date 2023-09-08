@@ -559,11 +559,11 @@ hr.large {
   margin: 1rem auto;
 }
 
-#paginator-heading {
+#starwars-heading {
   margin-top: 0.75rem;
 }
 
-.paginator-subheading {
+.starwars-subheading {
   font-weight: 800;
   line-height: 1.1;
 }
@@ -576,11 +576,11 @@ hr.large {
     border-width: 0.25rem;
   }
 
-  #paginator-heading {
+  #starwars-heading {
     font-size: 3.25rem;
   }
 
-  .paginator-subheading {
+  .starwars-subheading {
     font-size: 4.5rem;
     margin-bottom: 2rem;
     /* transform: perspective(130px) rotateX(20deg); */
@@ -595,11 +595,11 @@ hr.large {
     border-width: 0.2rem;
   }
 
-  #paginator-heading {
+  #starwars-heading {
     font-size: 2rem;
   }
 
-  .paginator-subheading {
+  .starwars-subheading {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
   }

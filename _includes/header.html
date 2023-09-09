@@ -47,7 +47,7 @@
                   <hr class="{% if page.title=='Charlie Yaris' %} large {% else %} small {% endif %}" />
                 {% endif %}
 
-                <div class="{% if page.title=='Charlie Yaris' %} starwars-subheading {% else %} {{ page.layout }}-subheading {% endif %} {{ include.type }}-heading">
+                <div class="{% if page.title=='Charlie Yaris' %} starwars-subheading {% else %} {{ page.layout }}-subheading {{ include.type }}-subheading {% endif %}">
 									{{ page.subtitle | strip_html }}
                 </div>
               {% endif %}

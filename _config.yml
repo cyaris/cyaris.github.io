@@ -27,6 +27,7 @@ navbar-links:
     - Tableau Gallery: tableau_gallery
   Blog: blog
   Resume: resume
+  Contact: contact
 
 ################
 # --- Logo --- #

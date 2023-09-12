@@ -1,22 +1,3 @@
-function getRandomInt(min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-
-  // the maximum is exclusive and the minimum is inclusive
-  return Math.floor(Math.random() * (max - min) + min)
-}
-
-function getBodyDimensions() {
-  var w = window,
-    d = document,
-    e = d.documentElement,
-    g = d.getElementsByTagName("body")[0],
-    width = w.innerWidth || e.clientWidth || g.clientWidth,
-    height = w.innerHeight || e.clientHeight || g.clientHeight
-
-  return [width, height]
-}
-
 // returning the array without the remove_item
 function removeItemFromArray(array, remove_item) {
   return array.filter(function (array_item) {

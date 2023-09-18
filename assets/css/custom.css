@@ -132,7 +132,7 @@ em {
 
   .navbar-toggler:hover {
     border-color: #439aa5;
-   }
+  }
 
    /* .navbar-custom .navbar-toggler[aria-expanded="true"] { */
      /* background-color: {{ site.navbar-dropdown-background-hover-col }}; */

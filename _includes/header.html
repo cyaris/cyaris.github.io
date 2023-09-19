@@ -35,6 +35,7 @@
         <div class="row">
           <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
             <div class="{{ include.type }}-heading">
+							<!-- custom edit: adjustment for starwars headings. -->
               <h1 id="{% if page.title=='Charlie Yaris' %}starwars-heading{% else %}{{ page.layout }}-heading{% endif %}">
                 {% if page.title %}
                   {{ page.title | strip_html }}
@@ -51,6 +52,7 @@
 									{{ page.subtitle | strip_html }}
                 </div>
               {% endif %}
+							<!-- end of custom edit. -->
 
               {% if include.type == "post" %}
                 <!-- custom edit: removed "posted on" -->

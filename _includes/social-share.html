@@ -3,7 +3,7 @@
 {% for links in site.share-links-active %}
   {% if links[1] == true %}
     {% assign any-share-links = true %}
-    {% endif %}
+  {% endif %}
 {% endfor %}
 
 {% if any-share-links %}
@@ -55,6 +55,6 @@
         <!-- end of custom edit -->
       </a>
     {% endif %}
-    
+
   </section>
 {% endif %}

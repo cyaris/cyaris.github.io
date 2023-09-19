@@ -67,8 +67,7 @@ em {
     margin-bottom: 0.4rem;
   }
 
-  .navbar-custom.top-nav-short,
-  .navbar-custom.top-nav-short-permanent {
+  .navbar-custom.top-nav-short {
     padding-top: 0.55rem;
     height: 3.45rem;
   }
@@ -80,7 +79,7 @@ em {
   .navbar-custom .navbar-nav .nav-item.dropdown:hover,
   .navbar-custom .navbar-nav .nav-item.dropdown:focus,
   .navbar-custom .navbar-nav .nav-item.dropdown.show:hover {
-    background-color: {{ site.navbar-dropdown-background-hover-col }};
+    /* background-color: {{ site.navbar-dropdown-background-hover-col }}; */
     border-color: {{ site.navbar-border-col }};
   }
 
@@ -101,17 +100,21 @@ em {
     border-width: 0px 2.75px 2px 2.75px;
     border-color: {{ site.navbar-border-col }};
   }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover,
-  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
-    cursor: default;
-  }
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1200px) {
 
   .navbar-brand-desktop {
     display: none;
+  }
+
+  .navbar-custom .avatar-container .avatar-img-border {
+    width: 125%;
+    margin-left: -75%;
+  }
+
+  .navbar-custom .navbar-nav .nav-item.dropdown > .dropdown-menu {
+    display: block;
   }
 
   .navbar-custom .navbar-nav .nav-link {
@@ -129,20 +132,15 @@ em {
 
   .navbar-toggler:hover {
     border-color: #439aa5;
-   }
-
-  .navbar-custom .navbar-toggler[aria-expanded="true"] {
-    background-color: {{ site.navbar-dropdown-background-hover-col }};
   }
+
+   /* .navbar-custom .navbar-toggler[aria-expanded="true"] { */
+     /* background-color: {{ site.navbar-dropdown-background-hover-col }}; */
+   /* } */
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
     transform: translate(-15px, 0px);
     outline: none;
-  }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown.show {
-    color: {{ site.navbar-link-col }};
-    background-color: {{ site.navbar-col }};
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
@@ -150,11 +148,15 @@ em {
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    font-size: 1em;
+    font-size: 0.85em;
     font-weight: 800;
     padding-left: 1rem;
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
+  }
+
+  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover {
+    color: {{ site.navbar-link-hover-col }};
   }
 }
 
@@ -166,10 +168,13 @@ em {
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-brand:focus,
 .navbar-custom .navbar-nav .nav-link,
-.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle,
+.navbar-custom .navbar-nav .nav-item.dropdown,
 .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-  /* changed variable name navbar-text-col to navbar-link-col */
   color: {{ site.navbar-link-col }};
+}
+
+.navbar-custom .nav-item.dropdown:hover {
+  background-color: {{ site.navbar-col }};
 }
 
 .navbar-custom .navbar-nav .nav-item {
@@ -194,12 +199,21 @@ em {
 
 .navbar-custom .navbar-brand:hover,
 .navbar-custom .navbar-nav .nav-link:hover,
-.navbar-custom .navbar-nav .nav-link:focus,
-.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover,
-.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:focus {
+.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
   /* added individual hover color variable for navbar  */
   color: {{ site.navbar-link-hover-col }};
   cursor: pointer;
+}
+
+.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
+  /* added individual hover color variable for navbar  */
+  color: {{ site.navbar-link-col }};
+}
+
+@media (max-width: 1200px) {
+  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover {
+    color: {{ site.navbar-link-hover-col }};
+  }
 }
 
 /* making projects triangle up when the dropdown is not being shown. */
@@ -292,7 +306,7 @@ footer a:hover {
 }
 
 /* decreasing size of footer on mobile */
-@media (max-width: 1199px) {
+@media (max-width: 1200px) {
   footer .list-inline {
     margin-bottom: 1rem;
   }
@@ -349,7 +363,7 @@ footer a:hover {
   }
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1200px) {
   .post-preview .post-image-small {
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -546,11 +560,11 @@ hr.large {
   margin: 1rem auto;
 }
 
-#home_page_heading {
+#starwars-heading {
   margin-top: 0.75rem;
 }
 
-.home_page_subheading {
+.starwars-subheading {
   font-weight: 800;
   line-height: 1.1;
 }
@@ -563,11 +577,11 @@ hr.large {
     border-width: 0.25rem;
   }
 
-  #home_page_heading {
+  #starwars-heading {
     font-size: 3.25rem;
   }
 
-  .home_page_subheading {
+  .starwars-subheading {
     font-size: 4.5rem;
     margin-bottom: 2rem;
     /* transform: perspective(130px) rotateX(20deg); */
@@ -575,18 +589,18 @@ hr.large {
   }
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1200px) {
   hr.large {
     max-width: 16.5rem;
     /* max-width: 13rem; */
     border-width: 0.2rem;
   }
 
-  #home_page_heading {
+  #starwars-heading {
     font-size: 2rem;
   }
 
-  .home_page_subheading {
+  .starwars-subheading {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
   }
@@ -604,9 +618,6 @@ hr.large {
 svg text,
 .no_selection,
 .navbar-custom,
-/* .navbar-custom .navbar-nav .nav-item.dropdown, */
-/* .navbar-custom .navbar-nav .nav-link, */
-/* .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item, */
 .btn-group,
 .blog-tags,
 .pagination .page-item .page-link,
@@ -638,4 +649,21 @@ svg text,
   border-radius: 0.25rem; /* 4px */
   font-size: 0.875rem; /* 14px */
   line-height: 1.25rem; /* 20px */
+}
+
+.fireworks {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  -o-user-select: none; /* Opera */
+  user-select: none;
+  pointer-events: none;
 }

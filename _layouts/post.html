@@ -46,7 +46,7 @@ layout: base
       <ul class="pagination blog-pager">
         {% if page.previous.url %}
           <li class="page-item previous">
-            <!-- custom edit: added additional pagination button for desktop vs mobile. -->
+            <!-- custom edit: added additional pagination button for desktop vs mobile, and label by page.type. -->
             <!-- to do: fix below so it can be done in one element. -->
             <a
               class="page-link page-link-desktop"
@@ -54,7 +54,7 @@ layout: base
               data-toggle="tooltip"
               data-placement="top"
               title="{{page.previous.title | strip_html | xml_escape}}"
-              >&larr; Previous Post</a
+              >&larr; Previous {{ page.type }}</a
             >
             <a
               class="page-link page-link-mobile rotate"
@@ -70,7 +70,7 @@ layout: base
 
         {% if page.next.url %}
           <li class="page-item next">
-            <!-- custom edit: added additional pagination button for desktop vs mobile. -->
+            <!-- custom edit: added additional pagination button for desktop vs mobile, and label by page.type. -->
             <!-- to do: fix below so it can be done in one element. -->
             <a
               class="page-link page-link-desktop"
@@ -78,7 +78,7 @@ layout: base
               data-toggle="tooltip"
               data-placement="top"
               title="{{page.next.title | strip_html | xml_escape}}"
-              >Next Post &rarr;</a
+              >Next {{ page.type }} &rarr;</a
             >
             <a
               class="page-link page-link-mobile"

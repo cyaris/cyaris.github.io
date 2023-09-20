@@ -366,7 +366,7 @@ footer a:hover {
 /* --- Tag Links --- */
 
 .blog-tags a {
-  /* changed tag border radius to be consistent with site buttons */
+  /* changed tag border radius to be consistent with site buttons. */
   border-radius: 28px;
   border: 2.5px solid transparent;
   color: {{ site.tag-link-col }};

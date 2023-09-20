@@ -11,15 +11,6 @@ body {
   font-size: 1rem;
 }
 
-a {
-  color: {{ site.link-col }};
-}
-
-a:hover,
-a:focus {
-  color: {{ site.link-hover-col }};
-}
-
 .intro-header .post-heading h1,
 .intro-header .page-heading h1 {
   margin-top: 0.5rem;
@@ -286,11 +277,6 @@ footer a:hover {
 
 .post-preview {
   border-bottom: 0px;
-}
-
-.post-preview a {
-  /* making title of the post the color of links. */
-  color: {{ site.post-title-link-col }};
 }
 
 .post-preview a:hover,

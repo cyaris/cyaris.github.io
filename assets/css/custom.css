@@ -2,7 +2,6 @@
 layout: null
 ---
 
-
 /* --- Body --- */
 
 body {
@@ -544,66 +543,6 @@ button:focus {
   box-shadow: none;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
-}
-
-
-/* --- Home Page Title and Subtitle --- */
-/* Changing how the page title and page subbtitle are formatted. */
-
-/* hr.small {
-  max-width: 14rem;
-} */
-
-hr.large {
-  border-color: inherit;
-  border-radius: 0.1875rem;
-  margin: 1rem auto;
-}
-
-#starwars-heading {
-  margin-top: 0.75rem;
-}
-
-.starwars-subheading {
-  font-weight: 800;
-  line-height: 1.1;
-}
-
-/* defining classes differently for mobile and desktop that will dictate how the headers/subheaders look on the home page ONLY. */
-@media (min-width: 1200px) {
-  hr.large {
-    max-width: 26rem;
-    /* max-width: 21rem; */
-    border-width: 0.25rem;
-  }
-
-  #starwars-heading {
-    font-size: 3.25rem;
-  }
-
-  .starwars-subheading {
-    font-size: 4.5rem;
-    margin-bottom: 2rem;
-    /* transform: perspective(130px) rotateX(20deg); */
-    /* -webkit-transform: perspective(100px) rotateX(20deg); */
-  }
-}
-
-@media (max-width: 1200px) {
-  hr.large {
-    max-width: 16.5rem;
-    /* max-width: 13rem; */
-    border-width: 0.2rem;
-  }
-
-  #starwars-heading {
-    font-size: 2rem;
-  }
-
-  .starwars-subheading {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-  }
 }
 
 /* --- Thumbnails --- */

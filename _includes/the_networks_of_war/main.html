@@ -1,8 +1,7 @@
 <!-- <!DOCTYPE html> -->
 <html>
 	<head>
-		<!-- <link href='https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;400&display=swap' rel='stylesheet'> -->
-		<style type='text/css'>
+		<style type="text/css">
 
 			@media (min-width:990px){
 				#hidden_project_explained {
@@ -69,8 +68,9 @@
 			</p>
 		</div>
 		<!-- Load d3.js -->
-		<script src='https://d3js.org/d3.v5.min.js'></script>
-		<script src='https://d3js.org/d3-time.v2.min.js'></script>
+		<script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+		<script type="text/javascript" src="https://d3js.org/d3-time.v2.min.js"></script>
+		<script type="text/javascript" src="https://unpkg.com/d3-simple-slider@1.10.1/dist/d3-simple-slider.min.js"></script>
 		<script type='text/javascript'>
 
 			// new code section: start of code for svg
@@ -189,7 +189,7 @@
 							selectedWarID = d3.select(this).attr('id');
 							d3.selectAll('svg').remove();
 							// adding back in fireworks svg since all svgs were just removed.
-							appendFireworksSVG();
+							// appendFireworksSVG();
 							createNetworkGraph(selectedWarID);
 							window.scrollTo(0, 325);
 					};

@@ -137,7 +137,9 @@ navbar-link-col: "#ffffff"
 navbar-link-hover-col: "#175676"
 
 page-col: "#ffffff"
-post-title-link-hover-col: "#1b998b" #54bdca
+link-col: "#1b998b"
+# post-title-link-hover-col: "#1b998b"
+# post-title-link-hover-col: ""#54bdca"
 
 footer-col: "#54bdca"
 footer-border-col: "#f26419"

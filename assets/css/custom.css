@@ -18,6 +18,11 @@ em {
   opacity: 0.875;
 }
 
+a,
+a:hover,
+a:focus {
+  color: {{ site.link-col }};
+}
 
 /* --- Center --- */
 
@@ -268,8 +273,7 @@ footer a:hover {
 
 .post-preview a:hover,
 .post-preview a:focus {
-  /* making title of the post the color of links. */
-  color: {{ site.post-title-link-hover-col }};
+  color: {{ site.link-col }};
 }
 
 .post-preview .post-image-small {

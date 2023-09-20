@@ -45,15 +45,49 @@ em {
 
 /* --- Navbar --- */
 
+.navbar-custom {
+  border-bottom: 2.5px solid {{ site.navbar-border-col }};
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-nav .nav-link,
+.navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item,
+.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
+  color: {{ site.navbar-link-col }};
+}
+
+.navbar-custom .navbar-nav .nav-item {
+  /* changed font-size for navbar links (not including title link or dropdown links) */
+  font-size: 1rem;
+  /* changed transform to capitalize */
+  text-transform: capitalize;
+}
+
+/* increasing size of projects navbar section width */
+.navbar-custom .navbar-nav .nav-item.dropdown {
+  padding-right: 0.7375rem;
+  padding-left: 0.7375rem;
+  /* added transparent border to project links section, which will become visible later on */
+  border: 2.75px solid transparent;
+  border-width: 2.75px 2.75px 3px 2.75px;
+}
+
+.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
+  background-color: transparent;
+}
+
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .navbar-nav .nav-link:hover,
+.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
+  /* added individual hover color variable for navbar  */
+  color: {{ site.navbar-link-hover-col }};
+  cursor: pointer;
+}
+
 @media (min-width: 1200px) {
 
-  .navbar-brand-mobile,
-  .navbar-custom .navbar-nav .nav-item.dropdown.show > .dropdown-menu {
+  .firework-launcher-mobile {
     display: none;
-  }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
-    display: block;
   }
 
   .navbar-custom {
@@ -67,25 +101,25 @@ em {
   }
 
   .navbar-custom.top-nav-short {
-    padding-top: 0.55rem;
     height: 3.45rem;
+    padding-top: 0.55rem;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown {
     transform: translate(0px, -3px);
+    /* colors below must be transparent because they are overlapping with other elements. */
+    background-color: transparent;
+    border-color: transparent;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown:hover,
-  .navbar-custom .navbar-nav .nav-item.dropdown:focus,
-  .navbar-custom .navbar-nav .nav-item.dropdown.show:hover {
+  .navbar-custom .navbar-nav .nav-item.dropdown:focus {
     /* background-color: {{ site.navbar-dropdown-background-hover-col }}; */
     border-color: {{ site.navbar-border-col }};
   }
 
-  .navbar-custom .navbar-nav .nav-item.dropdown.show {
-    /* colors below must be transparent because they are overlapping with other elements. */
-    background-color: transparent;
-    border-color: transparent;
+  .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
+    display: block;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
@@ -103,17 +137,13 @@ em {
 
 @media (max-width: 1200px) {
 
-  .navbar-brand-desktop {
+  .firework-launcher-desktop {
     display: none;
   }
 
   .navbar-custom .avatar-container .avatar-img-border {
     width: 125%;
     margin-left: -75%;
-  }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown > .dropdown-menu {
-    display: block;
   }
 
   .navbar-custom .navbar-nav .nav-link {
@@ -133,9 +163,9 @@ em {
     border-color: #439aa5;
   }
 
-   /* .navbar-custom .navbar-toggler[aria-expanded="true"] { */
-     /* background-color: {{ site.navbar-dropdown-background-hover-col }}; */
-   /* } */
+   /* .navbar-custom .navbar-toggler[aria-expanded="true"] {
+     background-color: {{ site.navbar-dropdown-background-hover-col }};
+   } */
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
     transform: translate(-15px, 0px);
@@ -143,88 +173,17 @@ em {
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
-    transform: translate(0px, 0px);
+    display: block;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
     font-size: 0.85em;
     font-weight: 800;
-    padding-left: 1rem;
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
-  }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover {
-    color: {{ site.navbar-link-hover-col }};
+    padding-left: 1rem;
   }
 }
-
-.navbar-custom {
-  /* added bottom border */
-  border-bottom: 2.5px solid {{ site.navbar-border-col }};
-}
-
-.navbar-custom .navbar-brand,
-.navbar-custom .navbar-brand:focus,
-.navbar-custom .navbar-nav .nav-link,
-.navbar-custom .navbar-nav .nav-item.dropdown,
-.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-  color: {{ site.navbar-link-col }};
-}
-
-.navbar-custom .nav-item.dropdown:hover {
-  background-color: {{ site.navbar-col }};
-}
-
-.navbar-custom .navbar-nav .nav-item {
-  /* changed font-size for navbar links (not including title link or dropdown links) */
-  font-size: 1rem;
-  /* changed transform to capitalize */
-  text-transform: capitalize;
-}
-
-/* increasing size of projects navbar section width */
-.navbar-custom .navbar-nav .nav-item.dropdown {
-  padding-left: 0.7375rem;
-  padding-right: 0.7375rem;
-  /* added transparent border to project links section, which will become visible later on */
-  border: 2.75px solid transparent;
-  border-width: 2.75px 2.75px 3px 2.75px;
-}
-
-.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
-  background-color: transparent;
-}
-
-.navbar-custom .navbar-brand:hover,
-.navbar-custom .navbar-nav .nav-link:hover,
-.navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
-  /* added individual hover color variable for navbar  */
-  color: {{ site.navbar-link-hover-col }};
-  cursor: pointer;
-}
-
-.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
-  /* added individual hover color variable for navbar  */
-  color: {{ site.navbar-link-col }};
-}
-
-@media (max-width: 1200px) {
-  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:hover {
-    color: {{ site.navbar-link-hover-col }};
-  }
-}
-
-/* making projects triangle up when the dropdown is not being shown. */
-/* .dropdown-toggle::after { */
-  /* position: relative; */
-  /* transform: rotate(180deg) translate(-2.5px, 0px);  */
-  /* Safari, Firefox IE & Opera below. */
-  /* -webkit-transform: rotate(180deg) translate(-2.5px, 0px); */
-  /* -moz-transform: rotate(180deg) translate(-2.5px, 0px); */
-  /* -ms-transform: rotate(180deg) translate(-2.5px, 0px); */
-  /* -o-transform: rotate(180deg) translate(-2.5px, 0px); */
-/* } */
 
 /* using png photos with transitions for firework on navbar for desktop. */
 /* using a gif in the same spot on mobile. */
@@ -332,13 +291,13 @@ footer a:hover {
 }
 
 .post-preview a {
-  /* making title of the post the color of links (rather than black) */
+  /* making title of the post the color of links. */
   color: {{ site.post-title-link-col }};
 }
 
 .post-preview a:hover,
 .post-preview a:focus {
-  /* making title of the post the color of links (rather than black) on hover  */
+  /* making title of the post the color of links. */
   color: {{ site.post-title-link-hover-col }};
 }
 

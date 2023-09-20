@@ -319,10 +319,6 @@ footer a:hover {
 
 /* --- Buttons --- */
 
-button:focus {
-  outline: none;
-}
-
 /* added btn-group and btn-group elements css formatting */
 .btn-group {
   background-color: {{ site.btn-background-col }};
@@ -347,11 +343,6 @@ button:focus {
   border-color: {{ site.btn-border-hover-col }};
   text-decoration: none;
   font-weight: 750;
-}
-
-.btn-group:active {
-  position: relative;
-  top: 1px;
 }
 
 /*

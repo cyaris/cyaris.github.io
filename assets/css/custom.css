@@ -11,14 +11,12 @@ body {
   font-size: 1rem;
 }
 
-/* not sure why this doesn't work when combined witg the selection elements */
-a:hover,
-a:focus {
-  color: {{ site.link-hover-col }};
+a {
+  color: {{ site.link-col }};
 }
 
-::-moz-selection,
-::selection {
+a:hover,
+a:focus {
   color: {{ site.link-hover-col }};
 }
 

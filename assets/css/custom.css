@@ -33,6 +33,7 @@ em {
 
 .navbar-custom {
   border-bottom: 2.5px solid {{ site.navbar-border-col }};
+  padding-right: 1.5rem;
 }
 
 .navbar-custom .navbar-nav .nav-item {
@@ -56,6 +57,7 @@ em {
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-nav .nav-link,
 .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item,
+.navbar-custom .navbar-brand:focus,
 .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
   color: {{ site.navbar-link-col }};
 }

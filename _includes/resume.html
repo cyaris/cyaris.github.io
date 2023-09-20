@@ -1,35 +1,37 @@
 <!-- <!DOCTYPE html> -->
 <html>
-	<head>
-	  <style type="text/css">
+  <head>
+    <style type="text/css">
+      @media (min-width: 800px) {
+        #resume_link {
+          display: none;
+        }
+      }
 
-			@media (min-width:800px){
-				#resume_link {
-					display: none;
-				}
-			}
+      @media (max-width: 800px) {
+        #resume_view {
+          display: none;
+        }
+      }
 
-			@media (max-width:800px){
-	      #resume_view {
-					display: none;
-	      }
-		  }
+      #resume_view {
+        width: 750px;
+        height: 967.5px;
+      }
 
-			#resume_view {
-				width: 750px;
-				height: 967.5px;
-			}
-
-			#resume_link {
-				font-weight: 800;
-				font-size: 1.5rem;
-			}
-
-	  </style>
-	</head>
-	<object id="resume_view" data="https://s3.us-east-2.amazonaws.com/cyaris.github.io/pdf/resume/Charlie_Yaris_Resume.pdf#navpanes=0&scrollbar=0&toolbar=0" >
-	</object>
-	<div id="resume_link">
-		<a href="https://s3.us-east-2.amazonaws.com/cyaris.github.io/pdf/resume/Charlie_Yaris_Resume.pdf" target="_blank">View Resume</a>
-	</div>
+      #resume_link {
+        font-weight: 800;
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+  <object
+    id="resume_view"
+    data="https://s3.us-east-2.amazonaws.com/cyaris.github.io/pdf/resume/Charlie_Yaris_Resume.pdf#navpanes=0&scrollbar=0&toolbar=0"
+  ></object>
+  <div id="resume_link">
+    <a href="https://s3.us-east-2.amazonaws.com/cyaris.github.io/pdf/resume/Charlie_Yaris_Resume.pdf" target="_blank"
+      >View Resume</a
+    >
+  </div>
 </html>

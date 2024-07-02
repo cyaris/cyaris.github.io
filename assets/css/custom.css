@@ -273,7 +273,7 @@ footer a:hover {
 
 .post-preview a:hover,
 .post-preview a:focus {
-  color: {{ site.link-col }};
+  color: {{ site.post-title-link-hover-col }};
 }
 
 .post-preview .post-image-small {

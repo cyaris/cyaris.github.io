@@ -6,4 +6,4 @@ gh-badge: [follow, star]
 social-share: true
 ---
 
-{% include /us_gun_violence_forecasting/main.html %}
+{% include us_gun_violence_forecasting/main.html %}

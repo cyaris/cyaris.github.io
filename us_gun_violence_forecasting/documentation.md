@@ -7,7 +7,15 @@ gh-badge: [follow, star]
 social-share: true
 ---
 
-{% include us_gun_violence_forecasting/start_forecasting_button.html %}
+<style type="text/css">
+  .btn-group {
+    width: 222.5px;
+  }
+</style>
+
+<div class="center">
+  <a href="../tool/" class="btn-group">Start Forecasting</a>
+</div>
 
 Documentation page coming soon! Stay tuned for updates.
 

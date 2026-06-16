@@ -311,6 +311,8 @@ defaults:
 
 # Exclude these files from production site
 exclude:
+  - .ruby-version
+  - beautiful-jekyll-theme.gemspec
   - Gemfile
   - Gemfile.lock
   - README.md

@@ -307,8 +307,6 @@
 					allPartFields = Object.keys(graph.nodes[0]).sort(),
 					allPartFields.push('days_at_war_z'),
 					allPartFields.push('battle_deaths_per_day_z'),
-					// // this field is only needed for calculations (not display).
-					// allPartFields = removeItemFromArray(allPartFields, 'days_not_at_war_z'),
 					allPartFields = allPartFields.sort(),
 					allLinkFields = Object.keys(graph.links[0]).sort(),
 					descriptiveFields = {
@@ -1286,12 +1284,6 @@
 					appendRect(svg, null, 'node_descriptor_selected_rect', descriptorRectXLoc, yAdjustment + descriptorRectYLoc, descriptorRectWidth, descriptorRectHeight, 'black', 1, null, 'transparent', null, nodeMenuMouseOver, generalRectML, null);
 					appendText(svg, null, 'link_descriptor_selected_text', descriptorTextXLoc, descriptorTextYLoc, graphMenuTextSize, 'normal', 1, 0, linkDescriptorSelected);
 					appendText(svg, null, 'node_descriptor_selected_text', descriptorTextXLoc, yAdjustment + descriptorTextYLoc, graphMenuTextSize, 'normal', 1, 0, nodeDescriptorSelected);
-
-					// descriptorTooltipSymbolXLoc = descriptorRectXLoc-15;
-					// appendRect(svg4, 'link_descriptor_tooltip_rect', descriptorTooltipSymbolXLoc, descriptorTextYLoc-1, 20, 20, 'black', tooltipMO, tooltipML, null);
-					// addTooltipSymbol(svg, 'link_descriptor_tooltip', descriptorTooltipSymbolXLoc, descriptorTextYLoc-4.5, descriptorTooltipSymbolXLoc-1, descriptorTextYLoc-1, null);
-					// appendRect(svg4, 'part_descriptor_tooltip_rect', descriptorTooltipSymbolXLoc, yAdjustment+descriptorTextYLoc-1, 20, 20, 'transparent', tooltipMO, tooltipML, null);
-					// addTooltipSymbol(svg, 'part_descriptor_tooltip', descriptorTooltipSymbolXLoc, yAdjustment + descriptorTextYLoc-4.5, descriptorTooltipSymbolXLoc-1, yAdjustment+descriptorTextYLoc-1, null);
 
 					function defineNodeTooltips() {
 

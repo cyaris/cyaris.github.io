@@ -448,8 +448,7 @@ button:focus {
 .navbar-custom,
 .btn-group,
 .blog-tags,
-.pagination .page-item .page-link,
-#social-share-section,
+.pagination .page-item .page-link
 footer {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

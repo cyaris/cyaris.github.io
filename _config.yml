@@ -59,25 +59,6 @@ social-network-links:
   kaggle: cyaris
   tableau: charlie.yaris#!
   instagram: lord_buttonless
-#  medium: yourname
-#  reddit: yourname
-#  xing: yourname
-#  stackoverflow: "3943160/daattali"
-#  snapchat: deanat78
-#  spotify: yourname
-#  telephone: +14159998888
-#  steam: deanat78
-#  twitch: yourname
-#  yelp: yourname
-#  telegram: yourname
-#  calendly: yourname
-#  mastodon: instance.url/@username
-#  ORCID: your ORCID ID
-#  google-scholar: your google scholar
-#  discord: "invite_code" or "users/userid" or "invite/invite_code"
-#  kaggle: yourname
-#  hackerrank: yourname
-#  gitlab: yourname
 
 # If you want your website to generate an RSS feed, provide a description
 # The URL for the feed will be https://<your_website>/feed.xml
@@ -86,14 +67,6 @@ rss-description: Welcome to my website! I hope you enjoy your stay.
 ###########################
 # --- General options --- #
 ###########################
-
-# Select which social network share links to show in posts
-share-links-active:
-  twitter: true
-  facebook: true
-  linkedin: true
-  vk: false
-  github: true
 
 # How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
@@ -302,7 +275,6 @@ defaults:
     values:
       layout: post
       comments: false  # add comments to all blog posts
-      social-share: true # add social media sharing buttons to all blog posts
   -
     scope:
       path: "" # any file that's not a post will be a "page" layout by default

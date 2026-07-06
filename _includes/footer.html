@@ -10,10 +10,13 @@
             {% endfor %}
           </div>
         {% endif %}
-
         <p class="copyright text-muted">
-          {% if site.author %} {{ site.author }} &nbsp;&bull;&nbsp; {% endif %}
+          {% if site.author %}
+            {{ site.author }}
+            &nbsp;&bull;&nbsp;
+          {% endif %}
           {{ site.time | date: '%Y' }}
+
           {% if site['url-pretty'] %}
             <!-- custom edit: removed bullet -->
             <!-- &nbsp;&bull;&nbsp; -->
@@ -22,11 +25,12 @@
               <!-- custom edit: added line break -->
               <br>
               <!-- end of custom edit -->
-              <a href="{% if site.url-canonical %}{{ site.url-canonical }}{% else %}{{ '' | absolute_url }}{% endif %}">
+              <a href="{% if site.url-canonical %}{{ site.url-canonical }}{% else %}{{ '/' | absolute_url }}{% endif %}">
                 {{- site['url-pretty'] -}}
               </a>
             </span>
           {% endif %}
+
           {% if site.matomo %}
             {% if site.matomo['opt-out'] %}
               &nbsp;&bull;&nbsp;
@@ -38,6 +42,7 @@
               >
             {% endif %}
           {% endif %}
+
           {% if site.edit_page_button and site.github.repository_url %}
             &nbsp;&bull;&nbsp;
             <!-- custom edit: target _blank -->
@@ -51,7 +56,6 @@
             <!-- end of custom edit -->
           {% endif %}
         </p>
-
         {% unless site['remove-ads'] %}
           <p class="theme-by text-muted">
             Powered by

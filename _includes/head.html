@@ -12,14 +12,21 @@
   <script type="text/javascript" src="{{ site.url }}/assets/js/javascript_functions.js"></script>
   <script type="text/javascript" src="{{ site.url }}/assets/js/d3_functions.js"></script>
   <!-- end of custom edit -->
-
-  {% capture title %}
+  {% capture pagetitle %}
     {%- if page.share-title -%}
       {{ page.share-title | strip_html | xml_escape }}
     {%- elsif page.title -%}
       {{ page.title | strip_html | xml_escape  }}
     {%- else -%}
       {{ site.title | strip_html | xml_escape }}
+    {%- endif -%}
+  {% endcapture %}
+
+  {% capture title %}
+    {%- if site.title and site.title-on-all-pages and (site.title != pagetitle) -%}
+      {{ pagetitle }} | {{ site.title }}
+    {%- else -%}
+      {{ pagetitle }}
     {%- endif -%}
   {% endcapture %}
 
@@ -36,8 +43,15 @@
 
   <title>{{ title }}</title>
 
-  {% if site.author %}
-    <meta name="author" content="{{ site.author }}">
+  {% capture author %}
+    {%- if page.author -%}
+      {{  page.author | strip_html }}
+    {%- elsif site.author -%}
+      {{ site.author }}
+    {%- endif -%}
+  {% endcapture %}
+  {% if author != '' %}
+    <meta name="author" content="{{ author }}">
   {% endif %}
 
   <meta name="description" content="{{ description }}">
@@ -58,6 +72,7 @@
   {% include gtm_head.html %}
   {% include google_analytics.html %}
   {% include cloudflare_analytics.html %}
+  {% include mathjax.html %}
 
   {% if layout['common-ext-css'] %}
     {% for css in layout['common-ext-css'] %}
@@ -123,7 +138,9 @@
 
   {% if page.id %}
     <meta property="og:type" content="article">
-    <meta property="og:article:author" content="{{ site.author }}">
+    {% if author != '' %}
+      <meta property="og:article:author" content="{{ author }}">
+    {% endif %}
     <meta property="og:article:published_time" content="{{ page.date | date_to_xmlschema }}">
     <meta property="og:url" content="{{ page.url | absolute_url }}">
     <link rel="canonical" href="{{ page.url | absolute_url }}">
@@ -138,9 +155,9 @@
   {% else %}
     <meta name="twitter:card" content="summary">
   {% endif %}
-
   <meta name="twitter:site" content="@{{ site.social-network-links.twitter }}">
   <meta name="twitter:creator" content="@{{ site.social-network-links.twitter }}">
+
   <meta property="twitter:title" content="{{ title }}">
   <meta property="twitter:description" content="{{ description }}">
 
@@ -151,7 +168,12 @@
   {% include matomo.html %}
 
   {% if page.comments and site.staticman.repository and site.staticman.branch %}
-    <link rel="stylesheet" href="{{ '/assets/css/staticman.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ "/assets/css/staticman.css" | relative_url }}">
+  {% endif %}
+
+  {% assign favicon_exists = site.static_files | where: 'path', '/favicon.ico' | size %}
+  {% if favicon_exists == 1 %}
+    <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
   {% endif %}
 
   {% if page['head-extra'] %}

@@ -1,35 +1,61 @@
-<nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %} top-nav-short-permanent {% else %} top-nav-regular {% endif %}">
-	<!-- custom edit: changing top left nav link to Launch Fireworks instead of site title. adding second anchor tag for mobile. triggering firework launch onclick. -->
-	<!-- {%- if site.title-img -%}
-		<a class="navbar-brand navbar-brand-logo" href="{{ '' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
-	{%- elsif site.title -%}
-		<a class="navbar-brand" href="{{ '' | absolute_url }}">{{ site.title }}</a>
-	{%- endif -%} -->
-	<a class="navbar-brand firework-launcher-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()">Fireworks
-		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 7px; margin-bottom: 3.5px; height: 1.25rem;"></img>
-	</a>
-	<a class="navbar-brand firework-launcher-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()">
-		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif"</img>
-		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img>
-		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img>
-	</a>
-	<!-- end of custom edit -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}">
+  <!--
+    custom edit: changing top left nav link to Launch Fireworks instead of site title. adding second anchor tag for mobile. triggering firework launch onclick.
+  -->
+  <!--
+    {%- if site.title-img -%}
+      <a class="navbar-brand navbar-brand-logo" href="{{ '/' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
+    {%- elsif site.title -%}
+      <a class="navbar-brand" href="{{ '/' | absolute_url }}">{{ site.title }}</a>
+    {%- endif -%}
+  -->
+  <a class="navbar-brand firework-launcher-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()"
+    >Fireworks
+    <img
+      class="kidpix_gif"
+      src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif"
+      style="margin-left: 7px; margin-bottom: 3.5px; height: 1.25rem;"
+    >
+  </a>
+  <a class="navbar-brand firework-launcher-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()">
+    <img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif">
+    <img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px;">
+    <img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px;">
+  </a>
+  <!-- end of custom edit -->
+
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#main-navbar"
+    aria-controls="main-navbar"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="main-navbar">
     <ul class="navbar-nav ml-auto">
-
-			{%- for link in site.navbar-links -%}
+      {%- for link in site['navbar-links'] -%}
         {%- if link[1].first %}
           <li class="nav-item dropdown">
-						<!-- custom edit: changed href link for dropdown toggle. made href downcase.-->
-						<a class="nav-link dropdown-toggle" href="{{ link[0] | relative_url | downcase }}" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
-						<!-- end of custom edit -->
-						<!-- custom edit: removed 'dropdown-menu-right' class -->
+            <!-- custom edit: changed href link for dropdown toggle. made href downcase. -->
+            <a
+              class="nav-link dropdown-toggle"
+              href="{{ link[0] | relative_url | downcase }}"
+              id="navbarDropdown"
+              role="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              {{- link[0] -}}
+            </a>
+            <!-- end of custom edit -->
+            <!-- custom edit: removed 'dropdown-menu-right' class -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<!-- end of custom edit -->
+              <!-- end of custom edit -->
               {%- for childlink in link[1] -%}
                 {%- for linkparts in childlink %}
                   <a class="dropdown-item" href="{{ linkparts[1] | relative_url }}">{{ linkparts[0] }}</a>
@@ -38,14 +64,18 @@
             </div>
           </li>
         {% else %}
-					<!-- custom edit: making href for "" navigate back to home page. -->
+          <!-- custom edit: making href for "" navigate back to home page. -->
           <li class="nav-item">
-            <a class="nav-link" href="{% if link[1]=='' %} {{ site.url }} {% else %} {{ link[1] | relative_url }}{% endif %}">{{ link[0] }}</a>
+            <a
+              class="nav-link"
+              href="{% if link[1]=='' %} {{ site.url }} {% else %} {{ link[1] | relative_url }}{% endif %}"
+            >
+              {{- link[0] -}}
+            </a>
           </li>
-					<!-- end of custom edit -->
+          <!-- end of custom edit -->
         {%- endif -%}
       {%- endfor -%}
-
       {% if site.post_search %}
         <li class="nav-item">
           <a class="nav-link" id="nav-search-link" href="#" title="Search">
@@ -54,26 +84,24 @@
           </a>
         </li>
       {%- endif -%}
-
     </ul>
   </div>
 
-  {% if site.navbar-extra %}
-    {% for file in site.navbar-extra %}
+  {% if site['navbar-extra'] %}
+    {% for file in site['navbar-extra'] %}
       {% include {{ file }} %}
     {% endfor %}
   {% endif %}
 
-  {% if site.avatar and page.show-avatar != false %}
+  {% if site.avatar and page['show-avatar'] != false %}
     <div class="avatar-container">
       <div class="avatar-img-border">
-        <a href="{{ '' | absolute_url }}">
-          <img alt="Navigation bar avatar" class="avatar-img" src="{{ site.avatar | relative_url }}" />
+        <a href="{{ '/' | absolute_url }}">
+          <img alt="Navigation bar avatar" class="avatar-img" src="{{ site.avatar | relative_url }}">
         </a>
       </div>
     </div>
   {% endif %}
-
 </nav>
 
 {% include search.html %}

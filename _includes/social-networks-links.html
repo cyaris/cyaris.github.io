@@ -1,95 +1,92 @@
-{% if site.social-network-links %}
-<ul class="list-inline text-center footer-links">
-  {%- for network in site.social-network-links -%}
-  <!-- custom edit: chose websites from list of websites -->
+{% if site['social-network-links'] %}
+  <ul class="list-inline text-center footer-links">
+    {%- for network in site['social-network-links'] -%}
+      <!-- custom edit: chose websites from list of websites -->
 
+      {%- if site['social-network-links'].email -%}
+        <li class="list-inline-item">
+          <!-- custom edit: target _blank -->
+          <a href="mailto:{{ site.social-network-links.email }}" target="_blank" title="Email me">
+            <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="sr-only">Email me</span>
+          </a>
+        </li>
+      {%- endif -%}
 
-  {%- if site.social-network-links.email -%}
-    <li class="list-inline-item">
-      <!-- custom edit: target _blank -->
-      <a href="mailto:{{ site.social-network-links.email }}" target="_blank" title="Email me">
-        <span class="fa-stack fa-lg" aria-hidden="true">
-          <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-        </span>
-        <span class="sr-only">Email me</span>
-      </a>
-    </li>
-  {%- endif -%}
+      {%- if site['social-network-links'].linkedin -%}
+        <li class="list-inline-item">
+          <!-- custom edit: target _blank -->
+          <a href="https://linkedin.com/in/{{ site.social-network-links.linkedin }}" target="_blank" title="LinkedIn">
+            <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="sr-only">LinkedIn</span>
+          </a>
+        </li>
+      {%- endif -%}
 
-  {%- if site.social-network-links.linkedin -%}
-    <li class="list-inline-item">
-      <!-- custom edit: target _blank -->
-      <a href="https://linkedin.com/in/{{ site.social-network-links.linkedin }}" target="_blank" title="LinkedIn">
-        <span class="fa-stack fa-lg" aria-hidden="true">
-          <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
-        </span>
-        <span class="sr-only">LinkedIn</span>
-      </a>
-    </li>
-  {%- endif -%}
+      {%- if site['social-network-links'].github -%}
+        <li class="list-inline-item">
+          <!-- custom edit: target _blank -->
+          <a href="https://github.com/{{ site.social-network-links.github }}" target="_blank" title="GitHub">
+            <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="sr-only">GitHub</span>
+          </a>
+        </li>
+      {%- endif -%}
 
-  {%- if site.social-network-links.github -%}
-    <li class="list-inline-item">
-      <!-- custom edit: target _blank -->
-      <a href="https://github.com/{{ site.social-network-links.github }}" target="_blank" title="GitHub">
-        <span class="fa-stack fa-lg" aria-hidden="true">
-          <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-        </span>
-        <span class="sr-only">GitHub</span>
-      </a>
-    </li>
-  {%- endif -%}
+      {%- if site['social-network-links'].tableau -%}
+        <li class="list-inline-item">
+          <!-- custom edit: target _blank -->
+          <!-- custom edit: chose icon for tableau -->
+          <a
+            href="https://public.tableau.com/profile/{{ site.social-network-links.tableau }}"
+            target="_blank"
+            title="Tableau Public"
+          >
+            <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fas fa-chart-simple fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="sr-only">Tableau Public</span>
+          </a>
+        </li>
+      {%- endif -%}
 
-  {%- if site.social-network-links.tableau -%}
-    <li class="list-inline-item">
-      <!-- custom edit: target _blank -->
-      <!-- custom edit: chose icon for tableau -->
-      <a
-        href="https://public.tableau.com/profile/{{ site.social-network-links.tableau }}"
-        target="_blank"
-        title="Tableau Public"
-      >
-        <span class="fa-stack fa-lg" aria-hidden="true">
-          <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fas fa-chart-simple fa-stack-1x fa-inverse"></i>
-        </span>
-        <span class="sr-only">Tableau Public</span>
-      </a>
-    </li>
-  {%- endif -%}
+      {%- if site['social-network-links'].kaggle -%}
+        <li class="list-inline-item">
+          <!-- custom edit: target _blank -->
+          <!-- custom edit: chose icon for kaggle -->
+          <a href="https://kaggle.com/{{ site.social-network-links.kaggle }}" target="_blank" title="kaggle">
+            <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fab fa-kaggle fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="sr-only">Kaggle</span>
+          </a>
+        </li>
+      {%- endif -%}
 
-  {%- if site.social-network-links.kaggle -%}
-    <li class="list-inline-item">
-      <!-- custom edit: target _blank -->
-      <!-- custom edit: chose icon for kaggle -->
-      <a href="https://kaggle.com/{{ site.social-network-links.kaggle }}" target="_blank" title="kaggle">
-        <span class="fa-stack fa-lg" aria-hidden="true">
-          <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fab fa-kaggle fa-stack-1x fa-inverse"></i>
-        </span>
-        <span class="sr-only">Kaggle</span>
-      </a>
-    </li>
-  {%- endif -%}
-
-  {%- if site.social-network-links.instagram -%}
-    <li class="list-inline-item">
-      <!-- custom edit: target _blank -->
-      <!-- custom edit: chose icon for instagram -->
-      <a href="https://instgram.com/{{ site.social-network-links.instagram }}" target="_blank" title="instagram">
-        <span class="fa-stack fa-lg" aria-hidden="true">
-          <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
-        </span>
-        <span class="sr-only">Instagram</span>
-      </a>
-    </li>
-  {%- endif -%}
-
-{%- endfor -%}
-
-</ul>
+      {%- if site['social-network-links'].instagram -%}
+        <li class="list-inline-item">
+          <!-- custom edit: target _blank -->
+          <!-- custom edit: chose icon for instagram -->
+          <a href="https://instgram.com/{{ site.social-network-links.instagram }}" target="_blank" title="instagram">
+            <span class="fa-stack fa-lg" aria-hidden="true">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="sr-only">Instagram</span>
+          </a>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
 {% endif %}

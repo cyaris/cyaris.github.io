@@ -1,6 +1,6 @@
 <!-- Check if any share-links are active -->
 {% assign any-share-links = false %}
-{% for links in site.share-links-active %}
+{% for links in site['share-links-active'] %}
   {% if links[1] == true %}
     {% assign any-share-links = true %}
   {% endif %}
@@ -10,7 +10,7 @@
   <section id="social-share-section">
     <span class="sr-only">Share: </span>
 
-    {% if site.share-links-active.linkedin %}
+    {% if site['share-links-active'].linkedin %}
       <!-- custom edit: target _blank -->
       <!-- custom edit: added logo image -->
       <!-- custom edit: changed icon for linkedin -->
@@ -26,7 +26,7 @@
       </a>
     {% endif %}
 
-    {% if site.share-links-active.facebook %}
+    {% if site['share-links-active'].facebook %}
       <!-- custom edit: target _blank -->
       <!-- custom edit: edited logo image -->
       <a
@@ -41,7 +41,7 @@
       </a>
     {% endif %}
 
-    {% if site.share-links-active.twitter %}
+    {% if site['share-links-active'].twitter %}
       <!-- custom edit: target _blank -->
       <!-- custom edit: added logo image -->
       <a
@@ -55,6 +55,5 @@
         <!-- end of custom edit -->
       </a>
     {% endif %}
-
   </section>
-  {% endif %}
+{% endif %}

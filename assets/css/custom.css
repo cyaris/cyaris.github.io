@@ -380,18 +380,6 @@ button:focus {
 
 /* --- Pagination --- */
 
-@media (min-width: 800px) {
-  .page-link-mobile {
-    display: none;
-  }
-}
-
-@media (max-width: 800px) {
-  .page-link-desktop {
-    display: none;
-  }
-}
-
 .pagination .page-item .page-link {
   color: {{ site.pagination-link-col }};
   text-transform: capitalize;
@@ -403,15 +391,19 @@ button:focus {
   font-weight: 750;
 }
 
-.pagination .page-item .page-link-desktop {
-  width: 192.5px;
-  padding: 10px 15px;
+.pagination .page-item .page-link .desktop-text,
+.pagination .page-item .page-link .mobile-text {
+  display: inline-block;
 }
 
-.pagination .page-item .page-link-mobile {
-  width: 55px;
+.pagination .page-item .page-link .desktop-text {
+  max-width: 180px;
+  padding: 5px 10px;
+}
+
+.pagination .page-item .page-link .mobile-text {
+  width: 20px;
   font-size: 20px;
-  padding-right: 32.5px;
 }
 
 .pagination .page-item .page-link:hover,
@@ -426,12 +418,25 @@ button:focus {
 }
 
 .rotate {
+  display: inline-block;
   transform: rotate(180deg);
   /* Safari, Firefox IE & Opera below. */
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   -o-transform: rotate(180deg);
+}
+
+@media (min-width: 800px) {
+   .pagination .page-item .page-link .mobile-text {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .pagination .page-item .page-link .desktop-text {
+    display: none;
+  }
 }
 
 /* --- Social Share Icons --- */

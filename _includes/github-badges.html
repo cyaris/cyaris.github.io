@@ -8,13 +8,13 @@
       {% for badge in page['gh-badge'] %}
         {% case badge %}
           {% when 'star' %}
-            <!-- custom edit: added no_selection class to iframe. -->
+            <!-- custom edit: added no_selection class to iframe. increased width. -->
             <iframe
               class="no_selection"
               src="https://ghbtns.com/github-btn.html?user={{ gh_user }}&repo={{ gh_repo }}&type=star&count=true"
               frameborder="0"
               scrolling="0"
-              width="120px"
+              width="150px"
               height="20px"
             ></iframe>
             <!-- end of custom edit -->

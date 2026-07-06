@@ -46,37 +46,29 @@ layout: base
       <ul class="pagination blog-pager">
         {% if page.previous.url %}
           <li class="page-item previous">
+            <!-- custom edit: added additional pagination button for desktop vs mobile, and label by page.type. -->
+            <!-- to do: fix below so it can be done in one element. -->
             <a
-              class="page-link"
+              class="page-link page-link-desktop"
               href="{{ page.previous.url | relative_url }}"
               data-toggle="tooltip"
               data-placement="top"
               title="{{page.previous.title | strip_html | xml_escape}}"
-            >
-              <!-- custom edit: added additional pagination button for desktop vs mobile, and label by page.type. -->
-              <!-- to do: fix below so it can be done in one element. -->
-              <a
-                class="page-link page-link-desktop"
-                href="{{ page.previous.url | relative_url }}"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="{{page.previous.title | strip_html | xml_escape}}"
-                >&larr; Previous {{ page.type -}}
-              </a>
-              <a
-                class="page-link page-link-mobile rotate"
-                href="{{ page.previous.url | relative_url }}"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="{{page.previous.title | strip_html | xml_escape}}"
-                >➔</a
-              >
-              <!--
-                <i class="fas fa-arrow-left" alt="Previous Post"></i>
-                <span class="d-none d-sm-inline-block">Previous Post</span>
-              -->
-              <!-- end of custom edit -->
+              >&larr; Previous {{ page.type -}}
             </a>
+            <a
+              class="page-link page-link-mobile rotate"
+              href="{{ page.previous.url | relative_url }}"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="{{page.previous.title | strip_html | xml_escape}}"
+              >➔</a
+            >
+            <!--
+              <i class="fas fa-arrow-left" alt="Previous Post"></i>
+              <span class="d-none d-sm-inline-block">Previous Post</span>
+            -->
+            <!-- end of custom edit -->
           </li>
         {% endif %}
         {% if page.next.url %}

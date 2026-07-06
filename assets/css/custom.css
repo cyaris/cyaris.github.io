@@ -404,7 +404,8 @@ button:focus {
 }
 
 .pagination .page-item .page-link-desktop {
-  width: 175px;
+  width: 192.5px;
+  padding: 10px 15px;
 }
 
 .pagination .page-item .page-link-mobile {

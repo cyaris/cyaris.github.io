@@ -223,22 +223,18 @@ footer a:hover {
   text-decoration: none;
 }
 
-.fa-stack-1x {
-  color: {{ site.social-icon-col }};
-}
-
-.fa-stack-1x:hover,
-.fa-stack-1x:focus {
- color: {{ site.social-icon-hover-col }};
-}
-
-.list-inline a,
-.list-inline a:focus {
+.footer-links .fa-stack-2x {
   color: {{ site.social-icon-background-col }};
 }
 
-.list-inline a:hover {
+.footer-links a:hover .fa-stack-2x,
+.footer-links a:focus .fa-stack-2x {
   color: {{ site.social-icon-background-hover-col }};
+}
+
+.footer-links a:hover .fa-stack-1x,
+.footer-links a:focus .fa-stack-1x {
+  color: {{ site.social-icon-hover-col }};
 }
 
 .author-site a,

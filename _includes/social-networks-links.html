@@ -3,7 +3,7 @@
     {%- for network in site['social-network-links'] -%}
       <!-- custom edit: chose websites from list of websites -->
 
-      {%- if site['social-network-links'].email -%}
+      {%- if network[0] == "email" -%}
         <li class="list-inline-item">
           <!-- custom edit: target _blank -->
           <a href="mailto:{{ site.social-network-links.email }}" target="_blank" title="Email me">
@@ -16,7 +16,7 @@
         </li>
       {%- endif -%}
 
-      {%- if site['social-network-links'].linkedin -%}
+      {%- if network[0] == "linkedin" -%}
         <li class="list-inline-item">
           <!-- custom edit: target _blank -->
           <a href="https://linkedin.com/in/{{ site.social-network-links.linkedin }}" target="_blank" title="LinkedIn">
@@ -29,7 +29,7 @@
         </li>
       {%- endif -%}
 
-      {%- if site['social-network-links'].github -%}
+        {%- if network[0] == "github" -%}
         <li class="list-inline-item">
           <!-- custom edit: target _blank -->
           <a href="https://github.com/{{ site.social-network-links.github }}" target="_blank" title="GitHub">
@@ -42,7 +42,7 @@
         </li>
       {%- endif -%}
 
-      {%- if site['social-network-links'].tableau -%}
+          {%- if network[0] == "tableau" -%}
         <li class="list-inline-item">
           <!-- custom edit: target _blank -->
           <!-- custom edit: chose icon for tableau -->
@@ -60,7 +60,7 @@
         </li>
       {%- endif -%}
 
-      {%- if site['social-network-links'].kaggle -%}
+            {%- if network[0] == "kaggle" -%}
         <li class="list-inline-item">
           <!-- custom edit: target _blank -->
           <!-- custom edit: chose icon for kaggle -->
@@ -74,7 +74,7 @@
         </li>
       {%- endif -%}
 
-      {%- if site['social-network-links'].instagram -%}
+            {%- if network[0] == "instagram" -%}
         <li class="list-inline-item">
           <!-- custom edit: target _blank -->
           <!-- custom edit: chose icon for instagram -->

@@ -1,17 +1,8 @@
+{% if site.social-network-links %}
 <ul class="list-inline text-center footer-links">
+  {%- for network in site.social-network-links -%}
   <!-- custom edit: chose websites from list of websites -->
 
-  <!-- {%- if site.rss-description -%}
-    <li class="list-inline-item">
-      <a href="{{ '/feed.xml' | relative_url }}" title="RSS">
-        <span class="fa-stack fa-lg" aria-hidden="true">
-          <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
-        </span>
-        <span class="sr-only">RSS</span>
-      </a>
-    </li>
-  {%- endif -%} -->
 
   {%- if site.social-network-links.email -%}
     <li class="list-inline-item">
@@ -98,4 +89,7 @@
     </li>
   {%- endif -%}
 
+{%- endfor -%}
+
 </ul>
+{% endif %}

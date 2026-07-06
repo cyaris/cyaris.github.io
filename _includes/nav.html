@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %} top-nav-short-permanent {% else %} top-nav-regular {% endif %}">
+<nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}">
+
 	<!-- custom edit: changing top left nav link to Launch Fireworks instead of site title. adding second anchor tag for mobile. triggering firework launch onclick. -->
 	<!-- {%- if site.title-img -%}
 		<a class="navbar-brand navbar-brand-logo" href="{{ '' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
@@ -6,22 +7,22 @@
 		<a class="navbar-brand" href="{{ '' | absolute_url }}">{{ site.title }}</a>
 	{%- endif -%} -->
 	<a class="navbar-brand firework-launcher-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()">Fireworks
-		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 7px; margin-bottom: 3.5px; height: 1.25rem;"</img>
+		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 7px; margin-bottom: 3.5px; height: 1.25rem;" />
 	</a>
 	<a class="navbar-brand firework-launcher-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()">
-		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif"</img>
-		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img>
-		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px"</img>
+		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" />
+		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px;" />
+		<img class="kidpix_gif" src="{{ site.url }}/assets/img/kidpix_dynamite_eraser.gif" style="margin-left: 10px;" />
 	</a>
 	<!-- end of custom edit -->
+
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="main-navbar">
     <ul class="navbar-nav ml-auto">
-
-			{%- for link in site.navbar-links -%}
+      {%- for link in site.navbar-links -%}
         {%- if link[1].first %}
           <li class="nav-item dropdown">
 						<!-- custom edit: changed href link for dropdown toggle. made href downcase.-->
@@ -45,7 +46,6 @@
 					<!-- end of custom edit -->
         {%- endif -%}
       {%- endfor -%}
-
       {% if site.post_search %}
         <li class="nav-item">
           <a class="nav-link" id="nav-search-link" href="#" title="Search">
@@ -54,7 +54,6 @@
           </a>
         </li>
       {%- endif -%}
-
     </ul>
   </div>
 
@@ -67,7 +66,7 @@
   {% if site.avatar and page.show-avatar != false %}
     <div class="avatar-container">
       <div class="avatar-img-border">
-        <a href="{{ '' | absolute_url }}">
+        <a href="{{ '/' | absolute_url }}">
           <img alt="Navigation bar avatar" class="avatar-img" src="{{ site.avatar | relative_url }}" />
         </a>
       </div>

@@ -1,12 +1,2 @@
-_site
-
-beautiful-jekyll-theme.gemspec
-Gemfile.lock
-
-# hidden files.
-**/.DS_Store
-
-# hidden folders.
-.git
-
-!**/.gitkeep
+.DS_Store
+_site/

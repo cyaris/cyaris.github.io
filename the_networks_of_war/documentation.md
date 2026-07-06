@@ -7,6 +7,6 @@ gh-badge: [follow, star]
 social-share: true
 ---
 
-{% include /the_networks_of_war/begin_analysis_button.html %}
+{% include the_networks_of_war/begin_analysis_button.html %}
 
 Documentation page coming soon! Stay tuned for updates.

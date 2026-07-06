@@ -1,10 +1,3 @@
-// returning the array without the remove_item
-function removeItemFromArray(array, remove_item) {
-  return array.filter(function (array_item) {
-    return array_item !== remove_item
-  })
-}
-
 function getTextWidth(svgInput, textInput, fontSize) {
   // obtaining length of any textinput (based on default font size and font family)
   textWidthArray = []
@@ -37,28 +30,6 @@ function maxFromArray(array) {
   })
 }
 
-// returning the min value from any array
-function minFromArray(array) {
-  return array.reduce(function (a, b) {
-    return Math.min(a, b)
-  })
-}
-
-// returning average overall value across all numbers in an array.
-function arrayAverage(array) {
-  // Find the sum
-  sumOfAllItems = 0
-
-  for (i in array) {
-    sumOfAllItems += array[i]
-  }
-  // get the length of the array
-  itemCount = array.length
-
-  // return the average
-  return sumOfAllItems / itemCount
-}
-
 // unique values from array part
 // returning all non null values from an array with no duplicates
 // null values will be counted as zero (only once).
@@ -82,16 +53,4 @@ Array.prototype.coalesceZeroUnique = function () {
   }
 
   return array.sort()
-}
-
-Array.prototype.nonNull = function () {
-  array = []
-  for (var i = 0; i < this.length; i++) {
-    if (this[i] == null) {
-    } else if (isNaN(this[i])) {
-    } else {
-      array.push(this[i])
-    }
-  }
-  return array
 }

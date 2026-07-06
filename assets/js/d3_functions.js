@@ -8,26 +8,6 @@ function appendSVG(svgName, divInput, widthInput, heightInput, marginLeftInput, 
     .style("cursor", cursorInput)
 }
 
-function appendGroupSVG(
-  svgName,
-  divInput,
-  widthInput,
-  heightInput,
-  marginLeftInput,
-  marginTopInput,
-  pointerEvents,
-  cursorInput
-) {
-  window[svgName] = d3
-    .select("#" + divInput)
-    .append("svg")
-    .attr("width", widthInput)
-    .attr("height", heightInput)
-    .append("g")
-    .attr("transform", "translate(" + marginLeftInput + "," + marginTopInput + ")")
-    .style("cursor", cursorInput)
-}
-
 function appendText(svgInput, classInput, idInput, textX, textY, fontSize, fontStyle, opacity, strokeWidth, textInput) {
   svgInput
     .append("text")
@@ -123,31 +103,6 @@ function appendLine(
     .style("opacity", opacity)
 }
 
-function appendCircle(svgInput, idInput, circX, circY, fillColor) {
-  svgInput
-    .append("circle")
-    .attr("pointer-events", "none")
-    .attr("id", idInput)
-    .attr("cx", circX)
-    .attr("cy", circY)
-    .attr("fill", fillColor)
-    .attr("stroke", "black")
-    .attr("stroke-width", 0.5)
-    .attr("r", 4)
-}
-
-function appendPath(svgInput, dataInput, pathID, pathName, strokeColor, opacity) {
-  svgInput
-    .append("path")
-    .data(dataInput)
-    .attr("pointer-events", "none")
-    .attr("class", "path")
-    .attr("id", pathID)
-    .attr("d", pathName)
-    .style("stroke", strokeColor)
-    .style("opacity", opacity)
-}
-
 function defineTooltip(divInput, idInput, leftLoc, rightLoc, divWidth, divHeight, opacity, textInput) {
   d3.select("#" + divInput)
     .append("div")
@@ -172,33 +127,6 @@ function callGroupSVG(svgInput, classInput, idInput, fontSize, transform, functi
     .style("font-size", fontSize)
     .attr("transform", transform)
     .call(functionInput)
-}
-
-function addTooltipSymbol(svgInput, idInput, circX, circY, textX, textY, textRotate) {
-  svgInput
-    .append("circle")
-    .attr("pointer-events", "none")
-    .attr("id", idInput + "_circle")
-    .attr("cx", circX)
-    .attr("cy", circY)
-    .attr("r", 7.5)
-    .style("fill", "rgb(0,122,255)")
-    .style("opacity", 0.9)
-    .style("stroke-width", 2)
-    .style("stroke", "transparent")
-
-  svgInput
-    .append("text")
-    .attr("pointer-events", "none")
-    .attr("id", idInput + "_i")
-    .attr("transform", textRotate)
-    .attr("x", textX)
-    .attr("y", textY)
-    .text("i")
-    .style("fill", "white")
-    .style("stroke", "white")
-    .style("font-size", "11.5px")
-    .style("font-weight", 500)
 }
 
 function defineSlider(dataInput, changeFunction) {

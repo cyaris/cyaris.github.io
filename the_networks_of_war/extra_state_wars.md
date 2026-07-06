@@ -7,4 +7,4 @@ gh-badge: [follow, star]
 social-share: true
 ---
 
-{% include /the_networks_of_war/main.html %}
+{% include the_networks_of_war/main.html %}

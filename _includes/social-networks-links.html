@@ -1,19 +1,21 @@
 <ul class="list-inline text-center footer-links">
   <!-- custom edit: chose websites from list of websites -->
 
-  <!-- {%- if site.rss-description -%}
-    <li class="list-inline-item">
-      <a href="{{ '/feed.xml' | relative_url }}" title="RSS">
-        <span class="fa-stack fa-lg" aria-hidden="true">
-          <i class="fas fa-circle fa-stack-2x"></i>
-          <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
-        </span>
-        <span class="sr-only">RSS</span>
-      </a>
-    </li>
-  {%- endif -%} -->
+  <!--
+    {%- if site.rss-description -%}
+      <li class="list-inline-item">
+        <a href="{{ '/feed.xml' | relative_url }}" title="RSS">
+          <span class="fa-stack fa-lg" aria-hidden="true">
+            <i class="fas fa-circle fa-stack-2x"></i>
+            <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+          </span>
+          <span class="sr-only">RSS</span>
+        </a>
+      </li>
+    {%- endif -%}
+  -->
 
-  {%- if site.social-network-links.email -%}
+  {%- if site['social-network-links'].email -%}
     <li class="list-inline-item">
       <!-- custom edit: target _blank -->
       <a href="mailto:{{ site.social-network-links.email }}" target="_blank" title="Email me">
@@ -25,8 +27,7 @@
       </a>
     </li>
   {%- endif -%}
-
-  {%- if site.social-network-links.linkedin -%}
+  {%- if site['social-network-links'].linkedin -%}
     <li class="list-inline-item">
       <!-- custom edit: target _blank -->
       <a href="https://linkedin.com/in/{{ site.social-network-links.linkedin }}" target="_blank" title="LinkedIn">
@@ -38,8 +39,7 @@
       </a>
     </li>
   {%- endif -%}
-
-  {%- if site.social-network-links.github -%}
+  {%- if site['social-network-links'].github -%}
     <li class="list-inline-item">
       <!-- custom edit: target _blank -->
       <a href="https://github.com/{{ site.social-network-links.github }}" target="_blank" title="GitHub">
@@ -51,8 +51,7 @@
       </a>
     </li>
   {%- endif -%}
-
-  {%- if site.social-network-links.tableau -%}
+  {%- if site['social-network-links'].tableau -%}
     <li class="list-inline-item">
       <!-- custom edit: target _blank -->
       <!-- custom edit: chose icon for tableau -->
@@ -69,8 +68,7 @@
       </a>
     </li>
   {%- endif -%}
-
-  {%- if site.social-network-links.kaggle -%}
+  {%- if site['social-network-links'].kaggle -%}
     <li class="list-inline-item">
       <!-- custom edit: target _blank -->
       <!-- custom edit: chose icon for kaggle -->
@@ -83,8 +81,7 @@
       </a>
     </li>
   {%- endif -%}
-
-  {%- if site.social-network-links.instagram -%}
+  {%- if site['social-network-links'].instagram -%}
     <li class="list-inline-item">
       <!-- custom edit: target _blank -->
       <!-- custom edit: chose icon for instagram -->
@@ -97,5 +94,4 @@
       </a>
     </li>
   {%- endif -%}
-
 </ul>

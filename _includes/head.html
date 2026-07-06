@@ -2,9 +2,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- custom edit: added favicon.ico links -->
-  <link rel="shortcut icon" media="all" type="image/x-icon" href="{{ site.url }}/favicon.ico" />
-  <link rel="icon" media="all" type="image/x-icon" href="{{ site.url }}/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ site.url }}/favicon.ico" />
+  <link rel="shortcut icon" media="all" type="image/x-icon" href="{{ site.url }}/favicon.ico">
+  <link rel="icon" media="all" type="image/x-icon" href="{{ site.url }}/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ site.url }}/favicon.ico">
   <!-- end of custom edit -->
   <!-- custom edit: added javascript functions -->
   <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
@@ -12,7 +12,6 @@
   <script type="text/javascript" src="{{ site.url }}/assets/js/javascript_functions.js"></script>
   <script type="text/javascript" src="{{ site.url }}/assets/js/d3_functions.js"></script>
   <!-- end of custom edit -->
-
 
   {% capture title %}
     {%- if page.share-title -%}
@@ -43,7 +42,7 @@
 
   <meta name="description" content="{{ description }}">
 
-  {% if site.mobile-theme-col %}
+  {% if site['mobile-theme-col'] %}
     <meta name="theme-color" content="{{ site.mobile-theme-col }}">
   {% endif %}
 
@@ -51,7 +50,7 @@
     <meta name="keywords" content="{{ site.keywords }}">
   {% endif %}
 
-  {% if site.rss-description %}
+  {% if site['rss-description'] %}
     <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
   {% endif %}
 
@@ -60,26 +59,26 @@
   {% include google_analytics.html %}
   {% include cloudflare_analytics.html %}
 
-  {% if layout.common-ext-css %}
-    {% for css in layout.common-ext-css %}
+  {% if layout['common-ext-css'] %}
+    {% for css in layout['common-ext-css'] %}
       {% include ext-css.html css=css %}
     {% endfor %}
   {% endif %}
 
-  {% if layout.common-css %}
-    {% for css in layout.common-css %}
+  {% if layout['common-css'] %}
+    {% for css in layout['common-css'] %}
       <link rel="stylesheet" href="{{ css | relative_url }}">
     {% endfor %}
   {% endif %}
 
-  {% if site.site-css %}
-    {% for css in site.site-css %}
+  {% if site['site-css'] %}
+    {% for css in site['site-css'] %}
       <link rel="stylesheet" href="{{ css | relative_url }}">
     {% endfor %}
   {% endif %}
 
-  {% if page.ext-css %}
-    {% for css in page.ext-css %}
+  {% if page['ext-css'] %}
+    {% for css in page['ext-css'] %}
       {% include ext-css.html css=css %}
     {% endfor %}
   {% endif %}
@@ -113,12 +112,12 @@
       {{ site.avatar }}
     {% endif %}
   {%- endcapture -%}
-  {%- assign img=img | strip -%}
+  {%- assign img = img | strip -%}
 
   <meta property="og:title" content="{{ title }}">
   <meta property="og:description" content="{{ description }}">
 
-  {% if img != "" %}
+  {% if img != '' %}
     <meta property="og:image" content="{{ img | absolute_url }}">
   {% endif %}
 
@@ -134,7 +133,7 @@
     <link rel="canonical" href="{{ page.url | absolute_url | strip_index }}">
   {% endif %}
 
-  {% if img != "" and img != site.avatar %}
+  {% if img != '' and img != site.avatar %}
     <meta name="twitter:card" content="summary_large_image">
   {% else %}
     <meta name="twitter:card" content="summary">
@@ -145,20 +144,19 @@
   <meta property="twitter:title" content="{{ title }}">
   <meta property="twitter:description" content="{{ description }}">
 
-  {% if img != "" %}
+  {% if img != '' %}
     <meta name="twitter:image" content="{{ img | absolute_url }}">
   {% endif %}
 
   {% include matomo.html %}
 
   {% if page.comments and site.staticman.repository and site.staticman.branch %}
-    <link rel="stylesheet" href="{{ "/assets/css/staticman.css" | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/staticman.css' | relative_url }}">
   {% endif %}
 
-  {% if page.head-extra %}
-    {% for file in page.head-extra %}
+  {% if page['head-extra'] %}
+    {% for file in page['head-extra'] %}
       {% include {{ file }} %}
     {% endfor %}
   {% endif %}
-
 </head>

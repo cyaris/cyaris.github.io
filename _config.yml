@@ -44,7 +44,6 @@ round-avatar: true
 # then specify the following parameter
 # title-img: /assets/img/bialy_1.png
 
-
 #####################################
 # --- Footer social media links --- #
 #####################################
@@ -219,8 +218,8 @@ gtag: G-ZGW0J5HTZ8
 # instructions. For any support with staticman please direct questions to staticman and
 # not to BeautifulJekyll.
 staticman:
- repository : cyaris/cyaris.github.io
- branch     : master # If you're not using `master` branch, then you also need to update the `branch` parameter in `staticman.yml`
+  repository: cyaris/cyaris.github.io
+  branch: master # If you're not using `master` branch, then you also need to update the `branch` parameter in `staticman.yml`
 #  endpoint   : # URL of your deployment, with a trailing slash eg. "https://<your-api>/v3/entry/github/"
 #  reCaptcha:   # (optional, set these parameters in `staticman.yml` as well)
 #    siteKey  : # You need to apply for a site key on Google
@@ -268,15 +267,13 @@ kramdown:
 
 # Default YAML values (more information on Jekyll's site)
 defaults:
-  -
-    scope:
+  - scope:
       path: ""
       type: posts
     values:
       layout: post
-      comments: false  # add comments to all blog posts
-  -
-    scope:
+      comments: false # add comments to all blog posts
+  - scope:
       path: "" # any file that's not a post will be a "page" layout by default
     values:
       layout: page

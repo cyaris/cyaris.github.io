@@ -5,7 +5,7 @@ layout: null
 /* --- Body --- */
 
 body {
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1rem;
 }
 
@@ -32,7 +32,6 @@ a:focus {
   align-items: center;
   justify-content: space-around;
 }
-
 
 /* --- Navbar --- */
 
@@ -76,7 +75,6 @@ a:focus {
 }
 
 @media (min-width: 1200px) {
-
   .firework-launcher-mobile {
     display: none;
   }
@@ -127,7 +125,6 @@ a:focus {
 }
 
 @media (max-width: 1200px) {
-
   .firework-launcher-desktop {
     display: none;
   }
@@ -151,10 +148,10 @@ a:focus {
   }
 
   .navbar-toggler:hover {
-    border-color: #439aa5;
+    border-color:#439aa5;
   }
 
-   /* .navbar-custom .navbar-toggler[aria-expanded="true"] {
+  /* .navbar-custom .navbar-toggler[aria-expanded="true"] {
      background-color: {{ site.navbar-dropdown-background-hover-col }};
    } */
 
@@ -180,10 +177,18 @@ a:focus {
 /* using a gif in the same spot on mobile. */
 /* the same transition/animation is being used for the navbar cursor on desktop. */
 @keyframes kidpix_cursor_animate {
-   0% { cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto; }
-   50% { cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto; }
-   51% { cursor: url(../img/kidpix_dynamite_eraser_large_2.png), auto; }
-   100% { cursor: url(../img/kidpix_dynamite_eraser_large_2.png), auto; }
+  0% {
+    cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto;
+  }
+  50% {
+    cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto;
+  }
+  51% {
+    cursor: url(../img/kidpix_dynamite_eraser_large_2.png), auto;
+  }
+  100% {
+    cursor: url(../img/kidpix_dynamite_eraser_large_2.png), auto;
+  }
 }
 
 .navbar-custom .navbar-brand:hover {
@@ -201,12 +206,19 @@ a:focus {
 }
 
 @keyframes kidpix_png_animate {
-  0% { opacity: 1; }
-  50% { opacity: 1; }
-  51% { opacity: 0; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  51% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
-
 
 /* --- Footer --- */
 
@@ -223,22 +235,18 @@ footer a:hover {
   text-decoration: none;
 }
 
-.fa-stack-1x {
-  color: {{ site.social-icon-col }};
-}
-
-.fa-stack-1x:hover,
-.fa-stack-1x:focus {
- color: {{ site.social-icon-hover-col }};
-}
-
-.list-inline a,
-.list-inline a:focus {
+.footer-links .fa-stack-2x {
   color: {{ site.social-icon-background-col }};
 }
 
-.list-inline a:hover {
+.footer-links a:hover .fa-stack-2x,
+.footer-links a:focus .fa-stack-2x {
   color: {{ site.social-icon-background-hover-col }};
+}
+
+.footer-links a:hover .fa-stack-1x,
+.footer-links a:focus .fa-stack-1x {
+  color: {{ site.social-icon-hover-col }};
 }
 
 .author-site a,
@@ -264,7 +272,7 @@ footer a:hover {
 
 .post-preview .post-meta,
 .post-heading .post-meta {
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .post-preview {
@@ -307,7 +315,6 @@ footer a:hover {
   }
 }
 
-
 /* --- Buttons --- */
 
 button:focus {
@@ -338,7 +345,6 @@ button:focus {
   text-decoration: none;
   font-weight: 750;
 }
-
 
 /* --- Tag Links --- */
 
@@ -374,18 +380,6 @@ button:focus {
 
 /* --- Pagination --- */
 
-@media (min-width: 800px) {
-  .page-link-mobile {
-    display: none;
-  }
-}
-
-@media (max-width: 800px) {
-  .page-link-desktop {
-    display: none;
-  }
-}
-
 .pagination .page-item .page-link {
   color: {{ site.pagination-link-col }};
   text-transform: capitalize;
@@ -397,14 +391,19 @@ button:focus {
   font-weight: 750;
 }
 
-.pagination .page-item .page-link-desktop {
-  width: 175px;
+.pagination .page-item .page-link .desktop-text,
+.pagination .page-item .page-link .mobile-text {
+  display: inline-block;
 }
 
-.pagination .page-item .page-link-mobile {
-  width: 55px;
+.pagination .page-item .page-link .desktop-text {
+  max-width: 180px;
+  padding: 5px 10px;
+}
+
+.pagination .page-item .page-link .mobile-text {
+  width: 20px;
   font-size: 20px;
-  padding-right: 32.5px;
 }
 
 .pagination .page-item .page-link:hover,
@@ -419,12 +418,25 @@ button:focus {
 }
 
 .rotate {
+  display: inline-block;
   transform: rotate(180deg);
   /* Safari, Firefox IE & Opera below. */
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   -o-transform: rotate(180deg);
+}
+
+@media (min-width: 800px) {
+   .pagination .page-item .page-link .mobile-text {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .pagination .page-item .page-link .desktop-text {
+    display: none;
+  }
 }
 
 /* --- Social Share Icons --- */
@@ -438,9 +450,8 @@ button:focus {
 /* --- Thumbnails --- */
 
 /* .post-preview .post-image .post-image-short { */
-  /* display: inline; */
+/* display: inline; */
 /* } */
-
 
 /* --- General D3, Interactivity & Animations --- */
 

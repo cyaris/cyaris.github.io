@@ -1,0 +1,14 @@
+{
+  "name": "cyaris.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal website built with Jekyll and GitHub Pages.",
+  "scripts": {
+    "format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write '**/*.{css,cjs,html,js,json,svelte,svg}'",
+    "format:check": "prettier --ignore-path ../.gitignore --ignore-path .prettierignore --check '**/*.{css,cjs,html,js,json,svelte,svg}'"
+  },
+  "devDependencies": {
+    "@shopify/prettier-plugin-liquid": "^1.10.0",
+    "prettier": "^3.6.2"
+  }
+}

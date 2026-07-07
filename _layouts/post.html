@@ -1,45 +1,45 @@
 ---
 layout: base
 ---
-
 {% include header.html type="post" %}
 
-<div class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
+<main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
-
-      <!-- custom edit: adding github-badges.html from includes. -->
+      <!-- custom edit: adding github-badges.html and social-share. -->
       {% include github-badges.html %}
-      <!-- end of custom edit. -->
+      <!-- end of custom edit -->
 
-      {% if page.before-content %}
+      {% if page['before-content'] %}
         <div class="before-content">
-          {% for file in page.before-content %}
+          {% for file in page['before-content'] %}
             {% include {{ file }} %}
           {% endfor %}
         </div>
       {% endif %}
 
-      <article role="main" class="blog-post">{{ content }}</article>
+      <div class="blog-post">
+        {{ content }}
+      </div>
 
       {% if page.tags.size > 0 %}
         <div class="blog-tags">
           <span>Tags:</span>
           {% for tag in page.tags %}
-          <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
+            <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
           {% endfor %}
         </div>
       {% endif %}
 
-      {% if page.after-content %}
+      {% if page['after-content'] %}
         <div class="after-content">
-          {% for file in page.after-content %}
+          {% for file in page['after-content'] %}
             {% include {{ file }} %}
           {% endfor %}
         </div>
       {% endif %}
 
-      {% if page.social-share %}
+      {% if page['social-share'] %}
         {% include social-share.html %}
       {% endif %}
 
@@ -47,47 +47,38 @@ layout: base
         {% if page.previous.url %}
           <li class="page-item previous">
             <!-- custom edit: added additional pagination button for desktop vs mobile, and label by page.type. -->
-            <!-- to do: fix below so it can be done in one element. -->
             <a
-              class="page-link page-link-desktop"
+              class="page-link"
               href="{{ page.previous.url | relative_url }}"
               data-toggle="tooltip"
               data-placement="top"
-              title="{{page.previous.title | strip_html | xml_escape}}"
-              >&larr; Previous {{ page.type }}</a
+              title="{{ page.previous.title | strip_html | xml_escape }}"
             >
-            <a
-              class="page-link page-link-mobile rotate"
-              href="{{ page.previous.url | relative_url }}"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="{{page.previous.title | strip_html | xml_escape}}"
-              >➔</a
-            >
+              <span class="desktop-text"><span class="rotate">➔</span>&nbsp;&nbsp;Previous {{ page.type }}</span>
+              <span class="mobile-text rotate">➔</span>
+            </a>
+            <!--
+              <i class="fas fa-arrow-left" alt="Previous Post"></i>
+              <span class="d-none d-sm-inline-block">Previous Post</span>
+            -->
             <!-- end of custom edit -->
           </li>
         {% endif %}
-
         {% if page.next.url %}
           <li class="page-item next">
             <!-- custom edit: added additional pagination button for desktop vs mobile, and label by page.type. -->
-            <!-- to do: fix below so it can be done in one element. -->
             <a
-              class="page-link page-link-desktop"
+              class="page-link"
               href="{{ page.next.url | relative_url }}"
               data-toggle="tooltip"
               data-placement="top"
-              title="{{page.next.title | strip_html | xml_escape}}"
-              >Next {{ page.type }} &rarr;</a
+              title="{{ page.next.title | strip_html | xml_escape }}"
             >
-            <a
-              class="page-link page-link-mobile"
-              href="{{ page.next.url | relative_url }}"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="{{page.next.title | strip_html | xml_escape}}"
-              >➔</a
-            >
+              <span class="desktop-text">Next {{ page.type }}&nbsp;&nbsp;➔</span>
+              <span class="mobile-text">➔</span>
+            </a>
+            <!-- <span class="d-none d-sm-inline-block">Next Post</span> -->
+            <!-- <i class="fas fa-arrow-right" alt="Next Post"></i> -->
             <!-- end of custom edit -->
           </li>
         {% endif %}
@@ -95,4 +86,4 @@ layout: base
       {% include comments.html %}
     </div>
   </div>
-</div>
+</main>

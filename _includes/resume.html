@@ -25,13 +25,12 @@
       }
     </style>
   </head>
+
   <object
     id="resume_view"
-    data="https://s3.us-east-2.amazonaws.com/cyaris.github.io/pdf/resume/Charlie_Yaris_Resume.pdf#navpanes=0&scrollbar=0&toolbar=0"
+    data="{% include s3_url.html path='pdf/resume/Charlie_Yaris_Resume.pdf' %}#navpanes=0&scrollbar=0&toolbar=0"
   ></object>
   <div id="resume_link">
-    <a href="https://s3.us-east-2.amazonaws.com/cyaris.github.io/pdf/resume/Charlie_Yaris_Resume.pdf" target="_blank"
-      >View Resume</a
-    >
+    <a href="{% include s3_url.html path='pdf/resume/Charlie_Yaris_Resume.pdf' %}" target="_blank"> View Resume </a>
   </div>
 </html>

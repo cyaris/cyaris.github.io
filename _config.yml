@@ -287,7 +287,6 @@ defaults:
       layout: post
       comments: false  # add comments to all blog posts
       type: "posts"
-      # todo: figure out why these are still appearing on some pages.
       social-share: false # add social media sharing buttons to all blog posts
   -
     scope:

@@ -258,8 +258,8 @@ footer a:hover {
 
 .footer-links .tableau-icon {
   color: {{ site.social-icon-col }};
-  height: 1em;
-  width: 1.02em;
+  height: .98em;
+  width: .98em;
   left: 50%;
   top: 50%;
   line-height: 1;

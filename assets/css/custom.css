@@ -243,6 +243,10 @@ footer a:hover {
   font-size: 1.1em;
 }
 
+.footer-links a[title="kaggle"] .fa-stack-1x {
+  font-size: 0.9em;
+}
+
 .footer-links a[title="LinkedIn"] .fa-stack-1x {
   transform: translateY(1px);
 }

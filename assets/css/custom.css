@@ -239,6 +239,23 @@ footer a:hover {
   color: {{ site.social-icon-background-col }};
 }
 
+.footer-links .fa-stack-1x {
+  font-size: 1.12em;
+}
+
+.footer-links a[title="LinkedIn"] .fa-stack-1x {
+  transform: translateY(1.25px);
+  font-size: 1.06em;
+}
+
+.footer-links a[title="kaggle"] .fa-stack-1x {
+  font-size: 1em;
+}
+
+.footer-links a[title="Instagram"] .fa-stack-1x {
+  font-size: 1.2em;
+}
+
 .footer-links .tableau-icon {
   color: {{ site.social-icon-col }};
   height: 1em;

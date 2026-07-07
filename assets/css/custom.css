@@ -239,6 +239,16 @@ footer a:hover {
   color: {{ site.social-icon-background-col }};
 }
 
+.footer-links .tableau-icon {
+  color: {{ site.social-icon-col }};
+  height: 1em;
+  width: 1.02em;
+  left: 50%;
+  top: 50%;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+}
+
 .footer-links a:hover .fa-stack-2x,
 .footer-links a:focus .fa-stack-2x {
   color: {{ site.social-icon-background-hover-col }};

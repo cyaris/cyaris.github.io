@@ -1,0 +1,112 @@
+---
+layout: page
+title: Resume
+---
+<style type="text/css">
+  @media (min-width: 800px) {
+    #resume_link {
+      display: none;
+    }
+  }
+
+  @media (max-width: 800px) {
+    #resume_view {
+      display: none;
+    }
+  }
+
+  #resume_view {
+    width: 750px;
+    height: 967.5px;
+  }
+
+  #resume_link {
+    font-weight: 800;
+    font-size: 1.5rem;
+  }
+</style>
+
+<object
+  id="resume_view"
+  data="{% include s3_url.html path='pdf/resume/Charlie_Yaris_Resume.pdf' %}#navpanes=0&scrollbar=0&toolbar=0"
+  type="application/pdf"
+></object>
+
+<div id="resume_link">
+  <a href="{% include s3_url.html path='pdf/resume/Charlie_Yaris_Resume.pdf' %}" target="_blank" rel="noopener">
+    View Resume
+  </a>
+</div>
+
+<h3>Certifications</h3>
+
+<ul>
+  <li>
+    Databricks
+    <ul>
+      <li>
+        <a
+          href="{% include s3_url.html path='pdf/certifications/databricks_certified_data_engineer_associate.pdf' %}"
+          target="_blank"
+          rel="noopener"
+          >Certified Data Engineer Associate, 2024</a
+        >
+      </li>
+    </ul>
+  </li>
+  <li>
+    Amazon Web Services (AWS)
+    <ul>
+      <li>
+        <a
+          href="{% include s3_url.html path='pdf/certifications/aws_certified_cloud_practitioner_certification_2.pdf' %}"
+          target="_blank"
+          rel="noopener"
+          >Certified Cloud Practitioner, 2024</a
+        >
+      </li>
+      <li>
+        <a
+          href="{% include s3_url.html path='pdf/certifications/aws_certified_cloud_practitioner_certification_1.pdf' %}"
+          target="_blank"
+          rel="noopener"
+          >Certified Cloud Practitioner, 2021</a
+        >
+      </li>
+    </ul>
+  </li>
+  <li>
+    Metis
+    <ul>
+      <li>
+        <a
+          href="{% include s3_url.html path='pdf/certifications/metis_data_science_certification.pdf' %}"
+          target="_blank"
+          rel="noopener"
+          >Data Science Bootcamp Certification, 2018</a
+        >
+      </li>
+      <li>
+        <a
+          href="{% include s3_url.html path='pdf/certifications/metis_machine_learning_ai_certification.pdf' %}"
+          target="_blank"
+          rel="noopener"
+          >Machine Learning &amp; AI Principles Certification, 2018</a
+        >
+      </li>
+    </ul>
+  </li>
+  <li>
+    General Assembly
+    <ul>
+      <li>
+        <a
+          href="{% include s3_url.html path='pdf/certifications/general_assembly_data_analytics_certification.pdf' %}"
+          target="_blank"
+          rel="noopener"
+          >Data Analytics Certification, 2017</a
+        >
+      </li>
+    </ul>
+  </li>
+</ul>

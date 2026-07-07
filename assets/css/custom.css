@@ -239,27 +239,22 @@ footer a:hover {
   color: {{ site.social-icon-background-col }};
 }
 
-.footer-links .fa-stack-1x {
+.footer-links a[title="GitHub"] .fa-stack-1x {
   font-size: 1.1em;
 }
 
 .footer-links a[title="LinkedIn"] .fa-stack-1x {
-  transform: translateY(1.25px);
-  font-size: 1.03em;
-}
-
-.footer-links a[title="kaggle"] .fa-stack-1x {
-  font-size: 1em;
+  transform: translateY(1px);
 }
 
 .footer-links a[title="Instagram"] .fa-stack-1x {
-  font-size: 1.2em;
+  font-size: 1.125em;
 }
 
 .footer-links .tableau-icon {
   color: {{ site.social-icon-col }};
-  height: .98em;
-  width: .98em;
+  height: 1em;
+  width: 1em;
   left: 50%;
   top: 50%;
   line-height: 1;

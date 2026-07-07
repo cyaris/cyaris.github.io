@@ -1,21 +1,2 @@
-<section class="tableau-gallery-item">
-  <h3>Maryland Traffic Violations</h3>
-  <h5>Why would a reckless driver get a warning instead of a citation?</h5>
-  <p>An in-depth analysis of 94,702 reckless drivers in the state of Maryland.</p>
-  <iframe
-    src="https://public.tableau.com/views/TrafficViolationsinMaryland/Question?/Splash?:showVizHome=no&:embed=true"
-    width="100%"
-    height="645"
-    title="Maryland Traffic Violations Tableau dashboard"
-  ></iframe>
-</section>
-<section class="tableau-gallery-item">
-  <h3>Uncovering Jury Tariffs in Chicago's Justice System</h3>
-  <p>An investigation into human behavior using binary classification.</p>
-  <iframe
-    src="https://public.tableau.com/views/CourtSentencinginCookCountyIL/Question?/Splash?:showVizHome=no&:embed=true"
-    width="100%"
-    height="645"
-    title="Cook County Court Sentencing Tableau dashboard"
-  ></iframe>
-</section>
+{% include tableau_dashboards/maryland_traffic_violations.html %}
+{% include tableau_dashboards/cook_county_court_sentencing.html %}

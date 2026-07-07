@@ -67,15 +67,8 @@ gh-badge: [follow, star]
       <div id="homepage-subheading">Data Engineer</div>
     </center>
   </div>
-  <link
-    type="text/css"
-    rel="stylesheet"
-    href="https://s3.us-east-2.amazonaws.com/cyaris.github.io/profile_photo/bundle.css"
-  >
+  <link rel="stylesheet" href="{% include s3_url.html path='profile_photo/bundle.css' %}">
   <div style="margin-bottom:40px;">
-    <script
-      type="text/javascript"
-      src="https://s3.us-east-2.amazonaws.com/cyaris.github.io/profile_photo/bundle.js"
-    ></script>
+    <script src="{% include s3_url.html path='profile_photo/bundle.js' %}"></script>
   </div>
 </html>

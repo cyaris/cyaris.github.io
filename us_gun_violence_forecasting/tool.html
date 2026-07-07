@@ -5,11 +5,8 @@ gh-repo: cyaris/us_gun_violence_forecasting/
 gh-badge: [follow, star]
 full-width: true
 ---
-<link
-  type="text/css"
-  rel="stylesheet"
-  href="https://s3.us-east-2.amazonaws.com/cyaris.github.io/us_gun_violence_forecasting/bundle.css"
->
+<link rel="stylesheet" href="{% include s3_url.html path='us_gun_violence_forecasting/bundle.css' %}">
+
 <style>
   .col {
     padding: 0;
@@ -20,8 +17,5 @@ full-width: true
   }
 </style>
 <div style="margin-top:32px; margin-bottom:10px;">
-  <script
-    type="text/javascript"
-    src="https://s3.us-east-2.amazonaws.com/cyaris.github.io/us_gun_violence_forecasting/bundle.js"
-  ></script>
+  <script src="{% include s3_url.html path='us_gun_violence_forecasting/bundle.js' %}"></script>
 </div>

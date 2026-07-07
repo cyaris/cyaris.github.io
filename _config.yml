@@ -316,4 +316,6 @@ plugins:
 # --- Custom Variables --- #
 ################
 
+s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
+s3_version: 1
 hidden_project_explanation: While I'm flattered you came to check out my project, it has several interactive features that work best on desktop. So, grab a computer and come back soon!

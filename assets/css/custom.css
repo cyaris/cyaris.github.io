@@ -4,11 +4,20 @@ layout: null
 
 /* --- Body --- */
 
+html,
+body {
+  min-height: 100%;
+  height: auto;
+}
+
 body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1rem;
-  min-height: 100dvh;
+  display: block;
 }
+
+body > main {
+  flex: none;
 }
 
 .intro-header .post-heading h1,

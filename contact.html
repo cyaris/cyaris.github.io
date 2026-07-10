@@ -25,7 +25,14 @@ title: Contact
     <label for="contact-website">Website</label>
     <input id="contact-website" name="website" type="text" tabindex="-1" autocomplete="off">
   </div>
-  <div class="cf-turnstile" data-sitekey="0x4AAAAAADy94v3LKGOnSzTn" data-theme="auto"></div>
+  <div class="contact-turnstile">
+    <div
+      class="cf-turnstile"
+      data-sitekey="0x4AAAAAADy94v3LKGOnSzTn"
+      data-theme="light"
+      data-size="flexible"
+    ></div>
+  </div>
   <button id="contact-submit" type="submit">Send message</button>
   <p id="contact-status" class="contact-status" role="status" aria-live="polite"></p>
 </form>

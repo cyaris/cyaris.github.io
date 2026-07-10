@@ -295,11 +295,6 @@ a:focus {
   max-width: 360px;
   margin: 0.35rem 0 1.25rem;
   padding: 0.55rem;
-  background-color: color-mix(
-    in srgb,
-    var(--navbar-col) 7%,
-    var(--page-col)
-  );
   border-radius: 10px;
 }
 

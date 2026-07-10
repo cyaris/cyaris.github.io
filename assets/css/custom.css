@@ -262,13 +262,18 @@ a:focus {
 }
 
 .contact-form button {
-  padding: 10px 20px;
+  display: inline-block;
+  padding: 16px 31px;
   color: {{ site.btn-link-col }};
+  font-size: 17px;
   font-weight: 750;
   background-color: {{ site.btn-background-col }};
-  border: 4px solid transparent;
+  border: 4.5px solid transparent;
   border-radius: 28px;
   cursor: pointer;
+  height: 65px;
+  text-decoration: none;
+  width: 205px;
 }
 
 .contact-form button:hover,
@@ -381,12 +386,8 @@ a:focus {
   }
 
   .contact-form button {
-    width: min(100%, 16rem);
-    min-height: 3.15rem;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border-width: 3px;
-    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
   }
 
   .contact-status {

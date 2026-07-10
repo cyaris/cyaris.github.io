@@ -298,11 +298,82 @@ a:focus {
 }
 
 .contact-honeypot {
-  position: absolute;
-  left: -10000px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+  position: absolute !important;
+  left: -9999px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 576px) {
+  main.container-md:has(.contact-form) {
+    padding-right: 1.125rem;
+    padding-left: 1.125rem;
+  }
+
+  .contact-form {
+    max-width: none;
+    margin-top: 0.25rem;
+    padding: 1.1rem 0 0.4rem;
+  }
+
+  .contact-field {
+    margin-bottom: 1rem;
+  }
+
+  .contact-field label {
+    margin-bottom: 0.35rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-field input,
+  .contact-field textarea {
+    min-height: 3rem;
+    padding: 0.8rem 0.85rem;
+    font-size: 1rem;
+    line-height: 1.45;
+    border-color: color-mix(
+      in srgb,
+      var(--navbar-col) 82%,
+      var(--text-col)
+    );
+    border-radius: 8px;
+    box-shadow: 0 2px 0 color-mix(
+      in srgb,
+      var(--navbar-col) 24%,
+      transparent
+    );
+  }
+
+  .contact-field textarea {
+    min-height: 11.5rem;
+  }
+
+  .contact-form .cf-turnstile {
+    margin: 0.3rem 0 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .contact-form button {
+    display: block;
+    width: 100%;
+    min-height: 3.15rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-width: 3px;
+    border-radius: 8px;
+  }
+
+  .contact-status {
+    min-height: 1.35rem;
+    margin-top: 0.85rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
 }
 
 /* --- Footer --- */

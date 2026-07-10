@@ -24,10 +24,11 @@ navbar-links:
     - Mastermind: mastermind
     - US Gun Violence Forecasting: us_gun_violence_forecasting
     - The Networks of War: the_networks_of_war
-    - Tableau Gallery: tableau_gallery
+    # - Tableau Gallery: tableau_gallery
   Blog: blog
   Resume: resume
   Contact: contact
+
 ################
 # --- Logo --- #
 ################
@@ -52,11 +53,11 @@ round-avatar: true
 # You can change the order that they show up on the page by changing the order here.
 # Uncomment the links you want to show and add your information to each one.
 social-network-links:
-  # email: charlieyaris@gmail.com
+  email: charlieyaris@gmail.com
   linkedin: charlieyaris
   github: cyaris
-  tableau: charlie.yaris#!
-  kaggle: cyaris
+  # tableau: charlie.yaris#!
+  # kaggle: cyaris
   instagram: lord_buttonless
 
 # If you want your website to generate an RSS feed, provide a description

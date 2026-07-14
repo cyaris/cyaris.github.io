@@ -7,7 +7,7 @@
 - For embedded Svelte apps with simulated GitHub Pages routes, keep Jekyll pages as lightweight `.html` shell pages that mirror the source app routes and load the compiled bundle. Do not duplicate route content in Markdown or Jekyll; durable route content belongs in the source app repo.
 - `full-width: true` uses the site's full-width Jekyll/Bootstrap layout. Keep embedded tools full-width, and scope page-local alignment overrides to surrounding page furniture rather than the chart unless requested.
 - The embedded frontend's Tailwind bundle is scoped under `.us-gun-violence-forecasting`; Tailwind utility classes on Jekyll wrapper elements outside that app scope will not apply. Use page CSS, inline CSS, or global site CSS for Jekyll wrapper elements.
-- Jekyll/Bootstrap idiosyncrasy overrides for embedded tools belong in the host page's `<style>` block when they do not affect the locally run Svelte app. Do not push host-only layout resets into the source Svelte component just to satisfy the Jekyll render.
+- Jekyll/Bootstrap idiosyncrasy overrides for embedded tools belong in the host page's `<style>` block when they do not affect the locally run Svelte app. Keep host-only layout resets, page furniture alignment, and external CSS overrides out of source Svelte components.
 
 ## Documentation
 

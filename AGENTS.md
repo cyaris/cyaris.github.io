@@ -2,12 +2,9 @@
 
 ## Embedded Project Pages
 
-- Treat embedded Svelte app pages as hosts for compiled bundles. Change app behavior in the source repo and rebuild/upload the app's compiled bundle artifacts; do not patch generated bundle behavior directly in Jekyll.
-- Keep Tableau dashboard content split by dashboard under `_includes/tableau_dashboards/`. Each dashboard include should own its full `<section>`, heading text, descriptive copy, and iframe; `_includes/tableau_gallery.html` should only compose those dashboard includes.
-- For embedded Svelte apps with simulated GitHub Pages routes, keep Jekyll pages as lightweight `.html` shell pages that mirror the source app routes and load the compiled bundle. Do not duplicate route content in Markdown or Jekyll; durable route content belongs in the source app repo.
+- Treat embedded Svelte app pages as hosts for compiled bundles. Change app behavior, routes, and app-scoped styles in the source repo, rebuild/upload compiled bundle artifacts, and keep Jekyll pages as lightweight shell pages plus host-page CSS; do not patch generated bundle behavior or duplicate route content directly in Jekyll.
 - `full-width: true` uses the site's full-width Jekyll/Bootstrap layout. Keep embedded tools full-width, and scope page-local alignment overrides to surrounding page furniture rather than the chart unless requested.
 - Embedded frontend Tailwind bundles are scoped under each app's wrapper class, so Tailwind utility classes on Jekyll wrapper elements outside that app scope will not apply. Use page CSS, inline CSS, or global site CSS for Jekyll wrapper elements.
-- Jekyll/Bootstrap idiosyncrasy overrides for embedded tools belong in the host page's `<style>` block when they do not affect the locally run Svelte app. Keep host-only layout resets, page furniture alignment, and external CSS overrides out of source Svelte components.
 
 ## Documentation
 
@@ -16,7 +13,3 @@
 ## Site Styling
 
 - For site-local Jekyll links and asset paths, use the `relative_url` filter instead of concatenating `site.url`. Reserve `absolute_url` for metadata, feeds, canonical URLs, or other places that require a fully qualified URL.
-
-## Legacy JavaScript Helpers
-
-- Keep `assets/js/javascript_functions.js` and `assets/js/d3_functions.js` limited to helpers referenced by source pages or includes. Remove unused global helper definitions and stale commented-out calls instead of retaining dead helper code.

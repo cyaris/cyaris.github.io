@@ -16,6 +16,17 @@ git remote add upstream https://github.com/daattali/beautiful-jekyll.git
   - Uses custom 404 copy.
   - Uses `assets/img/evil_bialy.png` for the 404 image.
   - Uses the `image_404` class for local responsive image sizing.
+- `assets/css/custom.css`
+  - Overrides global typography, emphasis opacity, and link colors.
+  - Styles full-width embedded tool hosts and aligns their GitHub badges inside Bootstrap breakpoints.
+  - Customizes navbar sizing, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations.
+  - Adds horizontal image-scroll styling for the About Me page.
+  - Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles.
+  - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing.
+  - Customizes post preview metadata, thumbnail sizing, title hover colors, and preview borders.
+  - Defines shared button styling for `.btn-group` and contact form buttons.
+  - Customizes tag link, tags-page, and pagination styling, including desktop/mobile pagination text visibility.
+  - Disables text selection on interactive site controls and footer areas.
 - `_config.yml`
   - Renames the navbar text color setting to `navbar-link-col`.
   - Adds site-specific color variables for the navbar, page, links, post titles, footer, and social links.
@@ -28,7 +39,7 @@ git remote add upstream https://github.com/daattali/beautiful-jekyll.git
   - Adds the `no_selection` class to GitHub badge iframes.
   - Widens the star badge iframe.
 - `_includes/head.html`
-  - Adds `favicon.png` links for shortcut, browser, and Apple touch icons.
+  - Adds `favicon.ico` links for shortcut, browser, and Apple touch icons.
 - `_includes/header.html`
   - Simplifies header image class assignment.
   - Removes the "posted on" label from post dates.

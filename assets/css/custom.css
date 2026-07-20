@@ -24,6 +24,45 @@ a:focus {
   color: {{ site.link-col }};
 }
 
+/* --- Full-Width Tool Hosts --- */
+
+.full-width-tool-host {
+  margin-top: 32px;
+  margin-bottom: 10px;
+}
+
+main.container-fluid:has(.full-width-tool-host) > .row > .col {
+  padding: 0;
+}
+
+main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
+  padding-left: 15px;
+}
+
+@media (min-width: 768px) {
+  main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
+    padding-left: calc((100vw - 720px) / 2 + 15px);
+  }
+}
+
+@media (min-width: 992px) {
+  main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
+    padding-left: calc((100vw - 960px) / 2 + 95px);
+  }
+}
+
+@media (min-width: 1200px) {
+  main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
+    padding-left: calc((100vw - 1140px) / 2 + 205px);
+  }
+}
+
+@media (min-width: 1300px) {
+  main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
+    padding-left: 15%;
+  }
+}
+
 /* --- Center --- */
 
 .center {

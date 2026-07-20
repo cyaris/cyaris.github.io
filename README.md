@@ -28,7 +28,7 @@ git remote add upstream https://github.com/daattali/beautiful-jekyll.git
   - Adds the `no_selection` class to GitHub badge iframes.
   - Widens the star badge iframe.
 - `_includes/head.html`
-  - Adds `favicon.ico` links for shortcut, browser, and Apple touch icons.
+  - Adds `favicon.png` links for shortcut, browser, and Apple touch icons.
 - `_includes/header.html`
   - Simplifies header image class assignment.
   - Removes the "posted on" label from post dates.

@@ -113,8 +113,6 @@ keywords: cyaris, charlie yaris, charlieyaris, yaris
 
 # Personalize the colours in your website. Colour values can be any valid CSS colour
 
-# custom edit: changed name of navbar-text-col to navbar-link-col because the navbar only has links
-# custom edit: added several individual color variables below
 navbar-col: "#54bdca"
 # navbar-dropdown-background-hover-col: "#4aa4b0"
 navbar-border-col: "#f26419"

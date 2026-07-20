@@ -16,13 +16,11 @@ layout: base
 
       {{ content }}
 
-      <!-- custom edit: adding github-badges.html and social-share. -->
       {% include github-badges.html %}
 
       {% if page['social-share'] %}
         {% include social-share.html %}
       {% endif %}
-      <!-- end of custom edit -->
 
       {% if page['after-content'] %}
         <div class="after-content">

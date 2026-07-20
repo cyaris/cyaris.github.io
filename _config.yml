@@ -21,13 +21,13 @@ author: Charlie Yaris
 navbar-links:
   About Me: about_me
   Projects:
-    - Mastermind: mastermind
-    - US Gun Violence Forecasting: us_gun_violence_forecasting
     - The Networks of War: the_networks_of_war
+    - US Gun Violence Forecasting: us_gun_violence_forecasting
+    - Mastermind: mastermind
     # - Tableau Gallery: tableau_gallery
   Blog: blog
-  Resume: resume
   Contact: contact
+  Resume: resume
 
 ################
 # --- Logo --- #

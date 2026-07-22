@@ -4,8 +4,9 @@
   here so s3_asset.html can add a client-side cache buster without a Jekyll rebuild.
 {%- endcomment -%}
 {%- assign s3_path = include.path -%}
-{%- if include.bundle and site.s3_bundle_prefix -%}
-  {%- assign bundle_path = '/' | append: site.s3_bundle_prefix | append: 'bundle' -%}
+{%- assign s3_bundle_prefix = site.s3_bundle_prefix | default: '' -%}
+{%- if include.bundle and s3_bundle_prefix != '' -%}
+  {%- assign bundle_path = '/' | append: s3_bundle_prefix | append: 'bundle' -%}
   {%- assign s3_path = s3_path | replace: '/bundle', bundle_path -%}
 {%- endif -%}
 {%- assign cache_bust_strategy = include.cache_bust_strategy

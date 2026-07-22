@@ -316,6 +316,7 @@ plugins:
 ################
 
 s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
-s3_bundle_prefix: test_
+# Leave blank for live production bundles. Set to "test_" when intentionally loading staged bundle uploads.
+s3_bundle_prefix:
 # Options: runtime for active development without Jekyll rebuilds, build_time for quieter periods.
 s3_bundle_cache_bust_strategy: runtime

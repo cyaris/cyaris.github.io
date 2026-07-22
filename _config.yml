@@ -316,4 +316,6 @@ plugins:
 ################
 
 s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
-s3_version: 7
+s3_bundle_prefix: test_
+# Options: runtime for active development without Jekyll rebuilds, build_time for quieter periods.
+s3_bundle_cache_bust_strategy: runtime

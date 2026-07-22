@@ -5,5 +5,5 @@ subtitle: Level 3
 gh-repo: cyaris/mastermind/
 gh-badge: [follow, star]
 ---
-<link rel="stylesheet" href="{% include s3_url.html path='mastermind/bundle.css' %}">
-<script src="{% include s3_url.html path='mastermind/bundle.js' %}"></script>
+{% include s3_asset.html path='mastermind/bundle.css' type='style' bundle=true %}
+{% include s3_asset.html path='mastermind/bundle.js' type='script' bundle=true %}

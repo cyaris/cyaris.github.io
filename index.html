@@ -67,8 +67,8 @@ gh-badge: [follow, star]
       <div id="homepage-subheading">Data Engineer</div>
     </center>
   </div>
-  <link rel="stylesheet" href="{% include s3_url.html path='profile_photo/bundle.css' %}">
+  {% include s3_asset.html path='profile_photo/bundle.css' type='style' bundle=true %}
   <div style="margin-bottom:40px;">
-    <script src="{% include s3_url.html path='profile_photo/bundle.js' %}"></script>
+    {% include s3_asset.html path='profile_photo/bundle.js' type='script' bundle=true %}
   </div>
 </html>

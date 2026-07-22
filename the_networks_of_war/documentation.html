@@ -5,5 +5,5 @@ subtitle: Project Documentation
 gh-repo: cyaris/the_networks_of_war/
 gh-badge: [follow, star]
 ---
-<link rel="stylesheet" href="{% include s3_url.html path='the_networks_of_war/bundle.css' %}">
-<script src="{% include s3_url.html path='the_networks_of_war/bundle.js' %}"></script>
+{% include s3_asset.html path='the_networks_of_war/bundle.css' type='style' bundle=true %}
+{% include s3_asset.html path='the_networks_of_war/bundle.js' type='script' bundle=true %}

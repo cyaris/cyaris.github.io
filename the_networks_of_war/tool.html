@@ -5,7 +5,7 @@ gh-repo: cyaris/the_networks_of_war/
 gh-badge: [follow, star]
 full-width: true
 ---
-<link rel="stylesheet" href="{% include s3_url.html path='the_networks_of_war/bundle.css' %}">
+{% include s3_asset.html path='the_networks_of_war/bundle.css' type='style' bundle=true %}
 <div class="full-width-tool-host">
-  <script src="{% include s3_url.html path='the_networks_of_war/bundle.js' %}"></script>
+  {% include s3_asset.html path='the_networks_of_war/bundle.js' type='script' bundle=true %}
 </div>

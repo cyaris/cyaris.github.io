@@ -1,0 +1,36 @@
+{%- assign cache_bust_strategy = include.cache_bust_strategy
+  | default: site.s3_bundle_cache_bust_strategy
+  | default: 'build_time'
+-%}
+{%- capture asset_url -%}{% include s3_url.html path=include.path bundle=include.bundle cache_bust=include.cache_bust cache_bust_strategy=cache_bust_strategy %}{%- endcapture -%}
+{%- if cache_bust_strategy == 'runtime' and include.bundle -%}
+  {%- if include.type == 'style' -%}
+    <script>
+      ;(() => {
+        const url = '{{ asset_url }}'
+        const separator = url.includes('?') ? '&' : '?'
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = `${url}${separator}v=${Date.now()}`
+
+        ;(document.head || document.documentElement).appendChild(link)
+      })()
+    </script>
+  {%- elsif include.type == 'script' -%}
+    <script>
+      ;(() => {
+        const url = '{{ asset_url }}'
+        const separator = url.includes('?') ? '&' : '?'
+        const script = document.createElement('script')
+        script.async = false
+        script.src = `${url}${separator}v=${Date.now()}`
+
+        document.currentScript.parentNode.insertBefore(script, document.currentScript)
+      })()
+    </script>
+  {%- endif -%}
+{%- elsif include.type == 'style' -%}
+  <link rel="stylesheet" href="{{ asset_url }}">
+{%- elsif include.type == 'script' -%}
+  <script src="{{ asset_url }}"></script>
+{%- endif -%}

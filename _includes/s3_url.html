@@ -1,1 +1,23 @@
-{{ site.s3_bucket }}/{{ include.path }}?v={{ site.s3_version }}
+{%- comment -%}
+  Mutable S3 assets such as embedded app bundles use the Jekyll build timestamp as
+  an automatic cache buster in build_time mode. Runtime mode leaves the URL stable
+  here so s3_asset.html can add a client-side cache buster without a Jekyll rebuild.
+{%- endcomment -%}
+{%- assign s3_path = include.path -%}
+{%- if include.bundle and site.s3_bundle_prefix -%}
+  {%- assign bundle_path = '/' | append: site.s3_bundle_prefix | append: 'bundle' -%}
+  {%- assign s3_path = s3_path | replace: '/bundle', bundle_path -%}
+{%- endif -%}
+{%- assign cache_bust_strategy = include.cache_bust_strategy
+  | default: site.s3_bundle_cache_bust_strategy
+  | default: 'build_time'
+-%}
+{%- assign should_cache_bust = false -%}
+{%- if include.bundle or include.cache_bust -%}
+  {%- assign should_cache_bust = true -%}
+{%- endif -%}
+{%- assign s3_url = site.s3_bucket | append: '/' | append: s3_path -%}
+{{- s3_url -}}
+{%- if should_cache_bust and cache_bust_strategy == 'build_time' -%}
+  ?v={{- site.time | date: '%s' -}}
+{%- endif -%}

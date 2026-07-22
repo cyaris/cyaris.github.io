@@ -26,8 +26,8 @@ common-js:
 <html lang="{{ page.language | default: site.language | default: 'en' }}">
   <!-- Beautiful Jekyll 6.0.1 | Copyright Dean Attali 2023 -->
 
-  <link rel="stylesheet" href="{% include s3_url.html path='fireworks/bundle.css' %}">
-  <link rel="stylesheet" href="{% include s3_url.html path='fireworks/bundle2.css' %}">
+  {% include s3_asset.html path='fireworks/bundle.css' type='style' bundle=true %}
+  {% include s3_asset.html path='fireworks/bundle2.css' type='style' bundle=true %}
 
   {% include head.html %}
 
@@ -42,7 +42,7 @@ common-js:
 
     {% include footer-scripts.html %}
 
-    <script src="{% include s3_url.html path='fireworks/bundle.js' %}"></script>
-    <script src="{% include s3_url.html path='fireworks/bundle2.js' %}"></script>
+    {% include s3_asset.html path='fireworks/bundle.js' type='script' bundle=true %}
+    {% include s3_asset.html path='fireworks/bundle2.js' type='script' bundle=true %}
   </body>
 </html>

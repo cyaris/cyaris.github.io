@@ -5,7 +5,7 @@ gh-repo: cyaris/us_gun_violence_forecasting/
 gh-badge: [follow, star]
 full-width: true
 ---
-<link rel="stylesheet" href="{% include s3_url.html path='us_gun_violence_forecasting/bundle.css' %}">
+{% include s3_asset.html path='us_gun_violence_forecasting/bundle.css' type='style' bundle=true %}
 <div class="full-width-tool-host">
-  <script src="{% include s3_url.html path='us_gun_violence_forecasting/bundle.js' %}"></script>
+  {% include s3_asset.html path='us_gun_violence_forecasting/bundle.js' type='script' bundle=true %}
 </div>

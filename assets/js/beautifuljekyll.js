@@ -107,10 +107,7 @@ let BeautifulJekyllJS = {
     const src = BeautifulJekyllJS.bigImgEl.attr("data-img-src-" + randNum)
     const desc = BeautifulJekyllJS.bigImgEl.attr("data-img-desc-" + randNum)
 
-    return {
-      src: src,
-      desc: desc,
-    }
+    return { src: src, desc: desc }
   },
 
   setImg: function (src, desc) {
@@ -144,7 +141,7 @@ let BeautifulJekyllJS = {
         $("body").removeClass("overflow-hidden")
       }
     })
-  },
+  }
 }
 
 // 2fc73a3a967e97599c9763d05e564189

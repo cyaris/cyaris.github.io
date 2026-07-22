@@ -68,17 +68,15 @@ title: Contact
       try {
         const response = await fetch(endpoint, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: formData.get('name'),
             email: formData.get('email'),
             subject: formData.get('subject'),
             message: formData.get('message'),
             website: formData.get('website'),
-            turnstileToken,
-          }),
+            turnstileToken
+          })
         })
 
         const result = await response.json()

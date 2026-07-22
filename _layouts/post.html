@@ -41,29 +41,44 @@ layout: base
         {% include social-share.html %}
       {% endif %}
 
+      {% assign typed_posts = site.posts | where: 'type', page.type | sort: 'date' %}
+      {% assign previous_typed_post = null %}
+      {% assign next_typed_post = null %}
+      {% assign found_current_post = false %}
+      {% for post in typed_posts %}
+        {% if found_current_post and next_typed_post == null %}
+          {% assign next_typed_post = post %}
+        {% endif %}
+        {% if post.url == page.url %}
+          {% assign found_current_post = true %}
+        {% elsif found_current_post != true %}
+          {% assign previous_typed_post = post %}
+        {% endif %}
+      {% endfor %}
+
       <ul class="pagination blog-pager">
-        {% if page.previous.url %}
+        {% if previous_typed_post.url %}
           <li class="page-item previous">
             <a
               class="page-link"
-              href="{{ page.previous.url | relative_url }}"
+              href="{{ previous_typed_post.url | relative_url }}"
               data-toggle="tooltip"
               data-placement="top"
-              title="{{ page.previous.title | strip_html | xml_escape }}"
+              title="{{ previous_typed_post.title | strip_html | xml_escape }}"
             >
               <span class="desktop-text"><span class="rotate">➔</span>&nbsp;&nbsp;Previous {{ page.type }}</span>
               <span class="mobile-text rotate">➔</span>
             </a>
           </li>
         {% endif %}
-        {% if page.next.url %}
+        {% if next_typed_post.url %}
           <li class="page-item next">
             <a
               class="page-link"
-              href="{{ page.next.url | relative_url }}"
+              href="{{ next_typed_post.url | relative_url }}"
               data-toggle="tooltip"
               data-placement="top"
-              title="{{ page.next.title | strip_html | xml_escape }}"
+              title="{{ next_typed_post.title | strip_html | xml_escape }}"
             >
               <span class="desktop-text">Next {{ page.type }}&nbsp;&nbsp;➔</span>
               <span class="mobile-text">➔</span>

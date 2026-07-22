@@ -71,6 +71,7 @@ git remote add upstream https://github.com/daattali/beautiful-jekyll.git
   - Adds the shared `github-badges.html` include to posts.
   - Uses separate desktop and mobile pagination labels.
   - Labels pagination links with `page.type`.
+  - Restricts previous/next pagination to posts with the same `type` as the current post.
 - `tags.html`
   - Removes the tag index.
   - Removes tag counts from tag headings.

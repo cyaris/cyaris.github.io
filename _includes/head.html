@@ -2,11 +2,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- custom edit: added favicon.ico links -->
-  <link rel="shortcut icon" media="all" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">
-  <link rel="icon" media="all" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/favicon.ico' | relative_url }}">
-  <!-- end of custom edit -->
+  <link rel="shortcut icon" type="image/png" href="{{ '/favicon.png' | relative_url }}">
+  <link rel="icon" type="image/png" href="{{ '/favicon.png' | relative_url }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/favicon.png' | relative_url }}">
 
   {% capture pagetitle %}
     {%- if page.share-title -%}
@@ -165,11 +163,6 @@
 
   {% if page.comments and site.staticman.repository and site.staticman.branch %}
     <link rel="stylesheet" href="{{ "/assets/css/staticman.css" | relative_url }}">
-  {% endif %}
-
-  {% assign favicon_exists = site.static_files | where: 'path', '/favicon.ico' | size %}
-  {% if favicon_exists == 1 %}
-    <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
   {% endif %}
 
   {% if page['head-extra'] %}

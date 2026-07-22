@@ -8,7 +8,6 @@
       {% for badge in page['gh-badge'] %}
         {% case badge %}
           {% when 'star' %}
-            <!-- custom edit: added no_selection class to iframe. increased width. -->
             <iframe
               class="no_selection"
               src="https://ghbtns.com/github-btn.html?user={{ gh_user }}&repo={{ gh_repo }}&type=star&count=true"
@@ -17,9 +16,7 @@
               width="150px"
               height="20px"
             ></iframe>
-            <!-- end of custom edit -->
           {% when 'watch' %}
-            <!-- custom edit: added no_selection class to iframe. -->
             <iframe
               class="no_selection"
               src="https://ghbtns.com/github-btn.html?user={{ gh_user }}&repo={{ gh_repo }}&type=watch&v=2&count=true"
@@ -28,9 +25,7 @@
               width="120px"
               height="20px"
             ></iframe>
-            <!-- end of custom edit -->
           {% when 'fork' %}
-            <!-- custom edit: added no_selection class to iframe. -->
             <iframe
               class="no_selection"
               src="https://ghbtns.com/github-btn.html?user={{ gh_user }}&repo={{ gh_repo }}&type=fork&count=true"
@@ -39,9 +34,7 @@
               width="120px"
               height="20px"
             ></iframe>
-            <!-- end of custom edit -->
           {% when 'follow' %}
-            <!-- custom edit: added no_selection class to iframe. -->
             <iframe
               class="no_selection"
               src="https://ghbtns.com/github-btn.html?user={{ gh_user }}&type=follow&count=true"
@@ -50,7 +43,6 @@
               width="120px"
               height="20px"
             ></iframe>
-            <!-- end of custom edit -->
         {% endcase %}
       {% endfor %}
     {% endif %}

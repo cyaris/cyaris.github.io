@@ -6,9 +6,7 @@ layout: base
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
-      <!-- custom edit: adding github-badges.html. -->
       {% include github-badges.html %}
-      <!-- end of custom edit -->
 
       {% if page['before-content'] %}
         <div class="before-content">
@@ -46,7 +44,6 @@ layout: base
       <ul class="pagination blog-pager">
         {% if page.previous.url %}
           <li class="page-item previous">
-            <!-- custom edit: added additional pagination button for desktop vs mobile, and label by page.type. -->
             <a
               class="page-link"
               href="{{ page.previous.url | relative_url }}"
@@ -57,16 +54,10 @@ layout: base
               <span class="desktop-text"><span class="rotate">➔</span>&nbsp;&nbsp;Previous {{ page.type }}</span>
               <span class="mobile-text rotate">➔</span>
             </a>
-            <!--
-              <i class="fas fa-arrow-left" alt="Previous Post"></i>
-              <span class="d-none d-sm-inline-block">Previous Post</span>
-            -->
-            <!-- end of custom edit -->
           </li>
         {% endif %}
         {% if page.next.url %}
           <li class="page-item next">
-            <!-- custom edit: added additional pagination button for desktop vs mobile, and label by page.type. -->
             <a
               class="page-link"
               href="{{ page.next.url | relative_url }}"
@@ -77,9 +68,6 @@ layout: base
               <span class="desktop-text">Next {{ page.type }}&nbsp;&nbsp;➔</span>
               <span class="mobile-text">➔</span>
             </a>
-            <!-- <span class="d-none d-sm-inline-block">Next Post</span> -->
-            <!-- <i class="fas fa-arrow-right" alt="Next Post"></i> -->
-            <!-- end of custom edit -->
           </li>
         {% endif %}
       </ul>

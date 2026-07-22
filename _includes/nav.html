@@ -1,14 +1,4 @@
 <nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}">
-  <!--
-    custom edit: changing top left nav link to Launch Fireworks instead of site title. adding second anchor tag for mobile. triggering firework launch onclick.
-  -->
-  <!--
-    {%- if site.title-img -%}
-    	<a class="navbar-brand navbar-brand-logo" href="{{ '' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
-    {%- elsif site.title -%}
-    	<a class="navbar-brand" href="{{ '' | absolute_url }}">{{ site.title }}</a>
-    {%- endif -%}
-  -->
   <a class="navbar-brand firework-launcher-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()"
     >Fireworks
     <img
@@ -30,7 +20,6 @@
       style="margin-left: 10px;"
     >
   </a>
-  <!-- end of custom edit -->
 
   <button
     class="navbar-toggler"
@@ -49,7 +38,6 @@
       {%- for link in site['navbar-links'] -%}
         {%- if link[1].first %}
           <li class="nav-item dropdown">
-            <!-- custom edit: changed href link for dropdown toggle. made href downcase. -->
             <a
               class="nav-link dropdown-toggle"
               href="{{ link[0] | relative_url | downcase }}"
@@ -60,10 +48,7 @@
             >
               {{- link[0] -}}
             </a>
-            <!-- end of custom edit -->
-            <!-- custom edit: removed 'dropdown-menu-right' class -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <!-- end of custom edit -->
               {%- for childlink in link[1] -%}
                 {%- for linkparts in childlink %}
                   <a class="dropdown-item" href="{{ linkparts[1] | relative_url }}">{{ linkparts[0] }}</a>
@@ -72,7 +57,6 @@
             </div>
           </li>
         {% else %}
-          <!-- custom edit: making href for "" navigate back to home page. changed to relative_url. -->
           <li class="nav-item">
             <a
               class="nav-link"
@@ -81,7 +65,6 @@
               {{- link[0] -}}
             </a>
           </li>
-          <!-- end of custom edit -->
         {%- endif -%}
       {%- endfor -%}
       {% if site.post_search %}

@@ -24,9 +24,7 @@
 {% endif %}
 
 <header class="header-section {% if page.cover-img %}has-img{% endif %}">
-  <!-- custom edit: simplified assignment of img classes. -->
   <div class="intro-header {% if page.cover-img %} big-img {% else %} no-img {% endif %}">
-    <!-- end of custom edit -->
     {% if page['cover-img'] or page.title %}
       <div class="container-md">
         <div class="row">
@@ -48,9 +46,7 @@
                 {% if page.author %}
                   By <strong>{{ page.author | strip_html }}</strong><br>
                 {% endif %}
-                <!-- custom edit: removed "posted on" -->
                 <span class="post-meta">{{ page.date | date: date_format }}</span>
-                <!-- end of custom edit -->
                 {% if page['last-updated'] %}
                   <span class="post-meta">
                     <span class="d-none d-md-inline middot">&middot;</span>

@@ -18,13 +18,8 @@
           {{ site.time | date: '%Y' }}
 
           {% if site['url-pretty'] %}
-            <!-- custom edit: removed bullet -->
-            <!-- &nbsp;&bull;&nbsp; -->
-            <!-- end of custom edit -->
             <span class="author-site">
-              <!-- custom edit: added line break -->
               <br>
-              <!-- end of custom edit -->
               <a href="{% if site.url-canonical %}{{ site.url-canonical }}{% else %}{{ '/' | absolute_url }}{% endif %}">
                 {{- site['url-pretty'] -}}
               </a>
@@ -45,7 +40,6 @@
 
           {% if site.edit_page_button and site.github.repository_url %}
             &nbsp;&bull;&nbsp;
-            <!-- custom edit: target _blank -->
             <a
               title="Edit this page on GitHub"
               href="{{ site.github.repository_url }}/edit/{{ site.github.source.branch }}/{{ page.path }}"
@@ -53,15 +47,12 @@
               target="_blank"
               >Edit page</a
             >
-            <!-- end of custom edit -->
           {% endif %}
         </p>
         {% unless site['remove-ads'] %}
           <p class="theme-by text-muted">
             Powered by
-            <!-- custom edit: target _blank -->
             <a href="https://beautifuljekyll.com" target="_blank">Beautiful Jekyll</a>
-            <!-- end of custom edit -->
           </p>
         {% endunless %}
       </div>

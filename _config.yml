@@ -316,4 +316,4 @@ plugins:
 ################
 
 s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
-s3_version: 3
+s3_version: 4

@@ -4,6 +4,7 @@
   "private": true,
   "description": "Personal website built with Jekyll and GitHub Pages.",
   "scripts": {
+    "update:github-repos": "node scripts/update-github-repo-dates.mjs",
     "format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write '**/*.{css,cjs,html,js,json,svelte,svg}'",
     "format:check": "prettier --ignore-path ../.gitignore --ignore-path .prettierignore --check '**/*.{css,cjs,html,js,json,svelte,svg}'"
   },

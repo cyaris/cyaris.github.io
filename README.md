@@ -10,6 +10,14 @@ To configure:
 
 git remote add upstream https://github.com/daattali/beautiful-jekyll.git
 
+## Asset Generation
+
+- `assets/img/firework-launcher-demo.png`
+  - Generated as a transparent APNG rather than a GIF so the firework particles can fade smoothly with real alpha transparency.
+  - Created with temporary Node tooling outside the repo using `pngjs` for preview PNGs and `upng-js` for APNG encoding.
+  - Current animation settings: `360x360`, ten synthetic fireworks, deterministic particle seeds, `284` frames, `50ms` per frame, and launches spaced `20` frames apart.
+  - The first and last fireworks launch from the center; the intermediate launches use wider side positions so the thumbnail feels active without showing the website, navbar, or browser chrome.
+
 ## Deviations From Beautiful Jekyll
 
 - `404.html`

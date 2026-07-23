@@ -10,6 +10,14 @@ To configure:
 
 git remote add upstream https://github.com/daattali/beautiful-jekyll.git
 
+## Asset Generation
+
+- `assets/img/firework-launcher-demo.png`
+  - Generated as a transparent APNG rather than a GIF so the firework particles can fade smoothly with real alpha transparency.
+  - Created with temporary Node tooling outside the repo using `pngjs` for preview PNGs and `upng-js` for APNG encoding.
+  - Current animation settings: `360x360`, ten synthetic fireworks, deterministic particle seeds, `284` frames, `50ms` per frame, and launches spaced `20` frames apart.
+  - The first and last fireworks launch from the center; the intermediate launches use wider side positions so the thumbnail feels active without showing the website, navbar, or browser chrome.
+
 ## Deviations From Beautiful Jekyll
 
 - `404.html`
@@ -56,12 +64,15 @@ git remote add upstream https://github.com/daattali/beautiful-jekyll.git
   - Opens external social links in new tabs.
   - Uses custom icons for Kaggle and Instagram.
   - Uses a CSS-colorable inline Tableau icon.
+  - Keeps the footer Tableau icon inline so CSS can recolor it; a colored standalone version lives at `assets/img/tableau-logo-color.svg`.
 - `_includes/social-share.html`
   - Opens share links in new tabs.
   - Customizes LinkedIn, Facebook, and Twitter/X share icons.
 - `_layouts/home.html`
   - Forces home-page refreshes back to the top of the page.
   - Filters listed posts by `page.type`.
+  - Renders a single left-aligned post thumbnail beside the post title and subtitle.
+  - Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`small` or `extra-small`) front matter for thumbnail crops and sizing.
   - Removes the "Posted on" label from post dates.
   - Formats tag links with non-breaking spaces and hyphens.
 - `_layouts/page.html`

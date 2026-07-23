@@ -18,13 +18,13 @@
 
 - Keep all tags alphabetized.
 
-## Firework GIF Thumbnails
+## Animated GIF Thumbnails
 
-- To create a firework thumbnail like `assets/img/firework-launcher-demo.gif`, generate an explosion-only GIF rather than recording the website. The existing thumbnail was synthesized with a temporary Node script, not captured from the live page, so it contains no homepage, navbar, or vertical rocket launch trail.
-- Use temporary tooling outside the repo, for example `npm install --prefix /private/tmp/cyaris-gif-capture pngjs omggif`, to avoid changing site dependencies.
-- Generate indexed GIF frames directly with `omggif`; use palette index `0` as transparent black, pass `transparent: 0`, and use `disposal: 2` for each frame. Use `pngjs` only for optional preview PNGs.
-- The current thumbnail parameters are `360x360`, `34` frames, `70ms` per frame, transparent background, seeded particle positions, about `150` circular particles, and a bright palette matching the fireworks project. Output goes to `assets/img/firework-launcher-demo.gif`.
-- Keep future firework thumbnails focused on the explosion itself. Do not include the full website background or the rocket traveling up the screen unless explicitly requested.
+- Prefer focused, subject-only animations for thumbnails. Avoid recording the whole website, navbar, browser chrome, or long setup motion unless the user explicitly asks for that context.
+- Use temporary tooling outside the repo, for example `npm install --prefix /private/tmp/<task-name> pngjs omggif`, to avoid changing site dependencies when generating one-off GIF assets.
+- For synthetic animations, generate indexed GIF frames directly with `omggif`; reserve palette index `0` for transparent black, pass `transparent: 0`, and use `disposal: 2` for each frame. Use `pngjs` only for optional preview PNGs.
+- Keep thumbnail GIFs small and reusable: square dimensions, short loops, deterministic seeds where randomness is involved, and output under `assets/img/` with a descriptive filename.
+- When adapting an interactive effect into a thumbnail, capture or synthesize only the meaningful part of the effect. For example, `assets/img/firework-launcher-demo.gif` shows the explosion only, not the homepage or the rocket traveling up the screen.
 
 ## Site Styling
 

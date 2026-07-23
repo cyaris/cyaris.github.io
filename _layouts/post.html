@@ -24,7 +24,8 @@ layout: base
         <div class="blog-tags">
           <span>Tags:</span>
           {% for tag in page.tags %}
-            <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
+            {% assign tag_slug = tag | slugify %}
+            <a href="{{ '/tags' | relative_url }}#{{- tag_slug -}}">{{- tag -}}</a>
           {% endfor %}
         </div>
       {% endif %}

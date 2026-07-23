@@ -18,13 +18,14 @@
 
 - Keep all tags alphabetized.
 
-## Animated GIF Thumbnails
+## Animated Thumbnail Assets
 
 - Prefer focused, subject-only animations for thumbnails. Avoid recording the whole website, navbar, browser chrome, or long setup motion unless the user explicitly asks for that context.
-- Use temporary tooling outside the repo, for example `npm install --prefix /private/tmp/<task-name> pngjs omggif`, to avoid changing site dependencies when generating one-off GIF assets.
-- For synthetic animations, generate indexed GIF frames directly with `omggif`; reserve palette index `0` for transparent black, pass `transparent: 0`, and use `disposal: 2` for each frame. Use `pngjs` only for optional preview PNGs.
-- Keep thumbnail GIFs small and reusable: square dimensions, short loops, deterministic seeds where randomness is involved, and output under `assets/img/` with a descriptive filename.
-- When adapting an interactive effect into a thumbnail, capture or synthesize only the meaningful part of the effect. For example, `assets/img/firework-launcher-demo.gif` shows the explosion only, not the homepage or the rocket traveling up the screen.
+- Use temporary tooling outside the repo, for example `npm install --prefix /private/tmp/<task-name> pngjs omggif upng-js`, to avoid changing site dependencies when generating one-off animation assets.
+- Prefer APNG or WebP when smooth alpha fades over transparent backgrounds are important. GIF transparency is binary, so fading particles can become spotty even with more frames.
+- For synthetic GIF animations, generate indexed frames directly with `omggif`; reserve palette index `0` for transparent black, pass `transparent: 0`, and use `disposal: 2` for each frame. Use `pngjs` for optional preview PNGs.
+- Keep animated thumbnails small and reusable: square dimensions, short loops, deterministic seeds where randomness is involved, and output under `assets/img/` with a descriptive filename.
+- When adapting an interactive effect into a thumbnail, capture or synthesize only the meaningful part of the effect, and make the loop long enough for the final event to finish before it resets. For example, `assets/img/firework-launcher-demo.png` shows ten firework launches and bursts without the homepage, navbar, or browser chrome.
 
 ## Site Styling
 

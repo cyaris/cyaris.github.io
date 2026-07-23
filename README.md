@@ -56,12 +56,15 @@ git remote add upstream https://github.com/daattali/beautiful-jekyll.git
   - Opens external social links in new tabs.
   - Uses custom icons for Kaggle and Instagram.
   - Uses a CSS-colorable inline Tableau icon.
+  - Keeps the footer Tableau icon inline so CSS can recolor it; a colored standalone version lives at `assets/img/tableau-logo-color.svg`.
 - `_includes/social-share.html`
   - Opens share links in new tabs.
   - Customizes LinkedIn, Facebook, and Twitter/X share icons.
 - `_layouts/home.html`
   - Forces home-page refreshes back to the top of the page.
   - Filters listed posts by `page.type`.
+  - Renders a single left-aligned post thumbnail beside the post title and subtitle.
+  - Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`small` or `extra-small`) front matter for thumbnail crops and sizing.
   - Removes the "Posted on" label from post dates.
   - Formats tag links with non-breaking spaces and hyphens.
 - `_layouts/page.html`

@@ -1,5 +1,6 @@
 # project
 _site
+_data/github_repos.yml
 .sass-cache
 .vagrant
 

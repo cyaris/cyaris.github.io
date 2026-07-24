@@ -42,34 +42,6 @@ main.container-fluid:has(.full-width-tool-host) > .row > .col {
   padding: 0;
 }
 
-main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
-  padding-left: 15px;
-}
-
-@media (min-width: 768px) {
-  main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
-    padding-left: calc((100vw - 720px) / 2 + 15px);
-  }
-}
-
-@media (min-width: 992px) {
-  main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
-    padding-left: calc((100vw - 960px) / 2 + 95px);
-  }
-}
-
-@media (min-width: 1200px) {
-  main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
-    padding-left: calc((100vw - 1140px) / 2 + 205px);
-  }
-}
-
-@media (min-width: 1300px) {
-  main.container-fluid:has(.full-width-tool-host) #header-gh-btns {
-    padding-left: 15%;
-  }
-}
-
 /* --- Center --- */
 
 .center {
@@ -609,7 +581,7 @@ footer a:hover {
   background: rgba(27, 153, 139, 0.08);
   border: 1px solid rgba(27, 153, 139, 0.35);
   border-radius: 999px;
-  color: {{ site.text-col | default: '#404040' }};
+  color: {{ site.link-col }};
   display: inline-flex;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.82rem;
@@ -626,7 +598,7 @@ footer a:hover {
 .repo-pill:focus {
   background: rgba(27, 153, 139, 0.16);
   border-color: {{ site.link-col }};
-  color: {{ site.text-col | default: '#404040' }};
+  color: {{ site.link-col }};
   text-decoration: none;
 }
 
@@ -640,7 +612,16 @@ footer a:hover {
 }
 
 .repo-pill time {
+  color: {{ site.link-col }};
   font-weight: 400;
+}
+
+.repo-pill-count {
+  border-left: 1px solid rgba(27, 153, 139, 0.35);
+  color: {{ site.link-col }};
+  font-weight: 400;
+  margin-left: 0.1rem;
+  padding-left: 0.4rem;
 }
 
 .intro-header .post-heading .project-repo-actions {
@@ -662,38 +643,12 @@ footer a:hover {
   min-width: max-content;
 }
 
-.project-repo-buttons {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  justify-content: flex-start;
-  line-height: 0;
-}
-
 .project-repo-created {
   flex: 0 0 auto;
 }
 
 .project-repo-branch {
   flex: 0 0 auto;
-}
-
-.project-repo-buttons #header-gh-btns {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 0.25rem;
-  justify-content: flex-start;
-  line-height: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 0;
-}
-
-.project-repo-buttons #header-gh-btns iframe {
-  display: block;
 }
 
 .post-thumbnail {
@@ -841,21 +796,6 @@ footer a:hover {
     margin-top: 0.65rem;
   }
 
-  .project-repo-buttons {
-    align-items: flex-start;
-  }
-
-  .project-repo-buttons #header-gh-btns {
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-
-  .project-repo-buttons #header-gh-btns iframe {
-    transform: scale(0.82);
-    transform-origin: left center;
-  }
 }
 
 /* --- Buttons --- */

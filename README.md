@@ -47,12 +47,19 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Customizes tag link, tags-page, and pagination styling, including desktop/mobile pagination text visibility.
   - Customizes social-share icon focus behavior.
   - Disables text selection on interactive site controls, social-share controls, and footer areas.
+- `assets/css/beautifuljekyll.css`
+  - Removes inactive upstream Disqus comment styling.
+  - Removes inactive upstream navbar search overlay styling.
+- `assets/js/beautifuljekyll.js`
+  - Removes the inactive upstream navbar search initializer.
 - `_config.yml`
   - Renames the navbar text color setting to `navbar-link-col`.
   - Adds site-specific color variables for the navbar, page, links, post titles, footer, and social links.
+  - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs.
 - `_includes/footer.html`
   - Removes the bullet before the pretty URL.
   - Puts the pretty URL on a new line.
+  - Removes the inactive Matomo opt-out link.
   - Opens the edit-page link in a new tab.
   - Opens the Beautiful Jekyll attribution link in a new tab.
 - `_includes/github-action-pills.html`
@@ -62,15 +69,18 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Renders linked repository creation and latest default-branch commit date pills from generated GitHub repository metadata.
 - `_includes/head.html`
   - Adds `favicon.ico` links for shortcut, browser, and Apple touch icons.
+  - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks.
 - `_includes/header.html`
   - Simplifies header image class assignment.
   - Removes the "posted on" label from post dates.
+  - Removes the inactive read-time include hook.
   - Shows linked generated repository date pills instead of the post date on project page headers when GitHub repository metadata is available.
 - `_includes/nav.html`
   - Replaces the title/logo brand link with desktop and mobile firework launch controls.
   - Changes dropdown parent links to lowercase relative URLs.
   - Removes the right-aligned dropdown menu class.
   - Routes blank navbar links to the site root with `relative_url`.
+  - Removes the inactive upstream navbar search link and overlay include.
 - `_includes/project_button.html`
   - Adds a centered project link button for legacy project posts.
 - `_includes/s3_asset.html`
@@ -104,11 +114,20 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
 - `_layouts/page.html`
   - Adds the shared `github-action-pills.html` include to pages.
   - Adds the social-share include when `social-share` is enabled.
+  - Removes the inactive upstream comments include.
 - `_layouts/post.html`
   - Adds the shared `github-action-pills.html` include to posts.
   - Uses separate desktop and mobile pagination labels.
   - Labels pagination links with `page.type`.
   - Restricts previous/next pagination to posts with the same `type` as the current post.
+  - Removes the inactive upstream comments include.
+- `beautiful-jekyll-theme.gemspec`
+  - Stops packaging the removed Staticman configuration.
+- Removed inactive upstream integration files
+  - Deletes `_includes/commentbox.html`, `_includes/comments.html`, `_includes/disqus.html`, `_includes/fb-comment.html`, `_includes/giscus-comment.html`, `_includes/mathjax.html`, `_includes/matomo.html`, `_includes/readtime.html`, `_includes/search.html`, `_includes/staticman-comment.html`, `_includes/staticman-comments.html`, and `_includes/utterances-comment.html`.
+  - Deletes `assets/css/staticman.css`, `assets/data/searchcorpus.json`, `assets/js/staticman.js`, and `staticman.yml`.
+- Removed inactive upstream minimal layout files
+  - Deletes `_layouts/minimal.html`, `_includes/footer-minimal.html`, and `assets/css/beautifuljekyll-minimal.css`.
 - `scripts/update-github-repo-dates.mjs`
   - Generates repository metadata for all content files with `gh-repo` front matter.
   - Stores repository creation dates, latest default-branch commit dates, default branches, follower counts, and star counts.

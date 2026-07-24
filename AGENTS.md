@@ -14,6 +14,7 @@
 - Keep README link behavior intentional and consistent. Use standard Markdown links by default, and use HTML anchors with `target="_blank"` and `rel="noopener noreferrer"` only when links should explicitly open in a new tab.
 - When changes to Beautiful Jekyll files, site styling, or site functionality deviate from upstream Beautiful Jekyll, document the affected files and behavior in the README's `Deviations From Beautiful Jekyll` section in the same change.
 - Before finishing changes that add or touch files in `_includes`, compare the include paths against upstream Beautiful Jekyll. Any current or future `_includes` file that is not present upstream must be documented in the README's `Deviations From Beautiful Jekyll` section.
+- Keep `_includes` limited to files actually used by the site, based on features currently enabled in `_config.yml` plus integrations activated by visiting pages. The only include files that may remain present while unused by the active site are `_includes/social-networks-links.html`, `_includes/social-share.html`, `_includes/cloudflare_analytics.html`, `_includes/google_analytics.html`, `_includes/gtm_head.html`, and `_includes/gtm_body.html`. Delete any other unused include file together with its corresponding imports or integrations, and document each removal in the README's `Deviations From Beautiful Jekyll` section.
 
 ## Content
 

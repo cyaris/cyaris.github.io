@@ -238,6 +238,7 @@ exclude:
   - LICENSE
   - README.md
   - screenshot.png
+  - scripts/
   - docs/
 
 plugins:

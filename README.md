@@ -60,6 +60,7 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Renames the navbar text color setting to `navbar-link-col`.
   - Adds site-specific color variables for the navbar, page, links, post titles, footer, and social links.
   - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs.
+  - Excludes build-only repository scripts from the generated site.
 - `_includes/footer.html`
   - Removes the bullet before the pretty URL.
   - Puts the pretty URL on a new line.

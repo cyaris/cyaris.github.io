@@ -58,35 +58,17 @@
                   {% assign repo_data = site.data.github_repos[repo_key] %}
                 {% endif %}
                 {% if page.type == 'project' and repo_data %}
-                  <div class="post-meta project-repo-actions" aria-label="Repository links and dates">
-                    <div class="project-repo-action project-repo-buttons">
-                      {% include github-badges.html %}
-                    </div>
-                    <a
-                      class="repo-pill project-repo-action project-repo-created"
-                      href="https://github.com/{{ repo_key }}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i class="fab fa-github" aria-hidden="true"></i>
-                      <span class="repo-pill-label">created</span>
-                      <time datetime="{{ repo_data.created | date: '%Y-%m-%d' }}">
-                        {{- repo_data.created | date: '%Y-%m-%d' -}}
-                      </time>
-                    </a>
-                    <a
-                      class="repo-pill project-repo-action project-repo-branch"
-                      href="https://github.com/{{ repo_key }}/commits/{{ repo_data.default_branch | default: 'master' }}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i class="fas fa-code-branch" aria-hidden="true"></i>
-                      <span class="repo-pill-label">{{ repo_data.default_branch | default: 'branch' }}</span>
-                      <time datetime="{{ repo_data.latest_commit | date: '%Y-%m-%d' }}">
-                        {{- repo_data.latest_commit | date: '%Y-%m-%d' -}}
-                      </time>
-                    </a>
-                  </div>
+                  {%
+                    include github-repo-pills.html
+                    repo_key=repo_key
+                    repo_data=repo_data
+                    container_class='post-meta project-repo-actions'
+                    aria_label='Repository links and dates'
+                    show_badges=true
+                    item_class='project-repo-action'
+                    created_class='project-repo-created'
+                    branch_class='project-repo-branch'
+                  %}
                 {% else %}
                   <span class="post-meta">{{ page.date | date: date_format }}</span>
                   {% if page['last-updated'] %}

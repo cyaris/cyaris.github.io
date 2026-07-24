@@ -79,27 +79,7 @@ layout: page
               {% assign repo_data = site.data.github_repos[repo_key] %}
             {% endif %}
             {% if page.type == 'project' and repo_data %}
-              <div class="post-meta repo-meta repo-pills" aria-label="Repository dates">
-                <a class="repo-pill" href="https://github.com/{{ repo_key }}" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-github" aria-hidden="true"></i>
-                  <span class="repo-pill-label">created</span>
-                  <time datetime="{{ repo_data.created | date: '%Y-%m-%d' }}">
-                    {{- repo_data.created | date: '%Y-%m-%d' -}}
-                  </time>
-                </a>
-                <a
-                  class="repo-pill"
-                  href="https://github.com/{{ repo_key }}/commits/{{ repo_data.default_branch | default: 'master' }}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i class="fas fa-code-branch" aria-hidden="true"></i>
-                  <span class="repo-pill-label">{{ repo_data.default_branch | default: 'branch' }}</span>
-                  <time datetime="{{ repo_data.latest_commit | date: '%Y-%m-%d' }}">
-                    {{- repo_data.latest_commit | date: '%Y-%m-%d' -}}
-                  </time>
-                </a>
-              </div>
+              {% include github-repo-pills.html repo_key=repo_key repo_data=repo_data %}
             {% elsif page.type != 'project' %}
               <p class="post-meta">
                 {{ post.date | date: date_format }}

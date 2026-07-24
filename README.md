@@ -56,6 +56,8 @@ npm run update:github-repos
 - `_includes/github-badges.html`
   - Adds the `no_selection` class to GitHub badge iframes.
   - Widens the star badge iframe.
+- `_includes/github-repo-pills.html`
+  - Renders linked repository creation and latest default-branch commit date pills from generated GitHub repository metadata.
 - `_includes/head.html`
   - Adds `favicon.ico` links for shortcut, browser, and Apple touch icons.
 - `_includes/header.html`
@@ -67,6 +69,12 @@ npm run update:github-repos
   - Changes dropdown parent links to lowercase relative URLs.
   - Removes the right-aligned dropdown menu class.
   - Routes blank navbar links to the site root with `relative_url`.
+- `_includes/project_button.html`
+  - Adds a centered project link button for legacy project posts.
+- `_includes/s3_asset.html`
+  - Emits S3-hosted stylesheet and script tags with optional bundle path rewriting and cache busting.
+- `_includes/s3_url.html`
+  - Builds S3 asset URLs, including bundle prefix substitution and build-time cache busting.
 - `_includes/social-networks-links.html`
   - Limits footer social networks to the configured set.
   - Routes email to the local contact page.
@@ -77,6 +85,12 @@ npm run update:github-repos
 - `_includes/social-share.html`
   - Opens share links in new tabs.
   - Customizes LinkedIn, Facebook, and Twitter/X share icons.
+- `_includes/tableau_dashboards/cook_county_court_sentencing.html`
+  - Embeds the Cook County Court Sentencing Tableau dashboard.
+- `_includes/tableau_dashboards/maryland_traffic_violations.html`
+  - Embeds the Maryland Traffic Violations Tableau dashboard.
+- `_includes/tableau_gallery.html`
+  - Adds a reusable Tableau gallery section that includes the local dashboard embeds.
 - `_layouts/home.html`
   - Forces home-page refreshes back to the top of the page.
   - Filters listed posts by `page.type`.

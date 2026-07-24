@@ -21,8 +21,8 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
 - `assets/img/firework-launcher-demo.png`
   - Generated as a transparent APNG rather than a GIF so the firework particles can fade smoothly with real alpha transparency.
   - Created with temporary Node tooling outside the repo using `pngjs` for preview PNGs and `upng-js` for APNG encoding.
-  - Current animation settings: `360x360`, ten synthetic fireworks, deterministic particle seeds, `284` frames, `50ms` per frame, and launches spaced `20` frames apart.
-  - The first and last fireworks launch from the center; the intermediate launches use wider side positions so the thumbnail feels active without showing the website, navbar, or browser chrome.
+  - Current animation settings: `360x360`, 40 synthetic fireworks, deterministic particle seeds, `284` frames, `50ms` per frame, and launches spaced `5` frames apart.
+  - The animation uses full-frame APNG replacement frames and full-width launch positions so the transparent bounds have no side margins while still showing only the launcher effect, not the website, navbar, or browser chrome.
 
 ## Deviations From Beautiful Jekyll
 
@@ -40,10 +40,10 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles.
   - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing.
   - Customizes post preview metadata, thumbnail sizing, title hover colors, and preview borders.
-  - Aligns tag link styling and the post tag label with GitHub action pills while keeping tag backgrounds transparent.
-  - Places project page GitHub action pills and repository metadata pills in one left-aligned header row when space allows.
+  - Aligns tag link styling and the post tag label with GitHub repo badges while keeping tag backgrounds transparent.
+  - Places project page GitHub action badges and repository metadata badges in one left-aligned header row when space allows.
   - Shows tag pills on Blog and Projects listing pages.
-  - Shows linked repository creation and latest default-branch commit date pills from generated GitHub repository metadata.
+  - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata.
   - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text.
   - Defines shared button styling for `.btn-group` and contact form buttons, including local focus-state overrides.
   - Customizes tag link, tags-page, and pagination styling, including desktop/mobile pagination text visibility.
@@ -66,11 +66,10 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Removes the inactive Matomo opt-out link.
   - Opens the edit-page link in a new tab.
   - Opens the Beautiful Jekyll attribution link in a new tab.
-- `_includes/github-action-pills.html`
-  - Adds site-native linked GitHub action pills for follow, star, watch, and fork actions.
-  - Renders compact icon-only action pills with GitHub icons, action icons, accessible labels, and star counts from generated repository metadata.
-- `_includes/github-repo-pills.html`
-  - Renders linked repository creation and latest default-branch commit date pills from generated GitHub repository metadata.
+- `_includes/github-repo-badges.html`
+  - Adds site-native linked GitHub action badges for follow, star, watch, and fork actions.
+  - Renders compact icon-only action badges with GitHub icons, action icons, accessible labels, and star counts from generated repository metadata.
+  - Renders linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata.
 - `_includes/head.html`
   - Adds `favicon.ico` links for shortcut, browser, and Apple touch icons.
   - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks.
@@ -78,7 +77,7 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Simplifies header image class assignment.
   - Removes the "posted on" label from post dates.
   - Removes the inactive read-time include hook.
-  - Shows linked generated repository date pills instead of the post date on project page headers when GitHub repository metadata is available.
+  - Shows linked generated repository date badges instead of the post date on project page headers when GitHub repository metadata is available.
 - `_includes/nav.html`
   - Replaces the title/logo brand link with desktop and mobile firework launch controls.
   - Changes dropdown parent links to lowercase relative URLs.
@@ -114,13 +113,13 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`small` or `extra-small`) front matter for thumbnail crops and sizing.
   - Removes the "Posted on" label from post dates.
   - Shows tag pills on Blog and Projects listing pages.
-  - Shows generated repository dates on Projects listings when GitHub repository metadata is available.
+  - Shows generated repository star counts and dates on Projects listings when GitHub repository metadata is available.
 - `_layouts/page.html`
-  - Adds the shared `github-action-pills.html` include to pages.
+  - Adds the shared `github-repo-badges.html` include to pages.
   - Adds the social-share include when `social-share` is enabled.
   - Removes the inactive upstream comments include.
 - `_layouts/post.html`
-  - Adds the shared `github-action-pills.html` include to posts.
+  - Adds the shared `github-repo-badges.html` include to posts.
   - Uses separate desktop and mobile pagination labels.
   - Labels pagination links with `page.type`.
   - Restricts previous/next pagination to posts with the same `type` as the current post.

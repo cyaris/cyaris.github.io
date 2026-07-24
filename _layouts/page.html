@@ -17,7 +17,7 @@ layout: base
       {{ content }}
 
       {% assign page_repo = page['gh-repo'] %}
-      {% include github-action-pills.html repo=page_repo %}
+      {% include github-repo-badges.html repo=page_repo sections='actions,dates' %}
 
       {% if page['social-share'] %}
         {% include social-share.html %}

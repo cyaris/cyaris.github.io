@@ -59,20 +59,14 @@
                 {% endif %}
                 {% if page.type == 'project' and repo_data %}
                   {% assign page_repo = page['gh-repo'] %}
-                  <div class="post-meta project-repo-actions" aria-label="Repository links and dates">
+                  <div class="post-meta project-repo-badges" aria-label="Repository links and dates">
                     {%
-                      include github-action-pills.html
+                      include github-repo-badges.html
                       repo=page_repo
                       repo_data=repo_data
-                      container_class='repo-pills project-repo-action-pills'
-                      item_class='project-repo-action'
-                    %}
-                    {%
-                      include github-repo-pills.html
-                      repo_key=repo_key
-                      repo_data=repo_data
-                      container_class='repo-pills project-repo-date-pills'
-                      item_class='project-repo-action'
+                      sections='actions,dates'
+                      container_class='repo-badges project-repo-inline-badges'
+                      item_class='project-repo-badge'
                       created_class='project-repo-created'
                       branch_class='project-repo-branch'
                     %}

@@ -79,7 +79,18 @@ layout: page
               {% assign repo_data = site.data.github_repos[repo_key] %}
             {% endif %}
             {% if page.type == 'project' and repo_data %}
-              {% include github-repo-pills.html repo_key=repo_key repo_data=repo_data %}
+              {% assign post_repo = post['gh-repo'] %}
+              <div class="post-meta project-repo-badges" aria-label="Repository links and dates">
+                {%
+                  include github-repo-badges.html
+                  repo=post_repo
+                  repo_data=repo_data
+                  sections='actions,dates'
+                  actions='star'
+                  container_class='repo-badges project-repo-inline-badges'
+                  item_class='project-repo-badge'
+                %}
+              </div>
             {% elsif page.type != 'project' %}
               <p class="post-meta">
                 {{ post.date | date: date_format }}

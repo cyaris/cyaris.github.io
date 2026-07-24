@@ -8,7 +8,7 @@ layout: base
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
       {% unless page.type == 'project' %}
         {% assign page_repo = page['gh-repo'] %}
-        {% include github-action-pills.html repo=page_repo %}
+        {% include github-repo-badges.html repo=page_repo %}
       {% endunless %}
 
       {% if page['before-content'] %}

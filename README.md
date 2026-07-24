@@ -32,6 +32,7 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Uses the `image_404` class for local responsive image sizing.
 - `assets/css/custom.css`
   - Overrides global typography, intro header heading spacing, emphasis opacity, and link colors.
+  - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier.
   - Defines the reusable `.center` alignment utility.
   - Styles full-width embedded tool hosts inside Bootstrap breakpoints.
   - Customizes navbar sizing, avatar placement, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations.
@@ -48,6 +49,7 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Customizes social-share icon focus behavior.
   - Disables text selection on interactive site controls, social-share controls, and footer areas.
 - `assets/css/beautifuljekyll.css`
+  - Emits the site-specific color palette as CSS custom properties for downstream stylesheets.
   - Removes inactive upstream Disqus comment styling.
   - Removes inactive upstream navbar search overlay styling.
 - `assets/js/beautifuljekyll.js`

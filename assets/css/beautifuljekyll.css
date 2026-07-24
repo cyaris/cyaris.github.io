@@ -13,10 +13,34 @@ layout: null
   --navbar-col: {{ site.navbar-col | default: "#EAEAEA" }};
   --navbar-text-col: {{ site.navbar-text-col | default: "#404040" }};
   --navbar-border-col: {{ site.navbar-border-col | default: "#DDDDDD" }};
+  --navbar-link-col: {{ site.navbar-link-col | default: "var(--navbar-text-col)" }};
+  --navbar-link-hover-col: {{ site.navbar-link-hover-col | default: "var(--hover-col)" }};
+  --navbar-dropdown-background-hover-col: {{ site.navbar-dropdown-background-hover-col | default: "transparent" }};
   --footer-col: {{ site.footer-col | default: "#EAEAEA" }};
   --footer-text-col: {{ site.footer-text-col | default: "#777777" }};
+  --footer-border-col: {{ site.footer-border-col | default: "var(--navbar-border-col)" }};
   --footer-link-col: {{ site.footer-link-col | default: "#404040" }};
   --footer-hover-col: {{ site.footer-hover-col | default: "#0085A1" }};
+  --footer-link-hover-col: {{ site.footer-link-hover-col | default: "var(--footer-hover-col)" }};
+  --social-icon-col: {{ site.social-icon-col | default: "var(--footer-link-col)" }};
+  --social-icon-background-col: {{ site.social-icon-background-col | default: "transparent" }};
+  --social-icon-hover-col: {{ site.social-icon-hover-col | default: "var(--footer-link-hover-col)" }};
+  --social-icon-background-hover-col: {{ site.social-icon-background-hover-col | default: "transparent" }};
+  --post-title-link-hover-col: {{ site.post-title-link-hover-col | default: "var(--link-col)" }};
+  --btn-link-col: {{ site.btn-link-col | default: "#FFFFFF" }};
+  --btn-background-col: {{ site.btn-background-col | default: "var(--link-col)" }};
+  --btn-link-hover-col: {{ site.btn-link-hover-col | default: "#FFFFFF" }};
+  --btn-background-hover-col: {{ site.btn-background-hover-col | default: "var(--hover-col)" }};
+  --btn-border-hover-col: {{ site.btn-border-hover-col | default: "var(--hover-col)" }};
+  --pagination-link-col: {{ site.pagination-link-col | default: "#FFFFFF" }};
+  --pagination-background-col: {{ site.pagination-background-col | default: "var(--link-col)" }};
+  --pagination-link-hover-col: {{ site.pagination-link-hover-col | default: "#FFFFFF" }};
+  --pagination-background-hover-col: {{ site.pagination-background-hover-col | default: "var(--hover-col)" }};
+  --pagination-border-hover-col: {{ site.pagination-border-hover-col | default: "var(--hover-col)" }};
+  --tag-link-col: {{ site.tag-link-col | default: "var(--text-col)" }};
+  --tag-link-hover-col: {{ site.tag-link-hover-col | default: "var(--link-col)" }};
+  --tag-background-hover-col: {{ site.tag-background-hover-col | default: "transparent" }};
+  --tag-border-hover-col: {{ site.tag-border-hover-col | default: "var(--link-col)" }};
 
   /* common CSS variables */
   --body-font: 'Lora', 'Times New Roman', serif;

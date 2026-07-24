@@ -70,7 +70,7 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Simplifies header image class assignment.
   - Removes the "posted on" label from post dates.
   - Removes the inactive read-time include hook.
-  - Shows linked generated repository date badges instead of the post date on project page headers when GitHub repository metadata is available.
+  - Shows GitHub action badges on project page headers whenever repository front matter is present, plus linked generated repository date badges when GitHub repository metadata is available.
 - `_includes/nav.html`
   - Replaces the title/logo brand link with desktop and mobile firework launch controls.
   - Changes dropdown parent links to lowercase relative URLs.
@@ -106,7 +106,7 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`small` or `extra-small`) front matter for thumbnail crops and sizing.
   - Removes the "Posted on" label from post dates.
   - Shows tag pills on Blog and Projects listing pages.
-  - Shows generated repository star counts and dates on Projects listings when GitHub repository metadata is available.
+  - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata is available.
 - `_layouts/page.html`
   - Adds the shared `github-repo-badges.html` include to pages.
   - Adds the social-share include when `social-share` is enabled.

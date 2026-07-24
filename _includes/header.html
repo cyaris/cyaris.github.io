@@ -57,7 +57,7 @@
                   {% assign repo_key = repo_parts[0] | append: '/' | append: repo_parts[1] %}
                   {% assign repo_data = site.data.github_repos[repo_key] %}
                 {% endif %}
-                {% if page.type == 'project' and repo_data %}
+                {% if page.type == 'project' and page['gh-repo'] %}
                   {% assign page_repo = page['gh-repo'] %}
                   <div class="post-meta project-repo-badges" aria-label="Repository links and dates">
                     {%

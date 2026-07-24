@@ -40,8 +40,9 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles.
   - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing.
   - Customizes post preview metadata, thumbnail sizing, title hover colors, and preview borders.
+  - Aligns tag link styling and the post tag label with GitHub action pills while keeping tag backgrounds transparent.
   - Places project page GitHub action pills and repository metadata pills in one left-aligned header row when space allows.
-  - Hides tags on Blog and Projects listing pages.
+  - Shows tag pills on Blog and Projects listing pages.
   - Shows linked repository creation and latest default-branch commit date pills from generated GitHub repository metadata.
   - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text.
   - Defines shared button styling for `.btn-group` and contact form buttons, including local focus-state overrides.
@@ -112,7 +113,7 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Renders a single left-aligned post thumbnail beside the post title and subtitle.
   - Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`small` or `extra-small`) front matter for thumbnail crops and sizing.
   - Removes the "Posted on" label from post dates.
-  - Hides tags on Blog and Projects listing pages.
+  - Shows tag pills on Blog and Projects listing pages.
   - Shows generated repository dates on Projects listings when GitHub repository metadata is available.
 - `_layouts/page.html`
   - Adds the shared `github-action-pills.html` include to pages.

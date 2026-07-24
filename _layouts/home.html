@@ -85,6 +85,19 @@ layout: page
                 {{ post.date | date: date_format }}
               </p>
             {% endif %}
+
+            {% if post.tags.size > 0 %}
+              <div class="blog-tags">
+                <span class="blog-tags-label">
+                  <i class="fas fa-tag" aria-hidden="true"></i>
+                  tags:
+                </span>
+                {% for tag in post.tags %}
+                  {% assign tag_slug = tag | slugify %}
+                  <a href="{{ '/tags' | relative_url }}#{{- tag_slug -}}">{{- tag -}}</a>
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
         </div>
 

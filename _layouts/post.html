@@ -25,7 +25,10 @@ layout: base
 
       {% if page.tags.size > 0 %}
         <div class="blog-tags">
-          <span>Tags:</span>
+          <span class="blog-tags-label">
+            <i class="fas fa-tag" aria-hidden="true"></i>
+            tags:
+          </span>
           {% for tag in page.tags %}
             {% assign tag_slug = tag | slugify %}
             <a href="{{ '/tags' | relative_url }}#{{- tag_slug -}}">{{- tag -}}</a>

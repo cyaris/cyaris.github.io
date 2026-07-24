@@ -46,15 +46,39 @@
                 {% if page.author %}
                   By <strong>{{ page.author | strip_html }}</strong><br>
                 {% endif %}
-                <span class="post-meta">{{ page.date | date: date_format }}</span>
-                {% if page['last-updated'] %}
-                  <span class="post-meta">
-                    <span class="d-none d-md-inline middot">&middot;</span>
-                    Last updated {{ page['last-updated'] | date: date_format }}
-                  </span>
+                {% assign repo_data = null %}
+                {% if page.type == 'project' and page['gh-repo'] %}
+                  {% assign repo_key = page['gh-repo']
+                    | replace: 'https://github.com/', ''
+                    | replace: 'http://github.com/', ''
+                    | replace: 'github.com/', ''
+                  %}
+                  {% assign repo_parts = repo_key | split: '/' %}
+                  {% assign repo_key = repo_parts[0] | append: '/' | append: repo_parts[1] %}
+                  {% assign repo_data = site.data.github_repos[repo_key] %}
                 {% endif %}
-                {% if page.readtime %}
-                  {% include readtime.html %}
+                {% if page.type == 'project' and page['gh-repo'] %}
+                  {% assign page_repo = page['gh-repo'] %}
+                  <div class="post-meta project-repo-badges" aria-label="Repository links and dates">
+                    {%
+                      include github-repo-badges.html
+                      repo=page_repo
+                      repo_data=repo_data
+                      sections='actions,dates'
+                      container_class='repo-badges project-repo-inline-badges'
+                      item_class='project-repo-badge'
+                      created_class='project-repo-created'
+                      branch_class='project-repo-branch'
+                    %}
+                  </div>
+                {% else %}
+                  <span class="post-meta">{{ page.date | date: date_format }}</span>
+                  {% if page['last-updated'] %}
+                    <span class="post-meta">
+                      <span class="d-none d-md-inline middot">&middot;</span>
+                      Last updated {{ page['last-updated'] | date: date_format }}
+                    </span>
+                  {% endif %}
                 {% endif %}
               {% endif %}
             </div>

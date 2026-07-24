@@ -1,0 +1,141 @@
+language: "en-US"
+
+reviews:
+  profile: "chill"
+
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  review_details: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    auto_incremental_review: true
+    ignore_title_keywords:
+      - "WIP"
+      - "[skip review]"
+
+  path_instructions:
+    - path: "**/*"
+      instructions: |
+        Focus on changes introduced by the pull request.
+
+        Prioritize:
+        - Incorrect behavior and likely runtime bugs
+        - Security vulnerabilities
+        - Broken links, navigation, or user interactions
+        - Backward compatibility
+        - Meaningful performance problems
+        - Unnecessary complexity
+        - Missing error handling
+        - Missing tests for important behavior
+
+        For each issue:
+        - Describe a concrete failure scenario.
+        - Explain why the issue matters.
+        - Recommend a specific correction.
+        - Distinguish blocking problems from optional improvements.
+
+        Avoid:
+        - Minor formatting comments
+        - Subjective naming preferences
+        - Suggestions already handled by formatters or linters
+        - Large refactors unrelated to the pull request
+        - Repeating the same concern in multiple comments
+
+    - path: "**/*.{html,css,scss,js}"
+      instructions: |
+        Check for:
+        - Mobile Chrome and Safari compatibility
+        - Responsive-layout regressions
+        - Accessibility problems
+        - Broken Jekyll or Liquid syntax
+        - Incorrect relative URLs or asset paths
+        - Unnecessary client-side JavaScript
+        - Layout shifts, overflow, or unexpected horizontal scrolling
+        - Touch interactions that only work with mouse hover
+        - Missing keyboard support for interactive elements
+        - Incorrect caching or versioning of static assets
+        - Changes that could break GitHub Pages builds
+
+    - path: "**/*.{html,md,markdown}"
+      instructions: |
+        Check for:
+        - Invalid Liquid tags or filters
+        - Incorrect front matter
+        - Broken internal links
+        - Incorrect use of relative_url, absolute_url, site.url, or site.baseurl
+        - Missing alt text for meaningful images
+        - Invalid or inaccessible heading structure
+        - External links that should use rel="noopener" when opened in a new tab
+        - Duplicate IDs or malformed HTML
+
+    - path: "**/*.{css,scss}"
+      instructions: |
+        Check for:
+        - Rules that unintentionally affect unrelated pages
+        - Mobile viewport-height issues
+        - Fixed dimensions that cause clipping or overflow
+        - Excessive specificity
+        - Unused or duplicate declarations introduced by the change
+        - Browser compatibility problems
+        - Missing focus-visible states
+        - Animations that should respect prefers-reduced-motion
+        - Layout changes that could create blank space below the footer
+
+    - path: "**/*.js"
+      instructions: |
+        Check for:
+        - Unhandled runtime errors
+        - Missing null checks for optional DOM elements
+        - Event listeners that are registered repeatedly
+        - Memory leaks or unnecessary global state
+        - Interactions that depend exclusively on hover
+        - Blocking or unnecessarily large client-side scripts
+        - Incorrect assumptions about page load order
+        - Missing cleanup for timers, observers, or listeners
+        - Code that fails when JavaScript is deferred or loaded asynchronously
+
+    - path: "**/_config.yml"
+      instructions: |
+        Check for:
+        - Invalid YAML
+        - Unsupported or misspelled Jekyll configuration keys
+        - Incorrect URL, baseurl, permalink, pagination, or plugin settings
+        - Configuration changes that could break GitHub Pages deployment
+        - Secrets or environment-specific values committed to the repository
+
+    - path: "**/_includes/**"
+      instructions: |
+        Check for:
+        - Liquid includes that receive missing or incorrectly named parameters
+        - Incorrect relative asset paths
+        - Duplicate IDs when an include appears more than once
+        - Invalid nested links or interactive elements
+        - Changes that affect every page unexpectedly
+        - Includes that load unnecessary JavaScript or CSS globally
+
+    - path: "**/_layouts/**"
+      instructions: |
+        Check for:
+        - Changes that unintentionally affect all pages or posts
+        - Invalid Liquid inheritance or content placement
+        - Duplicate metadata, scripts, stylesheets, or canonical tags
+        - Incorrect placement of head or body elements
+        - Accessibility regressions in shared navigation or page structure
+
+    - path: "**/.github/workflows/*.{yml,yaml}"
+      instructions: |
+        Check for:
+        - Invalid GitHub Actions syntax
+        - Excessive permissions
+        - Unsafe use of pull_request_target
+        - Unpinned third-party actions
+        - Incorrect branch or path filters
+        - Missing caching or build validation where useful
+        - Deployment steps that could expose secrets
+        - Workflows that do not accurately reproduce the GitHub Pages build
+
+chat:
+  auto_reply: true

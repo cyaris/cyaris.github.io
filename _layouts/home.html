@@ -37,8 +37,16 @@ layout: page
 
         <div class="post-preview-header{% if thumbnail != '' %} has-thumbnail{% endif %}">
           {% if thumbnail != '' %}
-            <a class="post-thumbnail{% if thumbnail_fit == 'cover' %} thumbnail-cover{% endif %}{% if thumbnail_size == 'small' %} thumbnail-small{% elsif thumbnail_size == 'extra-small' %} thumbnail-extra-small{% endif %}" href="{{ post.url | relative_url }}" aria-label="Thumbnail">
-              <img src="{{ thumbnail | relative_url }}" alt="Post thumbnail" style="object-position: {{ thumbnail_position }};">
+            <a
+              class="post-thumbnail{% if thumbnail_fit == 'cover' %} thumbnail-cover{% endif %}{% if thumbnail_size == 'small' %} thumbnail-small{% elsif thumbnail_size == 'extra-small' %} thumbnail-extra-small{% endif %}"
+              href="{{ post.url | relative_url }}"
+              aria-label="Thumbnail"
+            >
+              <img
+                src="{{ thumbnail | relative_url }}"
+                alt="Post thumbnail"
+                style="object-position: {{ thumbnail_position }};"
+              >
             </a>
           {% endif %}
 
@@ -58,10 +66,49 @@ layout: page
                 >By <strong>{{ post.author | strip_html }}</strong></span
               >
             {% endif %}
-            <p class="post-meta">
-              {% assign date_format = site.date_format | default: '%B %-d, %Y' %}
-              {{ post.date | date: date_format }}
-            </p>
+            {% assign date_format = site.date_format | default: '%B %-d, %Y' %}
+            {% assign repo_data = null %}
+            {% if page.type == 'project' and post['gh-repo'] %}
+              {% assign repo_key = post['gh-repo']
+                | replace: 'https://github.com/', ''
+                | replace: 'http://github.com/', ''
+                | replace: 'github.com/', ''
+              %}
+              {% assign repo_parts = repo_key | split: '/' %}
+              {% assign repo_key = repo_parts[0] | append: '/' | append: repo_parts[1] %}
+              {% assign repo_data = site.data.github_repos[repo_key] %}
+            {% endif %}
+            {% if page.type == 'project' and post['gh-repo'] %}
+              {% assign post_repo = post['gh-repo'] %}
+              <div class="post-meta project-repo-badges" aria-label="Repository links and dates">
+                {%
+                  include github-repo-badges.html
+                  repo=post_repo
+                  repo_data=repo_data
+                  sections='actions,dates'
+                  actions='star'
+                  container_class='repo-badges project-repo-inline-badges'
+                  item_class='project-repo-badge'
+                %}
+              </div>
+            {% elsif page.type != 'project' %}
+              <p class="post-meta">
+                {{ post.date | date: date_format }}
+              </p>
+            {% endif %}
+
+            {% if post.tags.size > 0 %}
+              <div class="blog-tags">
+                <span class="blog-tags-label">
+                  <i class="fas fa-tag" aria-hidden="true"></i>
+                  tags:
+                </span>
+                {% for tag in post.tags %}
+                  {% assign tag_slug = tag | slugify %}
+                  <a href="{{ '/tags' | relative_url }}#{{- tag_slug -}}">{{- tag -}}</a>
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
         </div>
 
@@ -75,22 +122,6 @@ layout: page
             {% endif %}
           </div>
         {% endunless %}
-
-        {% if site.feed_show_tags != false and post.tags.size > 0 %}
-          <div class="blog-tags">
-            <span>Tags:</span>
-            <!-- role="list" needed so that `list-style: none` in Safari doesn't remove the list semantics -->
-            <ul class="d-inline list-inline" role="list">
-              {% for tag in post.tags %}
-                <li class="list-inline-item">
-                  <a href="{{ '/tags/#' | append: tag | relative_url }}">
-                    {{- tag | replace: ' ', '&nbsp;' | replace: '-', '&#8209;' -}}
-                  </a>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        {% endif %}
       </article>
     </li>
   {% endfor %}

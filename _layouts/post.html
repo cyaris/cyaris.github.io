@@ -6,7 +6,10 @@ layout: base
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
-      {% include github-badges.html %}
+      {% unless page.type == 'project' %}
+        {% assign page_repo = page['gh-repo'] %}
+        {% include github-repo-badges.html repo=page_repo %}
+      {% endunless %}
 
       {% if page['before-content'] %}
         <div class="before-content">
@@ -22,9 +25,13 @@ layout: base
 
       {% if page.tags.size > 0 %}
         <div class="blog-tags">
-          <span>Tags:</span>
+          <span class="blog-tags-label">
+            <i class="fas fa-tag" aria-hidden="true"></i>
+            tags:
+          </span>
           {% for tag in page.tags %}
-            <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
+            {% assign tag_slug = tag | slugify %}
+            <a href="{{ '/tags' | relative_url }}#{{- tag_slug -}}">{{- tag -}}</a>
           {% endfor %}
         </div>
       {% endif %}
@@ -86,7 +93,6 @@ layout: base
           </li>
         {% endif %}
       </ul>
-      {% include comments.html %}
     </div>
   </div>
 </main>

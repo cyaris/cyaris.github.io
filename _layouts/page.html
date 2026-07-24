@@ -16,7 +16,8 @@ layout: base
 
       {{ content }}
 
-      {% include github-badges.html %}
+      {% assign page_repo = page['gh-repo'] %}
+      {% include github-repo-badges.html repo=page_repo sections='actions,dates' %}
 
       {% if page['social-share'] %}
         {% include social-share.html %}
@@ -29,8 +30,6 @@ layout: base
           {% endfor %}
         </div>
       {% endif %}
-
-      {% include comments.html %}
     </div>
   </div>
 </main>

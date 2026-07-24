@@ -619,12 +619,17 @@ footer a:hover {
 .project-repo-actions {
   align-items: flex-start;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 0.45rem;
   justify-content: flex-start;
   line-height: 1;
   margin-top: 0.7rem;
   max-width: 100%;
+}
+
+.project-repo-action-pills,
+.project-repo-date-pills {
+  display: contents;
 }
 
 .project-repo-action {

@@ -40,7 +40,7 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles.
   - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing.
   - Customizes post preview metadata, thumbnail sizing, title hover colors, and preview borders.
-  - Places project page GitHub action pills and repository metadata pills in a left-aligned header stack.
+  - Places project page GitHub action pills and repository metadata pills in one left-aligned header row when space allows.
   - Hides tags on Blog and Projects listing pages.
   - Shows linked repository creation and latest default-branch commit date pills from generated GitHub repository metadata.
   - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text.
@@ -52,6 +52,7 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Emits the site-specific color palette as CSS custom properties for downstream stylesheets.
   - Removes inactive upstream Disqus comment styling.
   - Removes inactive upstream navbar search overlay styling.
+  - Removes inactive upstream GitHub button header styling.
 - `assets/js/beautifuljekyll.js`
   - Removes the inactive upstream navbar search initializer.
 - `_config.yml`

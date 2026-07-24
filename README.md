@@ -16,14 +16,6 @@ npm run update:github-repos
 
 The GitHub Actions build runs this automatically before Jekyll builds the site. The generated `_data/github_repos.yml` file is ignored locally.
 
-## Asset Generation
-
-- `assets/img/firework-launcher-demo.png`
-  - Generated as a transparent APNG rather than a GIF so the firework particles can fade smoothly with real alpha transparency.
-  - Created with temporary Node tooling outside the repo using `pngjs` for preview PNGs and `upng-js` for APNG encoding.
-  - Current animation settings: `360x360`, 40 synthetic fireworks, deterministic particle seeds, `284` frames, `50ms` per frame, and launches spaced `5` frames apart.
-  - The animation uses full-frame APNG replacement frames and full-width launch positions so the transparent bounds have no side margins while still showing only the launcher effect, not the website, navbar, or browser chrome.
-
 ## Deviations From Beautiful Jekyll
 
 - `404.html`

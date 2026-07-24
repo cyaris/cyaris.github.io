@@ -27,7 +27,13 @@
 - Prefer APNG or WebP when smooth alpha fades over transparent backgrounds are important. GIF transparency is binary, so fading particles can become spotty even with more frames.
 - For synthetic GIF animations, generate indexed frames directly with `omggif`; reserve palette index `0` for transparent black, pass `transparent: 0`, and use `disposal: 2` for each frame. Use `pngjs` for optional preview PNGs.
 - Keep animated thumbnails small and reusable: square dimensions, short loops, deterministic seeds where randomness is involved, and output under `assets/img/` with a descriptive filename.
-- When adapting an interactive effect into a thumbnail, capture or synthesize only the meaningful part of the effect, and make the loop long enough for the final event to finish before it resets. For example, `assets/img/firework-launcher-demo.png` shows ten firework launches and bursts without the homepage, navbar, or browser chrome.
+- When adapting an interactive effect into a thumbnail, capture or synthesize only the meaningful part of the effect, and make the loop long enough for the final event to finish before it resets.
+- `assets/img/firework-launcher-demo.png` is generated as a transparent APNG rather than a GIF so the firework particles can fade smoothly with real alpha transparency.
+- Create `assets/img/firework-launcher-demo.png` with temporary Node tooling outside the repo using `pngjs` for preview PNGs and `upng-js` for APNG encoding.
+- Current `assets/img/firework-launcher-demo.png` animation settings: `360x360`, 20 synthetic fireworks, deterministic particle seeds, `284` frames, `50ms` per frame, and an evenly spaced launch schedule with seeded `+-35%` timing jitter.
+- Use full-frame APNG replacement frames for `assets/img/firework-launcher-demo.png` while showing only the launcher effect, not the website, navbar, or browser chrome.
+- For `assets/img/firework-launcher-demo.png`, treat margin as the horizontal no-launch zone only: explosions may enter the side regions, but intermediate firework launch centers must not. Use a `60px` no-launch margin on both sides of the `360px` canvas, launch the first and last fireworks from horizontal center x=`180`, and launch every intermediate firework at a seeded uniformly random x position from x=`60` through x=`300`.
+- For `assets/img/firework-launcher-demo.png`, fire the first firework at frame `0`, calculate the last firework's launch frame so the final centered firework completes at the end of the loop, and place intermediate launches at evenly spaced frames with seeded `+-35%` jitter applied to each intermediate frame.
 
 ## Site Styling
 

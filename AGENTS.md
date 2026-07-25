@@ -40,3 +40,12 @@
 - For site-local Jekyll links and asset paths, use the `relative_url` filter instead of concatenating `site.url`. Reserve `absolute_url` for metadata, feeds, canonical URLs, or other places that require a fully qualified URL.
 - Prefer relative paths and `relative_url` for site-local links/assets over `site.*` values unless the output explicitly needs site configuration or a fully qualified URL.
 - Keep color variables used in `assets/css/custom.css` aligned with the color variables defined in `_config.yml`. Prefer adding or updating the corresponding CSS custom property in `assets/css/beautifuljekyll.css` and referencing it with `var(...)` from `custom.css`, so `custom.css` remains valid plain CSS for editor tooling and Prettier.
+
+## Release Management
+
+- While working in this repository, evaluate whether the accumulated changes represent a meaningful release milestone.
+- A release may be appropriate when the work includes a substantial user-facing feature, a major redesign or workflow change, a meaningful new integration, an important architecture change, a backward-incompatible change, a stable initial public version, a significant performance, reliability, security, accessibility, or compatibility improvement, or a coherent group of changes that materially changes how the project is used.
+- Do not recommend a release for routine maintenance, formatting, minor refactoring, isolated dependency updates, or small bug fixes unless their combined impact is significant.
+- When the current work appears to justify a release, state that a release may be warranted, explain the milestone in plain language, suggest a release title, suggest a tag consistent with this repository's existing convention, summarize release-note content, identify breaking changes or migration concerns, and recommend full release, prerelease, or draft status.
+- For future website releases, prefer `vX.Y.Z` tags with release titles in the form `vX.Y.Z - Plain-English Milestone`, while leaving historical tags intact unless the user explicitly approves a tag migration.
+- Do not create, rename, move, or delete tags or publish a GitHub release unless the user explicitly requests it.

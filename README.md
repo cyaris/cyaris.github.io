@@ -86,7 +86,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
   - Opens the edit-page link in a new tab.
   - Opens the Beautiful Jekyll attribution link in a new tab.
 - `_includes/head.html`
-  - Adds `favicon.ico` links for shortcut, browser, and Apple touch icons.
+  - Adds PNG favicon links for shortcut and browser icons, plus a dedicated Apple touch icon.
   - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks.
 - `_includes/header.html`
   - Simplifies header image class assignment.

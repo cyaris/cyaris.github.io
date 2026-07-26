@@ -1,20 +1,46 @@
+# cyaris.github.io
+
 Welcome to my website! I hope you enjoy your stay.
 
 ## Development
 
-This repository tracks updates from:
+### Upstream Theme
 
-https://github.com/daattali/beautiful-jekyll
+This repository tracks updates from [Beautiful Jekyll](https://github.com/daattali/beautiful-jekyll).
 
 To configure:
 
+```sh
 git remote add upstream https://github.com/daattali/beautiful-jekyll.git
+```
+
+### Repository Metadata
 
 To refresh project repository dates before a build:
 
+```sh
 npm run update:github-repos
+```
 
 The GitHub Actions build runs this automatically before Jekyll builds the site. The generated `_data/github_repos.yml` file is ignored locally.
+
+## Additional Features
+
+These site-local features are layered on top of Beautiful Jekyll. The `_includes` files listed here are not present in upstream Beautiful Jekyll.
+
+- GitHub repository badges and dates
+  - `_includes/github-repo-badges.html` renders linked follow, star, watch, and fork badges with accessible labels, GitHub icons, optional counts, repository creation dates, and latest default-branch commit dates.
+  - `scripts/update-github-repo-dates.mjs` generates repository metadata for content files with `gh-repo` front matter.
+  - `.github/workflows/ci.yml` refreshes the repository metadata before the Jekyll build, and `.gitignore` keeps the generated `_data/github_repos.yml` file local.
+- S3-hosted app and document assets
+  - `_includes/s3_url.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, and adds build-time cache busting when configured.
+  - `_includes/s3_asset.html` emits stylesheet and script tags for S3-hosted bundles, with optional runtime cache busting for mutable app bundles.
+- Legacy project launch buttons
+  - `_includes/project_button.html` renders a centered project link button for legacy project posts, deriving the target URL from the post title.
+- Tableau gallery and dashboard embeds
+  - `_includes/tableau_gallery.html` renders the reusable Tableau gallery and includes the local dashboard embeds.
+  - `_includes/tableau_dashboards/cook_county_court_sentencing.html` embeds the Cook County Court Sentencing Tableau dashboard.
+  - `_includes/tableau_dashboards/maryland_traffic_violations.html` embeds the Maryland Traffic Violations Tableau dashboard.
 
 ## Deviations From Beautiful Jekyll
 
@@ -59,10 +85,6 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Removes the inactive Matomo opt-out link.
   - Opens the edit-page link in a new tab.
   - Opens the Beautiful Jekyll attribution link in a new tab.
-- `_includes/github-repo-badges.html`
-  - Adds site-native linked GitHub action badges for follow, star, watch, and fork actions.
-  - Renders compact icon-only action badges with GitHub icons, action icons, accessible labels, and star counts from generated repository metadata.
-  - Renders linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata.
 - `_includes/head.html`
   - Adds `favicon.ico` links for shortcut, browser, and Apple touch icons.
   - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks.
@@ -77,12 +99,6 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Removes the right-aligned dropdown menu class.
   - Routes blank navbar links to the site root with `relative_url`.
   - Removes the inactive upstream navbar search link and overlay include.
-- `_includes/project_button.html`
-  - Adds a centered project link button for legacy project posts.
-- `_includes/s3_asset.html`
-  - Emits S3-hosted stylesheet and script tags with optional bundle path rewriting and cache busting.
-- `_includes/s3_url.html`
-  - Builds S3 asset URLs, including bundle prefix substitution and build-time cache busting.
 - `_includes/social-networks-links.html`
   - Limits footer social networks to the configured set.
   - Routes email to the local contact page.
@@ -93,12 +109,6 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
 - `_includes/social-share.html`
   - Opens share links in new tabs.
   - Customizes LinkedIn, Facebook, and Twitter/X share icons.
-- `_includes/tableau_dashboards/cook_county_court_sentencing.html`
-  - Embeds the Cook County Court Sentencing Tableau dashboard.
-- `_includes/tableau_dashboards/maryland_traffic_violations.html`
-  - Embeds the Maryland Traffic Violations Tableau dashboard.
-- `_includes/tableau_gallery.html`
-  - Adds a reusable Tableau gallery section that includes the local dashboard embeds.
 - `_layouts/home.html`
   - Forces home-page refreshes back to the top of the page.
   - Filters listed posts by `page.type`.
@@ -124,9 +134,6 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
   - Deletes `assets/css/staticman.css`, `assets/data/searchcorpus.json`, `assets/js/staticman.js`, and `staticman.yml`.
 - Removed inactive upstream minimal layout files
   - Deletes `_layouts/minimal.html`, `_includes/footer-minimal.html`, and `assets/css/beautifuljekyll-minimal.css`.
-- `scripts/update-github-repo-dates.mjs`
-  - Generates repository metadata for all content files with `gh-repo` front matter.
-  - Stores repository creation dates, latest default-branch commit dates, default branches, follower counts, and star counts.
 - `.gitignore`
   - Ignores generated GitHub repository metadata.
 - `.github/workflows/ci.yml`

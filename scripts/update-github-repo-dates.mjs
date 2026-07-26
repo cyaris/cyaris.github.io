@@ -3,6 +3,7 @@ import https from "node:https"
 import path from "node:path"
 
 const outFile = path.resolve("_data/github_repos.yml")
+const outDir = path.dirname(outFile)
 const token = process.env.GITHUB_TOKEN
 const ignoredDirs = new Set([".git", "_site", "node_modules"])
 
@@ -149,5 +150,6 @@ for (const repo of repoData) {
   lines.push(`  stargazers_count: ${repo.stargazersCount}`)
 }
 
+fs.mkdirSync(outDir, { recursive: true })
 fs.writeFileSync(outFile, `${lines.join("\n")}\n`)
 console.log(`Wrote ${repoData.length} repos to ${path.relative(process.cwd(), outFile)}`)

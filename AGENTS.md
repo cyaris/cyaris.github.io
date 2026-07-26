@@ -44,8 +44,8 @@
 
 ## GitHub Actions
 
-- Keep the root `Beautiful Jekyll CI` workflow as a thin caller of the shared `svelte-lib` Jekyll site CI workflow.
-  Site-specific prebuild commands belong in workflow inputs.
+- Keep the root `Beautiful Jekyll CI` workflow local to this repository unless another Jekyll site starts sharing the
+  same build workflow.
 - Keep the root `Auto release` workflow as a thin caller of the shared `svelte-lib` auto-release workflow. Site release
   naming and milestone overrides belong in `.github/release-policy.yml`.
 

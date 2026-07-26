@@ -2,6 +2,8 @@ name: Auto release
 
 on:
   pull_request:
+    branches:
+      - master
     types:
       - closed
   workflow_dispatch:
@@ -20,7 +22,7 @@ on:
         description: svelte-lib ref used to run the shared release workflow.
         required: false
         type: string
-        default: cy_dev3
+        default: 2d425d791e578c14869c235774128b25748d15f0
 
 permissions:
   contents: write
@@ -30,18 +32,18 @@ permissions:
 jobs:
   auto-release-after-pr:
     if: github.event.pull_request.merged == true
-    uses: cyaris/svelte-lib/.github/workflows/auto-release.yml@cy_dev3
+    uses: cyaris/svelte-lib/.github/workflows/auto-release.yml@2d425d791e578c14869c235774128b25748d15f0
     with:
       pr-number: ${{ github.event.pull_request.number }}
       release-sha: ${{ github.event.pull_request.merge_commit_sha }}
-      svelte-lib-ref: ${{ vars.SVELTE_LIB_REF || 'cy_dev3' }}
+      svelte-lib-ref: 2d425d791e578c14869c235774128b25748d15f0
     secrets: inherit
 
   auto-release-manual:
     if: github.event_name == 'workflow_dispatch'
-    uses: cyaris/svelte-lib/.github/workflows/auto-release.yml@cy_dev3
+    uses: cyaris/svelte-lib/.github/workflows/auto-release.yml@2d425d791e578c14869c235774128b25748d15f0
     with:
       pr-number: ${{ inputs.pr-number }}
       release-sha: ${{ inputs.release-sha || github.sha }}
-      svelte-lib-ref: ${{ inputs.svelte-lib-ref || vars.SVELTE_LIB_REF || 'cy_dev3' }}
+      svelte-lib-ref: ${{ inputs.svelte-lib-ref || '2d425d791e578c14869c235774128b25748d15f0' }}
     secrets: inherit

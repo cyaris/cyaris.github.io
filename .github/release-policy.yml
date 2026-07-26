@@ -1,4 +1,4 @@
-extends: cyaris/svelte-lib/.github/release-policy.yml@cy_dev3
+extends: cyaris/svelte-lib/.github/release-policy.yml@2d425d791e578c14869c235774128b25748d15f0
 
 project:
   type: jekyll-portfolio-site

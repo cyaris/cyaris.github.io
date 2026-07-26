@@ -24,6 +24,29 @@ npm run update:github-repos
 
 The GitHub Actions build runs this automatically before Jekyll builds the site. The generated `_data/github_repos.yml` file is ignored locally.
 
+## GitHub Actions Workflows
+
+### `.github/workflows/ci.yml`
+
+The `Beautiful Jekyll CI` workflow runs on pushes, pull requests, and manual dispatch. It installs Ruby dependencies
+with Bundler and Appraisal, configures the GitHub Pages base path, generates `_data/github_repos.yml` from repository
+front matter, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the Pages artifact.
+
+The workflow can be dispatched from the GitHub Actions UI with **Actions > Beautiful Jekyll CI > Run workflow**. Manual
+dispatch has no custom inputs.
+
+### `.github/workflows/auto-release.yml`
+
+The `Auto release` workflow runs after a pull request is closed and delegates to the shared
+`cyaris/svelte-lib/.github/workflows/auto-release.yml` workflow only when that pull request was merged. It evaluates the
+merge commit against `.github/release-policy.yml`, asks the configured OpenAI model whether the merge warrants a
+release, publishes a GitHub release when warranted, and comments the outcome on the pull request.
+
+The workflow can also be dispatched from the GitHub Actions UI with **Actions > Auto release > Run workflow**. Manual
+dispatch accepts optional `release-sha`, `pr-number`, and `svelte-lib-ref` inputs; when `release-sha` is blank, it
+evaluates the workflow SHA. Release runs require `OPENAI_API_KEY`; `RELEASE_TOKEN` and `CHECKOUT_TOKEN` can be provided
+when the default token cannot create releases or read private repositories.
+
 ## Additional Features
 
 These site-local features are layered on top of Beautiful Jekyll. The `_includes` files listed here are not present in upstream Beautiful Jekyll.

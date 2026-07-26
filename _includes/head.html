@@ -33,7 +33,12 @@
       {{ page.subtitle | strip_html | xml_escape }}
     {%- else -%}
       {%- assign excerpt_length = site.excerpt_length | default: 50 -%}
-      {{ page.content | strip_html | xml_escape | truncatewords: excerpt_length | strip }}
+      {%- assign fallback_description = page.content | strip_html | strip -%}
+      {%- if fallback_description contains '{%' -%}
+        {{ site['rss-description'] | default: site.title | strip_html | xml_escape }}
+      {%- else -%}
+        {{ fallback_description | xml_escape | truncatewords: excerpt_length | strip }}
+      {%- endif -%}
     {%- endif -%}
   {% endcapture %}
 
@@ -63,6 +68,9 @@
   {% if site['rss-description'] %}
     <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
   {% endif %}
+
+  {% include s3_asset.html path='fireworks/bundle.css' type='style' bundle=true %}
+  {% include s3_asset.html path='fireworks/bundle2.css' type='style' bundle=true %}
 
   {% include gtag.html %}
   {% include gtm_head.html %}

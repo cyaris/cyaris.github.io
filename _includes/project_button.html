@@ -1,11 +1,4 @@
-<!-- <!DOCTYPE html> -->
-<html>
-  <body>
-    <div class="center" style="margin-bottom: 30px;">
-      <script>
-        var href_link = ('../' + "{{ page.title | replace: " ", "_" }}" + '/').toLowerCase();
-        document.write('<a class="btn-group" href="' + href_link + '">{{ page.title }}</a>');
-      </script>
-    </div>
-  </body>
-</html>
+{% assign href_link = page.title | replace: ' ', '_' | downcase | prepend: '../' | append: '/' %}
+<div class="center" style="margin-bottom: 30px;">
+  <a class="btn-group" href="{{ href_link }}">{{ page.title }}</a>
+</div>

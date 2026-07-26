@@ -31,10 +31,11 @@
 - When adapting an interactive effect into a thumbnail, capture or synthesize only the meaningful part of the effect, and make the loop long enough for the final event to finish before it resets.
 - `assets/img/firework-launcher-demo.png` is generated as a transparent APNG rather than a GIF so the firework particles can fade smoothly with real alpha transparency.
 - Create `assets/img/firework-launcher-demo.png` with temporary Node tooling outside the repo using `pngjs` for preview PNGs and `upng-js` for APNG encoding.
-- Current `assets/img/firework-launcher-demo.png` animation settings: `360x360`, 20 synthetic fireworks, deterministic particle seeds, `284` frames, `50ms` per frame, and an evenly spaced launch schedule with seeded `+-35%` timing jitter.
+- Current `assets/img/firework-launcher-demo.png` animation settings: `360x360`, 10 synthetic fireworks, deterministic particle seeds, `284` frames, `50ms` per frame, and an evenly spaced launch schedule with seeded `+-35%` timing jitter.
 - Use full-frame APNG replacement frames for `assets/img/firework-launcher-demo.png` while showing only the launcher effect, not the website, navbar, or browser chrome.
 - For `assets/img/firework-launcher-demo.png`, treat margin as the horizontal no-launch zone only: explosions may enter the side regions, but intermediate firework launch centers must not. Use a `60px` no-launch margin on both sides of the `360px` canvas, launch the first and last fireworks from horizontal center x=`180`, and launch every intermediate firework at a seeded uniformly random x position from x=`60` through x=`300`.
 - For `assets/img/firework-launcher-demo.png`, fire the first firework at frame `0`, calculate the last firework's launch frame so the final centered firework completes at the end of the loop, and place intermediate launches at evenly spaced frames with seeded `+-35%` jitter applied to each intermediate frame.
+- For `assets/img/firework-launcher-demo.png`, emulate the slower explosion feel from the `origin/master` APNG: after launch/drop, hold a short tail catch-up phase before bursting, ease burst and fade movement with circle-in-out easing, and keep explosion/fade frame ranges long enough that particles expand gradually rather than snapping outward.
 
 ## Site Styling
 

@@ -46,6 +46,8 @@ layout: page
                 src="{{ thumbnail | relative_url }}"
                 alt="Post thumbnail"
                 style="object-position: {{ thumbnail_position }};"
+                loading="lazy"
+                decoding="async"
               >
             </a>
           {% endif %}

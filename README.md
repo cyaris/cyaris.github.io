@@ -48,6 +48,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
   - Uses custom 404 copy.
   - Uses `assets/img/evil_bialy.png` for the 404 image.
   - Uses the `image_404` class for local responsive image sizing.
+  - Lazily decodes the 404 image.
 - `assets/css/custom.css`
   - Overrides global typography, intro header heading spacing, emphasis opacity, and link colors.
   - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier.
@@ -83,10 +84,12 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
   - Removes the bullet before the pretty URL.
   - Puts the pretty URL on a new line.
   - Removes the inactive Matomo opt-out link.
-  - Opens the edit-page link in a new tab.
-  - Opens the Beautiful Jekyll attribution link in a new tab.
+  - Opens the edit-page link in a new tab with `noopener noreferrer`.
+  - Opens the Beautiful Jekyll attribution link in a new tab with `noopener noreferrer`.
 - `_includes/head.html`
   - Adds PNG favicon links for shortcut and browser icons, plus a dedicated Apple touch icon.
+  - Loads global firework launcher styles inside the document head.
+  - Falls back to the site RSS description when generated page-description text still contains raw Liquid tags.
   - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks.
 - `_includes/header.html`
   - Simplifies header image class assignment.
@@ -102,17 +105,20 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 - `_includes/social-networks-links.html`
   - Limits footer social networks to the configured set.
   - Routes email to the local contact page.
-  - Opens external social links in new tabs.
+  - Opens external social links in new tabs with `noopener noreferrer`.
   - Uses custom icons for Kaggle and Instagram.
   - Uses a CSS-colorable inline Tableau icon.
   - Keeps the footer Tableau icon inline so CSS can recolor it; a colored standalone version lives at `assets/img/tableau-logo-color.svg`.
 - `_includes/social-share.html`
-  - Opens share links in new tabs.
+  - Opens share links in new tabs with `noopener noreferrer`.
   - Customizes LinkedIn, Facebook, and Twitter/X share icons.
+- `_layouts/base.html`
+  - Loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`.
 - `_layouts/home.html`
   - Forces home-page refreshes back to the top of the page.
   - Filters listed posts by `page.type`.
   - Renders a single left-aligned post thumbnail beside the post title and subtitle.
+  - Lazily loads and asynchronously decodes post preview thumbnails.
   - Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`small` or `extra-small`) front matter for thumbnail crops and sizing.
   - Removes the "Posted on" label from post dates.
   - Shows tag pills on Blog and Projects listing pages.
@@ -129,6 +135,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
   - Removes the inactive upstream comments include.
 - `beautiful-jekyll-theme.gemspec`
   - Stops packaging the removed Staticman configuration.
+  - Adds `bigdecimal` as an explicit runtime dependency for future Ruby compatibility.
 - Removed inactive upstream integration files
   - Deletes `_includes/commentbox.html`, `_includes/comments.html`, `_includes/disqus.html`, `_includes/fb-comment.html`, `_includes/giscus-comment.html`, `_includes/mathjax.html`, `_includes/matomo.html`, `_includes/readtime.html`, `_includes/search.html`, `_includes/staticman-comment.html`, `_includes/staticman-comments.html`, and `_includes/utterances-comment.html`.
   - Deletes `assets/css/staticman.css`, `assets/data/searchcorpus.json`, `assets/js/staticman.js`, and `staticman.yml`.

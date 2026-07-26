@@ -3,31 +3,32 @@ layout: default
 title: 404 - Page not found
 permalink: /404.html
 ---
-<!-- <!DOCTYPE html> -->
-<html>
-  <head>
-    <style type="text/css">
-      /* 404 image width larger on desktop */
-      @media (max-width: 800px) {
-        .image_404 {
-          max-width: 60%;
-          max-height: 60%;
-        }
-      }
+<style type="text/css">
+  /* 404 image width larger on desktop */
+  @media (max-width: 800px) {
+    .image_404 {
+      max-width: 60%;
+      max-height: 60%;
+    }
+  }
 
-      /* 404 image width smaller on mobile */
-      @media (min-width: 800px) {
-        .image_404 {
-          max-width: 40%;
-          max-height: 40%;
-        }
-      }
-    </style>
-  </head>
-  <div class="text-center center">
-    <h1>Obey my dog!</h1>
-    <h1>(404 error)</h1>
-    <br>
-    <img class="image_404" src="{{ 'assets/img/evil_bialy.png' | relative_url }}" alt="Not found">
-  </div>
-</html>
+  /* 404 image width smaller on mobile */
+  @media (min-width: 800px) {
+    .image_404 {
+      max-width: 40%;
+      max-height: 40%;
+    }
+  }
+</style>
+<div class="text-center center">
+  <h1>Obey my dog!</h1>
+  <h1>(404 error)</h1>
+  <br>
+  <img
+    class="image_404"
+    src="{{ 'assets/img/evil_bialy.png' | relative_url }}"
+    alt="Not found"
+    loading="lazy"
+    decoding="async"
+  >
+</div>

@@ -42,12 +42,16 @@ title: Contact
     const form = document.getElementById('contact-form')
     const button = document.getElementById('contact-submit')
     const status = document.getElementById('contact-status')
+    const originalButtonText = button.textContent
 
     const endpoint = 'https://contact-form-worker.charlieyaris.workers.dev'
     const setStatus = (message = '', state = '') => {
       status.textContent = message
       status.dataset.state = state
       status.hidden = !message
+    }
+    const resetTurnstile = () => {
+      window.turnstile?.reset?.()
     }
 
     form.addEventListener('submit', async event => {
@@ -79,23 +83,31 @@ title: Contact
           })
         })
 
-        const result = await response.json()
+        const responseText = await response.text()
+        let result = {}
+        if (responseText) {
+          try {
+            result = JSON.parse(responseText)
+          } catch (error) {
+            result = {}
+          }
+        }
 
         if (!response.ok) {
-          throw new Error(result.error || "Sorry, your message couldn't be sent.")
+          throw new Error(result?.error || responseText || "Sorry, your message couldn't be sent.")
         }
 
         form.reset()
-        turnstile.reset()
+        resetTurnstile()
 
         setStatus('Thanks for reaching out!', 'success')
       } catch (error) {
         setStatus(error.message || "Sorry, your message couldn't be sent. Please try again.", 'error')
 
-        turnstile.reset()
+        resetTurnstile()
       } finally {
         button.disabled = false
-        button.textContent = 'Send message'
+        button.textContent = originalButtonText
       }
     })
   })()

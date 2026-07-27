@@ -20,5 +20,6 @@
 {%- assign s3_url = site.s3_bucket | append: '/' | append: s3_path -%}
 {{- s3_url -}}
 {%- if should_cache_bust and cache_bust_strategy == 'build_time' -%}
-  ?v={{- site.time | date: '%s' -}}
+  ?v=
+  {{- site.time | date: '%s' -}}
 {%- endif -%}

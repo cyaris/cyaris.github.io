@@ -31,8 +31,6 @@ let BeautifulJekyllJS = {
 
     // show the big header image
     BeautifulJekyllJS.initImgs()
-
-    BeautifulJekyllJS.initSearch()
   },
 
   initNavbar: function () {
@@ -117,30 +115,6 @@ let BeautifulJekyllJS = {
     } else {
       $(".img-desc").hide()
     }
-  },
-
-  initSearch: function () {
-    if (!document.getElementById("beautifuljekyll-search-overlay")) {
-      return
-    }
-
-    $("#nav-search-link").click(function (e) {
-      e.preventDefault()
-      $("#beautifuljekyll-search-overlay").show()
-      $("#nav-search-input").focus().select()
-      $("body").addClass("overflow-hidden")
-    })
-    $("#nav-search-exit").click(function (e) {
-      e.preventDefault()
-      $("#beautifuljekyll-search-overlay").hide()
-      $("body").removeClass("overflow-hidden")
-    })
-    $(document).on("keyup", function (e) {
-      if (e.key == "Escape") {
-        $("#beautifuljekyll-search-overlay").hide()
-        $("body").removeClass("overflow-hidden")
-      }
-    })
   }
 }
 

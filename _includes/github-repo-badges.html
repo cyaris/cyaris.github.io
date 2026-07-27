@@ -1,0 +1,113 @@
+{% assign repo_key = include.repo_key | default: include.repo | default: page['gh-repo'] %}
+{% assign repo_key = repo_key
+  | replace: 'https://github.com/', ''
+  | replace: 'http://github.com/', ''
+  | replace: 'github.com/', ''
+%}
+{% assign repo_parts = repo_key | split: '/' %}
+{% assign gh_user = repo_parts[0] %}
+{% assign gh_repo = repo_parts[1] %}
+{% assign repo_key = gh_user | append: '/' | append: gh_repo %}
+{% assign repo_data = include.repo_data | default: site.data.github_repos[repo_key] %}
+{% assign sections = include.sections | default: 'actions' | split: ',' %}
+{% assign actions = include.actions | default: 'follow,star' | split: ',' %}
+
+{% if gh_user and gh_repo %}
+  <div
+    class="{{ include.container_class | default: 'post-meta repo-meta repo-badges github-repo-badges' }}"
+    aria-label="{{ include.aria_label | default: 'Repository links and dates' }}"
+  >
+    {% for section in sections %}
+      {% assign section_name = section | strip %}
+      {% case section_name %}
+        {% when 'actions' %}
+          {% for action in actions %}
+            {% assign action_name = action | strip %}
+            {% case action_name %}
+              {% when 'follow' %}
+                <a
+                  class="repo-badge github-action-badge{% if include.item_class %} {{ include.item_class }}{% endif %}"
+                  href="https://github.com/{{ gh_user }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow {{ gh_user }} on GitHub"
+                  title="Follow {{ gh_user }} on GitHub"
+                >
+                  <i class="fab fa-github" aria-hidden="true"></i>
+                  <i class="fas fa-user-plus" aria-hidden="true"></i>
+                  {% if repo_data.followers_count %}
+                    <span class="repo-badge-count">{{ repo_data.followers_count }}</span>
+                  {% endif %}
+                </a>
+              {% when 'star' %}
+                <a
+                  class="repo-badge github-action-badge{% if include.item_class %} {{ include.item_class }}{% endif %}"
+                  href="https://github.com/{{ repo_key }}/stargazers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Star {{ repo_key }} on GitHub"
+                  title="Star {{ repo_key }} on GitHub"
+                >
+                  <i class="fab fa-github" aria-hidden="true"></i>
+                  <i class="fas fa-star" aria-hidden="true"></i>
+                  {% if repo_data.stargazers_count %}
+                    <span class="repo-badge-count">{{ repo_data.stargazers_count }}</span>
+                  {% endif %}
+                </a>
+              {% when 'watch' %}
+                <a
+                  class="repo-badge github-action-badge{% if include.item_class %} {{ include.item_class }}{% endif %}"
+                  href="https://github.com/{{ repo_key }}/watchers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Watch {{ repo_key }} on GitHub"
+                  title="Watch {{ repo_key }} on GitHub"
+                >
+                  <i class="fab fa-github" aria-hidden="true"></i>
+                  <i class="fas fa-eye" aria-hidden="true"></i>
+                </a>
+              {% when 'fork' %}
+                <a
+                  class="repo-badge github-action-badge{% if include.item_class %} {{ include.item_class }}{% endif %}"
+                  href="https://github.com/{{ repo_key }}/fork"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Fork {{ repo_key }} on GitHub"
+                  title="Fork {{ repo_key }} on GitHub"
+                >
+                  <i class="fab fa-github" aria-hidden="true"></i>
+                  <i class="fas fa-code-branch" aria-hidden="true"></i>
+                </a>
+            {% endcase %}
+          {% endfor %}
+        {% when 'dates' %}
+          {% if repo_data %}
+            <a
+              class="repo-badge{% if include.item_class %} {{ include.item_class }}{% endif %}{% if include.created_class %} {{ include.created_class }}{% endif %}"
+              href="https://github.com/{{ repo_key }}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i class="fab fa-github" aria-hidden="true"></i>
+              <span class="repo-badge-label">created</span>
+              <time datetime="{{ repo_data.created | date: '%Y-%m-%d' }}">
+                {{- repo_data.created | date: '%Y-%m-%d' -}}
+              </time>
+            </a>
+            <a
+              class="repo-badge{% if include.item_class %} {{ include.item_class }}{% endif %}{% if include.branch_class %} {{ include.branch_class }}{% endif %}"
+              href="https://github.com/{{ repo_key }}/commits/{{ repo_data.default_branch | default: 'master' }}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i class="fas fa-code-branch" aria-hidden="true"></i>
+              <span class="repo-badge-label">{{ repo_data.default_branch | default: 'branch' }}</span>
+              <time datetime="{{ repo_data.latest_commit | date: '%Y-%m-%d' }}">
+                {{- repo_data.latest_commit | date: '%Y-%m-%d' -}}
+              </time>
+            </a>
+          {% endif %}
+      {% endcase %}
+    {% endfor %}
+  </div>
+{% endif %}

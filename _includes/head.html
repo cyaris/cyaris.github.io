@@ -4,7 +4,7 @@
 
   <link rel="shortcut icon" type="image/png" href="{{ '/favicon.png' | relative_url }}">
   <link rel="icon" type="image/png" href="{{ '/favicon.png' | relative_url }}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/favicon.png' | relative_url }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
 
   {% capture pagetitle %}
     {%- if page.share-title -%}
@@ -33,7 +33,12 @@
       {{ page.subtitle | strip_html | xml_escape }}
     {%- else -%}
       {%- assign excerpt_length = site.excerpt_length | default: 50 -%}
-      {{ page.content | strip_html | xml_escape | truncatewords: excerpt_length | strip }}
+      {%- assign fallback_description = page.content | strip_html | strip -%}
+      {%- if fallback_description contains '{%' -%}
+        {{ site['rss-description'] | default: site.title | strip_html | xml_escape }}
+      {%- else -%}
+        {{ fallback_description | xml_escape | truncatewords: excerpt_length | strip }}
+      {%- endif -%}
     {%- endif -%}
   {% endcapture %}
 
@@ -64,11 +69,13 @@
     <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
   {% endif %}
 
+  {% include s3_asset.html path='fireworks/bundle.css' type='style' bundle=true %}
+  {% include s3_asset.html path='fireworks/bundle2.css' type='style' bundle=true %}
+
   {% include gtag.html %}
   {% include gtm_head.html %}
   {% include google_analytics.html %}
   {% include cloudflare_analytics.html %}
-  {% include mathjax.html %}
 
   {% if layout['common-ext-css'] %}
     {% for css in layout['common-ext-css'] %}
@@ -159,12 +166,6 @@
 
   {% if img != '' %}
     <meta name="twitter:image" content="{{ img | absolute_url }}">
-  {% endif %}
-
-  {% include matomo.html %}
-
-  {% if page.comments and site.staticman.repository and site.staticman.branch %}
-    <link rel="stylesheet" href="{{ "/assets/css/staticman.css" | relative_url }}">
   {% endif %}
 
   {% if page['head-extra'] %}

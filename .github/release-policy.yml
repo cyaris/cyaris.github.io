@@ -1,0 +1,19 @@
+extends: cyaris/svelte-lib/.github/release-policy.yml@2d425d791e578c14869c235774128b25748d15f0
+
+project:
+  type: jekyll-portfolio-site
+
+versioning:
+  scheme: website-semver
+  tag_format: vMAJOR.MINOR.PATCH
+  release_title_format: "vX.Y.Z - Plain-English Milestone"
+
+milestone_threshold:
+  create_release_for:
+    - meaningful portfolio, styling, hosting, or site functionality milestones
+    - changes that materially improve public project pages or embedded app hosting
+    - important deployment, metadata, or compatibility improvements
+  skip_release_for:
+    - content typo fixes
+    - routine dependency refreshes
+    - generated asset refreshes without user-facing impact

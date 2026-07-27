@@ -33,7 +33,11 @@ with Bundler and Appraisal, configures the GitHub Pages base path, generates `_d
 front matter, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the Pages artifact.
 
 The workflow can be dispatched from the GitHub Actions UI with **Actions > Beautiful Jekyll CI > Run workflow**. Manual
-dispatch has no custom inputs.
+dispatch has no custom inputs. It can also be dispatched from the command line or GitHub API against `master`:
+
+```sh
+gh workflow run .github/workflows/ci.yml --ref master
+```
 
 ### `.github/workflows/auto-release.yml`
 
@@ -46,6 +50,15 @@ The workflow can also be dispatched from the GitHub Actions UI with **Actions > 
 dispatch accepts optional `release-sha`, `pr-number`, and `svelte-lib-ref` inputs; when `release-sha` is blank, it
 evaluates the workflow SHA. Release runs require `OPENAI_API_KEY`; `RELEASE_TOKEN` and `CHECKOUT_TOKEN` can be provided
 when the default token cannot create releases or read private repositories.
+
+It can also be dispatched from the command line or GitHub API against `master`:
+
+```sh
+gh workflow run .github/workflows/auto-release.yml --ref master \
+  -f release-sha=<commit-sha> \
+  -f pr-number=<pull-request-number> \
+  -f svelte-lib-ref=<ref>
+```
 
 ## Additional Features
 

@@ -19,32 +19,36 @@ function requestJson(apiPath) {
   }
 
   return new Promise((resolve, reject) => {
-    https
-      .get({ hostname: "api.github.com", path: apiPath, headers }, res => {
-        let body = ""
-        res.setEncoding("utf8")
-        res.on("data", chunk => {
-          body += chunk
-        })
-        res.on("end", () => {
-          let payload
-          try {
-            payload = JSON.parse(body)
-          } catch (error) {
-            reject(new Error(`GitHub returned invalid JSON for ${apiPath}: ${error.message}`))
-            return
-          }
-
-          if (res.statusCode < 200 || res.statusCode >= 300) {
-            const message = payload.message ? `: ${payload.message}` : ""
-            reject(new Error(`GitHub request failed for ${apiPath} (${res.statusCode})${message}`))
-            return
-          }
-
-          resolve(payload)
-        })
+    const request = https.get({ hostname: "api.github.com", path: apiPath, headers }, res => {
+      let body = ""
+      res.setEncoding("utf8")
+      res.on("data", chunk => {
+        body += chunk
       })
-      .on("error", reject)
+      res.on("end", () => {
+        let payload
+        try {
+          payload = JSON.parse(body)
+        } catch (error) {
+          reject(new Error(`GitHub returned invalid JSON for ${apiPath}: ${error.message}`))
+          return
+        }
+
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          const message = payload.message ? `: ${payload.message}` : ""
+          reject(new Error(`GitHub request failed for ${apiPath} (${res.statusCode})${message}`))
+          return
+        }
+
+        resolve(payload)
+      })
+    })
+
+    request.setTimeout(30_000, () => {
+      request.destroy(new Error(`GitHub request timed out for ${apiPath}`))
+    })
+
+    request.on("error", reject)
   })
 }
 

@@ -94,7 +94,7 @@ title: Contact
         }
 
         if (!response.ok) {
-          throw new Error(result.error || responseText || "Sorry, your message couldn't be sent.")
+          throw new Error(result?.error || responseText || "Sorry, your message couldn't be sent.")
         }
 
         form.reset()

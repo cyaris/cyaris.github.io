@@ -39,7 +39,7 @@
 - Let table-of-contents nesting reflect the document structure even when a section has only two children.
 - Keep documentation style guidance in AGENTS.md instead of the README.
 - Keep future maintainer instructions in AGENTS.md instead of the README. The README should describe project behavior,
-  commands, outputs, and user-facing behavior rather than telling future editors what they should do.
+  commands, outputs, and user-facing effects rather than telling future editors what they should do.
 - In Markdown files, always format the literal as `null`.
 - When changes to Beautiful Jekyll files, site styling, or site functionality deviate from upstream Beautiful Jekyll, document the affected files and behavior in the README's `Deviations From Beautiful Jekyll` section in the same change.
 - Before finishing changes that add or touch files in `_includes`, compare the include paths against upstream Beautiful Jekyll. Any current or future `_includes` file that is not present upstream must automatically be documented in the README's `Additional Features` section in the same change.

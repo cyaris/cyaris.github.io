@@ -60,6 +60,8 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
   - `_includes/s3_asset.html` emits stylesheet and script tags for S3-hosted bundles, with optional runtime cache busting for mutable app bundles.
 - Legacy project launch buttons
   - `_includes/project_button.html` renders a centered project link button for legacy project posts, deriving the target URL from the post title.
+- Animated project thumbnails
+  - Project listing thumbnails may use generated square APNG assets under `assets/img/`; `assets/img/networks-war-demo.png` animates the Networks of War project card while the legacy `assets/img/networks-war-globe-thumbnail.png` remains preserved in the repository.
 - Tableau gallery and dashboard embeds
   - `_includes/tableau_gallery.html` renders the reusable Tableau gallery and includes the local dashboard embeds.
   - `_includes/tableau_dashboards/cook_county_court_sentencing.html` embeds the Cook County Court Sentencing Tableau dashboard.

@@ -90,13 +90,11 @@
 
 ## GitHub Actions
 
-- Keep every GitHub Actions workflow and composite action documented in the README. For each documented feature, include
-  its trigger, purpose, important inputs or secrets, whether it can be dispatched from the GitHub Actions UI, and how it
-  is dispatched when UI dispatch is not available.
+- Use `../shared-automation/AGENTS.md` as the source of truth for shared GitHub Actions, reusable workflow wrapper,
+  release-policy, dispatch, and automation documentation conventions.
 - Keep the root `Beautiful Jekyll CI` workflow local to this repository unless another Jekyll site starts sharing the
   same build workflow.
-- Keep the root `Auto release` workflow as a thin caller of the shared `shared-automation` auto-release workflow. Site release
-  naming and milestone overrides belong in `.github/release-policy.yml`.
+- Site release naming and milestone overrides belong in `.github/release-policy.yml`.
 
 ## Release Management
 

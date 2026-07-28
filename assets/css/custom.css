@@ -121,7 +121,6 @@ main.container-fluid:has(.full-width-tool-host) > .row > .col {
 
   .navbar-custom .navbar-nav .nav-item.dropdown:hover,
   .navbar-custom .navbar-nav .nav-item.dropdown:focus {
-    /* background-color: var(--navbar-dropdown-background-hover-col); */
     border-color: var(--navbar-border-col);
   }
 
@@ -168,10 +167,6 @@ main.container-fluid:has(.full-width-tool-host) > .row > .col {
   .navbar-toggler:hover {
     border-color: #439aa5;
   }
-
-  /* .navbar-custom .navbar-toggler[aria-expanded="true"] {
-     background-color: var(--navbar-dropdown-background-hover-col);
-   } */
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
     transform: translate(-15px, 0px);
@@ -566,8 +561,8 @@ footer a:hover {
 
 .repo-badge {
   align-items: center;
-  background: rgba(27, 153, 139, 0.08);
-  border: 1px solid rgba(27, 153, 139, 0.35);
+  background: var(--preview-pill-background-col);
+  border: 1px solid var(--preview-pill-border-col);
   border-radius: 999px;
   color: var(--link-col);
   display: inline-flex;
@@ -584,8 +579,8 @@ footer a:hover {
 
 .repo-badge:hover,
 .repo-badge:focus {
-  background: rgba(27, 153, 139, 0.16);
-  border-color: var(--link-col);
+  background: var(--preview-pill-background-hover-col);
+  border-color: var(--preview-pill-border-hover-col);
   color: var(--link-col);
   text-decoration: none;
 }
@@ -605,7 +600,7 @@ footer a:hover {
 }
 
 .repo-badge-count {
-  border-left: 1px solid rgba(27, 153, 139, 0.35);
+  border-left: 1px solid var(--preview-pill-count-border-col);
   color: var(--link-col);
   font-weight: 400;
   margin-left: 0.1rem;
@@ -844,10 +839,10 @@ button:focus {
 
 .blog-tags a {
   align-items: center;
-  background: transparent;
-  border: 1px solid rgba(27, 153, 139, 0.35);
+  background: var(--preview-pill-background-col);
+  border: 1px solid var(--preview-pill-border-col);
   border-radius: 999px;
-  color: var(--link-col);
+  color: var(--tag-link-col);
   display: inline-flex;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.82rem;
@@ -863,9 +858,9 @@ button:focus {
 
 .blog-tags a:hover,
 .blog-tags a:focus {
-  background: rgba(27, 153, 139, 0.16);
-  border-color: var(--link-col);
-  color: var(--link-col);
+  background: var(--tag-background-hover-col);
+  border-color: var(--tag-border-hover-col);
+  color: var(--tag-link-hover-col);
   text-decoration: none;
 }
 

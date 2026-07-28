@@ -110,7 +110,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview metadata, thumbnail sizing, title hover colors, and preview borders
-- Aligns tag link styling and the post tag label with GitHub repo badges while keeping tag backgrounds transparent
+- Aligns tag link styling and the post tag label with GitHub repo badges using shared preview pill color variables
 - Places project page GitHub action badges and repository metadata badges in one left-aligned header row when space allows
 - Shows tag pills on Blog and Projects listing pages
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
@@ -134,7 +134,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 ### `_config.yml`
 
 - Renames the navbar text color setting to `navbar-link-col`
-- Adds site-specific color variables for the navbar, page, links, post titles, footer, and social links
+- Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
 - Excludes build-only repository scripts from the generated site
 

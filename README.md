@@ -45,9 +45,10 @@ gh workflow run .github/workflows/ci.yml --ref master
 ### `.github/workflows/auto-release.yml`
 
 The `Auto release` workflow runs after a pull request is closed and delegates to the shared
-`cyaris/shared-automation/.github/workflows/auto-release.yml` workflow only when that pull request was merged. It evaluates the
-merge commit against `.github/release-policy.yml`, asks the configured OpenAI model whether the merge warrants a
-release, publishes a GitHub release when warranted, and comments the outcome on the pull request.
+`cyaris/shared-automation/.github/workflows/auto-release.yml` workflow only when that pull request was merged. It
+evaluates the merge commit against the shared release policy plus `.github/release-policy.yml` overrides, asks the
+configured OpenAI model whether the merge warrants a release, publishes a GitHub release when warranted, and comments
+the outcome on the pull request.
 
 The workflow can also be dispatched from the GitHub Actions UI with **Actions > Auto release > Run workflow**. Manual
 dispatch accepts optional `release-sha`, `pr-number`, and `shared-automation-ref` inputs; when `release-sha` is blank, it

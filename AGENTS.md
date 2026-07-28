@@ -95,7 +95,7 @@
   is dispatched when UI dispatch is not available.
 - Keep the root `Beautiful Jekyll CI` workflow local to this repository unless another Jekyll site starts sharing the
   same build workflow.
-- Keep the root `Auto release` workflow as a thin caller of the shared `svelte-lib` auto-release workflow. Site release
+- Keep the root `Auto release` workflow as a thin caller of the shared `shared-automation` auto-release workflow. Site release
   naming and milestone overrides belong in `.github/release-policy.yml`.
 
 ## Release Management

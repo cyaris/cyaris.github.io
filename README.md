@@ -26,6 +26,8 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
 
 ## GitHub Actions Workflows
 
+These local wrappers inherit their reusable implementations from `cyaris/shared-automation`. Manual `workflow_dispatch` paths delegated to the shared workflows are restricted to the `cyaris` GitHub actor by default.
+
 ### `.github/workflows/ci.yml`
 
 The `Beautiful Jekyll CI` workflow runs on pushes, pull requests, and manual dispatch. It installs Ruby dependencies
@@ -43,12 +45,12 @@ gh workflow run .github/workflows/ci.yml --ref master
 ### `.github/workflows/auto-release.yml`
 
 The `Auto release` workflow runs after a pull request is closed and delegates to the shared
-`cyaris/svelte-lib/.github/workflows/auto-release.yml` workflow only when that pull request was merged. It evaluates the
+`cyaris/shared-automation/.github/workflows/auto-release.yml` workflow only when that pull request was merged. It evaluates the
 merge commit against `.github/release-policy.yml`, asks the configured OpenAI model whether the merge warrants a
 release, publishes a GitHub release when warranted, and comments the outcome on the pull request.
 
 The workflow can also be dispatched from the GitHub Actions UI with **Actions > Auto release > Run workflow**. Manual
-dispatch accepts optional `release-sha`, `pr-number`, and `svelte-lib-ref` inputs; when `release-sha` is blank, it
+dispatch accepts optional `release-sha`, `pr-number`, and `shared-automation-ref` inputs; when `release-sha` is blank, it
 evaluates the workflow SHA. Release runs require `OPENAI_API_KEY`; `RELEASE_TOKEN` and `CHECKOUT_TOKEN` can be provided
 when the default token cannot create releases or read private repositories.
 

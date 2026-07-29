@@ -15,7 +15,6 @@ layout: null
   --navbar-border-col: {{ site.navbar-border-col | default: "#DDDDDD" }};
   --navbar-link-col: {{ site.navbar-link-col | default: "var(--navbar-text-col)" }};
   --navbar-link-hover-col: {{ site.navbar-link-hover-col | default: "var(--hover-col)" }};
-  --navbar-dropdown-background-hover-col: {{ site.navbar-dropdown-background-hover-col | default: "transparent" }};
   --footer-col: {{ site.footer-col | default: "#EAEAEA" }};
   --footer-text-col: {{ site.footer-text-col | default: "#777777" }};
   --footer-border-col: {{ site.footer-border-col | default: "var(--navbar-border-col)" }};
@@ -41,6 +40,11 @@ layout: null
   --tag-link-hover-col: {{ site.tag-link-hover-col | default: "var(--link-col)" }};
   --tag-background-hover-col: {{ site.tag-background-hover-col | default: "transparent" }};
   --tag-border-hover-col: {{ site.tag-border-hover-col | default: "var(--link-col)" }};
+  --preview-pill-background-col: {{ site.preview-pill-background-col | default: "transparent" }};
+  --preview-pill-border-col: {{ site.preview-pill-border-col | default: "var(--link-col)" }};
+  --preview-pill-background-hover-col: {{ site.preview-pill-background-hover-col | default: "var(--tag-background-hover-col)" }};
+  --preview-pill-border-hover-col: {{ site.preview-pill-border-hover-col | default: "var(--tag-border-hover-col)" }};
+  --preview-pill-count-border-col: {{ site.preview-pill-count-border-col | default: "var(--preview-pill-border-col)" }};
 
   /* common CSS variables */
   --body-font: 'Lora', 'Times New Roman', serif;

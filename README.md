@@ -26,11 +26,16 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
 
 ## GitHub Actions Workflows
 
+Local wrappers that delegate to `cyaris/shared-automation` link to the
+[shared-automation workflow reference](https://github.com/cyaris/shared-automation#workflows) for reusable workflow
+behavior, inputs, and secrets.
+
 ### `.github/workflows/ci.yml`
 
 The `Beautiful Jekyll CI` workflow runs on pushes, pull requests, and manual dispatch. It installs Ruby dependencies
 with Bundler and Appraisal, configures the GitHub Pages base path, generates `_data/github_repos.yml` from repository
-front matter, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the Pages artifact.
+front matter, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the Pages artifact. Runs on
+`master` also deploy that artifact to GitHub Pages through `actions/deploy-pages`.
 
 The workflow can be dispatched from the GitHub Actions UI with **Actions > Beautiful Jekyll CI > Run workflow**. Manual
 dispatch has no custom inputs. It can also be dispatched from the command line or GitHub API against `master`:
@@ -41,23 +46,18 @@ gh workflow run .github/workflows/ci.yml --ref master
 
 ### `.github/workflows/auto-release.yml`
 
-The `Auto release` workflow runs after a pull request is closed and delegates to the shared
-`cyaris/svelte-lib/.github/workflows/auto-release.yml` workflow only when that pull request was merged. It evaluates the
-merge commit against `.github/release-policy.yml`, asks the configured OpenAI model whether the merge warrants a
-release, publishes a GitHub release when warranted, and comments the outcome on the pull request.
-
-The workflow can also be dispatched from the GitHub Actions UI with **Actions > Auto release > Run workflow**. Manual
-dispatch accepts optional `release-sha`, `pr-number`, and `svelte-lib-ref` inputs; when `release-sha` is blank, it
-evaluates the workflow SHA. Release runs require `OPENAI_API_KEY`; `RELEASE_TOKEN` and `CHECKOUT_TOKEN` can be provided
-when the default token cannot create releases or read private repositories.
+The `Auto release` workflow runs from manual dispatch only and calls the
+[shared auto-release workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-releaseyml). This
+repository contributes `.github/release-policy.yml` overrides to the shared release policy.
 
 It can also be dispatched from the command line or GitHub API against `master`:
 
 ```sh
 gh workflow run .github/workflows/auto-release.yml --ref master \
   -f release-sha=<commit-sha> \
-  -f pr-number=<pull-request-number> \
-  -f svelte-lib-ref=<ref>
+  -f shared-automation-ref=<ref> \
+  -f publish=true \
+  -f update-existing=true
 ```
 
 ## Additional Features
@@ -68,7 +68,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 - `_includes/github-repo-badges.html` renders linked follow, star, watch, and fork badges with accessible labels, GitHub icons, optional counts, repository creation dates, and latest default-branch commit dates.
 - `scripts/update-github-repo-dates.mjs` generates repository metadata for content files with `gh-repo` front matter.
-- `.github/workflows/ci.yml` refreshes the repository metadata before the Jekyll build, and `.gitignore` keeps the generated `_data/github_repos.yml` file local.
+- `.github/workflows/ci.yml` refreshes the repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages, while `.gitignore` keeps the generated `_data/github_repos.yml` file local.
 
 ### S3-Hosted App And Document Assets
 
@@ -109,7 +109,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview metadata, thumbnail sizing, title hover colors, and preview borders
-- Aligns tag link styling and the post tag label with GitHub repo badges while keeping tag backgrounds transparent
+- Aligns tag link styling and the post tag label with GitHub repo badges using shared preview pill color variables
 - Places project page GitHub action badges and repository metadata badges in one left-aligned header row when space allows
 - Shows tag pills on Blog and Projects listing pages
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
@@ -133,7 +133,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 ### `_config.yml`
 
 - Renames the navbar text color setting to `navbar-link-col`
-- Adds site-specific color variables for the navbar, page, links, post titles, footer, and social links
+- Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
 - Excludes build-only repository scripts from the generated site
 
@@ -230,7 +230,7 @@ Deletes `_layouts/minimal.html`, `_includes/footer-minimal.html`, and `assets/cs
 
 ### `.github/workflows/ci.yml`
 
-`.github/workflows/ci.yml` generates GitHub repository metadata before the Jekyll build.
+`.github/workflows/ci.yml` generates GitHub repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages with GitHub Actions.
 
 ### `tags.html`
 

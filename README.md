@@ -52,8 +52,9 @@ the outcome on the pull request.
 
 The workflow can also be dispatched from the GitHub Actions UI with **Actions > Auto release > Run workflow**. Manual
 dispatch accepts optional `release-sha`, `pr-number`, and `shared-automation-ref` inputs; when `release-sha` is blank, it
-evaluates the workflow SHA. Release runs require `OPENAI_API_KEY`; `RELEASE_TOKEN` and `CHECKOUT_TOKEN` can be provided
-when the default token cannot create releases or read private repositories.
+evaluates the workflow SHA. Release decisions use `OPENAI_API_KEY`; when it is not configured, the shared workflow skips
+release decision work without failing. `RELEASE_TOKEN` and `CHECKOUT_TOKEN` can be provided when the default token cannot
+create releases or read private repositories.
 
 It can also be dispatched from the command line or GitHub API against `master`:
 
@@ -61,7 +62,7 @@ It can also be dispatched from the command line or GitHub API against `master`:
 gh workflow run .github/workflows/auto-release.yml --ref master \
   -f release-sha=<commit-sha> \
   -f pr-number=<pull-request-number> \
-  -f svelte-lib-ref=<ref>
+  -f shared-automation-ref=<ref>
 ```
 
 ## Additional Features

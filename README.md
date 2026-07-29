@@ -44,25 +44,25 @@ gh workflow run .github/workflows/ci.yml --ref master
 
 ### `.github/workflows/auto-release.yml`
 
-The `Auto release` workflow runs after a pull request is closed and delegates to the shared
-`cyaris/shared-automation/.github/workflows/auto-release.yml` workflow only when that pull request was merged. It
-evaluates the merge commit against the shared release policy plus `.github/release-policy.yml` overrides, asks the
-configured OpenAI model whether the merge warrants a release, publishes a GitHub release when warranted, and comments
-the outcome on the pull request.
+The `Auto release` workflow runs from manual dispatch only and delegates to the shared
+`cyaris/shared-automation/.github/workflows/auto-release.yml` workflow. It reconciles commit history through a selected
+commit against existing GitHub releases, updates existing release notes and titles when enabled, and creates missing
+releases when warranted by the shared release policy plus `.github/release-policy.yml` overrides.
 
-The workflow can also be dispatched from the GitHub Actions UI with **Actions > Auto release > Run workflow**. Manual
-dispatch accepts optional `release-sha`, `pr-number`, `shared-automation-ref`, and `publish` inputs; when `release-sha`
-is blank, it evaluates the workflow SHA. Release decisions require `OPENAI_API_KEY`; missing credentials or failed
-OpenAI API requests fail the workflow. `RELEASE_TOKEN` and `CHECKOUT_TOKEN` can be provided when the default token cannot
-create releases or read private repositories.
+The workflow can be dispatched from the GitHub Actions UI with **Actions > Auto release > Run workflow**. Manual dispatch
+accepts optional `release-sha`, `shared-automation-ref`, `publish`, and `update-existing` inputs; when `release-sha` is
+blank, it reconciles through the current default branch tip. Release reconciliation requires `OPENAI_API_KEY`; missing
+credentials or failed OpenAI API requests fail the workflow. `RELEASE_TOKEN` and `CHECKOUT_TOKEN` can be provided when
+the default token cannot create releases or read private repositories.
 
 It can also be dispatched from the command line or GitHub API against `master`:
 
 ```sh
 gh workflow run .github/workflows/auto-release.yml --ref master \
   -f release-sha=<commit-sha> \
-  -f pr-number=<pull-request-number> \
-  -f shared-automation-ref=<ref>
+  -f shared-automation-ref=<ref> \
+  -f publish=true \
+  -f update-existing=true
 ```
 
 ## Additional Features

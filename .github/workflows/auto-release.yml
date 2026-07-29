@@ -25,14 +25,34 @@ on:
         default: main
 
 permissions:
-  contents: write
-  issues: write
+  contents: read
   pull-requests: read
 
 jobs:
+  check-auto-release-secrets:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    outputs:
+      has-openai-api-key: ${{ steps.openai-api-key.outputs.available }}
+    steps:
+      - id: openai-api-key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [[ -n "$OPENAI_API_KEY" ]]; then
+            printf "available=true\n" >> "$GITHUB_OUTPUT"
+          else
+            printf "available=false\n" >> "$GITHUB_OUTPUT"
+          fi
+
   auto-release-after-pr:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && needs.check-auto-release-secrets.outputs.has-openai-api-key == 'true'
+    needs: check-auto-release-secrets
     uses: cyaris/shared-automation/.github/workflows/auto-release.yml@main
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
     with:
       pr-number: ${{ github.event.pull_request.number }}
       release-sha: ${{ github.event.pull_request.merge_commit_sha }}
@@ -43,8 +63,13 @@ jobs:
       CHECKOUT_TOKEN: ${{ secrets.CHECKOUT_TOKEN }}
 
   auto-release-manual:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && needs.check-auto-release-secrets.outputs.has-openai-api-key == 'true'
+    needs: check-auto-release-secrets
     uses: cyaris/shared-automation/.github/workflows/auto-release.yml@main
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
     with:
       pr-number: ${{ inputs.pr-number }}
       release-sha: ${{ inputs.release-sha || github.sha }}

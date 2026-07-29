@@ -26,7 +26,9 @@ The GitHub Actions build runs this automatically before Jekyll builds the site. 
 
 ## GitHub Actions Workflows
 
-These local wrappers inherit their reusable implementations from `cyaris/shared-automation`. Manual `workflow_dispatch` paths delegated to the shared workflows are restricted to the `cyaris` GitHub actor by default.
+Local wrappers that delegate to `cyaris/shared-automation` link to the
+[shared-automation workflow reference](https://github.com/cyaris/shared-automation#workflows) for reusable workflow
+behavior, inputs, and secrets.
 
 ### `.github/workflows/ci.yml`
 
@@ -44,16 +46,9 @@ gh workflow run .github/workflows/ci.yml --ref master
 
 ### `.github/workflows/auto-release.yml`
 
-The `Auto release` workflow runs from manual dispatch only and delegates to the shared
-`cyaris/shared-automation/.github/workflows/auto-release.yml` workflow. It reconciles commit history through a selected
-commit against existing GitHub releases, updates existing release notes and titles when enabled, and creates missing
-releases when warranted by the shared release policy plus `.github/release-policy.yml` overrides.
-
-The workflow can be dispatched from the GitHub Actions UI with **Actions > Auto release > Run workflow**. Manual dispatch
-accepts optional `release-sha`, `shared-automation-ref`, `publish`, and `update-existing` inputs; when `release-sha` is
-blank, it reconciles through the current default branch tip. Release reconciliation requires `OPENAI_API_KEY`; missing
-credentials or failed OpenAI API requests fail the workflow. `RELEASE_TOKEN` and `CHECKOUT_TOKEN` can be provided when
-the default token cannot create releases or read private repositories.
+The `Auto release` workflow runs from manual dispatch only and calls the
+[shared auto-release workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-releaseyml). This
+repository contributes `.github/release-policy.yml` overrides to the shared release policy.
 
 It can also be dispatched from the command line or GitHub API against `master`:
 

@@ -60,6 +60,13 @@ gh workflow run .github/workflows/auto-release.yml --ref master \
   -f update-existing=true
 ```
 
+### `.github/workflows/release-please.yml`
+
+The `Release Please` workflow runs on pushes to `master` and manual dispatches by `cyaris`, using
+`release-please-config.json` and `.release-please-manifest.json` for future releases. Historical reconciliation is
+complete through `86c46fbb3b8e26aa9e05f204b1fb9d6c655226bd`; `auto-release.yml` remains available for manual historical
+repair, while Release Please manages later commits.
+
 ## Additional Features
 
 These site-local features are layered on top of Beautiful Jekyll. The `_includes` files listed here are not present in upstream Beautiful Jekyll.

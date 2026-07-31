@@ -67,6 +67,12 @@ The `Release Please` workflow runs on pushes to `master` and manual dispatches b
 complete through `86c46fbb3b8e26aa9e05f204b1fb9d6c655226bd`; `auto-release.yml` remains available for manual historical
 repair, while Release Please manages later commits.
 
+### `.github/workflows/workflow-validation.yml`
+
+The `Workflow validation` workflow runs on local workflow and automation configuration changes, then calls the
+[shared workflow-validation workflow](https://github.com/cyaris/shared-automation#githubworkflowsworkflow-validationyml)
+to validate the repository-owned Pages workflow, release configuration, and Renovate configuration.
+
 ## Additional Features
 
 These site-local features are layered on top of Beautiful Jekyll. The `_includes` files listed here are not present in upstream Beautiful Jekyll.

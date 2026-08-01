@@ -4,9 +4,26 @@
   {%- assign bundle_path = '/' | append: s3_bundle_prefix | append: 'bundle' -%}
   {%- assign s3_path = s3_path | replace: '/bundle', bundle_path -%}
 {%- endif -%}
+{%- assign s3_path_and_query = s3_path -%}
+{%- assign s3_fragment = '' -%}
+{%- if s3_path contains '#' -%}
+  {%- assign s3_path_parts = s3_path | split: '#' -%}
+  {%- assign s3_path_and_query = s3_path_parts[0] -%}
+  {%- assign s3_fragment = s3_path | remove_first: s3_path_and_query -%}
+{%- endif -%}
+{%- assign s3_key = s3_path_and_query | split: '?' | first -%}
+{%- assign s3_key_first = s3_key | slice: 0 -%}
+{%- if s3_key_first == '/' -%}
+  {%- assign s3_key_length = s3_key | size | minus: 1 -%}
+  {%- assign s3_key = s3_key | slice: 1, s3_key_length -%}
+{%- endif -%}
+{%- assign s3_asset_matches = site.data.generated_s3_assets | where: 'key', s3_key -%}
+{%- assign s3_asset = s3_asset_matches | first -%}
+{%- assign s3_version = s3_asset.version | default: 'local' -%}
 {%- capture asset_url -%}
-  {{- site.s3_bucket | append: '/' | append: s3_path -}}
-  {%- if include.bundle or include.cache_bust -%}?v={{ site.time | date: '%s' }}{%- endif -%}
+  {{- site.s3_bucket | append: '/' | append: s3_path_and_query -}}
+  {%- if s3_path_and_query contains '?' -%}&v={{ s3_version }}{%- else -%}?v={{ s3_version }}{%- endif -%}
+  {{- s3_fragment -}}
 {%- endcapture -%}
 {%- if include.type == 'style' -%}
   <link rel="stylesheet" href="{{ asset_url }}">

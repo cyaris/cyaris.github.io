@@ -30,18 +30,18 @@ Local wrappers that delegate to `cyaris/shared-automation` link to the
 [shared-automation workflow reference](https://github.com/cyaris/shared-automation#workflows) for reusable workflow
 behavior, inputs, and secrets.
 
-### `.github/workflows/ci.yml`
+### `.github/workflows/pages.yml`
 
-The `Beautiful Jekyll CI` workflow runs on pushes, pull requests, and manual dispatch. It installs Ruby dependencies
-with Bundler and Appraisal, configures the GitHub Pages base path, generates `_data/github_repos.yml` from repository
-front matter, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the Pages artifact. Runs on
-`master` also deploy that artifact to GitHub Pages through `actions/deploy-pages`.
+The `Pages` workflow runs on pushes, pull requests, manual dispatch, and the daily 8:00 AM America/Chicago schedule. It
+installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path, generates
+`_data/github_repos.yml` from repository front matter, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the
+Pages artifact. Runs on `master` also deploy that artifact to GitHub Pages through `actions/deploy-pages`.
 
-The workflow can be dispatched from the GitHub Actions UI with **Actions > Beautiful Jekyll CI > Run workflow**. Manual
-dispatch has no custom inputs. It can also be dispatched from the command line or GitHub API against `master`:
+The workflow can be dispatched from the GitHub Actions UI with **Actions > Pages > Run workflow**. Manual dispatch has no
+custom inputs. It can also be dispatched from the command line or GitHub API against `master`:
 
 ```sh
-gh workflow run .github/workflows/ci.yml --ref master
+gh workflow run .github/workflows/pages.yml --ref master
 ```
 
 ### `.github/workflows/auto-release.yml`
@@ -81,7 +81,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 - `_includes/github-repo-badges.html` renders linked follow, star, watch, and fork badges with accessible labels, GitHub icons, optional counts, repository creation dates, and latest default-branch commit dates.
 - `scripts/update-github-repo-dates.mjs` generates repository metadata for content files with `gh-repo` front matter.
-- `.github/workflows/ci.yml` refreshes the repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages, while `.gitignore` keeps the generated `_data/github_repos.yml` file local.
+- `.github/workflows/pages.yml` refreshes the repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages, while `.gitignore` keeps the generated `_data/github_repos.yml` file local.
 
 ### S3-Hosted App And Document Assets
 
@@ -241,9 +241,9 @@ Deletes `_layouts/minimal.html`, `_includes/footer-minimal.html`, and `assets/cs
 
 `.gitignore` ignores generated GitHub repository metadata.
 
-### `.github/workflows/ci.yml`
+### `.github/workflows/pages.yml`
 
-`.github/workflows/ci.yml` generates GitHub repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages with GitHub Actions.
+`.github/workflows/pages.yml` generates GitHub repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages with GitHub Actions.
 
 ### `tags.html`
 

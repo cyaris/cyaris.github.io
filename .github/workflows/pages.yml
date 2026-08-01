@@ -1,16 +1,36 @@
-name: Beautiful Jekyll CI
+name: Pages
 
 on:
   push:
   pull_request:
+  schedule:
+    - cron: "0 13,14 * * *"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
+  local-time:
+    name: Check local schedule time
+    runs-on: ubuntu-latest
+    outputs:
+      should-run: ${{ steps.schedule.outputs.should-run }}
+    steps:
+      - id: schedule
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT_NAME" != "schedule" || "$(TZ=America/Chicago date +%H)" == "08" ]]; then
+            printf "should-run=true\n" >> "$GITHUB_OUTPUT"
+          else
+            printf "should-run=false\n" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
     name: Build Jekyll
+    needs: local-time
+    if: needs.local-time.outputs.should-run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6

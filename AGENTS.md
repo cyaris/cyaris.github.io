@@ -101,7 +101,7 @@
 - Workflows must fail clearly when a requested feature requires credentials, secrets, repository variables, external
   permissions, or paid services that are not configured. Apply this to dry-run modes too unless the feature is
   explicitly documented as credential-optional.
-- Keep the root `Beautiful Jekyll CI` workflow local to this repository unless another Jekyll site starts sharing the
+- Keep the root `Pages` workflow local to this repository unless another Jekyll site starts sharing the
   same build workflow.
 - Site release naming and milestone overrides belong in `.github/release-policy.yml`.
 

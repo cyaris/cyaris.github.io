@@ -58,16 +58,12 @@ let BeautifulJekyllJS = {
 
       // 2fc73a3a967e97599c9763d05e564189
       // set an initial image
-      const imgInfo = BeautifulJekyllJS.getImgInfo()
-      const src = imgInfo.src
-      const desc = imgInfo.desc
+      const { src, desc } = BeautifulJekyllJS.getImgInfo()
       BeautifulJekyllJS.setImg(src, desc)
 
       // For better UX, prefetch the next image so that it will already be loaded when we want to show it
       const getNextImg = function () {
-        const imgInfo = BeautifulJekyllJS.getImgInfo()
-        const src = imgInfo.src
-        const desc = imgInfo.desc
+        const { src, desc } = BeautifulJekyllJS.getImgInfo()
 
         const prefetchImg = new Image()
         prefetchImg.src = src
@@ -105,12 +101,12 @@ let BeautifulJekyllJS = {
     const src = BeautifulJekyllJS.bigImgEl.attr("data-img-src-" + randNum)
     const desc = BeautifulJekyllJS.bigImgEl.attr("data-img-desc-" + randNum)
 
-    return { src: src, desc: desc }
+    return { src, desc }
   },
 
   setImg: function (src, desc) {
     $(".intro-header.big-img").css("background-image", "url(" + src + ")")
-    if (typeof desc !== typeof undefined && desc !== false) {
+    if (desc !== undefined && desc !== false) {
       $(".img-desc").text(desc).show()
     } else {
       $(".img-desc").hide()

@@ -1,6 +1,17 @@
-{%- capture asset_url -%}{% include s3_url.html path=include.path bundle=include.bundle cache_bust=include.cache_bust %}{%- endcapture -%}
+{%- assign s3_path = include.path -%}
+{%- assign s3_bundle_prefix = site.s3_bundle_prefix | default: '' -%}
+{%- if include.bundle and s3_bundle_prefix != '' -%}
+  {%- assign bundle_path = '/' | append: s3_bundle_prefix | append: 'bundle' -%}
+  {%- assign s3_path = s3_path | replace: '/bundle', bundle_path -%}
+{%- endif -%}
+{%- capture asset_url -%}
+  {{- site.s3_bucket | append: '/' | append: s3_path -}}
+  {%- if include.bundle or include.cache_bust -%}?v={{ site.time | date: '%s' }}{%- endif -%}
+{%- endcapture -%}
 {%- if include.type == 'style' -%}
   <link rel="stylesheet" href="{{ asset_url }}">
 {%- elsif include.type == 'script' -%}
   <script src="{{ asset_url }}"></script>
+{%- else -%}
+  {{- asset_url -}}
 {%- endif -%}

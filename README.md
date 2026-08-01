@@ -85,8 +85,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 ### S3-Hosted App And Document Assets
 
-- `_includes/s3_url.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, and adds build-time cache busting by default.
-- `_includes/s3_asset.html` emits stylesheet and script tags for S3-hosted assets.
+`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, adds build-time cache busting by default, and emits stylesheet or script tags when a page passes a `type`.
 
 ### Legacy Project Launch Buttons
 

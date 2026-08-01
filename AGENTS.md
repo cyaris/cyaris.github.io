@@ -56,7 +56,7 @@
 
 ## JavaScript
 
-- Follow the JavaScript-relevant guidance from `../svelte-lib/AGENTS.md` for site JavaScript and Node scripts in this repository, including import placement, formatting, dependency ownership, and small-variable cleanup preferences. Treat Svelte-component, embedded-app, package-export, and library-release rules from that file as applicable only when this repository is editing comparable Svelte or shared-library code.
+- Follow the JavaScript-relevant guidance from `../svelte-lib/AGENTS.md` for site JavaScript, inline JavaScript in HTML/Liquid templates, and Node scripts in this repository, including import placement, formatting, dependency ownership, and small-variable cleanup preferences. Treat Svelte-component, embedded-app, package-export, and library-release rules from that file as applicable only when this repository is editing comparable Svelte or shared-library code.
 
 ## Animated Thumbnail Assets
 

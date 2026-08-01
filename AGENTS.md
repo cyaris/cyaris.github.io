@@ -54,6 +54,10 @@
 
 - Keep all tags alphabetized.
 
+## JavaScript
+
+- Follow the JavaScript-relevant guidance from `../svelte-lib/AGENTS.md` for site JavaScript and Node scripts in this repository, including import placement, formatting, dependency ownership, and small-variable cleanup preferences. Treat Svelte-component, embedded-app, package-export, and library-release rules from that file as applicable only when this repository is editing comparable Svelte or shared-library code.
+
 ## Animated Thumbnail Assets
 
 - Prefer focused, subject-only animations for thumbnails. Avoid recording the whole website, navbar, browser chrome, or long setup motion unless the user explicitly asks for that context.

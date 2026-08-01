@@ -1,5 +1,4 @@
 {%- assign cache_bust_strategy = include.cache_bust_strategy
-  | default: site.s3_bundle_cache_bust_strategy
   | default: 'build_time'
 -%}
 {%- capture asset_url -%}{% include s3_url.html path=include.path bundle=include.bundle cache_bust=include.cache_bust cache_bust_strategy=cache_bust_strategy %}{%- endcapture -%}

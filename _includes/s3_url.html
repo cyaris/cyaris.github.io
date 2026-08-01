@@ -10,7 +10,6 @@
   {%- assign s3_path = s3_path | replace: '/bundle', bundle_path -%}
 {%- endif -%}
 {%- assign cache_bust_strategy = include.cache_bust_strategy
-  | default: site.s3_bundle_cache_bust_strategy
   | default: 'build_time'
 -%}
 {%- assign should_cache_bust = false -%}

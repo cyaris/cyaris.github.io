@@ -1,7 +1,7 @@
+import { spawn } from "node:child_process"
 import crypto from "node:crypto"
 import fs from "node:fs"
 import path from "node:path"
-import { spawn } from "node:child_process"
 
 const contentExtensions = new Set([".html", ".liquid", ".md"])
 const ignoredDirs = new Set([".git", "_site", "docs", "node_modules"])
@@ -33,22 +33,22 @@ export function parseS3AssetIncludes(file, contents) {
 
   while ((tagMatch = tagPattern.exec(contents))) {
     const attrs = {}
-    const quotedAttrs = new Set()
     const attrPattern = /([A-Za-z0-9_-]+)\s*=\s*("[^"]*"|'[^']*'|[^\s%]+)/g
     let attrMatch
+    let pathIsQuoted = false
 
     while ((attrMatch = attrPattern.exec(tagMatch[1]))) {
-      if (
-        (attrMatch[2].startsWith("'") && attrMatch[2].endsWith("'")) ||
-        (attrMatch[2].startsWith('"') && attrMatch[2].endsWith('"'))
-      ) {
-        quotedAttrs.add(attrMatch[1])
+      const value = attrMatch[2]
+      const isQuoted = (value.startsWith("'") && value.endsWith("'")) || (value.startsWith('"') && value.endsWith('"'))
+
+      if (attrMatch[1] === "path" && isQuoted) {
+        pathIsQuoted = true
       }
 
-      attrs[attrMatch[1]] = parseIncludeValue(attrMatch[2])
+      attrs[attrMatch[1]] = parseIncludeValue(value)
     }
 
-    if (!quotedAttrs.has("path") || typeof attrs.path !== "string" || attrs.path === "" || /[{%}]/.test(attrs.path)) {
+    if (!pathIsQuoted || typeof attrs.path !== "string" || attrs.path === "" || /[{%}]/.test(attrs.path)) {
       throw new Error(`Cannot statically resolve s3_asset path in ${file}: ${tagMatch[0].trim()}`)
     }
 

@@ -64,8 +64,8 @@ gh workflow run .github/workflows/auto-release.yml --ref master \
 
 The `Release Please` workflow runs on pushes to `master` and manual dispatches by `cyaris`, using
 `release-please-config.json` and `.release-please-manifest.json` for future releases. Historical reconciliation is
-complete through `86c46fbb3b8e26aa9e05f204b1fb9d6c655226bd`; `auto-release.yml` remains available for manual historical
-repair, while Release Please manages later commits.
+complete through the handoff recorded in `release-please-config.json`; `auto-release.yml` remains available for manual
+historical repair, while Release Please manages later commits.
 
 ### `.github/workflows/workflow-validation.yml`
 

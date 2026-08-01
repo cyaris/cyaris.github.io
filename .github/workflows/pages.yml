@@ -87,9 +87,11 @@ jobs:
             fi
           fi
 
-          printf "mode=%s\n" "$mode" >> "$GITHUB_OUTPUT"
-          printf "use_access_keys=%s\n" "$use_access_keys" >> "$GITHUB_OUTPUT"
-          printf "use_oidc=%s\n" "$use_oidc" >> "$GITHUB_OUTPUT"
+          {
+            printf "mode=%s\n" "$mode"
+            printf "use_access_keys=%s\n" "$use_access_keys"
+            printf "use_oidc=%s\n" "$use_oidc"
+          } >> "$GITHUB_OUTPUT"
       - name: Configure AWS credentials with OIDC role
         if: steps.s3-assets.outputs.use_oidc == 'true'
         uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6

@@ -24,55 +24,6 @@ npm run update:github-repos
 
 The GitHub Actions build runs this automatically before Jekyll builds the site. The generated `_data/github_repos.yml` file is ignored locally.
 
-## GitHub Actions Workflows
-
-Local wrappers that delegate to `cyaris/shared-automation` link to the
-[shared-automation workflow reference](https://github.com/cyaris/shared-automation#workflows) for reusable workflow
-behavior, inputs, and secrets.
-
-### `.github/workflows/pages.yml`
-
-The `Pages` workflow runs on pushes, pull requests, manual dispatch, and the daily 8:00 AM America/Chicago schedule. It
-installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path, generates
-`_data/github_repos.yml` from repository front matter, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the
-Pages artifact. Runs on `master` also deploy that artifact to GitHub Pages through `actions/deploy-pages`.
-
-The workflow can be dispatched from the GitHub Actions UI with **Actions > Pages > Run workflow**. Manual dispatch has no
-custom inputs. It can also be dispatched from the command line or GitHub API against `master`:
-
-```sh
-gh workflow run .github/workflows/pages.yml --ref master
-```
-
-### `.github/workflows/auto-release.yml`
-
-The `Auto release` workflow runs from manual dispatch only and calls the
-[shared auto-release workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-releaseyml). This
-repository contributes `.github/release-policy.yml` overrides to the shared release policy.
-
-It can also be dispatched from the command line or GitHub API against `master`:
-
-```sh
-gh workflow run .github/workflows/auto-release.yml --ref master \
-  -f release-sha=<commit-sha> \
-  -f shared-automation-ref=<ref> \
-  -f publish=true \
-  -f update-existing=true
-```
-
-### `.github/workflows/release-please.yml`
-
-The `Release Please` workflow runs on pushes to `master` and manual dispatches by `cyaris`, using
-`release-please-config.json` and `.release-please-manifest.json` for future releases. Historical reconciliation is
-complete through the handoff recorded in `release-please-config.json`; `auto-release.yml` remains available for manual
-historical repair, while Release Please manages later commits.
-
-### `.github/workflows/workflow-validation.yml`
-
-The `Workflow validation` workflow runs on local workflow and automation configuration changes, then calls the
-[shared workflow-validation workflow](https://github.com/cyaris/shared-automation#githubworkflowsworkflow-validationyml)
-to validate the repository-owned Pages workflow, release configuration, and Renovate configuration.
-
 ## Additional Features
 
 These site-local features are layered on top of Beautiful Jekyll. The `_includes` files listed here are not present in upstream Beautiful Jekyll.
@@ -248,3 +199,52 @@ Deletes `_layouts/minimal.html`, `_includes/footer-minimal.html`, and `assets/cs
 
 - Removes the tag index
 - Removes tag counts from tag headings
+
+## GitHub Actions Workflows
+
+Local wrappers that delegate to `cyaris/shared-automation` link to the
+[shared-automation workflow reference](https://github.com/cyaris/shared-automation#workflows) for reusable workflow
+behavior, inputs, and secrets.
+
+### `.github/workflows/pages.yml`
+
+The `Pages` workflow runs on pushes, pull requests, manual dispatch, and the daily 8:00 AM America/Chicago schedule. It
+installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path, generates
+`_data/github_repos.yml` from repository front matter, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the
+Pages artifact. Runs on `master` also deploy that artifact to GitHub Pages through `actions/deploy-pages`.
+
+The workflow can be dispatched from the GitHub Actions UI with **Actions > Pages > Run workflow**. Manual dispatch has no
+custom inputs. It can also be dispatched from the command line or GitHub API against `master`:
+
+```sh
+gh workflow run .github/workflows/pages.yml --ref master
+```
+
+### `.github/workflows/auto-release.yml`
+
+The `Auto release` workflow runs from manual dispatch only and calls the
+[shared auto-release workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-releaseyml). This
+repository contributes `.github/release-policy.yml` overrides to the shared release policy.
+
+It can also be dispatched from the command line or GitHub API against `master`:
+
+```sh
+gh workflow run .github/workflows/auto-release.yml --ref master \
+  -f release-sha=<commit-sha> \
+  -f shared-automation-ref=<ref> \
+  -f publish=true \
+  -f update-existing=true
+```
+
+### `.github/workflows/release-please.yml`
+
+The `Release Please` workflow runs on pushes to `master` and manual dispatches by `cyaris`, using
+`release-please-config.json` and `.release-please-manifest.json` for future releases. Historical reconciliation is
+complete through the handoff recorded in `release-please-config.json`; `auto-release.yml` remains available for manual
+historical repair, while Release Please manages later commits.
+
+### `.github/workflows/workflow-validation.yml`
+
+The `Workflow validation` workflow runs on local workflow and automation configuration changes, then calls the
+[shared workflow-validation workflow](https://github.com/cyaris/shared-automation#githubworkflowsworkflow-validationyml)
+to validate the repository-owned Pages workflow, release configuration, and Renovate configuration.

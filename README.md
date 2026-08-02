@@ -118,9 +118,9 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview metadata, thumbnail sizing, title hover colors, and preview borders
-- Aligns tag link styling and the post tag label with GitHub repo badges using shared preview pill color variables
+- Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
 - Places project page GitHub action badges and repository metadata badges in one left-aligned header row when space allows
-- Shows tag pills on Blog and Projects listing pages
+- Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
 - Defines shared button styling for `.btn-group` and contact form buttons, including local focus-state overrides
@@ -202,7 +202,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Lazily loads and asynchronously decodes post preview thumbnails
 - Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`small` or `extra-small`) front matter for thumbnail crops and sizing
 - Removes the "Posted on" label from post dates
-- Shows tag pills on Blog and Projects listing pages
+- Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata exists
 
 ### `_layouts/page.html`

@@ -25,10 +25,13 @@ em {
   opacity: 0.875;
 }
 
-a,
+a {
+  color: var(--hover-col);
+}
+
 a:hover,
 a:focus {
-  color: var(--link-col);
+  color: var(--hover-col);
 }
 
 /* --- Full-Width Tool Hosts --- */
@@ -852,7 +855,7 @@ button:focus {
   letter-spacing: 0;
   line-height: 1;
   opacity: 1;
-  padding: 0.38rem 0.62rem;
+  padding: 0.32rem 0.62rem 0.44rem;
   white-space: nowrap;
 }
 
@@ -866,6 +869,12 @@ button:focus {
 
 .post-preview .blog-tags {
   opacity: 0.8;
+}
+
+@media (max-width: 767px) {
+  .blog-tags {
+    display: none;
+  }
 }
 
 /* --- Tags Page --- */

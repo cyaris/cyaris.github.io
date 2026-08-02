@@ -119,13 +119,13 @@ navbar-link-hover-col: "#175676"
 page-col: "#ffffff"
 text-col: "#33413f"
 link-col: "#147a70"
-hover-col: "#197278"
-post-title-link-hover-col: "#147a70"
+hover-col: "#1b998b"
+post-title-link-hover-col: "#1b998b"
 # post-title-link-hover-col: ""#54bdca"
 preview-pill-background-col: "#f2fbfa"
 preview-pill-border-col: "#a8d9d3"
 preview-pill-background-hover-col: "#e2f4f2"
-preview-pill-border-hover-col: "#147a70"
+preview-pill-border-hover-col: "#1b998b"
 preview-pill-count-border-col: "#8fcac2"
 
 footer-col: "#54bdca"
@@ -154,12 +154,12 @@ pagination-background-hover-col: "#20b3a1"
 pagination-border-hover-col: "#197278"
 
 tag-link-col: "#147a70"
-tag-link-hover-col: "#147a70"
+tag-link-hover-col: "#1b998b"
 tag-background-hover-col: "#e2f4f2"
-tag-border-hover-col: "#147a70"
+tag-border-hover-col: "#1b998b"
 
-# Retired color values kept for future palette experiments:
-# "#1b998b" - former link, post title hover, tag hover, and tag border color
+# Palette values kept for future experiments:
+# "#1b998b" - former base link color, now restored for hover and accent states
 # "#404040" - former inherited text/tag color
 # "#4aa4b0" - former commented navbar dropdown hover background option
 # "#20b3a1" - former pagination border color

@@ -3,7 +3,7 @@
   subtitle: Performing network analysis on over 200 years of data from the Correlates of War (COW) Project.
   url: /the_networks_of_war/
   gh-repo: cyaris/the_networks_of_war
-  tags: [css, d3.js, data storytelling, duckdb, force-directed graph, html, javascript, network analysis, pandas, python, rollup.js, sql, svelte, svelte-lib, tailwind css, vite]
+  tags: [d3.js, data storytelling, duckdb, force-directed graph, javascript, network analysis, pandas, python, sql, svelte, tailwind css, vite]
   thumbnail-img: /assets/img/networks-war-demo.png
   thumbnail-size: extra-small
   navbar: true
@@ -12,7 +12,7 @@
   subtitle: Comparing historical time series models using data from GunViolenceArchive.org.
   url: /us_gun_violence_forecasting/
   gh-repo: cyaris/us_gun_violence_forecasting
-  tags: [css, d3.js, data storytelling, error metrics, html, javascript, machine learning, numpy, pandas, prophet, python, rollup.js, svelte, svelte-lib, tailwind css, time series modeling, vite]
+  tags: [d3.js, data storytelling, error metrics, javascript, machine learning, numpy, pandas, prophet, python, svelte, tailwind css, time series modeling, vite]
   thumbnail-img: https://www.gunviolencearchive.org/sites/all/themes/gva_theme/images/new-logo.jpg
   thumbnail-size: extra-small
   navbar: true
@@ -21,7 +21,7 @@
   subtitle: My version of the classic code-cracking game.
   url: /mastermind/
   gh-repo: cyaris/mastermind
-  tags: [css, d3.js, fireworks, html, javascript, rollup.js, svelte, svelte-lib, tailwind css, vite]
+  tags: [d3.js, fireworks, javascript, svelte, tailwind css, vite]
   thumbnail-img: https://i5.walmartimages.com/seo/Hasbro-Mastermind-for-Kids-Board-Games_568cd372-e700-4a9f-a35a-c32f859b4850.104f171c37ef2cc96bb3ac486360508d.jpeg
   thumbnail-size: extra-small
   navbar: true
@@ -30,7 +30,7 @@
   subtitle: An interactive pixel-reveal portrait with laser eyes, progress tracking, and fireworks.
   url: /profile_photo/
   gh-repo: cyaris/profile_photo
-  tags: [css, d3.js, fireworks, html, javascript, python, rollup.js, svelte, svelte-lib, tailwind css, vite]
+  tags: [d3.js, fireworks, javascript, python, svelte, tailwind css, vite]
   thumbnail-img: /assets/img/profile-photo-thumbnail.png
   thumbnail-size: extra-small
   navbar: false
@@ -39,7 +39,7 @@
   subtitle: Launch a firework from any page on my website.
   url: /fireworks/
   gh-repo: cyaris/fireworks
-  tags: [css, d3.js, html, javascript, rollup.js, svelte, svelte-lib, tailwind css, vite]
+  tags: [d3.js, javascript, svelte, tailwind css, vite]
   thumbnail-img: /assets/img/firework-launcher-demo.png
   thumbnail-size: extra-small
   navbar: false

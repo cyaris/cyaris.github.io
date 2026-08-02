@@ -254,16 +254,16 @@ behavior, inputs, and secrets.
 
 ### `.github/workflows/pages.yml`
 
-The `Pages` workflow runs on pushes, pull requests, manual dispatch, and the daily 8:00 AM America/Chicago schedule. It
-installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path, generates
+The `Pages` workflow runs on pushes to `master`, pull requests, manual dispatch, and the daily 8:00 AM America/Chicago
+schedule. It installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path, generates
 `_data/github_repos.yml` from repository front matter, generates `_data/generated_s3_assets.yml` from current S3 object
 metadata or deterministic pull-request fallback data, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the
 Pages artifact. Runs on `master` also deploy that artifact to GitHub Pages through `actions/deploy-pages`.
 
 Scheduled and `master` builds require `AWS_ROLLUP_UPLOAD_ROLE_ARN` or the `AWS_ACCESS_KEY_ID` and
 `AWS_SECRET_ACCESS_KEY` secrets so `scripts/generate-s3-asset-versions.mjs` can call `aws s3api head-object` for every
-referenced S3 object. Pull-request and non-production branch builds use stable local fallback values to keep preview
-validation available without AWS credentials.
+referenced S3 object. Pull-request builds use stable local fallback values to keep preview validation available without
+AWS credentials.
 
 The workflow can be dispatched from the GitHub Actions UI with **Actions > Pages > Run workflow**. Manual dispatch has no
 custom inputs. It can also be dispatched from the command line or GitHub API against `master`:
@@ -283,7 +283,6 @@ It can also be dispatched from the command line or GitHub API against `master`:
 ```sh
 gh workflow run .github/workflows/auto-release.yml --ref master \
   -f release-sha=<commit-sha> \
-  -f shared-automation-ref=<ref> \
   -f publish=true \
   -f update-existing=true
 ```

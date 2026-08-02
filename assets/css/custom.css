@@ -275,203 +275,6 @@ main.container-fluid:has(.full-width-tool-host) > .row > .col {
   }
 }
 
-/* --- About Me --- */
-
-.image-scroll {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-  overflow-x: auto;
-  padding: 0.75rem 0;
-  scroll-snap-type: x proximity;
-  overscroll-behavior-inline: contain;
-  -webkit-overflow-scrolling: touch;
-}
-
-.image-scroll img {
-  flex: 0 0 auto;
-  width: min(80vw, 400px);
-  height: min(52vw, 260px);
-  object-fit: cover;
-  border-radius: 12px;
-  scroll-snap-align: start;
-}
-
-.image-scroll {
-  scrollbar-width: thin;
-}
-
-.image-scroll::-webkit-scrollbar {
-  height: 8px;
-}
-
-.image-scroll::-webkit-scrollbar-thumb {
-  background: var(--footer-border-col);
-  border-radius: 999px;
-}
-
-/* --- Contact --- */
-
-.contact-form {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.contact-field {
-  margin-bottom: 1.25rem;
-}
-
-.contact-field label {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-weight: 700;
-}
-
-.contact-field input,
-.contact-field textarea {
-  width: 100%;
-  padding: 0.8rem 0.9rem;
-  color: var(--text-col);
-  background-color: var(--page-col);
-  border: 2px solid var(--navbar-col);
-  border-radius: 10px;
-}
-
-.contact-field input:focus,
-.contact-field textarea:focus {
-  border-color: var(--link-col);
-  outline: 3px solid color-mix(in srgb, var(--link-col) 25%, transparent);
-}
-
-.contact-field textarea {
-  resize: vertical;
-}
-
-.contact-form button {
-  display: inline-block;
-  padding: 16px 31px;
-  color: var(--btn-link-col);
-  font-size: 17px;
-  font-weight: 750;
-  background-color: var(--btn-background-col);
-  border: 4.5px solid transparent;
-  border-radius: 28px;
-  cursor: pointer;
-  height: 65px;
-  text-decoration: none;
-  width: 205px;
-}
-
-.contact-form button:hover,
-.contact-form button:focus {
-  color: var(--btn-link-hover-col);
-  background-color: var(--btn-background-hover-col);
-  border-color: var(--btn-border-hover-col);
-  text-decoration: none;
-  font-weight: 750;
-}
-
-.contact-form button:disabled {
-  cursor: wait;
-  opacity: 0.7;
-}
-
-.contact-turnstile {
-  width: 100%;
-  max-width: 360px;
-  margin: 0.35rem 0 1.25rem;
-  padding: 0.55rem 0;
-  border-radius: 10px;
-}
-
-.contact-turnstile .cf-turnstile {
-  min-width: 0;
-}
-
-.contact-status {
-  min-height: 1.5rem;
-  margin-top: 1rem;
-  font-weight: 700;
-}
-
-.contact-status[data-state="success"] {
-  color: var(--link-col);
-}
-
-.contact-status[data-state="error"] {
-  color: #c44536;
-}
-
-.contact-honeypot {
-  position: absolute !important;
-  left: -9999px !important;
-  top: auto !important;
-  width: 1px !important;
-  height: 1px !important;
-  overflow: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-@media (max-width: 576px) {
-  main.container-md:has(.contact-form) {
-    padding-right: 1.125rem;
-    padding-left: 1.125rem;
-  }
-
-  .contact-form {
-    max-width: none;
-    margin-top: 0.25rem;
-    padding: 1.1rem 0 0.4rem;
-  }
-
-  .contact-field {
-    margin-bottom: 1rem;
-  }
-
-  .contact-field label {
-    margin-bottom: 0.35rem;
-    font-size: 0.95rem;
-  }
-
-  .contact-field input,
-  .contact-field textarea {
-    min-height: 3rem;
-    padding: 0.8rem 0.85rem;
-    font-size: 1rem;
-    line-height: 1.45;
-    border-color: color-mix(in srgb, var(--navbar-col) 82%, var(--text-col));
-    border-radius: 8px;
-    box-shadow: 0 2px 0 color-mix(in srgb, var(--navbar-col) 24%, transparent);
-  }
-
-  .contact-field textarea {
-    min-height: 11.5rem;
-  }
-
-  .contact-turnstile {
-    max-width: none;
-    margin: 0.3rem 0 1rem;
-    padding: 0.5rem;
-    border-radius: 8px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .contact-form button {
-    display: block;
-    margin: 0 auto;
-  }
-
-  .contact-status {
-    min-height: 1.35rem;
-    margin-top: 0.85rem;
-    font-size: 0.95rem;
-    line-height: 1.45;
-    text-align: center;
-  }
-}
-
 /* --- Footer --- */
 
 footer {
@@ -879,40 +682,6 @@ button:focus {
   font-weight: 750;
 }
 
-.fireworks-page {
-  margin: 1.5rem auto 0;
-  max-width: 47rem;
-  width: 100%;
-}
-
-.fireworks-page p,
-.fireworks-page .fireworks-launch-control {
-  margin-bottom: 1.5rem;
-}
-
-.fireworks-launch-control {
-  text-align: center;
-}
-
-.firework-launch-button,
-.firework-launch-button:hover,
-.firework-launch-button:focus {
-  cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
-  animation: kidpix_cursor_animate 0.25s infinite;
-  -webkit-animation: kidpix_cursor_animate 0.25s infinite;
-}
-
-.firework-launch-button {
-  align-items: center;
-  display: inline-flex;
-  height: auto;
-  justify-content: center;
-  line-height: 1.15;
-  min-height: 65px;
-  padding: 0.65rem 1.5rem;
-  white-space: normal;
-}
-
 .project-page-repo-badges {
   margin-bottom: 1.35rem;
   margin-top: 0;
@@ -923,42 +692,6 @@ button:focus {
 }
 
 @media (max-width: 575px) {
-  body:has(.fireworks-page) .intro-header .project-heading h1 {
-    font-size: 2.125rem;
-    line-height: 1.12;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 18rem;
-  }
-
-  body:has(.fireworks-page) .intro-header .project-heading .page-subheading {
-    font-size: 1.25rem;
-    line-height: 1.25;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 18rem;
-  }
-
-  .fireworks-page {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 1.25rem;
-    max-width: 21.5rem;
-    width: 100%;
-  }
-
-  .fireworks-page p {
-    overflow-wrap: break-word;
-  }
-
-  .fireworks-launch-control {
-    text-align: left;
-  }
-
-  .firework-launch-button {
-    width: min(100%, 205px);
-  }
-
   .project-page-repo-badges {
     column-gap: 0.35rem;
     display: grid;
@@ -972,11 +705,6 @@ button:focus {
     font-size: 0.74rem;
     gap: 0.25rem;
     padding: 0.32rem 0.46rem;
-  }
-
-  body:has(.fireworks-page) .pagination.blog-pager {
-    max-width: 21.5rem;
-    width: 100%;
   }
 }
 
@@ -1037,18 +765,6 @@ button:focus {
 @media (max-width: 767px) {
   .blog-tags {
     display: none;
-  }
-}
-
-/* --- Tags Page --- */
-
-.linked-section {
-  margin-left: 1.5rem;
-}
-
-@media (min-width: 1200px) {
-  .post-list {
-    margin-left: 2.78rem;
   }
 }
 

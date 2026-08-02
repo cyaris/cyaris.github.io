@@ -19,11 +19,11 @@ author: Charlie Yaris
 ###############################################
 
 navbar-links:
-  About Me: about_me
-  Projects: projects
-  Blog: blog
-  Contact: contact
-  Resume: resume
+  About Me: /about_me/
+  Projects: /projects/
+  Blog: /blog/
+  Contact: /contact/
+  Resume: /resume/
 
 ################
 # --- Logo --- #

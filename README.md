@@ -109,6 +109,10 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Applies the `image_404` class for local responsive image sizing
 - Lazily decodes the 404 image
 
+### `about_me.html`
+
+- Defines page-local horizontal image-scroll styling for the About Me gallery
+
 ### `assets/css/custom.css`
 
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
@@ -116,18 +120,15 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Defines the reusable `.center` alignment utility
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar sizing, avatar placement, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations
-- Adds horizontal image-scroll styling for the About Me page
-- Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
 - Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
 - Places project page GitHub action badges and repository metadata badges in one left-aligned top-content row when space allows
-- Adds Firework Launcher page spacing and launch-button cursor/sizing overrides
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
-- Defines shared button styling for `.btn-group` and contact form buttons, including local focus-state overrides
-- Customizes tag link, tags-page, and pagination styling, including desktop/mobile pagination text visibility
+- Defines shared button styling for `.btn-group`, including local focus-state overrides
+- Customizes tag link and pagination styling, including desktop/mobile pagination text visibility
 - Customizes social-share icon focus behavior
 - Disables text selection on interactive site controls, social-share controls, and footer areas
 
@@ -146,9 +147,18 @@ Project listing thumbnails can render generated square APNG assets under `assets
 
 - Renames the navbar text color setting to `navbar-link-col`
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
+- Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
 - Excludes build-only repository scripts from the generated site
+
+### `contact.html`
+
+- Defines page-local contact form, Turnstile, status, honeypot, and mobile contact-page styles
+
+### `fireworks/index.html`
+
+- Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides
 
 ### `_includes/footer.html`
 
@@ -213,6 +223,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 ### `tags.html`
 
 - Groups both blog posts and `_data/projects.yml` project cards by tag
+- Defines page-local tag heading and post-list offsets
 
 ### `_layouts/page.html`
 

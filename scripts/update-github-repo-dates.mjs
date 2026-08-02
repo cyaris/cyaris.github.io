@@ -3,7 +3,6 @@ import https from "node:https"
 import path from "node:path"
 
 const outFile = path.resolve("_data/github_repos.yml")
-const outDir = path.dirname(outFile)
 const token = process.env.GITHUB_TOKEN
 const ignoredDirs = new Set([".git", "_site", "node_modules"])
 
@@ -113,11 +112,10 @@ for (const file of collectContentFiles(process.cwd())) {
   }
 }
 
-const sortedRepos = [...repos].sort()
 const repoData = []
 const userInfoByName = new Map()
 
-for (const repo of sortedRepos) {
+for (const repo of [...repos].sort()) {
   const info = await requestJson(`/repos/${repo}`)
   const user = repo.split("/")[0]
   let userInfo = userInfoByName.get(user)
@@ -154,6 +152,6 @@ for (const repo of repoData) {
   lines.push(`  stargazers_count: ${repo.stargazersCount}`)
 }
 
-fs.mkdirSync(outDir, { recursive: true })
+fs.mkdirSync(path.dirname(outFile), { recursive: true })
 fs.writeFileSync(outFile, `${lines.join("\n")}\n`)
 console.log(`Wrote ${repoData.length} repos to ${path.relative(process.cwd(), outFile)}`)

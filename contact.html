@@ -44,7 +44,6 @@ title: Contact
     const status = document.getElementById('contact-status')
     const originalButtonText = button.textContent
 
-    const endpoint = 'https://contact-form-worker.charlieyaris.workers.dev'
     const setStatus = (message = '', state = '') => {
       status.textContent = message
       status.dataset.state = state
@@ -70,7 +69,7 @@ title: Contact
       setStatus()
 
       try {
-        const response = await fetch(endpoint, {
+        const response = await fetch('https://contact-form-worker.charlieyaris.workers.dev', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

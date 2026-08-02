@@ -32,6 +32,9 @@ jobs:
     needs: local-time
     if: needs.local-time.outputs.should-run == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -54,6 +57,61 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/update-github-repo-dates.mjs
+      - name: Resolve S3 asset metadata mode
+        id: s3-assets
+        env:
+          AWS_ACCESS_KEY_ID_INPUT: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_ROLE_TO_ASSUME: ${{ vars.AWS_ROLLUP_UPLOAD_ROLE_ARN }}
+          AWS_SECRET_ACCESS_KEY_INPUT: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+
+          mode="fallback"
+          use_access_keys="false"
+          use_oidc="false"
+
+          if [[ "$EVENT_NAME" != "pull_request" && ( "$REF_NAME" == "refs/heads/master" || "$EVENT_NAME" == "schedule" ) ]]; then
+            mode="aws"
+          fi
+
+          if [[ "$mode" == "aws" ]]; then
+            if [[ -n "$AWS_ROLE_TO_ASSUME" ]]; then
+              use_oidc="true"
+            elif [[ -n "$AWS_ACCESS_KEY_ID_INPUT" && -n "$AWS_SECRET_ACCESS_KEY_INPUT" ]]; then
+              use_access_keys="true"
+            else
+              printf "S3 asset version generation requires AWS_ROLLUP_UPLOAD_ROLE_ARN or AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY for %s on %s.\n" "$EVENT_NAME" "$REF_NAME" >&2
+              exit 1
+            fi
+          fi
+
+          {
+            printf "mode=%s\n" "$mode"
+            printf "use_access_keys=%s\n" "$use_access_keys"
+            printf "use_oidc=%s\n" "$use_oidc"
+          } >> "$GITHUB_OUTPUT"
+      - name: Configure AWS credentials with OIDC role
+        if: steps.s3-assets.outputs.use_oidc == 'true'
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6
+        with:
+          aws-region: us-east-2
+          role-to-assume: ${{ vars.AWS_ROLLUP_UPLOAD_ROLE_ARN }}
+      - name: Configure AWS credentials with access keys
+        if: steps.s3-assets.outputs.use_access_keys == 'true'
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: us-east-2
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+      - name: Test S3 asset version generation
+        run: npm run test:s3-assets
+      - name: Generate S3 asset versions
+        env:
+          S3_ASSET_VERSION_MODE: ${{ steps.s3-assets.outputs.mode }}
+        run: npm run update:s3-assets
       - name: Build site
         env:
           JEKYLL_ENV: production

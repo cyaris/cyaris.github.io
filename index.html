@@ -19,11 +19,9 @@ description: Charlie Yaris, Data Engineer.
     line-height: 1.1;
   }
 
-  /* defining classes differently for mobile and desktop. */
   @media (min-width: 1200px) {
     hr.large {
       max-width: 25rem;
-      /* max-width: 21rem; */
       border-width: 0.25rem;
     }
 
@@ -34,15 +32,12 @@ description: Charlie Yaris, Data Engineer.
     #homepage-subheading {
       font-size: 4.5rem;
       margin-bottom: 2rem;
-      /* transform: perspective(130px) rotateX(20deg); */
-      /* -webkit-transform: perspective(100px) rotateX(20deg); */
     }
   }
 
   @media (max-width: 1200px) {
     hr.large {
       max-width: 14.5rem;
-      /* max-width: 13rem; */
       border-width: 0.2rem;
     }
 
@@ -56,7 +51,7 @@ description: Charlie Yaris, Data Engineer.
     }
   }
 </style>
-<div style="margin-bottom:30px">
+<div style="margin-bottom: 30px;">
   <div class="center">
     <h1 id="homepage-heading">Charlie Yaris</h1>
     <hr class="large">
@@ -64,6 +59,6 @@ description: Charlie Yaris, Data Engineer.
   </div>
 </div>
 {% include s3_asset.html path='profile_photo/bundle.css' type='style' bundle=true %}
-<div style="margin-bottom:40px;">
+<div style="margin-bottom: 40px;">
   {% include s3_asset.html path='profile_photo/bundle.js' type='script' bundle=true %}
 </div>

@@ -6,6 +6,16 @@ layout: base
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
+      {% if page['project-id'] %}
+        {% assign page_repo = page['gh-repo'] %}
+        {%
+          include github-repo-badges.html
+          repo=page_repo
+          sections='actions,dates'
+          container_class='post-meta repo-meta repo-badges github-repo-badges project-page-repo-badges'
+        %}
+      {% endif %}
+
       {% if page['before-content'] %}
         <div class="before-content">
           {% for file in page['before-content'] %}
@@ -16,8 +26,10 @@ layout: base
 
       {{ content }}
 
-      {% assign page_repo = page['gh-repo'] %}
-      {% include github-repo-badges.html repo=page_repo sections='actions,dates' %}
+      {% unless page['project-id'] %}
+        {% assign page_repo = page['gh-repo'] %}
+        {% include github-repo-badges.html repo=page_repo sections='actions,dates' %}
+      {% endunless %}
 
       {% if page['project-id'] %}
         {% assign previous_project = null %}

@@ -121,7 +121,8 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
 - Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
-- Places project page GitHub action badges and repository metadata badges in one left-aligned header row when space allows
+- Places project page GitHub action badges and repository metadata badges in one left-aligned top-content row when space allows
+- Adds Firework Launcher page spacing and launch-button cursor/sizing overrides
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
@@ -170,7 +171,6 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Adds a project header class for project-specific title and subtitle sizing
 - Removes the "posted on" label from post dates
 - Removes the inactive read-time include hook
-- Shows GitHub action badges on project page headers whenever repository front matter is present, plus linked generated repository date badges when GitHub repository metadata exists
 
 ### `_includes/nav.html`
 
@@ -216,7 +216,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 
 ### `_layouts/page.html`
 
-- Adds the shared `github-repo-badges.html` include to pages
+- Adds the shared `github-repo-badges.html` include to pages, with project page badges placed before content
 - Adds previous and next pagination for project pages with `project-id` front matter, following `_data/projects.yml` order
 - Adds the social-share include when `social-share` is enabled
 - Removes the inactive upstream comments include

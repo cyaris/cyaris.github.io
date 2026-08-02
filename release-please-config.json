@@ -1,7 +1,0 @@
-{
-  "include-component-in-tag": false,
-  "include-v-in-tag": true,
-  "last-release-sha": "86c46fbb3b8e26aa9e05f204b1fb9d6c655226bd",
-  "skip-changelog": true,
-  "packages": { ".": { "release-type": "simple" } }
-}

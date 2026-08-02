@@ -111,7 +111,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 
 ### `assets/css/custom.css`
 
-- Overrides global typography, intro header heading spacing, emphasis opacity, and link colors
+- Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
@@ -119,7 +119,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Adds horizontal image-scroll styling for the About Me page
 - Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
-- Customizes post preview metadata, thumbnail sizing, title hover colors, and preview borders
+- Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
 - Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
 - Places project page GitHub action badges and repository metadata badges in one left-aligned header row when space allows
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
@@ -167,6 +167,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 ### `_includes/header.html`
 
 - Simplifies header image class assignment
+- Adds a project header class for project-specific title and subtitle sizing
 - Removes the "posted on" label from post dates
 - Removes the inactive read-time include hook
 - Shows GitHub action badges on project page headers whenever repository front matter is present, plus linked generated repository date badges when GitHub repository metadata exists
@@ -204,7 +205,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Filters listed posts by `page.type` and renders Projects page cards from `_data/projects.yml`
 - Renders a single left-aligned post thumbnail beside the post title and subtitle
 - Lazily loads and asynchronously decodes post preview thumbnails
-- Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`small` or `extra-small`) front matter for thumbnail crops and sizing
+- Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`normal`, `small`, `extra-small`, or `icon`) front matter for thumbnail crops and sizing
 - Removes the "Posted on" label from post dates
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata exists

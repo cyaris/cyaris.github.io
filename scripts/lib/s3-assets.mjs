@@ -209,15 +209,7 @@ function parseIncludeValue(value) {
     return value.slice(1, -1)
   }
 
-  if (value === "true") {
-    return true
-  }
-
-  if (value === "false") {
-    return false
-  }
-
-  return value
+  return value === "true" ? true : value === "false" ? false : value
 }
 
 function logicalIdForKey(key) {

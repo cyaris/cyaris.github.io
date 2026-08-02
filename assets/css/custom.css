@@ -854,6 +854,7 @@ button:focus {
   gap: 0.35rem;
   letter-spacing: 0;
   line-height: 1;
+  margin: 0.1rem 0;
   opacity: 1;
   padding: 0.32rem 0.62rem 0.44rem;
   white-space: nowrap;

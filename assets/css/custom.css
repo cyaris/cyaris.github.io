@@ -764,7 +764,20 @@ button:focus {
 
 @media (max-width: 767px) {
   .blog-tags {
+    align-items: center;
     display: none;
+    flex-wrap: wrap;
+    gap: 0.28rem;
+  }
+
+  .blog-tags a,
+  .blog-tags-label {
+    font-size: 0.72rem;
+  }
+
+  .blog-tags a {
+    gap: 0.25rem;
+    padding: 0.26rem 0.5rem 0.34rem;
   }
 }
 

@@ -28,7 +28,7 @@
 - id: profile_photo
   title: Profile Photo
   subtitle: An interactive pixel-reveal portrait with laser eyes, progress tracking, and fireworks.
-  url: /profile_photo.html
+  url: /profile_photo/
   gh-repo: cyaris/profile_photo
   tags: [d3.js, javascript, python, svelte, tailwind css]
   thumbnail-img: /assets/img/profile-photo-thumbnail.png
@@ -37,7 +37,7 @@
 - id: firework_launcher
   title: Firework Launcher
   subtitle: Launch a firework from any page on my website.
-  url: /fireworks.html
+  url: /fireworks/
   gh-repo: cyaris/fireworks
   tags: [d3.js, javascript, svelte, tailwind css]
   thumbnail-img: /assets/img/firework-launcher-demo.png
@@ -46,7 +46,7 @@
 - id: tableau_gallery
   title: Tableau Gallery
   subtitle: Interactive dashboards and visual analytics created in Tableau.
-  url: /tableau_gallery.html
+  url: /tableau_gallery/
   tags: [dashboard, tableau]
   thumbnail-img: /assets/img/tableau-logo-color.svg
   thumbnail-size: icon

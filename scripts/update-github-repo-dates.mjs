@@ -112,7 +112,7 @@ for (const file of collectContentFiles(process.cwd())) {
   }
 }
 
-for (const file of ["_data/project.yml", "_data/projects.yml"]) {
+for (const file of ["_data/projects.yml"]) {
   if (!fs.existsSync(file)) {
     continue
   }

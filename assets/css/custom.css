@@ -65,7 +65,7 @@ em {
 }
 
 a {
-  color: var(--hover-col);
+  color: var(--link-col);
 }
 
 a:hover,

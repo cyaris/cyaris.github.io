@@ -150,7 +150,7 @@ pagination-background-hover-col: "#20b3a1"
 pagination-border-hover-col: "#197278"
 
 tag-link-col: "#147a70"
-tag-link-hover-col: "#1b998b"
+tag-link-hover-col: "#147a70"
 tag-background-hover-col: "#e2f4f2"
 tag-border-hover-col: "#1b998b"
 

@@ -112,6 +112,16 @@ for (const file of collectContentFiles(process.cwd())) {
   }
 }
 
+for (const file of ["_data/projects.yml"]) {
+  if (!fs.existsSync(file)) {
+    continue
+  }
+
+  for (const match of fs.readFileSync(file, "utf8").matchAll(/^\s*gh-repo:\s*(.*?)\s*$/gm)) {
+    repos.add(normalizeRepo(match[1].replace(/^['"]|['"]$/g, "")))
+  }
+}
+
 const repoData = []
 const userInfoByName = new Map()
 

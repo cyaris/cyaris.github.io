@@ -6,6 +6,16 @@ layout: base
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
+      {% if page['project-id'] %}
+        {% assign page_repo = page['gh-repo'] %}
+        {%
+          include github-repo-badges.html
+          repo=page_repo
+          sections='actions,dates'
+          container_class='post-meta repo-meta repo-badges github-repo-badges project-page-repo-badges'
+        %}
+      {% endif %}
+
       {% if page['before-content'] %}
         <div class="before-content">
           {% for file in page['before-content'] %}
@@ -16,8 +26,57 @@ layout: base
 
       {{ content }}
 
-      {% assign page_repo = page['gh-repo'] %}
-      {% include github-repo-badges.html repo=page_repo sections='actions,dates' %}
+      {% unless page['project-id'] %}
+        {% assign page_repo = page['gh-repo'] %}
+        {% include github-repo-badges.html repo=page_repo sections='actions,dates' %}
+      {% endunless %}
+
+      {% if page['project-id'] %}
+        {% assign previous_project = null %}
+        {% assign next_project = null %}
+        {% assign found_current_project = false %}
+        {% for project in site.data.projects %}
+          {% if found_current_project and next_project == null %}
+            {% assign next_project = project %}
+          {% endif %}
+          {% if project.id == page['project-id'] %}
+            {% assign found_current_project = true %}
+          {% elsif found_current_project != true %}
+            {% assign previous_project = project %}
+          {% endif %}
+        {% endfor %}
+
+        <ul class="pagination blog-pager">
+          {% if previous_project.url %}
+            <li class="page-item previous">
+              <a
+                class="page-link"
+                href="{{ previous_project.url | relative_url }}"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="{{ previous_project.title | strip_html | xml_escape }}"
+              >
+                <span class="desktop-text"><span class="rotate">➔</span>&nbsp;&nbsp;Previous project</span>
+                <span class="mobile-text rotate">➔</span>
+              </a>
+            </li>
+          {% endif %}
+          {% if next_project.url %}
+            <li class="page-item next">
+              <a
+                class="page-link"
+                href="{{ next_project.url | relative_url }}"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="{{ next_project.title | strip_html | xml_escape }}"
+              >
+                <span class="desktop-text">Next project&nbsp;&nbsp;➔</span>
+                <span class="mobile-text">➔</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      {% endif %}
 
       {% if page['social-share'] %}
         {% include social-share.html %}

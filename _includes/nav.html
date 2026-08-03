@@ -36,7 +36,26 @@
   <div class="collapse navbar-collapse" id="main-navbar">
     <ul class="navbar-nav ml-auto">
       {%- for link in site['navbar-links'] -%}
-        {%- if link[1].first %}
+        {%- assign navbar_projects = site.data.projects | where: 'navbar', true -%}
+        {%- if link[0] == 'Projects' and navbar_projects.size > 0 %}
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="{{ link[1] | relative_url }}"
+              id="navbarDropdown"
+              role="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              {{- link[0] -}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {%- for project in navbar_projects -%}
+                <a class="dropdown-item" href="{{ project.url | relative_url }}">{{ project.title }}</a>
+              {%- endfor %}
+            </div>
+          </li>
+        {%- elsif link[1].first %}
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"

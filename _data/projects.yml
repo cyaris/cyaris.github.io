@@ -1,0 +1,53 @@
+- id: the_networks_of_war
+  title: The Networks of War
+  subtitle: Performing network analysis on over 200 years of data from the Correlates of War (COW) Project.
+  url: /the_networks_of_war/
+  gh-repo: cyaris/the_networks_of_war
+  tags: [d3.js, data storytelling, duckdb, force-directed graph, javascript, network analysis, pandas, python, sql, svelte, tailwind css]
+  thumbnail-img: /assets/img/networks-war-demo.png
+  thumbnail-size: normal
+  navbar: true
+- id: us_gun_violence_forecasting
+  title: US Gun Violence Forecasting
+  subtitle: Comparing historical time series models using data from GunViolenceArchive.org.
+  url: /us_gun_violence_forecasting/
+  gh-repo: cyaris/us_gun_violence_forecasting
+  tags: [d3.js, data storytelling, error metrics, javascript, machine learning, numpy, pandas, prophet, python, svelte, tailwind css, time series modeling]
+  thumbnail-img: https://www.gunviolencearchive.org/sites/all/themes/gva_theme/images/new-logo.jpg
+  thumbnail-size: small
+  navbar: true
+- id: mastermind
+  title: Mastermind
+  subtitle: My version of the classic code-cracking game.
+  url: /mastermind/
+  gh-repo: cyaris/mastermind
+  tags: [javascript, svelte, tailwind css]
+  thumbnail-img: https://i5.walmartimages.com/seo/Hasbro-Mastermind-for-Kids-Board-Games_568cd372-e700-4a9f-a35a-c32f859b4850.104f171c37ef2cc96bb3ac486360508d.jpeg
+  thumbnail-size: small
+  navbar: true
+- id: profile_photo
+  title: Profile Photo
+  subtitle: An interactive pixel-reveal portrait with laser eyes, progress tracking, and fireworks.
+  url: /profile_photo/
+  gh-repo: cyaris/profile_photo
+  tags: [d3.js, javascript, python, svelte, tailwind css]
+  thumbnail-img: /assets/img/profile-photo-thumbnail.png
+  thumbnail-size: small
+  navbar: false
+- id: firework_launcher
+  title: Firework Launcher
+  subtitle: Launch a firework from any page on my website.
+  url: /fireworks/
+  gh-repo: cyaris/fireworks
+  tags: [d3.js, javascript, svelte, tailwind css]
+  thumbnail-img: /assets/img/firework-launcher-demo.png
+  thumbnail-size: normal
+  navbar: false
+- id: tableau_gallery
+  title: Tableau Gallery
+  subtitle: Interactive dashboards and visual analytics created in Tableau.
+  url: /tableau_gallery/
+  tags: [dashboard, tableau]
+  thumbnail-img: /assets/img/tableau-logo-color.svg
+  thumbnail-size: icon
+  navbar: false

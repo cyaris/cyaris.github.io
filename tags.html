@@ -1,28 +1,59 @@
 ---
 layout: page
 title: Tags
-description: Blog posts grouped by tag.
+description: Blog posts and projects grouped by tag.
 ---
+<style>
+  .linked-section {
+    margin-left: 1.5rem;
+  }
+
+  @media (min-width: 1200px) {
+    .post-list {
+      margin-left: 2.78rem;
+    }
+  }
+</style>
+
 {% assign date_format = site.date_format | default: '%B %-d, %Y' %}
-{% assign tags_list = site.tags | sort %}
+{% capture tags_string -%}
+  {%- for tag_item in site.tags -%}
+    {{- tag_item[0] -}}|
+  {%- endfor -%}
+  {%- for project in site.data.projects -%}
+    {%- for tag in project.tags -%}
+      {{- tag -}}|
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endcapture %}
+{% assign tags_list = tags_string | split: '|' | uniq | sort %}
 
 <div id="full-tags-list">
-  {%- for tag_item in tags_list -%}
-    {%- assign tag = tag_item[0] -%}
-    {%- assign posts = tag_item[1] -%}
+  {%- for tag in tags_list -%}
+    {%- if tag == '' -%}
+      {%- continue -%}
+    {%- endif -%}
     <h2 id="{{- tag | slugify -}}" class="linked-section">
       <i class="fas fa-tag" aria-hidden="true"></i>
       &nbsp;
       {{- tag -}}
     </h2>
     <div class="post-list">
-      {%- for post in posts -%}
+      {%- for post in site.tags[tag] -%}
         <div class="tag-entry">
           <a href="{{ post.url | relative_url }}">{{- post.title | strip_html -}}</a>
           <div class="entry-date">
             <time datetime="{{- post.date | date_to_xmlschema -}}">{{- post.date | date: date_format -}}</time>
           </div>
         </div>
+      {%- endfor -%}
+      {%- for project in site.data.projects -%}
+        {%- if project.tags contains tag -%}
+          <div class="tag-entry">
+            <a href="{{ project.url | relative_url }}">{{- project.title | strip_html -}}</a>
+            <div class="entry-date">Project</div>
+          </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   {%- endfor -%}

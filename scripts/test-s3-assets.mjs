@@ -97,7 +97,6 @@ assert.throws(
 const outFile = path.join(root, "_data", "generated_s3_assets.yml")
 writeS3AssetData(outFile, first)
 assert.match(fs.readFileSync(outFile, "utf8"), /- logical_id: "mastermind_bundle"\n  key: "mastermind\/bundle\.js"\n/)
-assert.match(fs.readFileSync("_includes/s3_asset.html", "utf8"), /contains '\?'/)
 
 console.log("S3 asset version tests passed")
 

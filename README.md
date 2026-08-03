@@ -55,7 +55,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 ### GitHub Repository Badges And Dates
 
 - `_includes/github-repo-badges.html` renders linked follow, star, watch, and fork badges with accessible labels, GitHub icons, optional counts, repository creation dates, and latest default-branch commit dates.
-- `scripts/update-github-repo-dates.mjs` generates repository metadata for content files with `gh-repo` front matter.
+- `scripts/update-github-repo-dates.mjs` generates repository metadata for content files with `gh-repo` front matter and project cards with `gh-repo` data.
 - `.github/workflows/pages.yml` refreshes the repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages, while `.gitignore` keeps the generated `_data/github_repos.yml` file local.
 
 ### S3-Hosted App And Document Assets
@@ -84,13 +84,15 @@ AWS-mode generation needs permission to read object metadata for the referenced 
 
 Versioned S3 assets may use long-lived cache metadata, for example `Cache-Control: public, max-age=31536000, immutable`, because the page URL changes on object replacement. Rollup callers can pass that value through the shared `cache-control` input while preserving `bundle.js`, `bundle.css`, `test_bundle.js`, and `test_bundle.css` names. Directly uploaded PDFs, images, and APNG files should have their S3 metadata refreshed during upload or with an in-place `aws s3 cp` metadata replacement, but successful cache invalidation still depends on the generated query version rather than cache headers alone.
 
-### Legacy Project Launch Buttons
+### Project Cards And Tags
 
-`_includes/project_button.html` renders a centered project link button for legacy project posts, deriving the target URL from the post title.
+`_data/projects.yml` controls Projects page card order, project card destinations, project metadata, project tags, and which projects appear in the Projects navbar dropdown.
 
 ### Animated Project Thumbnails
 
 Project listing thumbnails can render generated square APNG assets under `assets/img/`; `assets/img/networks-war-demo.png` animates the Networks of War project card while the legacy `assets/img/networks-war-globe-thumbnail.png` remains preserved in the repository.
+
+`assets/img/profile-photo-thumbnail.png` is generated from `../profile_photo/frontend/src/lib/static/pixels.json` so the Profile Photo project card shows the app's pixelated overlay state.
 
 ### Tableau Gallery And Dashboard Embeds
 
@@ -107,24 +109,26 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Applies the `image_404` class for local responsive image sizing
 - Lazily decodes the 404 image
 
+### `about_me.html`
+
+- Defines page-local horizontal image-scroll styling for the About Me gallery
+
 ### `assets/css/custom.css`
 
-- Overrides global typography, intro header heading spacing, emphasis opacity, and link colors
+- Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar sizing, avatar placement, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations
-- Adds horizontal image-scroll styling for the About Me page
-- Adds contact form, Turnstile, status, honeypot, and mobile contact-page styles
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
-- Customizes post preview metadata, thumbnail sizing, title hover colors, and preview borders
-- Aligns tag link styling and the post tag label with GitHub repo badges using shared preview pill color variables
-- Places project page GitHub action badges and repository metadata badges in one left-aligned header row when space allows
-- Shows tag pills on Blog and Projects listing pages
+- Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
+- Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
+- Places project page GitHub action badges and repository metadata badges in one left-aligned top-content row when space allows
+- Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
-- Defines shared button styling for `.btn-group` and contact form buttons, including local focus-state overrides
-- Customizes tag link, tags-page, and pagination styling, including desktop/mobile pagination text visibility
+- Defines shared button styling for `.btn-group`, including local focus-state overrides
+- Customizes tag link and pagination styling, including desktop/mobile pagination text visibility
 - Customizes social-share icon focus behavior
 - Disables text selection on interactive site controls, social-share controls, and footer areas
 
@@ -143,8 +147,18 @@ Project listing thumbnails can render generated square APNG assets under `assets
 
 - Renames the navbar text color setting to `navbar-link-col`
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
+- Keeps top-level navbar page links on trailing-slash pretty URLs
+- Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
 - Excludes build-only repository scripts from the generated site
+
+### `contact.html`
+
+- Defines page-local contact form, Turnstile, status, honeypot, and mobile contact-page styles
+
+### `fireworks/index.html`
+
+- Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides
 
 ### `_includes/footer.html`
 
@@ -164,13 +178,14 @@ Project listing thumbnails can render generated square APNG assets under `assets
 ### `_includes/header.html`
 
 - Simplifies header image class assignment
+- Adds a project header class for project-specific title and subtitle sizing
 - Removes the "posted on" label from post dates
 - Removes the inactive read-time include hook
-- Shows GitHub action badges on project page headers whenever repository front matter is present, plus linked generated repository date badges when GitHub repository metadata exists
 
 ### `_includes/nav.html`
 
 - Replaces the title/logo brand link with desktop and mobile firework launch controls
+- Builds the Projects dropdown from `_data/projects.yml` entries with `navbar: true`
 - Changes dropdown parent links to lowercase relative URLs
 - Removes the right-aligned dropdown menu class
 - Routes blank navbar links to the site root with `relative_url`
@@ -197,17 +212,23 @@ Project listing thumbnails can render generated square APNG assets under `assets
 ### `_layouts/home.html`
 
 - Forces home-page refreshes back to the top of the page
-- Filters listed posts by `page.type`
+- Filters listed posts by `page.type` and renders Projects page cards from `_data/projects.yml`
 - Renders a single left-aligned post thumbnail beside the post title and subtitle
 - Lazily loads and asynchronously decodes post preview thumbnails
-- Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`small` or `extra-small`) front matter for thumbnail crops and sizing
+- Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`normal`, `small`, `extra-small`, or `icon`) front matter for thumbnail crops and sizing
 - Removes the "Posted on" label from post dates
-- Shows tag pills on Blog and Projects listing pages
+- Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata exists
+
+### `tags.html`
+
+- Groups both blog posts and `_data/projects.yml` project cards by tag
+- Defines page-local tag heading and post-list offsets
 
 ### `_layouts/page.html`
 
-- Adds the shared `github-repo-badges.html` include to pages
+- Adds the shared `github-repo-badges.html` include to pages, with project page badges placed before content
+- Adds previous and next pagination for project pages with `project-id` front matter, following `_data/projects.yml` order
 - Adds the social-share include when `social-share` is enabled
 - Removes the inactive upstream comments include
 
@@ -228,6 +249,11 @@ Project listing thumbnails can render generated square APNG assets under `assets
 
 - Deletes `_includes/commentbox.html`, `_includes/comments.html`, `_includes/disqus.html`, `_includes/fb-comment.html`, `_includes/giscus-comment.html`, `_includes/mathjax.html`, `_includes/matomo.html`, `_includes/readtime.html`, `_includes/search.html`, `_includes/staticman-comment.html`, `_includes/staticman-comments.html`, and `_includes/utterances-comment.html`
 - Deletes `assets/css/staticman.css`, `assets/data/searchcorpus.json`, `assets/js/staticman.js`, and `staticman.yml`
+
+### Removed Legacy Project Post Files
+
+- Deletes `_includes/project_button.html` because Projects page cards now link directly through `_data/projects.yml`
+- Deletes the old project-only posts from `_posts/` because `_data/projects.yml` now controls project ordering, card metadata, and project destinations
 
 ### Removed Inactive Upstream Minimal Layout Files
 

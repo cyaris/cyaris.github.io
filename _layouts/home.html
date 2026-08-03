@@ -11,7 +11,11 @@ layout: page
 
 {{ content }}
 
-{% assign posts = paginator.posts | default: site.posts | where: 'type', page.type %}
+{% if page.type == 'project' %}
+  {% assign posts = site.data.projects %}
+{% else %}
+  {% assign posts = paginator.posts | default: site.posts | where: 'type', page.type %}
+{% endif %}
 
 <!-- role="list" needed so that `list-style: none` in Safari doesn't remove the list semantics -->
 <ul class="posts-list list-unstyled" role="list">
@@ -38,7 +42,7 @@ layout: page
         <div class="post-preview-header{% if thumbnail != '' %} has-thumbnail{% endif %}">
           {% if thumbnail != '' %}
             <a
-              class="post-thumbnail{% if thumbnail_fit == 'cover' %} thumbnail-cover{% endif %}{% if thumbnail_size == 'small' %} thumbnail-small{% elsif thumbnail_size == 'extra-small' %} thumbnail-extra-small{% endif %}"
+              class="post-thumbnail{% if thumbnail_fit == 'cover' %} thumbnail-cover{% endif %}{% if thumbnail_size == 'small' %} thumbnail-small{% elsif thumbnail_size == 'extra-small' %} thumbnail-extra-small{% elsif thumbnail_size == 'icon' %} thumbnail-icon{% endif %}"
               href="{{ post.url | relative_url }}"
               aria-label="Thumbnail"
             >
@@ -80,7 +84,7 @@ layout: page
               {% assign repo_key = repo_parts[0] | append: '/' | append: repo_parts[1] %}
               {% assign repo_data = site.data.github_repos[repo_key] %}
             {% endif %}
-            {% if page.type == 'project' and post['gh-repo'] and repo_data %}
+            {% if page.type == 'project' and post['gh-repo'] %}
               {% assign post_repo = post['gh-repo'] %}
               <div class="post-meta project-repo-badges" aria-label="Repository links and dates">
                 {%
@@ -93,7 +97,7 @@ layout: page
                   item_class='project-repo-badge'
                 %}
               </div>
-            {% else %}
+            {% elsif page.type != 'project' or post.date %}
               <p class="post-meta">
                 {{ post.date | date: date_format }}
               </p>

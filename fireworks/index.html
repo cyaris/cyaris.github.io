@@ -1,0 +1,104 @@
+---
+layout: page
+title: Firework Launcher
+subtitle: Launch a firework from any page on my website.
+project-id: firework_launcher
+gh-repo: cyaris/fireworks/
+---
+<style>
+  .fireworks-page {
+    margin: 1.5rem auto 0;
+    max-width: 47rem;
+    width: 100%;
+  }
+
+  .fireworks-page p,
+  .fireworks-page .fireworks-launch-control {
+    margin-bottom: 1.5rem;
+  }
+
+  .fireworks-launch-control {
+    text-align: center;
+  }
+
+  .firework-launch-button,
+  .firework-launch-button:hover,
+  .firework-launch-button:focus {
+    cursor: url({{ '/assets/img/kidpix_dynamite_eraser_large_1.png' | relative_url }}), auto;
+    animation: kidpix_cursor_animate 0.25s infinite;
+    -webkit-animation: kidpix_cursor_animate 0.25s infinite;
+  }
+
+  .firework-launch-button {
+    align-items: center;
+    display: inline-flex;
+    height: auto;
+    justify-content: center;
+    line-height: 1.15;
+    min-height: 65px;
+    padding: 0.65rem 1.5rem;
+    white-space: normal;
+  }
+
+  @media (max-width: 575px) {
+    body:has(.fireworks-page) .intro-header .project-heading h1 {
+      font-size: 2.125rem;
+      line-height: 1.12;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 18rem;
+    }
+
+    body:has(.fireworks-page) .intro-header .project-heading .page-subheading {
+      font-size: 1.25rem;
+      line-height: 1.25;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 18rem;
+    }
+
+    .fireworks-page {
+      margin-left: 0;
+      margin-right: 0;
+      margin-top: 1.25rem;
+      max-width: 21.5rem;
+      width: 100%;
+    }
+
+    .fireworks-page p {
+      overflow-wrap: break-word;
+    }
+
+    .fireworks-launch-control {
+      text-align: left;
+    }
+
+    .firework-launch-button {
+      width: min(100%, 205px);
+    }
+
+    body:has(.fireworks-page) .pagination.blog-pager {
+      max-width: 21.5rem;
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="fireworks-page">
+  <p>
+    Sometimes coding is just a thing I like to do for fun. Try out my D3.js firework launcher from the navbar, or launch
+    one here.
+  </p>
+
+  <div class="fireworks-launch-control">
+    <button class="btn-group firework-launch-button" type="button" onclick="launchFireworkBurst()">
+      Launch Firework
+    </button>
+  </div>
+
+  <p>
+    Credit is owed to Mike Rossetti's
+    <a href="http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5" target="_blank" rel="noopener noreferrer">D3.js Hanabi</a>
+    project for getting me started on coding my own D3.js fireworks.
+  </p>
+</div>

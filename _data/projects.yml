@@ -28,7 +28,7 @@
 - id: profile_photo
   title: Profile Photo
   subtitle: An interactive pixel-reveal portrait with laser eyes, progress tracking, and fireworks.
-  url: /profile_photo/
+  url: /profile_photo.html
   gh-repo: cyaris/profile_photo
   tags: [d3.js, javascript, python, svelte, tailwind css]
   thumbnail-img: /assets/img/profile-photo-thumbnail.png

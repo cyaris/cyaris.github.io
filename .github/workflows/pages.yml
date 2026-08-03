@@ -6,33 +6,15 @@ on:
       - master
   pull_request:
   schedule:
-    - cron: "0 13,14 * * *"
+    - cron: "37 14 * * *"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  local-time:
-    name: Check local schedule time
-    runs-on: ubuntu-latest
-    outputs:
-      should-run: ${{ steps.schedule.outputs.should-run }}
-    steps:
-      - id: schedule
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-        run: |
-          if [[ "$EVENT_NAME" != "schedule" || "$(TZ=America/Chicago date +%H)" == "08" ]]; then
-            printf "should-run=true\n" >> "$GITHUB_OUTPUT"
-          else
-            printf "should-run=false\n" >> "$GITHUB_OUTPUT"
-          fi
-
   build:
     name: Build Jekyll
-    needs: local-time
-    if: needs.local-time.outputs.should-run == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -53,6 +35,8 @@ jobs:
         env:
           PAGES_BASE_PATH: ${{ steps.configure-pages.outputs.base_path }}
         run: |
+          set -euo pipefail
+
           printf "%s\n" "---" > _config_ci.yml
           printf "baseurl: %s\n" "$PAGES_BASE_PATH" >> _config_ci.yml
       - name: Generate GitHub repository metadata

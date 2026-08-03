@@ -696,6 +696,7 @@ button:focus {
     column-gap: 0.35rem;
     display: grid;
     grid-template-columns: repeat(2, max-content);
+    justify-items: start;
     max-width: 21.5rem;
     row-gap: 0.35rem;
     width: 100%;

@@ -132,6 +132,7 @@ Parameter | Description
 
 ### `assets/css/custom.css`
 
+- Disables horizontal edge-swipe browser back/forward navigation site-wide
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
@@ -145,7 +146,7 @@ Parameter | Description
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
 - Defines shared button styling for `.btn-group`, including local focus-state overrides
-- Customizes tag link and pagination styling, including desktop/mobile pagination text visibility
+- Customizes tag link and pagination styling, including desktop/mobile pagination text visibility, and anchors project/post pagination buttons to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
 - Customizes social-share icon focus behavior
 - Disables text selection on interactive site controls, social-share controls, and footer areas
 

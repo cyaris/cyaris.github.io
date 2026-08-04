@@ -720,15 +720,7 @@ button:focus {
 @media (max-width: 575px) {
   .project-page-repo-badges {
     column-gap: 0.35rem;
-    display: grid;
-    grid-template-columns: repeat(2, max-content);
-    justify-items: start;
     row-gap: 0.35rem;
-    width: 100%;
-  }
-
-  .project-page-repo-badges.repo-badges-center {
-    justify-items: center;
   }
 }
 

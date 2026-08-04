@@ -244,6 +244,7 @@ exclude:
   - Gemfile.lock
   - LICENSE
   - README.md
+  - TODO.md
   - screenshot.png
   - scripts/
   - docs/

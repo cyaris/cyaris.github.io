@@ -6,15 +6,21 @@ layout: base
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
-      {% if page['project-id'] %}
-        {% assign page_repo = page['gh-repo'] %}
+      {% assign page_repo = page['gh-repo'] %}
+      {% assign badge_position = page['badge-position'] | default: 'top' %}
+      {% assign badge_alignment = page['badge-alignment'] | default: 'center' %}
+
+      {% capture project_badges %}
         {%
           include github-repo-badges.html
           repo=page_repo
           sections='actions,dates'
+          alignment=badge_alignment
           container_class='post-meta repo-meta repo-badges github-repo-badges project-page-repo-badges'
         %}
-      {% endif %}
+      {% endcapture %}
+
+      {% if badge_position == 'top' %}{{ project_badges }}{% endif %}
 
       {% if page['before-content'] %}
         <div class="before-content">
@@ -26,10 +32,7 @@ layout: base
 
       {{ content }}
 
-      {% unless page['project-id'] %}
-        {% assign page_repo = page['gh-repo'] %}
-        {% include github-repo-badges.html repo=page_repo sections='actions,dates' %}
-      {% endunless %}
+      {% if badge_position == 'bottom' %}{{ project_badges }}{% endif %}
 
       {% if page['project-id'] %}
         {% assign previous_project = null %}

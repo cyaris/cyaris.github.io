@@ -11,10 +11,11 @@
 {% assign repo_data = include.repo_data | default: site.data.github_repos[repo_key] %}
 {% assign sections = include.sections | default: 'actions' | split: ',' %}
 {% assign actions = include.actions | default: 'follow,star' | split: ',' %}
+{% assign alignment = include.alignment | default: 'left' %}
 
 {% if gh_user and gh_repo %}
   <div
-    class="{{ include.container_class | default: 'post-meta repo-meta repo-badges github-repo-badges' }}"
+    class="{{ include.container_class | default: 'post-meta repo-meta repo-badges github-repo-badges' }}{% if alignment == 'center' %} repo-badges-center{% endif %}"
     aria-label="{{ include.aria_label | default: 'Repository links and dates' }}"
   >
     {% for section in sections %}

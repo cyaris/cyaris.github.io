@@ -9,6 +9,22 @@ body {
   font-size: 1rem;
 }
 
+/* --- Sticky Footer Content --- */
+
+main.container-md,
+main.container-fluid {
+  display: flex;
+  flex-direction: column;
+}
+
+main > .row {
+  flex: 1;
+}
+
+main > .row > [class*="col"] {
+  position: relative;
+}
+
 .intro-header .post-heading h1,
 .intro-header .page-heading h1 {
   font-size: 2.875rem;
@@ -410,6 +426,10 @@ footer a:hover {
   gap: 0.45rem;
 }
 
+.repo-badges-center {
+  justify-content: center;
+}
+
 .repo-badge {
   align-items: center;
   background: var(--preview-pill-background-col);
@@ -707,6 +727,10 @@ button:focus {
     gap: 0.25rem;
     padding: 0.32rem 0.46rem;
   }
+
+  .project-page-repo-badges.repo-badges-center {
+    justify-items: center;
+  }
 }
 
 /* --- Tag Links --- */
@@ -783,6 +807,13 @@ button:focus {
 }
 
 /* --- Pagination --- */
+
+.pagination.blog-pager {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
 
 .pagination .page-item .page-link {
   color: var(--pagination-link-col);

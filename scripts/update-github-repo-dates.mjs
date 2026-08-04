@@ -2,8 +2,11 @@ import fs from "node:fs"
 import https from "node:https"
 import path from "node:path"
 
+import { collectContentFiles as collectFiles, yamlQuote } from "./lib/generator-utils.mjs"
+
 const outFile = path.resolve("_data/github_repos.yml")
 const token = process.env.GITHUB_TOKEN
+const contentExtensions = new Set([".html", ".md"])
 const ignoredDirs = new Set([".git", "_site", "node_modules"])
 
 function requestJson(apiPath) {
@@ -76,10 +79,6 @@ function normalizeRepo(repo) {
     .replace(/\/+$/, "")
 }
 
-function yamlQuote(value) {
-  return `"${String(value).replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`
-}
-
 function dateOnly(value) {
   return value.slice(0, 10)
 }
@@ -87,22 +86,7 @@ function dateOnly(value) {
 const repos = new Set()
 
 function collectContentFiles(dir) {
-  const files = []
-
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.isDirectory()) {
-      if (!ignoredDirs.has(entry.name)) {
-        files.push(...collectContentFiles(path.join(dir, entry.name)))
-      }
-      continue
-    }
-
-    if (entry.isFile() && [".html", ".md"].includes(path.extname(entry.name))) {
-      files.push(path.join(dir, entry.name))
-    }
-  }
-
-  return files
+  return collectFiles(dir, { extensions: contentExtensions, ignoredDirs })
 }
 
 for (const file of collectContentFiles(process.cwd())) {
@@ -164,4 +148,4 @@ for (const repo of repoData) {
 
 fs.mkdirSync(path.dirname(outFile), { recursive: true })
 fs.writeFileSync(outFile, `${lines.join("\n")}\n`)
-console.log(`Wrote ${repoData.length} repos to ${path.relative(process.cwd(), outFile)}`)
+console.log(`Wrote ${repoData.length.toLocaleString()} repos to ${path.relative(process.cwd(), outFile)}`)

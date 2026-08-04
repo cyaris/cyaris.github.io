@@ -3,27 +3,14 @@ import crypto from "node:crypto"
 import fs from "node:fs"
 import path from "node:path"
 
+import { collectContentFiles as collectFiles, yamlQuote } from "./generator-utils.mjs"
+
 const contentExtensions = new Set([".html", ".liquid", ".md"])
 const ignoredDirs = new Set([".git", "_site", "docs", "node_modules"])
 const ignoredFiles = new Set(["CHANGELOG.md", "README.md"])
 
 export function collectContentFiles(dir) {
-  const files = []
-
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.isDirectory()) {
-      if (!ignoredDirs.has(entry.name)) {
-        files.push(...collectContentFiles(path.join(dir, entry.name)))
-      }
-      continue
-    }
-
-    if (entry.isFile() && contentExtensions.has(path.extname(entry.name)) && !ignoredFiles.has(entry.name)) {
-      files.push(path.join(dir, entry.name))
-    }
-  }
-
-  return files
+  return collectFiles(dir, { extensions: contentExtensions, ignoredDirs, ignoredFiles })
 }
 
 export function parseS3AssetIncludes(file, contents) {
@@ -222,10 +209,6 @@ function logicalIdForKey(key) {
 
 function normalizeVersion(value) {
   return encodeURIComponent(String(value).trim())
-}
-
-function yamlQuote(value) {
-  return `"${String(value).replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`
 }
 
 function bucketNameFromSiteValue(value) {

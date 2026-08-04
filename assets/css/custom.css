@@ -27,6 +27,10 @@ main > .row > [class*="col"] {
   flex-direction: column;
 }
 
+main > .row > [class*="col"] > * + * {
+  margin-top: 0;
+}
+
 .intro-header .post-heading h1,
 .intro-header .page-heading h1 {
   font-size: 2.875rem;

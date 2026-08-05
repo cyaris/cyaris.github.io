@@ -36,10 +36,28 @@ layout: base
 
       {% assign current_project_id = page['project-id'] %}
 
-      {% if current_project_id == nil and page_repo %}
-        {% assign normalized_page_repo = page_repo | remove: '/' %}
+      {% if current_project_id == null and page_repo %}
+        {% assign normalized_page_repo = page_repo
+          | replace: 'https://github.com/', ''
+          | replace: 'http://github.com/', ''
+          | replace: 'github.com/', ''
+        %}
+        {% assign normalized_page_repo_parts = normalized_page_repo | split: '/' %}
+        {% assign normalized_page_repo = normalized_page_repo_parts[0]
+          | append: '/'
+          | append: normalized_page_repo_parts[1]
+        %}
         {% for project in site.data.projects %}
-          {% assign normalized_project_repo = project['gh-repo'] | remove: '/' %}
+          {% assign normalized_project_repo = project['gh-repo']
+            | replace: 'https://github.com/', ''
+            | replace: 'http://github.com/', ''
+            | replace: 'github.com/', ''
+          %}
+          {% assign normalized_project_repo_parts = normalized_project_repo | split: '/' %}
+          {% assign normalized_project_repo = normalized_project_repo_parts[0]
+            | append: '/'
+            | append: normalized_project_repo_parts[1]
+          %}
           {% if normalized_project_repo == normalized_page_repo %}
             {% assign current_project_id = project.id %}
           {% endif %}

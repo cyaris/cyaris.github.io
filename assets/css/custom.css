@@ -291,6 +291,13 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
   -webkit-animation: kidpix_cursor_animate 0.25s infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .firework-launch-button {
+    animation: none;
+    -webkit-animation: none;
+  }
+}
+
 .kidpix_png_top {
   animation-name: kidpix_png_animate;
   animation-timing-function: ease-in-out;

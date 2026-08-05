@@ -42,7 +42,7 @@ layout: page
         <div class="post-preview-header{% if thumbnail != '' %} has-thumbnail{% endif %}">
           {% if thumbnail != '' %}
             <a
-              class="post-thumbnail{% if thumbnail_fit == 'cover' %} thumbnail-cover{% endif %}{% if thumbnail_size == 'small' %} thumbnail-small{% elsif thumbnail_size == 'extra-small' %} thumbnail-extra-small{% elsif thumbnail_size == 'icon' %} thumbnail-icon{% endif %}"
+              class="post-thumbnail{% if thumbnail_fit == 'cover' %} thumbnail-cover{% endif %}{% if thumbnail_size == 'small' %} thumbnail-small{% elsif thumbnail_size == 'extra-small' %} thumbnail-extra-small{% endif %}"
               href="{{ post.url | relative_url }}"
               aria-label="Thumbnail"
             >

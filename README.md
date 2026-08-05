@@ -115,7 +115,7 @@ Parameter | Description
 `badge-alignment` | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts.
 `thumbnail-fit` | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`.
 `thumbnail-position` | Optional per-post CSS `object-position` value for the blog listing thumbnail. Defaults to `center center`.
-`thumbnail-size` | Optional per-post thumbnail size on the blog listing: `normal`, `small`, `extra-small`, or `icon`. Defaults to `normal`.
+`thumbnail-size` | Optional per-post thumbnail size on the blog listing: `normal`, `small`, or `extra-small`. Defaults to `normal`.
 
 ## Deviations From Beautiful Jekyll
 
@@ -233,7 +233,7 @@ Parameter | Description
 - Filters listed posts by `page.type` and renders Projects page cards from `_data/projects.yml`
 - Renders a single left-aligned post thumbnail beside the post title and subtitle
 - Lazily loads and asynchronously decodes post preview thumbnails
-- Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`normal`, `small`, `extra-small`, or `icon`) front matter for thumbnail crops and sizing
+- Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`normal`, `small`, or `extra-small`) front matter for thumbnail crops and sizing
 - Removes the "Posted on" label from post dates
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata exists

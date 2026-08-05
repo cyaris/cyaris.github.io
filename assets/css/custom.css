@@ -106,6 +106,16 @@ main.container-fluid:has(.full-width-tool-host) > .row > .col {
   padding: 0;
 }
 
+main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.repo-badges-center) {
+  margin-left: 0.75rem;
+}
+
+@media (min-width: 1300px) {
+  main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.repo-badges-center) {
+    margin-left: 15%;
+  }
+}
+
 /* --- Center --- */
 
 .center {
@@ -696,10 +706,6 @@ button:focus {
   margin-top: 0;
 }
 
-.project-page-repo-badges:not(.repo-badges-center) {
-  margin-left: 0.75rem;
-}
-
 .project-page-repo-badges .repo-badge {
   flex: 0 0 auto;
 }
@@ -708,10 +714,6 @@ button:focus {
   .project-page-repo-badges {
     flex-direction: column;
     row-gap: 0.35rem;
-  }
-
-  .project-page-repo-badges:not(.repo-badges-center) {
-    margin-left: 0.5rem;
   }
 
   .project-page-repo-badges .repo-badge-group {

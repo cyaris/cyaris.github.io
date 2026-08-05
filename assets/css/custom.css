@@ -666,9 +666,9 @@ footer a:hover {
   }
 
   .project-repo-badges .repo-badge-group {
-    column-gap: 0.35rem;
     display: flex;
     flex-wrap: wrap;
+    gap: 0.35rem;
   }
 }
 
@@ -719,9 +719,9 @@ button:focus {
   }
 
   .project-page-repo-badges .repo-badge-group {
-    column-gap: 0.35rem;
     display: flex;
     flex-wrap: wrap;
+    gap: 0.35rem;
   }
 
   .project-page-repo-badges.repo-badges-center .repo-badge-group {
@@ -804,7 +804,7 @@ button:focus {
 
 /* --- Pagination --- */
 
-.pagination.blog-pager {
+main > .row > [class*="col"] > .pagination.blog-pager {
   margin-top: auto;
 }
 

@@ -34,7 +34,19 @@ layout: base
 
       {% if badge_position == 'bottom' %}{{ project_badges }}{% endif %}
 
-      {% if page['project-id'] %}
+      {% assign current_project_id = page['project-id'] %}
+
+      {% if current_project_id == nil and page_repo %}
+        {% assign normalized_page_repo = page_repo | remove: '/' %}
+        {% for project in site.data.projects %}
+          {% assign normalized_project_repo = project['gh-repo'] | remove: '/' %}
+          {% if normalized_project_repo == normalized_page_repo %}
+            {% assign current_project_id = project.id %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {% if current_project_id %}
         {% assign previous_project = null %}
         {% assign next_project = null %}
         {% assign found_current_project = false %}
@@ -42,7 +54,7 @@ layout: base
           {% if found_current_project and next_project == null %}
             {% assign next_project = project %}
           {% endif %}
-          {% if project.id == page['project-id'] %}
+          {% if project.id == current_project_id %}
             {% assign found_current_project = true %}
           {% elsif found_current_project != true %}
             {% assign previous_project = project %}

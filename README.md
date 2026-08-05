@@ -247,6 +247,7 @@ Parameter | Description
 
 - Adds the shared `github-repo-badges.html` include to pages with `gh-repo` front matter, positioned and aligned by the `badge-position` and `badge-alignment` parameters (defaulting to `top` and `center`)
 - Adds previous and next pagination for project pages with `project-id` front matter, following `_data/projects.yml` order
+- Extends that pagination to sibling and nested project pages that share a project's `gh-repo` but lack their own `project-id`, always linking to the neighboring project's top-level page rather than a sibling or nested page within the current project
 - Adds the social-share include when `social-share` is enabled
 - Removes the inactive upstream comments include
 

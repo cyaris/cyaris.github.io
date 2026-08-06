@@ -134,6 +134,19 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
 .navbar-custom {
   border-bottom: 2.5px solid var(--navbar-border-col);
   padding-right: 1.5rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ring the avatar so the navbar border doesn't appear to cut through it */
+/* border is additive (content-box) so the ring doesn't shrink the photo */
+.navbar-custom .avatar-container .avatar-img-border {
+  border: 2px solid var(--navbar-border-col);
+  overflow: hidden;
+}
+
+/* crop in a little tighter on the subject instead of showing the full scene */
+.navbar-custom .avatar-container .avatar-img {
+  transform: scale(1.1);
 }
 
 .navbar-custom .navbar-nav .nav-item {

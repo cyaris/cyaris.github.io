@@ -220,7 +220,7 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
 
   .navbar-custom .navbar-nav .nav-item.dropdown:hover {
     outline: 2.5px solid var(--navbar-border-col);
-    outline-offset: -2.5px;
+    outline-offset: 0;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
@@ -228,6 +228,10 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
     font-weight: 700;
     border-width: 0px 2.5px 2px 2.5px;
     border-color: var(--navbar-border-col);
+  }
+
+  .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:first-child {
+    border-top-width: 2.5px;
   }
 }
 

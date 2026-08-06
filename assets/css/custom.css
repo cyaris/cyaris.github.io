@@ -139,7 +139,6 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
 
 .navbar-custom {
   border-bottom: 2.5px solid var(--navbar-border-col);
-  padding-left: 1.5rem;
   padding-right: 1.5rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
@@ -224,10 +223,6 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
     outline-offset: 0;
   }
 
-  .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
-    width: 149.9px;
-  }
-
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
     font-size: 0.825em;
     font-weight: 700;
@@ -265,7 +260,7 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
     display: block;
-    background-color: rgba(0, 0, 0, 0.07);
+    background-color: rgba(23, 86, 118, 0.18);
     margin: 0.15rem 0;
   }
 
@@ -279,7 +274,7 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
     line-height: 1.25rem;
     padding-top: 7.5px;
     padding-bottom: 7.5px;
-    padding-left: 1rem;
+    padding-left: 1.5rem;
   }
 }
 

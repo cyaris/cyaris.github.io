@@ -120,6 +120,12 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
   }
 }
 
+/* --- Tableau Dashboard Embeds --- */
+
+.tableau-dashboard-embed {
+  display: block;
+}
+
 /* --- Center --- */
 
 .center {

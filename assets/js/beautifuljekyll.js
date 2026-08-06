@@ -29,6 +29,15 @@ let BeautifulJekyllJS = {
       $("#main-navbar").collapse("hide")
     })
 
+    // On mobile, collapse the navbar when tapping outside of it
+    $(document).on("click", function (event) {
+      const isOpen = $("#main-navbar").hasClass("show")
+      const clickedInsideNavbar = $(event.target).closest(".navbar-custom").length > 0
+      if (isOpen && !clickedInsideNavbar) {
+        $("#main-navbar").collapse("hide")
+      }
+    })
+
     // show the big header image
     BeautifulJekyllJS.initImgs()
   },

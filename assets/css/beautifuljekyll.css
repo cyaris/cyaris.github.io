@@ -397,7 +397,11 @@ img {
 }
 
 .navbar-custom.top-nav-expanded .avatar-container {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility linear 0.5s, opacity 0.5s ease-in-out;
+  -webkit-transition: visibility linear 0.5s, opacity 0.5s ease-in-out;
+  -moz-transition: visibility linear 0.5s, opacity 0.5s ease-in-out;
 }
 
 @media (min-width: 1200px) {

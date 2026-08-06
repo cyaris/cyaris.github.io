@@ -174,7 +174,7 @@ Parameter | Description
 
 - Defines page-local contact form, Turnstile, status, honeypot, and mobile contact-page styles
 
-### `fireworks/index.html`
+### `fireworks.html`
 
 - Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides
 

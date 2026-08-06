@@ -129,8 +129,8 @@ hr.small {
 :target:before {
   content: "";
   display: block;
-  height: 3.125rem; /* navbar height */
-  margin: -3.125rem 0 0;
+  height: 53.5px; /* navbar height */
+  margin: -53.5px 0 0;
 }
 
 .hideme {

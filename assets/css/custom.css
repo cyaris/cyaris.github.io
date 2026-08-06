@@ -139,7 +139,7 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
 
 .navbar-custom {
   border-bottom: 2.5px solid var(--navbar-border-col);
-  padding-right: 1.5rem;
+  padding-right: 1rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
@@ -157,16 +157,7 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
 
 .navbar-custom .navbar-nav .nav-item {
   font-size: 1rem;
-  text-transform: capitalize;
-}
-
-/* increasing size of projects navbar section width */
-.navbar-custom .navbar-nav .nav-item.dropdown {
-  padding-right: 0.7375rem;
-  padding-left: 0.7375rem;
-  /* added transparent border to project links section, which will become visible later on */
-  border: 2.75px solid transparent;
-  border-width: 2.75px 2.75px 3px 2.75px;
+  text-transform: none;
 }
 
 .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
@@ -205,20 +196,8 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
   }
 
   .navbar-custom.top-nav-short {
-    height: 3.45rem;
     padding-top: 0.55rem;
-  }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown {
-    transform: translate(0px, -3px);
-    /* colors below must be transparent because they are overlapping with other elements. */
-    background-color: transparent;
-    border-color: transparent;
-  }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown:hover,
-  .navbar-custom .navbar-nav .nav-item.dropdown:focus {
-    border-color: var(--navbar-border-col);
+    padding-bottom: 0.55rem;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
@@ -245,7 +224,7 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
 
   .navbar-custom .avatar-container .avatar-img-border {
     width: 125%;
-    margin-left: -75%;
+    margin-left: -62.5%;
   }
 
   .navbar-custom .navbar-nav .nav-link {
@@ -263,11 +242,6 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
 
   .navbar-toggler:hover {
     border-color: #439aa5;
-  }
-
-  .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
-    transform: translate(-15px, 0px);
-    outline: none;
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {

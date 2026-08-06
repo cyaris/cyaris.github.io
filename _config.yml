@@ -114,7 +114,7 @@ navbar-link-hover-col: "#175676"
 
 page-col: "#ffffff"
 text-col: "#33413f"
-link-col: "#147a70"
+link-col: "#1b998b"
 hover-col: "#1b998b"
 post-title-link-hover-col: "#1b998b"
 # post-title-link-hover-col: ""#54bdca"
@@ -155,7 +155,6 @@ tag-background-hover-col: "#e2f4f2"
 tag-border-hover-col: "#1b998b"
 
 # Palette values kept for future experiments:
-# "#1b998b" - former base link color, now restored for hover and accent states
 # "#404040" - former inherited text/tag color
 # "#4aa4b0" - former commented navbar dropdown hover background option
 # "#20b3a1" - former pagination border color

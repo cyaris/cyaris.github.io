@@ -224,8 +224,12 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
     outline-offset: 0;
   }
 
+  .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu {
+    width: 149.9px;
+  }
+
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    font-size: 0.85rem;
+    font-size: 0.825em;
     font-weight: 700;
     border-width: 0px 2.5px 2px 2.5px;
     border-color: var(--navbar-border-col);

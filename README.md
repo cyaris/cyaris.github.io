@@ -138,7 +138,7 @@ Parameter | Description
 - Defines the reusable `.center` alignment utility
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations that respect `prefers-reduced-motion`
-- Shows an outline on the Projects navbar item on hover only, sized to its content instead of a fixed width
+- Shows an outline on the Projects navbar item on hover only, and a matching top border on the desktop dropdown's first item so it doesn't blend into the navbar
 - Shades the mobile Projects submenu and rotates its caret to point up since the submenu stays expanded
 - Colors the navbar toggler icon and border to match the site's navbar hover color, with an orange border while expanded
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
@@ -173,7 +173,6 @@ Parameter | Description
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
-- Enables `navbar-var-length` so the Projects dropdown sizes to its longest label instead of wrapping
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
 - Excludes build-only repository scripts from the generated site
 

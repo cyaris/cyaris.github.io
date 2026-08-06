@@ -138,6 +138,9 @@ Parameter | Description
 - Defines the reusable `.center` alignment utility
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations that respect `prefers-reduced-motion`
+- Shows an outline on the Projects navbar item on hover only, sized to its content instead of a fixed width
+- Shades the mobile Projects submenu and rotates its caret to point up since the submenu stays expanded
+- Colors the navbar toggler icon and border to match the site's navbar hover color, with an orange border while expanded
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
 - Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
@@ -156,10 +159,13 @@ Parameter | Description
 - Removes inactive upstream Disqus comment styling
 - Removes inactive upstream navbar search overlay styling
 - Removes inactive upstream GitHub button header styling
+- Uses the same avatar drop shadow at every width instead of a heavier mobile-only halo
+- Corrects the in-page anchor offset to the navbar's real height
 
 ### `assets/js/beautifuljekyll.js`
 
-`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer.
+- Removes the inactive upstream navbar search initializer
+- Closes the mobile navbar menu when tapping outside of it
 
 ### `_config.yml`
 
@@ -167,6 +173,7 @@ Parameter | Description
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
+- Enables `navbar-var-length` so the Projects dropdown sizes to its longest label instead of wrapping
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
 - Excludes build-only repository scripts from the generated site
 
@@ -208,6 +215,9 @@ Parameter | Description
 - Removes the right-aligned dropdown menu class
 - Routes blank navbar links to the site root with `relative_url`
 - Removes the inactive upstream navbar search link and overlay include
+- Adds `aria-current="page"` to the active top-level navbar link
+- Gives each navbar dropdown a unique id instead of a shared `navbarDropdown` id
+- Drops `role="button"`, `aria-haspopup`, and `aria-expanded` from dropdown links that only navigate, since they aren't interactive toggles
 
 ### `_includes/social-networks-links.html`
 

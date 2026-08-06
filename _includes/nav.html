@@ -74,7 +74,11 @@
             <a
               class="nav-link"
               href="{% if link[1]=='' %} {{ '/' | relative_url }} {% else %} {{ link[1] | relative_url }}{% endif %}"
-              {% if link[1] == '' %}{% if page.url == '/' %}aria-current="page"{% endif %}{% else %}{% if page.url == link[1] %}aria-current="page"{% endif %}{% endif %}
+              {% if link[1] == '' %}
+                {%- if page.url == '/' %}aria-current="page"{% endif -%}
+              {% else %}
+                {%- if page.url == link[1] %}aria-current="page"{% endif -%}
+              {% endif %}
             >
               {{- link[0] -}}
             </a>

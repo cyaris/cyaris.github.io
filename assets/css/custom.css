@@ -139,7 +139,8 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
 
 .navbar-custom {
   border-bottom: 2.5px solid var(--navbar-border-col);
-  padding-right: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 

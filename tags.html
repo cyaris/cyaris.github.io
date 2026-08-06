@@ -15,7 +15,6 @@ description: Blog posts and projects grouped by tag.
   }
 </style>
 
-{% assign date_format = site.date_format | default: '%B %-d, %Y' %}
 {% capture tags_string -%}
   {%- for tag_item in site.tags -%}
     {{- tag_item[0] -}}|
@@ -42,9 +41,7 @@ description: Blog posts and projects grouped by tag.
       {%- for post in site.tags[tag] -%}
         <div class="tag-entry">
           <a href="{{ post.url | relative_url }}">{{- post.title | strip_html -}}</a>
-          <div class="entry-date">
-            <time datetime="{{- post.date | date_to_xmlschema -}}">{{- post.date | date: date_format -}}</time>
-          </div>
+          <div class="entry-date">Blog Post</div>
         </div>
       {%- endfor -%}
       {%- for project in site.data.projects -%}

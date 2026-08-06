@@ -249,8 +249,8 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
   }
 
   .navbar-custom .navbar-nav .nav-link {
-    padding-top: 0.45rem;
-    padding-bottom: 0.45rem;
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
   }
 
   .navbar-custom .navbar-toggler {
@@ -277,8 +277,9 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
     font-size: 0.85em;
     font-weight: 800;
-    padding-top: 0.4rem;
-    padding-bottom: 0.4rem;
+    line-height: 1.25rem;
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
     padding-left: 1rem;
   }
 }

@@ -6,15 +6,21 @@ layout: base
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
-      {% if page['project-id'] %}
-        {% assign page_repo = page['gh-repo'] %}
+      {% assign page_repo = page['gh-repo'] %}
+      {% assign badge_position = page['badge-position'] | default: 'top' %}
+      {% assign badge_alignment = page['badge-alignment'] | default: 'center' %}
+
+      {% capture project_badges %}
         {%
           include github-repo-badges.html
           repo=page_repo
           sections='actions,dates'
-          container_class='post-meta repo-meta repo-badges github-repo-badges project-page-repo-badges'
+          alignment=badge_alignment
+          container_class='post-meta repo-badges project-page-repo-badges'
         %}
-      {% endif %}
+      {% endcapture %}
+
+      {% if badge_position == 'top' %}{{ project_badges }}{% endif %}
 
       {% if page['before-content'] %}
         <div class="before-content">
@@ -26,12 +32,39 @@ layout: base
 
       {{ content }}
 
-      {% unless page['project-id'] %}
-        {% assign page_repo = page['gh-repo'] %}
-        {% include github-repo-badges.html repo=page_repo sections='actions,dates' %}
-      {% endunless %}
+      {% if badge_position == 'bottom' %}{{ project_badges }}{% endif %}
 
-      {% if page['project-id'] %}
+      {% assign current_project_id = page['project-id'] %}
+
+      {% if current_project_id == null and page_repo %}
+        {% assign normalized_page_repo = page_repo
+          | replace: 'https://github.com/', ''
+          | replace: 'http://github.com/', ''
+          | replace: 'github.com/', ''
+        %}
+        {% assign normalized_page_repo_parts = normalized_page_repo | split: '/' %}
+        {% assign normalized_page_repo = normalized_page_repo_parts[0]
+          | append: '/'
+          | append: normalized_page_repo_parts[1]
+        %}
+        {% for project in site.data.projects %}
+          {% assign normalized_project_repo = project['gh-repo']
+            | replace: 'https://github.com/', ''
+            | replace: 'http://github.com/', ''
+            | replace: 'github.com/', ''
+          %}
+          {% assign normalized_project_repo_parts = normalized_project_repo | split: '/' %}
+          {% assign normalized_project_repo = normalized_project_repo_parts[0]
+            | append: '/'
+            | append: normalized_project_repo_parts[1]
+          %}
+          {% if normalized_project_repo == normalized_page_repo %}
+            {% assign current_project_id = project.id %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {% if current_project_id %}
         {% assign previous_project = null %}
         {% assign next_project = null %}
         {% assign found_current_project = false %}
@@ -39,7 +72,7 @@ layout: base
           {% if found_current_project and next_project == null %}
             {% assign next_project = project %}
           {% endif %}
-          {% if project.id == page['project-id'] %}
+          {% if project.id == current_project_id %}
             {% assign found_current_project = true %}
           {% elsif found_current_project != true %}
             {% assign previous_project = project %}

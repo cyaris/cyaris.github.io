@@ -1,11 +1,10 @@
 ---
 layout: page
-gh-repo: cyaris/profile_photo/
-description: Charlie Yaris, Data Engineer.
+description: Charlie Yaris, Data Engineer
 ---
 <style type="text/css">
   hr.large {
-    border-color: inherit;
+    border-color: var(--text-col);
     border-radius: 0.1875rem;
     margin: 0.8rem auto;
   }
@@ -58,7 +57,6 @@ description: Charlie Yaris, Data Engineer.
     <div id="homepage-subheading">Data Engineer</div>
   </div>
 </div>
+
 {% include s3_asset.html path='profile_photo/bundle.css' type='style' bundle=true %}
-<div style="margin-bottom: 40px;">
-  {% include s3_asset.html path='profile_photo/bundle.js' type='script' bundle=true %}
-</div>
+{% include s3_asset.html path='profile_photo/bundle.js' type='script' bundle=true %}

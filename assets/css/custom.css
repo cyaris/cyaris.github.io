@@ -7,6 +7,32 @@ layout: null
 body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1rem;
+  overscroll-behavior-x: none;
+}
+
+/* --- Sticky Footer Content --- */
+
+main.container-md,
+main.container-fluid {
+  display: flex;
+  flex-direction: column;
+}
+
+main > .row {
+  flex: 1;
+}
+
+main > .row > [class*="col"] {
+  display: flex;
+  flex-direction: column;
+}
+
+main > .row > [class*="col"] > * + * {
+  margin-top: 0;
+}
+
+main > .row > [class*="col"] > * + :is(h1, h2, h3, h4) {
+  margin-top: 1.25rem;
 }
 
 .intro-header .post-heading h1,
@@ -82,6 +108,16 @@ a:focus {
 
 main.container-fluid:has(.full-width-tool-host) > .row > .col {
   padding: 0;
+}
+
+main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.repo-badges-center) {
+  margin-left: 0.75rem;
+}
+
+@media (min-width: 1300px) {
+  main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.repo-badges-center) {
+    margin-left: 15%;
+  }
 }
 
 /* --- Center --- */
@@ -246,10 +282,20 @@ main.container-fluid:has(.full-width-tool-host) > .row > .col {
   }
 }
 
-.navbar-custom .navbar-brand:hover {
-  cursor: url(../img/kidpix_dynamite_eraser_1.png), auto;
+.navbar-custom .navbar-brand:hover,
+.firework-launch-button,
+.firework-launch-button:hover,
+.firework-launch-button:focus {
+  cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto;
   animation: kidpix_cursor_animate 0.25s infinite;
   -webkit-animation: kidpix_cursor_animate 0.25s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .firework-launch-button {
+    animation: none;
+    -webkit-animation: none;
+  }
 }
 
 .kidpix_png_top {
@@ -410,6 +456,10 @@ footer a:hover {
   gap: 0.45rem;
 }
 
+.repo-badges-center {
+  justify-content: center;
+}
+
 .repo-badge {
   align-items: center;
   background: var(--preview-pill-background-col);
@@ -458,10 +508,6 @@ footer a:hover {
   padding-left: 0.4rem;
 }
 
-.intro-header .post-heading .project-repo-badges {
-  font-size: 1rem;
-}
-
 .project-repo-badges {
   align-items: flex-start;
   display: flex;
@@ -477,23 +523,19 @@ footer a:hover {
   display: contents;
 }
 
+.repo-badge-group {
+  display: contents;
+}
+
 .project-repo-badge {
   min-width: max-content;
-}
-
-.project-repo-created {
-  flex: 0 0 auto;
-}
-
-.project-repo-branch {
-  flex: 0 0 auto;
 }
 
 .post-thumbnail {
   align-items: flex-start;
   display: flex;
   flex: 0 0 12rem;
-  justify-content: flex-end;
+  justify-content: center;
   line-height: 0;
 }
 
@@ -515,11 +557,6 @@ footer a:hover {
 .post-thumbnail.thumbnail-extra-small img {
   width: 8.5rem;
   height: 8.5rem;
-}
-
-.post-thumbnail.thumbnail-icon img {
-  width: 7.25rem;
-  height: 7.25rem;
 }
 
 @media (max-width: 767px) {
@@ -544,11 +581,6 @@ footer a:hover {
   .post-thumbnail.thumbnail-extra-small img {
     width: 6.5rem;
     height: 6.5rem;
-  }
-
-  .post-thumbnail.thumbnail-icon img {
-    width: 5rem;
-    height: 5rem;
   }
 }
 
@@ -587,11 +619,6 @@ footer a:hover {
   .post-thumbnail.thumbnail-extra-small img {
     width: 5rem;
     height: 5rem;
-  }
-
-  .post-thumbnail.thumbnail-icon img {
-    width: 4.5rem;
-    height: 4.5rem;
   }
 
   .post-preview-heading .post-title {
@@ -641,13 +668,16 @@ footer a:hover {
     line-height: 1.3;
   }
 
-  .intro-header .post-heading .project-repo-badges {
-    font-size: 1rem;
+  .project-repo-badges {
+    flex-direction: column;
+    margin-top: 0.65rem;
+    row-gap: 0.35rem;
   }
 
-  .project-repo-badges {
+  .project-repo-badges .repo-badge-group {
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.35rem;
-    margin-top: 0.65rem;
   }
 }
 
@@ -693,18 +723,18 @@ button:focus {
 
 @media (max-width: 575px) {
   .project-page-repo-badges {
-    column-gap: 0.35rem;
-    display: grid;
-    grid-template-columns: repeat(2, max-content);
-    max-width: 21.5rem;
+    flex-direction: column;
     row-gap: 0.35rem;
-    width: 100%;
   }
 
-  .project-page-repo-badges .repo-badge {
-    font-size: 0.74rem;
-    gap: 0.25rem;
-    padding: 0.32rem 0.46rem;
+  .project-page-repo-badges .repo-badge-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .project-page-repo-badges.repo-badges-center .repo-badge-group {
+    justify-content: center;
   }
 }
 
@@ -782,6 +812,10 @@ button:focus {
 }
 
 /* --- Pagination --- */
+
+main > .row > [class*="col"] > .pagination.blog-pager {
+  margin-top: auto;
+}
 
 .pagination .page-item .page-link {
   color: var(--pagination-link-col);

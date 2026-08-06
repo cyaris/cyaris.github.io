@@ -55,6 +55,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 ### GitHub Repository Badges And Dates
 
 - `_includes/github-repo-badges.html` renders linked follow, star, watch, and fork badges with accessible labels, GitHub icons, optional counts, repository creation dates, and latest default-branch commit dates.
+- The `badge-position` and `badge-alignment` front matter parameters (see [Custom Front Matter Parameters](#custom-front-matter-parameters)) control where the badge row sits on the page and how it's aligned.
 - `scripts/update-github-repo-dates.mjs` generates repository metadata for content files with `gh-repo` front matter and project cards with `gh-repo` data.
 - `.github/workflows/pages.yml` refreshes the repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages, while `.gitignore` keeps the generated `_data/github_repos.yml` file local.
 
@@ -100,6 +101,22 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - `_includes/tableau_dashboards/cook_county_court_sentencing.html` embeds the Cook County Court Sentencing Tableau dashboard.
 - `_includes/tableau_dashboards/maryland_traffic_violations.html` embeds the Maryland Traffic Violations Tableau dashboard.
 
+## Custom Front Matter Parameters
+
+These YAML front matter parameters are site-local additions layered on top of Beautiful Jekyll's own
+[supported parameters](https://github.com/daattali/beautiful-jekyll#supported-parameters).
+
+Parameter | Description
+----------- | -----------
+`type` | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type.
+`project-id` | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`.
+`description` | Optional per-page meta-description fallback read by `_includes/head.html`. Used ahead of `subtitle` and behind `share-description` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags.
+`badge-position` | Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts.
+`badge-alignment` | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts.
+`thumbnail-fit` | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`.
+`thumbnail-position` | Optional per-post CSS `object-position` value for the blog listing thumbnail. Defaults to `center center`.
+`thumbnail-size` | Optional per-post thumbnail size on the blog listing: `normal`, `small`, or `extra-small`. Defaults to `normal`.
+
 ## Deviations From Beautiful Jekyll
 
 ### `404.html`
@@ -115,6 +132,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 
 ### `assets/css/custom.css`
 
+- Disables horizontal edge-swipe browser back/forward navigation site-wide
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
@@ -123,12 +141,12 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
 - Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
-- Places project page GitHub action badges and repository metadata badges in one left-aligned top-content row when space allows
+- Places project page and blog post GitHub action badges and repository metadata badges in one row, with an optional centered layout for the `badge-alignment: center` modifier
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
 - Defines shared button styling for `.btn-group`, including local focus-state overrides
-- Customizes tag link and pagination styling, including desktop/mobile pagination text visibility
+- Customizes tag link and pagination styling, including desktop/mobile pagination text visibility, and anchors project/post pagination buttons to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
 - Customizes social-share icon focus behavior
 - Disables text selection on interactive site controls, social-share controls, and footer areas
 
@@ -215,7 +233,7 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - Filters listed posts by `page.type` and renders Projects page cards from `_data/projects.yml`
 - Renders a single left-aligned post thumbnail beside the post title and subtitle
 - Lazily loads and asynchronously decodes post preview thumbnails
-- Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`normal`, `small`, `extra-small`, or `icon`) front matter for thumbnail crops and sizing
+- Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`normal`, `small`, or `extra-small`) front matter for thumbnail crops and sizing
 - Removes the "Posted on" label from post dates
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata exists
@@ -227,14 +245,15 @@ Project listing thumbnails can render generated square APNG assets under `assets
 
 ### `_layouts/page.html`
 
-- Adds the shared `github-repo-badges.html` include to pages, with project page badges placed before content
+- Adds the shared `github-repo-badges.html` include to pages with `gh-repo` front matter, positioned and aligned by the `badge-position` and `badge-alignment` parameters (defaulting to `top` and `center`)
 - Adds previous and next pagination for project pages with `project-id` front matter, following `_data/projects.yml` order
+- Extends that pagination to sibling and nested project pages that share a project's `gh-repo` but lack their own `project-id`, always linking to the neighboring project's top-level page rather than a sibling or nested page within the current project
 - Adds the social-share include when `social-share` is enabled
 - Removes the inactive upstream comments include
 
 ### `_layouts/post.html`
 
-- Adds the shared `github-repo-badges.html` include to posts
+- Adds the shared `github-repo-badges.html` include to posts, positioned and aligned by the `badge-position` and `badge-alignment` parameters (defaulting to `top` and `left`)
 - Defines separate desktop and mobile pagination labels
 - Labels pagination links with `page.type`
 - Restricts previous/next pagination to posts with the same `type` as the current post

@@ -4,6 +4,7 @@ _data/generated_s3_assets.yml
 _data/github_repos.yml
 .sass-cache
 .vagrant
+gemfiles/
 
 # general
 .DS_Store
@@ -14,4 +15,3 @@ ehthumbs.db
 beautiful-jekyll-theme-*.gem
 
 node_modules
-package-lock.json

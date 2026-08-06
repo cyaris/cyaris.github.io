@@ -6,10 +6,15 @@ layout: base
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
-      {% unless page.type == 'project' %}
-        {% assign page_repo = page['gh-repo'] %}
-        {% include github-repo-badges.html repo=page_repo %}
-      {% endunless %}
+      {% assign page_repo = page['gh-repo'] %}
+      {% assign badge_position = page['badge-position'] | default: 'top' %}
+      {% assign badge_alignment = page['badge-alignment'] | default: 'left' %}
+
+      {% capture post_badges %}
+        {% include github-repo-badges.html repo=page_repo alignment=badge_alignment %}
+      {% endcapture %}
+
+      {% if badge_position == 'top' %}{{ post_badges }}{% endif %}
 
       {% if page['before-content'] %}
         <div class="before-content">
@@ -22,6 +27,8 @@ layout: base
       <div class="blog-post">
         {{ content }}
       </div>
+
+      {% if badge_position == 'bottom' %}{{ post_badges }}{% endif %}
 
       {% if page.tags.size > 0 %}
         <div class="blog-tags">

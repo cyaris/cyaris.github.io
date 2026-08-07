@@ -6,14 +6,10 @@ commit `eaa926f1`).
 
 Everything below was designed, agreed to, and implemented at some point during the session, then reverted back
 to the pre-session baseline (`5e3c2881`) at your request. The code for every item still exists, untouched, on
-the backup branch:
-
-```
-dev-session-2026-08-05-backup
-```
-
-pushed to `origin/dev-session-2026-08-05-backup`. Each section below names the exact commit that introduced it,
-so any item can be cherry-picked back individually rather than re-implemented from scratch.
+the backup branch `dev-session-2026-08-05-backup`, pushed to `origin/dev-session-2026-08-05-backup`. Each
+section below names the exact commit that introduced it, but a commit may bundle multiple decisions —
+cherry-picking it restores everything in that commit, not just one item. See "Recovering an item later" below
+for how to restore a single decision from a multi-decision commit.
 
 ## Currently live
 
@@ -89,6 +85,11 @@ Each row above names its commit on `dev-session-2026-08-05-backup`. To bring one
 git show <commit> -- <file>   # inspect the exact diff first
 git cherry-pick <commit>      # or apply it by hand if it no longer applies cleanly
 ```
+
+`git cherry-pick` applies the entire commit. Commits such as `7e24e6ff` (visual decisions) and `ded1ade5`
+(accessibility fixes) each bundle multiple decisions, so cherry-picking one pulls in every decision from that
+commit, not just the row you want. To recover a single decision from a multi-decision commit, apply the
+relevant hunk manually from `git show`, or request a separate commit or patch that isolates that decision.
 
 Commits after the first in a category (e.g. the padding sequence, or the dropdown-width sequence) supersede
 earlier ones in that same category — cherry-pick the *last* commit touching a given decision, not the first,

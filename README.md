@@ -137,7 +137,7 @@ Parameter | Description
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
-- Customizes navbar sizing, avatar placement, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations
+- Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations that respect `prefers-reduced-motion`
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
 - Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
@@ -174,7 +174,7 @@ Parameter | Description
 
 - Defines page-local contact form, Turnstile, status, honeypot, and mobile contact-page styles
 
-### `fireworks/index.html`
+### `fireworks.html`
 
 - Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides
 

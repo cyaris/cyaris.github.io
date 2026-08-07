@@ -3,5 +3,40 @@ layout: page
 title: Tableau Gallery
 project-id: tableau_gallery
 description: Interactive dashboards and visual analytics created in Tableau.
+full-width: true
 ---
+<style>
+  main.container-fluid:has(.tableau-gallery-item) > .row > .col {
+    padding: 0;
+  }
+
+  .tableau-gallery-item:last-of-type {
+    margin-bottom: 40px;
+  }
+
+  main > .row > [class*='col'] > .tableau-gallery-item + .tableau-gallery-item {
+    margin-top: 48px;
+  }
+
+  .tableau-gallery-text,
+  .tableau-gallery-dashboard,
+  .pagination.blog-pager {
+    box-sizing: border-box;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  @media (min-width: 1300px) {
+    .tableau-gallery-text,
+    .tableau-gallery-dashboard,
+    .pagination.blog-pager {
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+</style>
+
 {% include tableau_gallery.html %}

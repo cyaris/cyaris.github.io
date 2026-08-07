@@ -114,9 +114,23 @@ main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.r
   margin-left: 0.75rem;
 }
 
+main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
+  box-sizing: border-box;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
 @media (min-width: 1300px) {
   main.container-fluid:has(.full-width-tool-host) .project-page-repo-badges:not(.repo-badges-center) {
     margin-left: 15%;
+  }
+
+  main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 

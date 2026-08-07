@@ -705,13 +705,17 @@ footer a:hover {
   .project-repo-badges {
     flex-direction: column;
     margin-top: 0.65rem;
-    row-gap: 0.35rem;
+    row-gap: 0;
   }
 
   .project-repo-badges .repo-badge-group {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
+  }
+
+  .project-repo-badges .repo-badge-group + .repo-badge-group {
+    margin-top: 0.35rem;
   }
 }
 

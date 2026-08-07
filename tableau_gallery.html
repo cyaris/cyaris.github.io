@@ -19,7 +19,12 @@ full-width: true
     margin-bottom: 10px;
   }
 
-  .tableau-gallery-dashboard {
+  main > .row > [class*="col"] > .tableau-gallery-item + .tableau-gallery-item {
+    margin-top: 48px;
+  }
+
+  .tableau-gallery-dashboard,
+  .pagination.blog-pager {
     box-sizing: border-box;
     padding-left: 12px;
     padding-right: 12px;
@@ -31,7 +36,8 @@ full-width: true
       margin-right: 15%;
     }
 
-    .tableau-gallery-dashboard {
+    .tableau-gallery-dashboard,
+    .pagination.blog-pager {
       width: 70%;
       margin-left: auto;
       margin-right: auto;

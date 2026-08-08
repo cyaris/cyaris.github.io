@@ -171,7 +171,7 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
 
 .navbar-custom .navbar-nav .nav-item {
   font-size: 1rem;
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 /* increasing size of projects navbar section width */

@@ -1,5 +1,5 @@
 - id: the_networks_of_war
-  title: The Networks of War
+  title: "The Networks\nof War"
   subtitle: Performing network analysis on over 200 years of data from the Correlates of War (COW) Project.
   url: /the_networks_of_war/
   gh-repo: cyaris/the_networks_of_war

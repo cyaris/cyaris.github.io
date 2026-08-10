@@ -178,6 +178,11 @@ Parameter | Description
 
 - Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides
 
+### `index.html`
+
+- Loads the Auto Transition-only Profile Photo homepage bundle instead of the full interactive Profile Photo bundle
+- Adds homepage portrait navigation buttons that reuse the site's shared `.btn-group` button styling
+
 ### `_includes/footer.html`
 
 - Removes the bullet before the pretty URL

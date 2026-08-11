@@ -1,6 +1,36 @@
 ---
 layout: page
 ---
+<style>
+  .project-repo-badges {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    justify-content: flex-start;
+    line-height: 1;
+    margin-top: 0.7rem;
+    max-width: 100%;
+  }
+
+  @media (max-width: 575px) {
+    .project-repo-badges {
+      flex-direction: column;
+      margin-top: 0.65rem;
+      row-gap: 0;
+    }
+
+    .project-repo-badges .repo-badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .project-repo-badges .repo-badge-group + .repo-badge-group {
+      margin-top: 0.35rem;
+    }
+  }
+</style>
 <script type="text/javascript">
   if (history.scrollRestoration) {
     history.scrollRestoration = 'manual'

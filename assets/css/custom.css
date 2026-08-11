@@ -171,7 +171,7 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
 
 .navbar-custom .navbar-nav .nav-item {
   font-size: 1rem;
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 /* increasing size of projects navbar section width */
@@ -250,6 +250,11 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     border-width: 0px 2.75px 2px 2.75px;
     border-color: var(--navbar-border-col);
   }
+
+  /* project titles with an embedded newline in _data/projects.yml break onto a new line here */
+  .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item[href$="/the_networks_of_war/"] {
+    white-space: pre-line;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -289,7 +294,7 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    font-size: 0.85em;
+    font-size: 1rem;
     font-weight: 800;
     line-height: 1.25rem;
     padding-top: 7.5px;
@@ -542,17 +547,6 @@ footer a:hover {
   padding-left: 0.4rem;
 }
 
-.project-repo-badges {
-  align-items: flex-start;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  justify-content: flex-start;
-  line-height: 1;
-  margin-top: 0.7rem;
-  max-width: 100%;
-}
-
 .project-repo-inline-badges {
   display: contents;
 }
@@ -700,18 +694,6 @@ footer a:hover {
   .intro-header .post-heading .post-meta {
     font-size: 1rem;
     line-height: 1.3;
-  }
-
-  .project-repo-badges {
-    flex-direction: column;
-    margin-top: 0.65rem;
-    row-gap: 0.35rem;
-  }
-
-  .project-repo-badges .repo-badge-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
   }
 }
 

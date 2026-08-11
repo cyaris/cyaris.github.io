@@ -18,6 +18,34 @@ description: Charlie Yaris, Data Engineer
     line-height: 1.1;
   }
 
+  .homepage-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+    margin: 0 auto 2rem;
+  }
+
+  .homepage-action {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .homepage-action-primary {
+    font-size: 18px;
+    font-weight: 800;
+    width: 215px;
+  }
+
+  .homepage-action-secondary {
+    font-size: 16px;
+    height: 58px;
+  }
+
   @media (min-width: 1200px) {
     hr.large {
       max-width: 25rem;
@@ -49,6 +77,19 @@ description: Charlie Yaris, Data Engineer
       margin-bottom: 0.5rem;
     }
   }
+
+  @media (max-width: 575px) {
+    .homepage-actions {
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .homepage-action-primary,
+    .homepage-action-secondary {
+      width: min(100%, 205px);
+    }
+  }
 </style>
 <div style="margin-bottom: 30px;">
   <div class="center">
@@ -58,5 +99,12 @@ description: Charlie Yaris, Data Engineer
   </div>
 </div>
 
-{% include s3_asset.html path='profile_photo/bundle.css' type='style' bundle=true %}
-{% include s3_asset.html path='profile_photo/bundle.js' type='script' bundle=true %}
+{% include s3_asset.html path='profile_photo/bundle2.css' type='style' bundle=true %}
+{% include s3_asset.html path='profile_photo/bundle2.js' type='script' bundle=true %}
+
+<nav class="homepage-actions" aria-label="Homepage navigation">
+  <a class="btn-group homepage-action homepage-action-primary" href="{{ '/projects' | relative_url }}">Enter Site</a>
+  <a class="btn-group homepage-action homepage-action-secondary" href="{{ '/profile_photo' | relative_url }}">
+    More Pixel Fun
+  </a>
+</nav>

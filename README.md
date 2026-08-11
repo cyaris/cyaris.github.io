@@ -101,6 +101,10 @@ Project listing thumbnails can render generated square APNG assets under `assets
 - `_includes/tableau_dashboards/cook_county_court_sentencing.html` embeds the Cook County Court Sentencing Tableau dashboard.
 - `_includes/tableau_dashboards/maryland_traffic_violations.html` embeds the Maryland Traffic Violations Tableau dashboard.
 
+### Homepage Action Buttons
+
+`index.html` adds homepage portrait navigation buttons that reuse the site's shared `.btn-group` button styling.
+
 ## Custom Front Matter Parameters
 
 These YAML front matter parameters are site-local additions layered on top of Beautiful Jekyll's own
@@ -178,6 +182,10 @@ Parameter | Description
 
 - Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides
 
+### `index.html`
+
+- Loads the Auto Transition-only Profile Photo homepage bundle instead of the full interactive Profile Photo bundle
+
 ### `_includes/footer.html`
 
 - Removes the bullet before the pretty URL
@@ -237,6 +245,7 @@ Parameter | Description
 - Removes the "Posted on" label from post dates
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata exists
+- Defines page-local Projects listing repository badge row spacing and mobile stacking styles
 
 ### `tags.html`
 

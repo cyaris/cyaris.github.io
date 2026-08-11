@@ -6,7 +6,7 @@ on:
       - master
   pull_request:
   schedule:
-    - cron: "30 13 * * *"
+    - cron: "23 13 * * *"
   workflow_dispatch:
 
 permissions:

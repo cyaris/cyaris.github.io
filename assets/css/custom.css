@@ -294,7 +294,7 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    font-size: 1rem;
+    font-size: 0.85em;
     font-weight: 800;
     line-height: 1.25rem;
     padding-top: 7.5px;

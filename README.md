@@ -251,6 +251,8 @@ Parameter | Description
 
 - Groups both blog posts and `_data/projects.yml` project cards by tag
 - Defines page-local tag heading and post-list offsets
+- Removes the tag index
+- Removes tag counts from tag headings
 
 ### `_layouts/page.html`
 
@@ -295,11 +297,6 @@ Deletes `_layouts/minimal.html`, `_includes/footer-minimal.html`, and `assets/cs
 
 `.github/workflows/pages.yml` generates GitHub repository metadata and S3 asset version data before the Jekyll build, then deploys `master` builds to GitHub Pages with GitHub Actions.
 
-### `tags.html`
-
-- Removes the tag index
-- Removes tag counts from tag headings
-
 ## GitHub Actions Workflows
 
 Local wrappers that delegate to `cyaris/shared-automation` link to the
@@ -325,6 +322,11 @@ custom inputs. It can also be dispatched from the command line or GitHub API aga
 ```sh
 gh workflow run .github/workflows/pages.yml --ref master
 ```
+
+### `.github/workflows/auto-create-dev-pr.yml`
+
+The `Auto-create dev pull request` workflow runs on pushes to `dev` and calls the
+[shared auto-create-dev-pr workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-create-dev-pryml).
 
 ### `.github/workflows/auto-release.yml`
 

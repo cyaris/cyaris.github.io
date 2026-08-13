@@ -186,6 +186,7 @@ Parameter | Description
 ### `index.html`
 
 - Loads the Auto Transition-only Profile Photo homepage bundle instead of the full interactive Profile Photo bundle
+- Stacks the homepage action buttons at every viewport width and matches the project-page buttons' hover/focus underlines
 
 ### `_includes/footer.html`
 

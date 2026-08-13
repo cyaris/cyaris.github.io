@@ -21,8 +21,8 @@ description: Charlie Yaris, Data Engineer
   .homepage-actions {
     align-items: center;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
+    flex-direction: column;
+    gap: 0.65rem;
     justify-content: center;
     margin: 0 auto 2rem;
   }
@@ -33,6 +33,11 @@ description: Charlie Yaris, Data Engineer
     justify-content: center;
     line-height: 1.15;
     text-align: center;
+  }
+
+  .homepage-action:hover,
+  .homepage-action:focus {
+    text-decoration: underline;
   }
 
   .homepage-action-primary {
@@ -80,8 +85,6 @@ description: Charlie Yaris, Data Engineer
 
   @media (max-width: 575px) {
     .homepage-actions {
-      flex-direction: column;
-      gap: 0.65rem;
       margin-bottom: 1.5rem;
     }
 

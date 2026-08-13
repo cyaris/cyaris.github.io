@@ -28,7 +28,20 @@
 {%- if include.type == 'style' -%}
   <link rel="stylesheet" href="{{ asset_url }}">
 {%- elsif include.type == 'script' -%}
-  <script src="{{ asset_url }}"></script>
+  {%- unless include.loading == false -%}
+    {%- assign loading_id = s3_key | slugify | prepend: 's3-asset-loading-' -%}
+    <div id="{{ loading_id }}" class="s3-asset-loading" role="status">
+      <span class="s3-asset-loading-spinner" aria-hidden="true"></span>
+      <span class="sr-only">Loading application...</span>
+    </div>
+  {%- endunless -%}
+  <script
+    src="{{ asset_url }}"
+    {%- unless include.loading == false %}
+      onload="document.getElementById('{{ loading_id }}')?.remove()"
+      onerror="document.getElementById('{{ loading_id }}')?.remove()"
+    {%- endunless -%}
+  ></script>
 {%- else -%}
   {{- asset_url -}}
 {%- endif -%}

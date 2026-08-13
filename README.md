@@ -61,7 +61,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 ### S3-Hosted App And Document Assets
 
-`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`.
+`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags display an accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it.
 
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source, resolves the exact S3 object key that the include will serve, and writes each key's current version data before Jekyll builds. The generated data uses S3 as the source of truth and never queries upstream app repositories. No manually registered assets are currently required; a future dynamic include path should be converted to a literal include path or paired with an explicit registry in the generator instead of being silently omitted.
 
@@ -140,6 +140,7 @@ Parameter | Description
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
+- Styles the S3 app-bundle loading indicator and its reduced-motion state
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations that respect `prefers-reduced-motion`
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing

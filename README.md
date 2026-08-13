@@ -32,7 +32,7 @@ To refresh S3 asset versions for a local build without AWS access:
 npm run update:s3-assets
 ```
 
-The local command writes stable fallback versions derived from each S3 object key. The fallback keeps repeated local and pull-request builds deterministic, but it does not prove that an S3 object exists and does not reflect object replacements.
+The local command writes stable fallback versions derived from each S3 object key. The fallback keeps repeated local and `dev` builds deterministic, but it does not prove that an S3 object exists and does not reflect object replacements.
 
 To query S3 metadata instead, run the same command in AWS mode:
 
@@ -305,19 +305,20 @@ behavior, inputs, and secrets.
 
 ### `.github/workflows/pages.yml`
 
-The `Pages` workflow runs on pushes to `master`, pull requests, manual dispatch, and the daily 8:00 AM America/Chicago
+The `Pages` workflow runs on pushes to `dev` and `master`, manual dispatch, and the daily 8:00 AM America/Chicago
 schedule. It installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path, generates
 `_data/github_repos.yml` from repository front matter, generates `_data/generated_s3_assets.yml` from current S3 object
-metadata or deterministic pull-request fallback data, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the
+metadata or deterministic `dev` fallback data, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the
 Pages artifact. Runs on `master` also deploy that artifact to GitHub Pages through `actions/deploy-pages`.
 
 Scheduled and `master` builds require `AWS_ROLLUP_UPLOAD_ROLE_ARN` or the `AWS_ACCESS_KEY_ID` and
 `AWS_SECRET_ACCESS_KEY` secrets so `scripts/generate-s3-asset-versions.mjs` can call `aws s3api head-object` for every
-referenced S3 object. Pull-request builds use stable local fallback values to keep preview validation available without
+referenced S3 object. `dev` builds use stable local fallback values to keep validation available without
 AWS credentials.
 
-The workflow can be dispatched from the GitHub Actions UI with **Actions > Pages > Run workflow**. Manual dispatch has no
-custom inputs. It can also be dispatched from the command line or GitHub API against `master`:
+The workflow can be dispatched by the `cyaris` actor from the GitHub Actions UI with
+**Actions > Pages > Run workflow**. Manual dispatch has no custom inputs. It can also be dispatched from the command line
+or GitHub API against `master`:
 
 ```sh
 gh workflow run .github/workflows/pages.yml --ref master

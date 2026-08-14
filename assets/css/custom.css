@@ -754,7 +754,7 @@ button:focus {
 }
 
 .btn-group:hover,
-.btn-group:focus {
+.btn-group:focus-visible {
   color: var(--btn-link-hover-col);
   background-color: var(--btn-background-hover-col);
   border-color: var(--btn-border-hover-col);

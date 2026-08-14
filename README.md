@@ -308,11 +308,12 @@ behavior, inputs, and secrets.
 ### `.github/workflows/pages.yml`
 
 The `Pages` workflow runs on pushes to `dev` and `master`, manual dispatch, and a daily 13:23 UTC schedule, 30 minutes
-after `mastermind`, `profile_photo`, `us_gun_violence_forecasting`, and `the_networks_of_war`'s `Upstream Watch` runs.
-It installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path, generates
-`_data/github_repos.yml` from repository front matter, generates `_data/generated_s3_assets.yml` from current S3 object
-metadata or deterministic `dev` fallback data, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the
-Pages artifact. Runs on `master` also deploy that artifact to GitHub Pages through `actions/deploy-pages`.
+after the `Upstream Watch` runs in `mastermind`, `profile_photo`, `us_gun_violence_forecasting`, and
+`the_networks_of_war`. It installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path,
+generates `_data/github_repos.yml` from repository front matter, generates `_data/generated_s3_assets.yml` from current
+S3 object metadata or deterministic `dev` fallback data, builds the Jekyll site with `JEKYLL_ENV=production`, and
+uploads the Pages artifact. The workflow also deploys that artifact to GitHub Pages on `master` through
+`actions/deploy-pages`.
 
 Scheduled and `master` builds require `AWS_ROLLUP_UPLOAD_ROLE_ARN` or the `AWS_ACCESS_KEY_ID` and
 `AWS_SECRET_ACCESS_KEY` secrets so `scripts/generate-s3-asset-versions.mjs` can call `aws s3api head-object` for every

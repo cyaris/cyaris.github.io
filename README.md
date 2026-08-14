@@ -158,6 +158,7 @@ Parameter | Description
 ### `assets/css/beautifuljekyll.css`
 
 - Emits the site-specific color palette as CSS custom properties for downstream stylesheets
+- Matches page-header title/subtitle separators to the surrounding text color
 - Removes inactive upstream Disqus comment styling
 - Removes inactive upstream navbar search overlay styling
 - Removes inactive upstream GitHub button header styling

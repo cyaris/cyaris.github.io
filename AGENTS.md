@@ -45,7 +45,10 @@
 - Keep future maintainer instructions in AGENTS.md instead of the README. The README should describe project behavior,
   commands, outputs, and user-facing effects rather than telling future editors what they should do.
 - In Markdown files, always format the literal as `null`.
-- When changes to Beautiful Jekyll files, site styling, or site functionality deviate from upstream Beautiful Jekyll, document the affected files and behavior in the README's `Deviations From Beautiful Jekyll` section in the same change.
+- After changing any Beautiful Jekyll-derived file or adding any site styling or functionality that deviates from
+  upstream Beautiful Jekyll, inspect the affected file's subsection in the README's `Deviations From Beautiful Jekyll`
+  section and update it in the same change. An existing subsection is not sufficient unless it already describes the
+  changed behavior; apply this check even to one-line fixes.
 - Before finishing changes that add or touch files in `_includes`, compare the include paths against upstream Beautiful Jekyll. Any current or future `_includes` file that is not present upstream must automatically be documented in the README's `Additional Features` section in the same change.
 - Keep the README's `Additional Features` section focused on site-local features and `_includes` files not found upstream. Keep the `Deviations From Beautiful Jekyll` section focused on changed upstream files, removed upstream files, and behavioral differences from upstream.
 - Keep `_includes` limited to files actually used by the site, based on features currently enabled in `_config.yml` plus integrations activated by visiting pages. The only include files that may remain present while unused by the active site are `_includes/social-networks-links.html`, `_includes/social-share.html`, `_includes/cloudflare_analytics.html`, `_includes/google_analytics.html`, `_includes/gtm_head.html`, and `_includes/gtm_body.html`. Delete any other unused include file together with its corresponding imports or integrations, and document each removal in the README's `Deviations From Beautiful Jekyll` section.

@@ -61,7 +61,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 ### S3-Hosted App And Document Assets
 
-`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags display an accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it.
+`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags defer bundle execution so surrounding page controls remain available while displaying an accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it.
 
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source, resolves the exact S3 object key that the include will serve, and writes each key's current version data before Jekyll builds. The generated data uses S3 as the source of truth and never queries upstream app repositories. No manually registered assets are currently required; a future dynamic include path should be converted to a literal include path or paired with an explicit registry in the generator instead of being silently omitted.
 

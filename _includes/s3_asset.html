@@ -38,6 +38,7 @@
   <script
     src="{{ asset_url }}"
     {%- unless include.loading == false %}
+      defer
       onload="document.getElementById('{{ loading_id }}')?.remove()"
       onerror="document.getElementById('{{ loading_id }}')?.remove()"
     {%- endunless -%}

@@ -8,6 +8,24 @@ full-width: true
 badge-alignment: left
 ---
 {% include s3_asset.html path='us_gun_violence_forecasting/bundle.css' type='style' bundle=true %}
+<style>
+  .full-width-tool-host .metrics-table {
+    display: table;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .full-width-tool-host .metrics-table tr {
+    border-top: 0;
+  }
+
+  .full-width-tool-host .metrics-table tr th,
+  .full-width-tool-host .metrics-table tr td {
+    border: 0;
+    box-sizing: content-box;
+    padding: 1px;
+  }
+</style>
 <div class="full-width-tool-host">
   {% include s3_asset.html path='us_gun_violence_forecasting/bundle.js' type='script' bundle=true %}
 </div>

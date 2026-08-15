@@ -99,6 +99,40 @@ a:focus {
   color: var(--hover-col);
 }
 
+/* --- S3 Asset Loading --- */
+
+.s3-asset-loading {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 10rem;
+  width: 100%;
+}
+
+.s3-asset-loading-spinner {
+  animation: s3-asset-loading-spin 0.8s linear infinite;
+  border: 0.35rem solid currentcolor;
+  border-radius: 50%;
+  border-right-color: transparent;
+  color: var(--link-col);
+  height: 3rem;
+  width: 3rem;
+}
+
+@keyframes s3-asset-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s3-asset-loading-spinner {
+    animation: none;
+    border-right-color: currentcolor;
+    opacity: 0.65;
+  }
+}
+
 /* --- Full-Width Tool Hosts --- */
 
 .full-width-tool-host {
@@ -191,7 +225,8 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
 .navbar-custom .navbar-nav .nav-link,
 .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item,
 .navbar-custom .navbar-brand:focus,
-.navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle:focus {
+.navbar-custom .navbar-nav .nav-link:focus,
+.navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item:focus {
   color: var(--navbar-link-col);
 }
 
@@ -294,7 +329,7 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    font-size: 1rem;
+    font-size: 0.85em;
     font-weight: 800;
     line-height: 1.25rem;
     padding-top: 7.5px;
@@ -720,7 +755,7 @@ button:focus {
 }
 
 .btn-group:hover,
-.btn-group:focus {
+.btn-group:focus-visible {
   color: var(--btn-link-hover-col);
   background-color: var(--btn-background-hover-col);
   border-color: var(--btn-border-hover-col);

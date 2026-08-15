@@ -32,7 +32,7 @@ To refresh S3 asset versions for a local build without AWS access:
 npm run update:s3-assets
 ```
 
-The local command writes stable fallback versions derived from each S3 object key. The fallback keeps repeated local and pull-request builds deterministic, but it does not prove that an S3 object exists and does not reflect object replacements.
+The local command writes stable fallback versions derived from each S3 object key. The fallback keeps repeated local and `dev` builds deterministic, but it does not prove that an S3 object exists and does not reflect object replacements.
 
 To query S3 metadata instead, run the same command in AWS mode:
 
@@ -61,7 +61,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 ### S3-Hosted App And Document Assets
 
-`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`.
+`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags defer bundle execution so surrounding page controls remain available while displaying an accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it.
 
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source, resolves the exact S3 object key that the include will serve, and writes each key's current version data before Jekyll builds. The generated data uses S3 as the source of truth and never queries upstream app repositories. No manually registered assets are currently required; a future dynamic include path should be converted to a literal include path or paired with an explicit registry in the generator instead of being silently omitted.
 
@@ -140,6 +140,7 @@ Parameter | Description
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
+- Styles the S3 app-bundle loading indicator and its reduced-motion state
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations that respect `prefers-reduced-motion`
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
@@ -157,6 +158,7 @@ Parameter | Description
 ### `assets/css/beautifuljekyll.css`
 
 - Emits the site-specific color palette as CSS custom properties for downstream stylesheets
+- Matches page-header title/subtitle separators to the surrounding text color
 - Removes inactive upstream Disqus comment styling
 - Removes inactive upstream navbar search overlay styling
 - Removes inactive upstream GitHub button header styling
@@ -185,6 +187,7 @@ Parameter | Description
 ### `index.html`
 
 - Loads the Auto Transition-only Profile Photo homepage bundle instead of the full interactive Profile Photo bundle
+- Stacks the homepage action buttons at every viewport width and matches the project-page buttons' hover/focus underlines
 
 ### `_includes/footer.html`
 
@@ -251,6 +254,8 @@ Parameter | Description
 
 - Groups both blog posts and `_data/projects.yml` project cards by tag
 - Defines page-local tag heading and post-list offsets
+- Removes the tag index
+- Removes tag counts from tag headings
 
 ### `_layouts/page.html`
 
@@ -295,11 +300,6 @@ Deletes `_layouts/minimal.html`, `_includes/footer-minimal.html`, and `assets/cs
 
 `.github/workflows/pages.yml` generates GitHub repository metadata and S3 asset version data before the Jekyll build, then deploys `master` builds to GitHub Pages with GitHub Actions.
 
-### `tags.html`
-
-- Removes the tag index
-- Removes tag counts from tag headings
-
 ## GitHub Actions Workflows
 
 Local wrappers that delegate to `cyaris/shared-automation` link to the
@@ -308,23 +308,31 @@ behavior, inputs, and secrets.
 
 ### `.github/workflows/pages.yml`
 
-The `Pages` workflow runs on pushes to `master`, pull requests, manual dispatch, and the daily 8:00 AM America/Chicago
-schedule. It installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path, generates
-`_data/github_repos.yml` from repository front matter, generates `_data/generated_s3_assets.yml` from current S3 object
-metadata or deterministic pull-request fallback data, builds the Jekyll site with `JEKYLL_ENV=production`, and uploads the
-Pages artifact. Runs on `master` also deploy that artifact to GitHub Pages through `actions/deploy-pages`.
+The `Pages` workflow runs on pushes to `dev` and `master`, manual dispatch, and a daily 13:23 UTC schedule, 30 minutes
+after the `Upstream Watch` runs in `mastermind`, `profile_photo`, `us_gun_violence_forecasting`, and
+`the_networks_of_war`. It installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path,
+generates `_data/github_repos.yml` from repository front matter, generates `_data/generated_s3_assets.yml` from current
+S3 object metadata or deterministic `dev` fallback data, builds the Jekyll site with `JEKYLL_ENV=production`, and
+uploads the Pages artifact. The workflow also deploys that artifact to GitHub Pages on `master` through
+`actions/deploy-pages`.
 
 Scheduled and `master` builds require `AWS_ROLLUP_UPLOAD_ROLE_ARN` or the `AWS_ACCESS_KEY_ID` and
 `AWS_SECRET_ACCESS_KEY` secrets so `scripts/generate-s3-asset-versions.mjs` can call `aws s3api head-object` for every
-referenced S3 object. Pull-request builds use stable local fallback values to keep preview validation available without
+referenced S3 object. `dev` builds use stable local fallback values to keep validation available without
 AWS credentials.
 
-The workflow can be dispatched from the GitHub Actions UI with **Actions > Pages > Run workflow**. Manual dispatch has no
-custom inputs. It can also be dispatched from the command line or GitHub API against `master`:
+The workflow can be dispatched by the `cyaris` actor from the GitHub Actions UI with
+**Actions > Pages > Run workflow**. Manual dispatch has no custom inputs. It can also be dispatched from the command line
+or GitHub API against `master`:
 
 ```sh
 gh workflow run .github/workflows/pages.yml --ref master
 ```
+
+### `.github/workflows/auto-create-dev-pr.yml`
+
+The `Auto-create dev pull request` workflow runs on pushes to `dev` and calls the
+[shared auto-create-dev-pr workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-create-dev-pryml).
 
 ### `.github/workflows/auto-release.yml`
 

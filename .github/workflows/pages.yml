@@ -3,10 +3,10 @@ name: Pages
 on:
   push:
     branches:
+      - dev
       - master
-  pull_request:
   schedule:
-    - cron: "30 13 * * *"
+    - cron: "23 13 * * *"
   workflow_dispatch:
 
 permissions:
@@ -20,6 +20,13 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Validate manual dispatcher
+        if: ${{ github.event_name == 'workflow_dispatch' && github.actor != 'cyaris' }}
+        run: |
+          set -euo pipefail
+
+          printf "Manual dispatch is restricted to cyaris.\n" >&2
+          exit 1
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
@@ -65,7 +72,7 @@ jobs:
           use_access_keys="false"
           use_oidc="false"
 
-          if [[ "$EVENT_NAME" != "pull_request" && ( "$REF_NAME" == "refs/heads/master" || "$EVENT_NAME" == "schedule" ) ]]; then
+          if [[ "$REF_NAME" == "refs/heads/master" || "$EVENT_NAME" == "schedule" ]]; then
             mode="aws"
           fi
 

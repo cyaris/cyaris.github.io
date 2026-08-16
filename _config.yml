@@ -262,3 +262,5 @@ plugins:
 s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
 # Leave blank for live production bundles. Set to "test_" when intentionally loading staged bundle uploads.
 s3_bundle_prefix:
+s3_loading_enforce_minimum_duration: true
+s3_loading_minimum_duration_ms: 800

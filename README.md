@@ -147,7 +147,7 @@ Parameter | Description
 - Defines the reusable `.center` alignment utility
 - Styles the shared asset-loading indicator, including S3 app-bundle and post-thumbnail placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
-- Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations that respect `prefers-reduced-motion`
+- Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, mobile expanded-menu scrolling and body scroll locking, and firework cursor/image animations that respect `prefers-reduced-motion`
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
 - Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
@@ -170,7 +170,7 @@ Parameter | Description
 
 ### `assets/js/beautifuljekyll.js`
 
-`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer.
+`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer and toggles the body scroll-lock class with the mobile navbar state.
 
 ### `_config.yml`
 

@@ -76,12 +76,17 @@ layout: page
               href="{{ post.url | relative_url }}"
               aria-label="Thumbnail"
             >
+              <span class="post-thumbnail-loading" aria-hidden="true">
+                <span class="asset-loading-spinner"></span>
+              </span>
               <img
-                src="{{ thumbnail | relative_url }}"
                 alt="Post thumbnail"
-                style="object-position: {{ thumbnail_position }};"
-                loading="lazy"
                 decoding="async"
+                loading="lazy"
+                onerror="this.previousElementSibling?.remove()"
+                onload="this.previousElementSibling?.remove()"
+                src="{{ thumbnail | relative_url }}"
+                style="object-position: {{ thumbnail_position }};"
               >
             </a>
           {% endif %}

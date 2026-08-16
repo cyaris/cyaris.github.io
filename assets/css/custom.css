@@ -103,7 +103,7 @@ a:focus {
   color: var(--hover-col);
 }
 
-/* --- S3 Asset Loading --- */
+/* --- Asset Loading --- */
 
 .s3-asset-loading {
   align-items: center;
@@ -113,8 +113,8 @@ a:focus {
   width: 100%;
 }
 
-.s3-asset-loading-spinner {
-  animation: s3-asset-loading-spin 0.8s linear infinite;
+.asset-loading-spinner {
+  animation: asset-loading-spinner-spin 0.8s linear infinite;
   border: 0.35rem solid currentcolor;
   border-radius: 50%;
   border-right-color: transparent;
@@ -123,14 +123,14 @@ a:focus {
   width: 3rem;
 }
 
-@keyframes s3-asset-loading-spin {
+@keyframes asset-loading-spinner-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .s3-asset-loading-spinner {
+  .asset-loading-spinner {
     animation: none;
     border-right-color: currentcolor;
     opacity: 0.65;
@@ -604,6 +604,17 @@ footer a:hover {
   flex: 0 0 12rem;
   justify-content: center;
   line-height: 0;
+  position: relative;
+}
+
+.post-thumbnail-loading {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
 }
 
 .post-thumbnail img {

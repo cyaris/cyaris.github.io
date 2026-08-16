@@ -61,7 +61,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 ### S3-Hosted App And Document Assets
 
-`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags defer bundle execution so surrounding page controls remain available while displaying an accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it.
+`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags defer bundle execution so surrounding page controls remain available while displaying the site's shared, accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it.
 
 Loading-indicator timing comes from these `_config.yml` parameters:
 
@@ -145,7 +145,7 @@ Parameter | Description
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
-- Styles the S3 app-bundle loading indicator and its reduced-motion state
+- Styles the shared asset-loading indicator, including S3 app-bundle and post-thumbnail placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations that respect `prefers-reduced-motion`
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
@@ -249,7 +249,7 @@ Parameter | Description
 - Forces home-page refreshes back to the top of the page
 - Filters listed posts by `page.type` and renders Projects page cards from `_data/projects.yml`
 - Renders a single left-aligned post thumbnail beside the post title and subtitle
-- Lazily loads and asynchronously decodes post preview thumbnails
+- Lazily loads and asynchronously decodes post preview thumbnails while displaying a reduced-motion-aware loading indicator until each image loads or fails
 - Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`normal`, `small`, or `extra-small`) front matter for thumbnail crops and sizing
 - Removes the "Posted on" label from post dates
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile

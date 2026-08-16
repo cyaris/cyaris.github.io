@@ -141,7 +141,7 @@ Parameter | Description
 
 ### `assets/css/custom.css`
 
-- Disables horizontal edge-swipe browser back/forward navigation site-wide
+- Disables horizontal edge-swipe browser back/forward navigation site-wide and clips intentional Profile Photo animation overflow at the viewport edge
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility

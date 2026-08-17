@@ -8,6 +8,7 @@ body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1rem;
   overscroll-behavior-x: none;
+  touch-action: manipulation;
 }
 
 body:has(.profile-photo) {

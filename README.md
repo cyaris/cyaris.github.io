@@ -115,16 +115,17 @@ Project listing thumbnails can render generated square APNG assets under `assets
 These YAML front matter parameters are site-local additions layered on top of Beautiful Jekyll's own
 [supported parameters](https://github.com/daattali/beautiful-jekyll#supported-parameters).
 
-Parameter | Description
------------ | -----------
-`type` | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type.
-`project-id` | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`.
-`description` | Optional per-page meta-description fallback read by `_includes/head.html`. Used ahead of `subtitle` and behind `share-description` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags.
-`badge-position` | Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts.
-`badge-alignment` | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts.
-`thumbnail-fit` | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`.
-`thumbnail-position` | Optional per-post CSS `object-position` value for the blog listing thumbnail. Defaults to `center center`.
-`thumbnail-size` | Optional per-post thumbnail size on the blog listing: `normal`, `small`, or `extra-small`. Defaults to `normal`.
+| Parameter            | Description                                                                                                                                                                                                                                                                                                                                                |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`               | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type. |
+| `project-id`         | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`.                                                                                                               |
+| `description`        | Optional per-page meta-description fallback read by `_includes/head.html`. Used ahead of `subtitle` and behind `share-description` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags.                                                                                                                         |
+| `disable-zoom`       | Set on a page to have `_includes/head.html` render a viewport meta tag with `maximum-scale=1, user-scalable=no`, disabling mobile pinch and double-tap zoom on that page. Set on `index.html` and `profile_photo.html`.                                                                                                                                    |
+| `badge-position`     | Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts.                                                                                                                                                        |
+| `badge-alignment`    | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts.                                                                                                                                                                          |
+| `thumbnail-fit`      | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`.                                                                                                                                                                                                                                   |
+| `thumbnail-position` | Optional per-post CSS `object-position` value for the blog listing thumbnail. Defaults to `center center`.                                                                                                                                                                                                                                                 |
+| `thumbnail-size`     | Optional per-post thumbnail size on the blog listing: `normal`, `small`, or `extra-small`. Defaults to `normal`.                                                                                                                                                                                                                                           |
 
 ## Deviations From Beautiful Jekyll
 
@@ -141,7 +142,7 @@ Parameter | Description
 
 ### `assets/css/custom.css`
 
-- Disables horizontal edge-swipe browser back/forward navigation site-wide and clips intentional Profile Photo animation overflow at the viewport edge
+- Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Profile Photo animation overflow at the viewport edge
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
@@ -194,6 +195,7 @@ Parameter | Description
 
 - Loads the Auto Transition-only Profile Photo homepage bundle instead of the full interactive Profile Photo bundle
 - Stacks the homepage action buttons at every viewport width and matches the project-page buttons' hover/focus underlines
+- Sets `disable-zoom` front matter to disable mobile pinch and double-tap zoom on the homepage
 
 ### `_includes/footer.html`
 
@@ -206,6 +208,7 @@ Parameter | Description
 ### `_includes/head.html`
 
 - Adds PNG favicon links for shortcut and browser icons, plus a dedicated Apple touch icon
+- Renders a `maximum-scale=1, user-scalable=no` viewport meta tag on pages with `disable-zoom` front matter, disabling mobile pinch and double-tap zoom on that page
 - Loads global firework launcher styles inside the document head
 - Falls back to the site RSS description when generated page-description text still contains raw Liquid tags
 - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks

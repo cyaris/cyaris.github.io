@@ -623,13 +623,15 @@ footer a:hover {
   justify-content: center;
   pointer-events: none;
   position: absolute;
+  top: 0.5rem;
   z-index: 1;
 }
 
 .post-thumbnail img {
-  width: 12rem;
   height: 12rem;
+  margin-top: 0.5rem;
   object-fit: contain;
+  width: 12rem;
 }
 
 .post-thumbnail.thumbnail-cover img {

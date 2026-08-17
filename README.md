@@ -158,8 +158,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
 - Defines shared button styling for `.btn-group`, including local focus-state overrides
 - Customizes tag link and pagination styling, including desktop/mobile pagination text visibility, and anchors project/post pagination buttons to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
-- Customizes social-share icon focus behavior
-- Disables text selection on interactive site controls, social-share controls, and footer areas
+- Disables text selection on interactive site controls and footer areas
 
 ### `assets/css/beautifuljekyll.css`
 
@@ -168,6 +167,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Removes inactive upstream Disqus comment styling
 - Removes inactive upstream navbar search overlay styling
 - Removes inactive upstream GitHub button header styling
+- Removes the upstream social media sharing section styling
 
 ### `assets/js/beautifuljekyll.js`
 
@@ -238,14 +238,10 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Adds a CSS-colorable inline Tableau icon
 - Keeps the footer Tableau icon inline so CSS can recolor it; a colored standalone version lives at `assets/img/tableau-logo-color.svg`
 
-### `_includes/social-share.html`
-
-- Opens share links in new tabs with `noopener noreferrer`
-- Customizes LinkedIn, Facebook, and Twitter/X share icons
-
 ### `_layouts/base.html`
 
-`_layouts/base.html` loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`.
+- Loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`
+- Removes the upstream `bootstrap-social.css` stylesheet load, since it only styled the removed social media sharing buttons
 
 ### `_layouts/home.html`
 
@@ -271,7 +267,6 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Adds the shared `github-repo-badges.html` include to pages with `gh-repo` front matter, positioned and aligned by the `badge-position` and `badge-alignment` parameters (defaulting to `top` and `center`)
 - Adds previous and next pagination for project pages with `project-id` front matter, following `_data/projects.yml` order
 - Extends that pagination to sibling and nested project pages that share a project's `gh-repo` but lack their own `project-id`, always linking to the neighboring project's top-level page rather than a sibling or nested page within the current project
-- Adds the social-share include when `social-share` is enabled
 - Removes the inactive upstream comments include
 
 ### `_layouts/post.html`

@@ -951,14 +951,6 @@ main > .row > [class*="col"] > .pagination.blog-pager {
   }
 }
 
-/* --- Social Share Icons --- */
-
-.btn-social-icon:focus {
-  box-shadow: none;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-}
-
 /* --- Thumbnails --- */
 
 /* .post-preview .post-image .post-image-short { */
@@ -972,7 +964,6 @@ main > .row > [class*="col"] > .pagination.blog-pager {
 .btn-group,
 .blog-tags,
 .pagination .page-item .page-link,
-#social-share-section,
 footer {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

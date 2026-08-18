@@ -25,6 +25,7 @@
   {%- assign s3_loading_enforce_minimum_duration = true -%}
 {%- endif -%}
 {%- assign s3_loading_minimum_duration_ms = site.s3_loading_minimum_duration_ms | default: 800 -%}
+{%- assign s3_loading_reveal_delay_ms = site.s3_loading_reveal_delay_ms | default: 200 -%}
 {%- capture asset_url -%}
   {{- site.s3_bucket | append: '/' | append: s3_path_and_query -}}
   {%- if s3_path_and_query contains '?' -%}&v={{ s3_version }}{%- else -%}?v={{ s3_version }}{%- endif -%}
@@ -42,19 +43,30 @@
     <script>
       {
         const loading = document.getElementById("{{ loading_id }}")
-        {%- if s3_loading_enforce_minimum_duration %}
-          const loadingStartedAt = performance.now()
-        {%- endif %}
+        let revealedAt = null
+
+        const revealTimer = setTimeout(() => {
+          loading.classList.add("s3-asset-loading-visible")
+          revealedAt = performance.now()
+        }, {{ s3_loading_reveal_delay_ms | jsonify }})
 
         loading.addEventListener(
           "s3-asset-finished",
           () => {
+            clearTimeout(revealTimer)
+
+            if (revealedAt === null) {
+              loading.remove()
+
+              return
+            }
+
             {%- if s3_loading_enforce_minimum_duration %}
               setTimeout(
                 () => loading.remove(),
                 Math.max(
                   0,
-                  {{ s3_loading_minimum_duration_ms | jsonify }} - performance.now() + loadingStartedAt
+                  {{ s3_loading_minimum_duration_ms | jsonify }} - performance.now() + revealedAt
                 )
               )
             {%- else %}

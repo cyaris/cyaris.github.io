@@ -61,12 +61,13 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 ### S3-Hosted App And Document Assets
 
-`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags defer bundle execution so surrounding page controls remain available while displaying the site's shared, accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it.
+`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags defer bundle execution so surrounding page controls remain available while displaying the site's shared, accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it. The indicator stays hidden until the configured reveal delay elapses, so a bundle that loads before then never displays it; once revealed, it remains visible for at least the configured minimum duration so it doesn't flash, when `s3_loading_enforce_minimum_duration` is enabled.
 
 Loading-indicator timing comes from these `_config.yml` parameters:
 
-- `s3_loading_enforce_minimum_duration` determines whether the indicator remains visible for the configured minimum and defaults to `true`
+- `s3_loading_enforce_minimum_duration` determines whether a revealed indicator remains visible for the configured minimum and defaults to `true`
 - `s3_loading_minimum_duration_ms` sets that minimum in milliseconds and defaults to `800`, the duration of one spinner rotation
+- `s3_loading_reveal_delay_ms` sets how long the bundle must still be loading before the indicator is shown at all, in milliseconds, and defaults to `200`
 
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source, resolves the exact S3 object key that the include will serve, and writes each key's current version data before Jekyll builds. The generated data uses S3 as the source of truth and never queries upstream app repositories. No manually registered assets are currently required; a future dynamic include path should be converted to a literal include path or paired with an explicit registry in the generator instead of being silently omitted.
 
@@ -176,7 +177,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 - Renames the navbar text color setting to `navbar-link-col`
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
-- Configures whether S3 app loading indicators enforce a minimum display duration and sets that duration in milliseconds
+- Configures the reveal delay before S3 app loading indicators are shown, whether they then enforce a minimum display duration, and that duration in milliseconds
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs

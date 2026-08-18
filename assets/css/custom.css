@@ -2,17 +2,17 @@
 layout: null
 ---
 
-/* --- Body --- */
+/* --- Root And Body --- */
+
+html:has(.profile-photo) {
+  overflow-x: clip;
+}
 
 body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1rem;
   overscroll-behavior-x: none;
   touch-action: manipulation;
-}
-
-body:has(.profile-photo) {
-  overflow-x: clip;
 }
 
 /* --- Sticky Footer Content --- */

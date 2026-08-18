@@ -254,3 +254,4 @@ s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
 s3_bundle_prefix:
 s3_loading_enforce_minimum_duration: true
 s3_loading_minimum_duration_ms: 800
+s3_loading_reveal_delay_ms: 200

@@ -108,10 +108,14 @@ a:focus {
 
 .s3-asset-loading {
   align-items: center;
-  display: flex;
+  display: none;
   justify-content: center;
   min-height: 10rem;
   width: 100%;
+}
+
+.s3-asset-loading-visible {
+  display: flex;
 }
 
 .asset-loading-spinner {

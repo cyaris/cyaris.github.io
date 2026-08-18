@@ -16,12 +16,14 @@ let BeautifulJekyllJS = {
       }
     })
 
-    // On mobile, hide the avatar when expanding the navbar menu
+    // On mobile, hide the avatar and lock body scrolling while the navbar menu is expanded
     $("#main-navbar").on("show.bs.collapse", function () {
       $(".navbar").addClass("top-nav-expanded")
+      $("body").addClass("navbar-expanded")
     })
     $("#main-navbar").on("hidden.bs.collapse", function () {
       $(".navbar").removeClass("top-nav-expanded")
+      $("body").removeClass("navbar-expanded")
     })
 
     // On mobile, collapse the navbar after selecting a menu item

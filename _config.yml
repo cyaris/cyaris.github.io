@@ -65,15 +65,6 @@ rss-description: Welcome to my website! I hope you enjoy your stay.
 # --- General options --- #
 ###########################
 
-# Select which social network share links to show in posts
-share-links-active:
-  twitter: true
-  facebook: true
-  linkedin: true
-  vk: false
-  github: true
-  reddit: false
-
 # How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
 url-pretty: charlieyaris.com
@@ -228,7 +219,6 @@ defaults:
     values:
       layout: post
       type: "post"
-      social-share: false # add social media sharing buttons to all blog posts
   -
     scope:
       path: "" # any file that's not a post will be a "page" layout by default
@@ -262,3 +252,5 @@ plugins:
 s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
 # Leave blank for live production bundles. Set to "test_" when intentionally loading staged bundle uploads.
 s3_bundle_prefix:
+s3_loading_enforce_minimum_duration: true
+s3_loading_minimum_duration_ms: 800

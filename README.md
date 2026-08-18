@@ -61,7 +61,12 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 ### S3-Hosted App And Document Assets
 
-`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags defer bundle execution so surrounding page controls remain available while displaying an accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it.
+`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags defer bundle execution so surrounding page controls remain available while displaying the site's shared, accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it.
+
+Loading-indicator timing comes from these `_config.yml` parameters:
+
+- `s3_loading_enforce_minimum_duration` determines whether the indicator remains visible for the configured minimum and defaults to `true`
+- `s3_loading_minimum_duration_ms` sets that minimum in milliseconds and defaults to `800`, the duration of one spinner rotation
 
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source, resolves the exact S3 object key that the include will serve, and writes each key's current version data before Jekyll builds. The generated data uses S3 as the source of truth and never queries upstream app repositories. No manually registered assets are currently required; a future dynamic include path should be converted to a literal include path or paired with an explicit registry in the generator instead of being silently omitted.
 
@@ -110,16 +115,16 @@ Project listing thumbnails can render generated square APNG assets under `assets
 These YAML front matter parameters are site-local additions layered on top of Beautiful Jekyll's own
 [supported parameters](https://github.com/daattali/beautiful-jekyll#supported-parameters).
 
-Parameter | Description
------------ | -----------
-`type` | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type.
-`project-id` | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`.
-`description` | Optional per-page meta-description fallback read by `_includes/head.html`. Used ahead of `subtitle` and behind `share-description` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags.
-`badge-position` | Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts.
-`badge-alignment` | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts.
-`thumbnail-fit` | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`.
-`thumbnail-position` | Optional per-post CSS `object-position` value for the blog listing thumbnail. Defaults to `center center`.
-`thumbnail-size` | Optional per-post thumbnail size on the blog listing: `normal`, `small`, or `extra-small`. Defaults to `normal`.
+| Parameter | Description |
+| - | - |
+| `type` | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type. |
+| `project-id` | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`. |
+| `description` | Optional per-page meta-description fallback read by `_includes/head.html`. Used ahead of `subtitle` and behind `share-description` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags. |
+| `badge-position` | Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts. |
+| `badge-alignment` | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts. |
+| `thumbnail-fit` | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`. |
+| `thumbnail-position` | Optional per-post CSS `object-position` value for the blog listing thumbnail. Defaults to `center center`. |
+| `thumbnail-size` | Optional per-post thumbnail size on the blog listing: `normal`, `small`, or `extra-small`. Defaults to `normal`. |
 
 ## Deviations From Beautiful Jekyll
 
@@ -136,13 +141,13 @@ Parameter | Description
 
 ### `assets/css/custom.css`
 
-- Disables horizontal edge-swipe browser back/forward navigation site-wide
+- Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Profile Photo animation overflow at the viewport edge
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
-- Styles the S3 app-bundle loading indicator and its reduced-motion state
+- Styles the shared asset-loading indicator, including S3 app-bundle and post-thumbnail placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
-- Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, and firework cursor/image animations that respect `prefers-reduced-motion`
+- Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, mobile expanded-menu scrolling and body scroll locking, and firework cursor/image animations that respect `prefers-reduced-motion`
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
 - Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
@@ -152,8 +157,7 @@ Parameter | Description
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
 - Defines shared button styling for `.btn-group`, including local focus-state overrides
 - Customizes tag link and pagination styling, including desktop/mobile pagination text visibility, and anchors project/post pagination buttons to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
-- Customizes social-share icon focus behavior
-- Disables text selection on interactive site controls, social-share controls, and footer areas
+- Disables text selection on interactive site controls and footer areas
 
 ### `assets/css/beautifuljekyll.css`
 
@@ -162,15 +166,17 @@ Parameter | Description
 - Removes inactive upstream Disqus comment styling
 - Removes inactive upstream navbar search overlay styling
 - Removes inactive upstream GitHub button header styling
+- Removes the upstream social media sharing section styling
 
 ### `assets/js/beautifuljekyll.js`
 
-`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer.
+`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer and toggles the body scroll-lock class with the mobile navbar state.
 
 ### `_config.yml`
 
 - Renames the navbar text color setting to `navbar-link-col`
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
+- Configures whether S3 app loading indicators enforce a minimum display duration and sets that duration in milliseconds
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
@@ -229,21 +235,17 @@ Parameter | Description
 - Adds a CSS-colorable inline Tableau icon
 - Keeps the footer Tableau icon inline so CSS can recolor it; a colored standalone version lives at `assets/img/tableau-logo-color.svg`
 
-### `_includes/social-share.html`
-
-- Opens share links in new tabs with `noopener noreferrer`
-- Customizes LinkedIn, Facebook, and Twitter/X share icons
-
 ### `_layouts/base.html`
 
-`_layouts/base.html` loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`.
+- Loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`
+- Removes the upstream `bootstrap-social.css` stylesheet load, since it only styled the removed social media sharing buttons
 
 ### `_layouts/home.html`
 
 - Forces home-page refreshes back to the top of the page
 - Filters listed posts by `page.type` and renders Projects page cards from `_data/projects.yml`
 - Renders a single left-aligned post thumbnail beside the post title and subtitle
-- Lazily loads and asynchronously decodes post preview thumbnails
+- Lazily loads and asynchronously decodes post preview thumbnails while displaying a reduced-motion-aware loading indicator until each image loads or fails
 - Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`normal`, `small`, or `extra-small`) front matter for thumbnail crops and sizing
 - Removes the "Posted on" label from post dates
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
@@ -262,7 +264,6 @@ Parameter | Description
 - Adds the shared `github-repo-badges.html` include to pages with `gh-repo` front matter, positioned and aligned by the `badge-position` and `badge-alignment` parameters (defaulting to `top` and `center`)
 - Adds previous and next pagination for project pages with `project-id` front matter, following `_data/projects.yml` order
 - Extends that pagination to sibling and nested project pages that share a project's `gh-repo` but lack their own `project-id`, always linking to the neighboring project's top-level page rather than a sibling or nested page within the current project
-- Adds the social-share include when `social-share` is enabled
 - Removes the inactive upstream comments include
 
 ### `_layouts/post.html`

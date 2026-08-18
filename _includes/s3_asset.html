@@ -20,6 +20,11 @@
 {%- assign s3_asset_matches = site.data.generated_s3_assets | where: 'key', s3_key -%}
 {%- assign s3_asset = s3_asset_matches | first -%}
 {%- assign s3_version = s3_asset.version | default: 'local' -%}
+{%- assign s3_loading_enforce_minimum_duration = site.s3_loading_enforce_minimum_duration -%}
+{%- if s3_loading_enforce_minimum_duration == null -%}
+  {%- assign s3_loading_enforce_minimum_duration = true -%}
+{%- endif -%}
+{%- assign s3_loading_minimum_duration_ms = site.s3_loading_minimum_duration_ms | default: 800 -%}
 {%- capture asset_url -%}
   {{- site.s3_bucket | append: '/' | append: s3_path_and_query -}}
   {%- if s3_path_and_query contains '?' -%}&v={{ s3_version }}{%- else -%}?v={{ s3_version }}{%- endif -%}
@@ -31,16 +36,42 @@
   {%- unless include.loading == false -%}
     {%- assign loading_id = s3_key | slugify | prepend: 's3-asset-loading-' -%}
     <div id="{{ loading_id }}" class="s3-asset-loading" role="status">
-      <span class="s3-asset-loading-spinner" aria-hidden="true"></span>
+      <span class="asset-loading-spinner" aria-hidden="true"></span>
       <span class="sr-only">Loading application...</span>
     </div>
+    <script>
+      {
+        const loading = document.getElementById("{{ loading_id }}")
+        {%- if s3_loading_enforce_minimum_duration %}
+          const loadingStartedAt = performance.now()
+        {%- endif %}
+
+        loading.addEventListener(
+          "s3-asset-finished",
+          () => {
+            {%- if s3_loading_enforce_minimum_duration %}
+              setTimeout(
+                () => loading.remove(),
+                Math.max(
+                  0,
+                  {{ s3_loading_minimum_duration_ms | jsonify }} - performance.now() + loadingStartedAt
+                )
+              )
+            {%- else %}
+              loading.remove()
+            {%- endif %}
+          },
+          { once: true }
+        )
+      }
+    </script>
   {%- endunless -%}
   <script
     src="{{ asset_url }}"
     {%- unless include.loading == false %}
       defer
-      onload="document.getElementById('{{ loading_id }}')?.remove()"
-      onerror="document.getElementById('{{ loading_id }}')?.remove()"
+      onload="document.getElementById('{{ loading_id }}')?.dispatchEvent(new Event('s3-asset-finished'))"
+      onerror="document.getElementById('{{ loading_id }}')?.dispatchEvent(new Event('s3-asset-finished'))"
     {%- endunless -%}
   ></script>
 {%- else -%}

@@ -22,8 +22,7 @@
 
 ## Content
 
-- Keep all tags alphabetized.
-- Keep all tags lowercase.
+- Keep all tags alphabetized and lowercase.
 
 ## JavaScript And HTML
 

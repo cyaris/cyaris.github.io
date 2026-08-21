@@ -85,14 +85,11 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
   indicator tracks bundle completion or failure
 
 Background-only scripts pass `loading=false` to suppress the indicator. The reveal delay prevents fast loads from ever
-showing it. After the indicator appears, `s3_loading_enforce_minimum_duration` keeps it visible for the configured
-minimum so it does not flash.
+showing it, and the indicator is removed the instant the script finishes loading or fails so it never lingers over
+already-rendered bundle content.
 
-Loading-indicator timing comes from these `_config.yml` parameters:
-
-- `s3_loading_enforce_minimum_duration` determines whether a revealed indicator remains visible for the configured minimum and defaults to `true`
-- `s3_loading_minimum_duration_ms` sets that minimum in milliseconds and defaults to `800`, the duration of one spinner rotation
-- `s3_loading_reveal_delay_ms` sets how long the bundle must still be loading before the indicator is shown at all, in milliseconds, and defaults to `200`
+The reveal delay comes from the `s3_loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200`
+milliseconds.
 
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source,
 resolves the exact S3 object key that each include serves, and writes current version data before Jekyll builds. The
@@ -234,7 +231,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 - Renames the navbar text color setting to `navbar-link-col`
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
-- Configures the reveal delay before S3 app loading indicators are shown, whether they then enforce a minimum display duration, and that duration in milliseconds
+- Configures the reveal delay before S3 app loading indicators are shown
 - Configures the reveal delay before body content-image loading indicators are shown
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children

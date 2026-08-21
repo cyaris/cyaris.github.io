@@ -38,6 +38,8 @@ common-js:
 
     {% include footer-scripts.html %}
 
+    {% include content-image-loading.html %}
+
     {% include s3_asset.html path='fireworks/bundle.js' type='script' bundle=true loading=false %}
     {% include s3_asset.html path='fireworks/bundle2.js' type='script' bundle=true loading=false %}
   </body>

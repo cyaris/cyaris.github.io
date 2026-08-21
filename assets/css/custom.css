@@ -2,11 +2,7 @@
 layout: null
 ---
 
-/* --- Root And Body --- */
-
-html:has(.profile-photo) {
-  overflow-x: clip;
-}
+/* --- Body --- */
 
 body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;

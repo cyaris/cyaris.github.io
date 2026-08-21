@@ -12,7 +12,7 @@
   subtitle: Comparing historical time series models using data from GunViolenceArchive.org.
   url: /us_gun_violence_forecasting/
   gh-repo: cyaris/us_gun_violence_forecasting
-  tags: [d3.js, data storytelling, error metrics, javascript, machine learning, numpy, pandas, prophet, python, svelte, tailwind css, time series modeling]
+  tags: [canvas rendering, d3.js, data storytelling, error metrics, javascript, machine learning, numpy, pandas, prophet, python, svelte, tailwind css, time series modeling]
   thumbnail-img: https://www.gunviolencearchive.org/sites/all/themes/gva_theme/images/new-logo.jpg
   thumbnail-size: small
   navbar: true
@@ -30,7 +30,7 @@
   subtitle: An interactive pixel-reveal portrait with laser eyes, progress tracking, and fireworks.
   url: /profile_photo/
   gh-repo: cyaris/profile_photo
-  tags: [d3.js, javascript, python, svelte, tailwind css]
+  tags: [canvas rendering, d3.js, javascript, python, svelte, tailwind css]
   thumbnail-img: /assets/img/profile-photo-thumbnail.png
   thumbnail-size: small
   navbar: false
@@ -39,7 +39,7 @@
   subtitle: Launch a firework from any page on my website.
   url: /fireworks/
   gh-repo: cyaris/fireworks
-  tags: [d3.js, javascript, svelte, tailwind css]
+  tags: [canvas rendering, d3.js, javascript, svelte, tailwind css]
   thumbnail-img: /assets/img/firework-launcher-demo.png
   thumbnail-size: normal
   navbar: false

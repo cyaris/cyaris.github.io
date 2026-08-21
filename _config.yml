@@ -227,16 +227,18 @@ defaults:
 
 # Exclude these files from production site
 exclude:
-  - CHANGELOG.md
+  - AGENTS.md
+  - CLAUDE.md
   - CNAME
+  - docs/
   - Gemfile
   - Gemfile.lock
   - LICENSE
+  - NAVBAR-SESSION-NOTES.md
   - README.md
-  - TODO.md
   - screenshot.png
   - scripts/
-  - docs/
+  - TODO.md
 
 plugins:
   - jekyll-paginate

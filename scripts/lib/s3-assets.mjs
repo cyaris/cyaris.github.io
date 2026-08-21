@@ -7,7 +7,7 @@ import { collectContentFiles as collectFiles, yamlQuote } from "./generator-util
 
 const contentExtensions = new Set([".html", ".liquid", ".md"])
 const ignoredDirs = new Set([".git", "_site", "docs", "node_modules"])
-const ignoredFiles = new Set(["CHANGELOG.md", "README.md"])
+const ignoredFiles = new Set(["README.md"])
 
 export function collectContentFiles(dir) {
   return collectFiles(dir, { extensions: contentExtensions, ignoredDirs, ignoredFiles })

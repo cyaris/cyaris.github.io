@@ -19,7 +19,7 @@ for how to restore a single decision from a multi-decision commit.
 ## Reversed: visual decisions (from the design-comparison round)
 
 | Decision | What it was | Commit |
-|---|---|---|
+| --- | --- | --- |
 | Hamburger button | `#175676` bars and border (the site's existing hover color) instead of Bootstrap's default dark bars; solid orange border while the menu is expanded, no background wash | `7e24e6ff` |
 | Projects hover box | Orange outline around "Projects" only, on hover — a device that echoes the desktop dropdown's orange rails, without the black `rgba(0,0,0,.1)` wash the original had | `7e24e6ff`, refined in `e1e18d36` |
 | Mobile submenu grouping | Indented project rows (padding-left 1.5rem vs 1rem) with a navy-tinted (`rgba(23,86,118,.18)`) recessed panel behind them, and the caret rotated to point up since the submenu stays permanently open | `7e24e6ff`, tint finalized in `d92a0200` |

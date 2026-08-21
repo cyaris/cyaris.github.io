@@ -22,7 +22,8 @@ To refresh project repository dates before a build:
 npm run update:github-repos
 ```
 
-The GitHub Actions build runs this automatically before Jekyll builds the site. The generated `_data/github_repos.yml` file is ignored locally.
+The GitHub Actions build runs this automatically before Jekyll builds the site. Git ignores the generated
+`_data/github_repos.yml` file locally.
 
 ### S3 Asset Versions
 
@@ -46,7 +47,15 @@ For a staged bundle build, pass the testing filename prefix as an environment va
 S3_BUNDLE_PREFIX=test_ S3_ASSET_VERSION_MODE=aws npm run update:s3-assets
 ```
 
-The AWS-mode command reads `s3_bucket` and `s3_bundle_prefix` from `_config.yml` unless `S3_BUCKET`, `AWS_REGION`, `AWS_PROFILE`, or `S3_BUNDLE_PREFIX` override those values. The generated `_data/generated_s3_assets.yml` file is ignored locally.
+The AWS-mode command reads `s3_bucket` and `s3_bundle_prefix` from `_config.yml`. These environment variables can
+override configuration or AWS selection:
+
+- `S3_BUCKET`
+- `AWS_REGION`
+- `AWS_PROFILE`
+- `S3_BUNDLE_PREFIX`
+
+Git ignores the generated `_data/generated_s3_assets.yml` file locally.
 
 ## Additional Features
 
@@ -54,14 +63,30 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 ### GitHub Repository Badges And Dates
 
-- `_includes/github-repo-badges.html` renders linked follow, star, watch, and fork badges with accessible labels, GitHub icons, optional counts, repository creation dates, and latest default-branch commit dates.
+- `_includes/github-repo-badges.html` renders repository badges and metadata:
+  - accessible GitHub icons and labels
+  - follow, fork, star, and watch links
+  - latest default-branch commit dates
+  - optional counts
+  - repository creation dates
 - The `badge-position` and `badge-alignment` front matter parameters (see [Custom Front Matter Parameters](#custom-front-matter-parameters)) control where the badge row sits on the page and how it's aligned.
 - `scripts/update-github-repo-dates.mjs` generates repository metadata for content files with `gh-repo` front matter and project cards with `gh-repo` data.
 - `.github/workflows/pages.yml` refreshes the repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages, while `.gitignore` keeps the generated `_data/github_repos.yml` file local.
 
 ### S3-Hosted App And Document Assets
 
-`_includes/s3_asset.html` builds S3 asset URLs from `site.s3_bucket`, supports bundle prefix substitution through `site.s3_bundle_prefix`, appends object-version cache busting from `_data/generated_s3_assets.yml`, and emits stylesheet or script tags when a page passes a `type`. Script tags defer bundle execution so surrounding page controls remain available while displaying the site's shared, accessible, reduced-motion-aware loading indicator until the bundle loads or fails; background-only scripts pass `loading=false` to suppress it. The indicator stays hidden until the configured reveal delay elapses, so a bundle that loads before then never displays it; once revealed, it remains visible for at least the configured minimum duration so it doesn't flash, when `s3_loading_enforce_minimum_duration` is enabled.
+`_includes/s3_asset.html` handles these S3-hosted asset responsibilities:
+
+- builds URLs from `site.s3_bucket`
+- substitutes the bundle prefix from `site.s3_bundle_prefix`
+- appends object-version cache busting from `_data/generated_s3_assets.yml`
+- emits a stylesheet or script tag from the supplied `type`
+- defers scripts so surrounding page controls remain available while a shared, accessible, reduced-motion-aware loading
+  indicator tracks bundle completion or failure
+
+Background-only scripts pass `loading=false` to suppress the indicator. The reveal delay prevents fast loads from ever
+showing it. After the indicator appears, `s3_loading_enforce_minimum_duration` keeps it visible for the configured
+minimum so it does not flash.
 
 Loading-indicator timing comes from these `_config.yml` parameters:
 
@@ -69,7 +94,10 @@ Loading-indicator timing comes from these `_config.yml` parameters:
 - `s3_loading_minimum_duration_ms` sets that minimum in milliseconds and defaults to `800`, the duration of one spinner rotation
 - `s3_loading_reveal_delay_ms` sets how long the bundle must still be loading before the indicator is shown at all, in milliseconds, and defaults to `200`
 
-`scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source, resolves the exact S3 object key that the include will serve, and writes each key's current version data before Jekyll builds. The generated data uses S3 as the source of truth and never queries upstream app repositories. No manually registered assets are currently required; a future dynamic include path should be converted to a literal include path or paired with an explicit registry in the generator instead of being silently omitted.
+`scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source,
+resolves the exact S3 object key that each include serves, and writes current version data before Jekyll builds. The
+generated data treats S3 as the source of truth and never queries upstream app repositories. All current include paths
+are literal, so the generator needs no manually registered assets.
 
 The version value comes from the strongest S3 metadata field available:
 
@@ -89,17 +117,33 @@ gh workflow run .github/workflows/pages.yml --ref master
 
 AWS-mode generation needs permission to read object metadata for the referenced keys in `s3://cyaris.github.io`, such as `s3:GetObject` for `arn:aws:s3:::cyaris.github.io/*`, through the same OIDC role or static AWS access-key fallback used by the S3 upload workflows. Missing production objects fail before the Jekyll build and identify the missing key.
 
-Versioned S3 assets may use long-lived cache metadata, for example `Cache-Control: public, max-age=31536000, immutable`, because the page URL changes on object replacement. Rollup callers can pass that value through the shared `cache-control` input while preserving `bundle.js`, `bundle.css`, `test_bundle.js`, and `test_bundle.css` names. Directly uploaded PDFs, images, and APNG files should have their S3 metadata refreshed during upload or with an in-place `aws s3 cp` metadata replacement, but successful cache invalidation still depends on the generated query version rather than cache headers alone.
+Versioned S3 assets may use long-lived cache metadata, for example
+`Cache-Control: public, max-age=31536000, immutable`, because the page URL changes on object replacement. Rollup
+callers can pass that value through the shared `cache-control` input while preserving these names:
+
+- `bundle.js`
+- `bundle.css`
+- `test_bundle.js`
+- `test_bundle.css`
+
+Refresh S3 metadata for directly uploaded PDFs, images, and APNG files during upload or with an in-place `aws s3 cp`
+metadata replacement. Successful invalidation still depends on the generated query version rather than cache headers.
 
 ### Project Cards And Tags
 
-`_data/projects.yml` controls Projects page card order, project card destinations, project metadata, project tags, and which projects appear in the Projects navbar dropdown.
+`_data/projects.yml` controls:
+
+- Projects page card order and destinations
+- project metadata and tags
+- projects shown in the Projects navbar dropdown
 
 ### Animated Project Thumbnails
 
 Project listing thumbnails can render generated square APNG assets under `assets/img/`; `assets/img/networks-war-demo.png` animates the Networks of War project card while the legacy `assets/img/networks-war-globe-thumbnail.png` remains preserved in the repository.
 
-`assets/img/profile-photo-thumbnail.png` is generated from `../profile_photo/frontend/src/lib/static/pixels.json` so the Profile Photo project card shows the app's pixelated overlay state.
+The thumbnail generation process derives `assets/img/profile-photo-thumbnail.png` from
+`../profile_photo/frontend/src/lib/static/pixels.json`, so the Profile Photo project card shows the app's pixelated
+overlay state.
 
 ### Tableau Gallery And Dashboard Embeds
 
@@ -116,16 +160,16 @@ Project listing thumbnails can render generated square APNG assets under `assets
 These YAML front matter parameters are site-local additions layered on top of Beautiful Jekyll's own
 [supported parameters](https://github.com/daattali/beautiful-jekyll#supported-parameters).
 
-| Parameter | Description |
-| - | - |
-| `type` | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type. |
-| `project-id` | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`. |
-| `description` | Optional per-page meta-description fallback read by `_includes/head.html`. Used ahead of `subtitle` and behind `share-description` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags. |
-| `badge-position` | Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts. |
-| `badge-alignment` | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts. |
-| `thumbnail-fit` | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`. |
-| `thumbnail-position` | Optional per-post CSS `object-position` value for the blog listing thumbnail. Defaults to `center center`. |
-| `thumbnail-size` | Optional per-post thumbnail size on the blog listing: `normal`, `small`, or `extra-small`. Defaults to `normal`. |
+|Parameter|Description|
+|-|-|
+|`type`|Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type.|
+|`project-id`|Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`.|
+|`description`|Optional per-page meta-description fallback that `_includes/head.html` reads after `share-description` and before `subtitle` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags.|
+|`badge-position`|Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts.|
+|`badge-alignment`|Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts.|
+|`thumbnail-fit`|Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`.|
+|`thumbnail-position`|Optional per-post CSS `object-position` value for the blog listing thumbnail. Defaults to `center center`.|
+|`thumbnail-size`|Optional per-post thumbnail size on the blog listing: `normal`, `small`, or `extra-small`. Defaults to `normal`.|
 
 ## Deviations From Beautiful Jekyll
 
@@ -148,7 +192,14 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Defines the reusable `.center` alignment utility
 - Styles the shared asset-loading indicator, including S3 app-bundle and post-thumbnail placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
-- Customizes navbar sizing, drop-shadow depth, avatar placement, avatar ring border and crop scaling, toggler styling, dropdown behavior, responsive mobile/desktop launcher visibility, mobile expanded-menu scrolling and body scroll locking, and firework cursor/image animations that respect `prefers-reduced-motion`
+- Customizes navbar presentation and behavior:
+  - avatar placement, ring border, and crop scaling
+  - dropdown behavior
+  - firework cursor and image animations that respect `prefers-reduced-motion`
+  - mobile expanded-menu scrolling and body scroll locking
+  - navbar sizing and drop-shadow depth
+  - responsive mobile/desktop launcher visibility
+  - toggler styling
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
 - Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
@@ -181,7 +232,11 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
-- Excludes build-only repository scripts from the generated site
+- Adds generated-site exclusions for build-only material:
+  - `AGENTS.md` and `CLAUDE.md`
+  - `docs/`
+  - `NAVBAR-SESSION-NOTES.md`
+  - `scripts/`
 
 ### `contact.html`
 
@@ -247,7 +302,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Filters listed posts by `page.type` and renders Projects page cards from `_data/projects.yml`
 - Renders a single left-aligned post thumbnail beside the post title and subtitle
 - Lazily loads and asynchronously decodes post preview thumbnails while displaying a reduced-motion-aware loading indicator until each image loads or fails
-- Supports optional per-post `thumbnail-fit`, `thumbnail-position`, and `thumbnail-size` (`normal`, `small`, or `extra-small`) front matter for thumbnail crops and sizing
+- Supports the optional per-post thumbnail crop and sizing front matter described in
+  [Custom Front Matter Parameters](#custom-front-matter-parameters)
 - Removes the "Posted on" label from post dates
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata exists
@@ -282,8 +338,24 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### Removed Inactive Upstream Integration Files
 
-- Deletes `_includes/commentbox.html`, `_includes/comments.html`, `_includes/disqus.html`, `_includes/fb-comment.html`, `_includes/giscus-comment.html`, `_includes/mathjax.html`, `_includes/matomo.html`, `_includes/readtime.html`, `_includes/search.html`, `_includes/staticman-comment.html`, `_includes/staticman-comments.html`, and `_includes/utterances-comment.html`
-- Deletes `assets/css/staticman.css`, `assets/data/searchcorpus.json`, `assets/js/staticman.js`, and `staticman.yml`
+- Deletes unused comment, math, read-time, and search includes:
+  - `_includes/commentbox.html`
+  - `_includes/comments.html`
+  - `_includes/disqus.html`
+  - `_includes/fb-comment.html`
+  - `_includes/giscus-comment.html`
+  - `_includes/mathjax.html`
+  - `_includes/matomo.html`
+  - `_includes/readtime.html`
+  - `_includes/search.html`
+  - `_includes/staticman-comment.html`
+  - `_includes/staticman-comments.html`
+  - `_includes/utterances-comment.html`
+- Deletes unused Staticman and search assets:
+  - `assets/css/staticman.css`
+  - `assets/data/searchcorpus.json`
+  - `assets/js/staticman.js`
+  - `staticman.yml`
 
 ### Removed Legacy Project Post Files
 
@@ -292,7 +364,11 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### Removed Inactive Upstream Minimal Layout Files
 
-Deletes `_layouts/minimal.html`, `_includes/footer-minimal.html`, and `assets/css/beautifuljekyll-minimal.css`.
+Deletes these inactive upstream files:
+
+- `_includes/footer-minimal.html`
+- `_layouts/minimal.html`
+- `assets/css/beautifuljekyll-minimal.css`
 
 ### `.gitignore`
 
@@ -310,20 +386,32 @@ behavior, inputs, and secrets.
 
 ### `.github/workflows/pages.yml`
 
-The `Pages` workflow runs on pushes to `dev` and `master`, manual dispatch, and a daily 13:23 UTC schedule, 30 minutes
-after the `Upstream Watch` runs in `mastermind`, `profile_photo`, `us_gun_violence_forecasting`, and
-`the_networks_of_war`. It installs Ruby dependencies with Bundler and Appraisal, configures the GitHub Pages base path,
-generates `_data/github_repos.yml` from repository front matter, generates `_data/generated_s3_assets.yml` from current
-S3 object metadata or deterministic `dev` fallback data, builds the Jekyll site with `JEKYLL_ENV=production`, and
-uploads the Pages artifact. The workflow also deploys that artifact to GitHub Pages on `master` through
-`actions/deploy-pages`.
+The `Pages` workflow runs on:
 
-Scheduled and `master` builds require `AWS_ROLLUP_UPLOAD_ROLE_ARN` or the `AWS_ACCESS_KEY_ID` and
-`AWS_SECRET_ACCESS_KEY` secrets so `scripts/generate-s3-asset-versions.mjs` can call `aws s3api head-object` for every
-referenced S3 object. `dev` builds use stable local fallback values to keep validation available without
-AWS credentials.
+- pushes to `dev` and `master`
+- manual dispatch
+- a daily 13:23 UTC schedule, 30 minutes after the `Upstream Watch` runs in `mastermind`, `profile_photo`,
+  `us_gun_violence_forecasting`, and `the_networks_of_war`
 
-The workflow can be dispatched by the `cyaris` actor from the GitHub Actions UI with
+The workflow then:
+
+- installs Ruby dependencies with Bundler and Appraisal
+- configures the GitHub Pages base path
+- generates `_data/github_repos.yml` from repository front matter
+- generates `_data/generated_s3_assets.yml` from current S3 object metadata or deterministic `dev` fallback data
+- builds the site with `JEKYLL_ENV=production`
+- uploads the Pages artifact
+- deploys that artifact from `master` through `actions/deploy-pages`
+
+Scheduled and `master` builds require one of these AWS credential paths so
+`scripts/generate-s3-asset-versions.mjs` can call `aws s3api head-object` for every referenced object:
+
+- `AWS_ROLLUP_UPLOAD_ROLE_ARN`
+- both `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
+
+`dev` builds use stable local fallback values, which keeps validation available without AWS credentials.
+
+The `cyaris` actor can dispatch the workflow from the GitHub Actions UI with
 **Actions > Pages > Run workflow**. Manual dispatch has no custom inputs. It can also be dispatched from the command line
 or GitHub API against `master`:
 

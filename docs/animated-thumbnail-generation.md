@@ -1,7 +1,8 @@
 # Animated Thumbnail Generation
 
 This document records the current reproducibility contract for the site's generated APNG thumbnails. Install one-off
-Node dependencies under a task-specific `/private/tmp` directory so generation does not change site dependencies.
+Node dependencies under a task-specific directory made with `mktemp -d` (or under `${TMPDIR:-/tmp}`) so generation
+does not change site dependencies.
 
 ## Firework Launcher
 
@@ -51,7 +52,8 @@ specific comparison task still needs it; remove it once no external review depen
 ## Networks Of War
 
 `assets/img/networks-war-demo.png` mirrors the sibling Networks of War graph using the `Invasion of Afghanistan` record
-from `frontend/src/lib/static/graphData.json`.
+from `the_networks_of_war/frontend/src/lib/static/graphData.json` (sibling repository `cyaris/the_networks_of_war`,
+checked out alongside this repository).
 
 Side assignments:
 
@@ -82,7 +84,8 @@ Current render contract:
 - the component's side colors and force-layout constants
 - no node-size descriptor
 - a 192-frame, 540-degree clockwise drag of `United States` around fixed-center `Afghanistan`
-- immediate reverse playback by appending the completed forward frames in reverse order
+- immediate reverse playback by appending the forward frames in reverse order, excluding the first and last frames
+  (already shown as the loop's endpoints), for 190 reverse frames and 382 total
 
 Before capture, pin `United States` at 3 o'clock and settle the other participants until alpha and velocity meet the
 chosen thresholds. During drag, move only the United States fixed coordinates, advance the simulation one tick per

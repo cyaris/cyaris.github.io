@@ -863,7 +863,7 @@ button:focus {
   background: var(--preview-pill-background-col);
   border: 1px solid var(--preview-pill-border-col);
   border-radius: 999px;
-  color: var(--tag-link-col);
+  color: var(--link-col);
   display: inline-flex;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.82rem;
@@ -880,9 +880,9 @@ button:focus {
 
 .blog-tags a:hover,
 .blog-tags a:focus {
-  background: var(--tag-background-hover-col);
-  border-color: var(--tag-border-hover-col);
-  color: var(--tag-link-hover-col);
+  background: var(--preview-pill-background-hover-col);
+  border-color: var(--preview-pill-border-hover-col);
+  color: var(--link-col);
   text-decoration: none;
 }
 

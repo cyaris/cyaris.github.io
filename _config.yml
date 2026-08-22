@@ -140,11 +140,6 @@ pagination-link-hover-col: "#ffffff"
 pagination-background-hover-col: "#20b3a1"
 pagination-border-hover-col: "#197278"
 
-tag-link-col: "#147a70"
-tag-link-hover-col: "#147a70"
-tag-background-hover-col: "#e2f4f2"
-tag-border-hover-col: "#1b998b"
-
 # Palette values kept for future experiments:
 # "#404040" - former inherited text/tag color
 # "#4aa4b0" - former commented navbar dropdown hover background option
@@ -251,9 +246,8 @@ plugins:
 # --- Custom Variables --- #
 ################
 
+content_img_loading_reveal_delay_ms: 200
 s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
 # Leave blank for live production bundles. Set to "test_" when intentionally loading staged bundle uploads.
 s3_bundle_prefix:
-s3_loading_enforce_minimum_duration: true
-s3_loading_minimum_duration_ms: 800
 s3_loading_reveal_delay_ms: 200

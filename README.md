@@ -85,14 +85,11 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
   indicator tracks bundle completion or failure
 
 Background-only scripts pass `loading=false` to suppress the indicator. The reveal delay prevents fast loads from ever
-showing it. After the indicator appears, `s3_loading_enforce_minimum_duration` keeps it visible for the configured
-minimum so it does not flash.
+showing it, and the indicator is removed the instant the script finishes loading or fails so it never lingers over
+already-rendered bundle content.
 
-Loading-indicator timing comes from these `_config.yml` parameters:
-
-- `s3_loading_enforce_minimum_duration` determines whether a revealed indicator remains visible for the configured minimum and defaults to `true`
-- `s3_loading_minimum_duration_ms` sets that minimum in milliseconds and defaults to `800`, the duration of one spinner rotation
-- `s3_loading_reveal_delay_ms` sets how long the bundle must still be loading before the indicator is shown at all, in milliseconds, and defaults to `200`
+The reveal delay comes from the `s3_loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200`
+milliseconds.
 
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source,
 resolves the exact S3 object key that each include serves, and writes current version data before Jekyll builds. The
@@ -128,6 +125,12 @@ callers can pass that value through the shared `cache-control` input while prese
 
 Refresh S3 metadata for directly uploaded PDFs, images, and APNG files during upload or with an in-place `aws s3 cp`
 metadata replacement. Successful invalidation still depends on the generated query version rather than cache headers.
+
+### Content Image Loading Indicator
+
+`_includes/content-image-loading.html` scans post/page body `<img>` elements once the surrounding content has rendered and, for any still loading, wraps it with the shared, accessible, reduced-motion-aware loading indicator until it loads or fails. Post preview thumbnails (`_layouts/home.html`) and full-width embedded tool hosts already manage their own loading state and are skipped.
+
+The reveal delay prevents fast loads from ever showing the indicator and comes from the `content_img_loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200` milliseconds.
 
 ### Project Cards And Tags
 
@@ -190,7 +193,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
-- Styles the shared asset-loading indicator, including S3 app-bundle and post-thumbnail placement and reduced-motion states
+- Styles the shared asset-loading indicator, including S3 app-bundle, post-thumbnail, and body-content-image placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar presentation and behavior:
   - avatar placement, ring border, and crop scaling
@@ -228,7 +231,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 - Renames the navbar text color setting to `navbar-link-col`
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
-- Configures the reveal delay before S3 app loading indicators are shown, whether they then enforce a minimum display duration, and that duration in milliseconds
+- Configures the reveal delay before S3 app loading indicators are shown
+- Configures the reveal delay before body content-image loading indicators are shown
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
@@ -294,6 +298,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `_layouts/base.html`
 
 - Loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`
+- Loads `_includes/content-image-loading.html` after the page content and footer scripts so it can scan rendered body images
 - Removes the upstream `bootstrap-social.css` stylesheet load, since it only styled the removed social media sharing buttons
 
 ### `_layouts/home.html`

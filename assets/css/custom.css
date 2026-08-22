@@ -138,6 +138,27 @@ a:focus {
   }
 }
 
+.content-img-loading-wrap {
+  display: inline-block;
+  max-width: 100%;
+  min-height: 3.5rem;
+  position: relative;
+}
+
+.content-img-loading {
+  align-items: center;
+  display: none;
+  inset: 0;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.content-img-loading-visible {
+  display: flex;
+}
+
 /* --- Full-Width Tool Hosts --- */
 
 .full-width-tool-host {
@@ -342,7 +363,7 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    font-size: 0.85em;
+    font-size: 0.925em;
     font-weight: 800;
     line-height: 1.25rem;
     padding-top: 7.5px;
@@ -842,7 +863,7 @@ button:focus {
   background: var(--preview-pill-background-col);
   border: 1px solid var(--preview-pill-border-col);
   border-radius: 999px;
-  color: var(--tag-link-col);
+  color: var(--link-col);
   display: inline-flex;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.82rem;
@@ -859,9 +880,9 @@ button:focus {
 
 .blog-tags a:hover,
 .blog-tags a:focus {
-  background: var(--tag-background-hover-col);
-  border-color: var(--tag-border-hover-col);
-  color: var(--tag-link-hover-col);
+  background: var(--preview-pill-background-hover-col);
+  border-color: var(--preview-pill-border-hover-col);
+  color: var(--link-col);
   text-decoration: none;
 }
 

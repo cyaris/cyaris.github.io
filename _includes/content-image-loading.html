@@ -1,0 +1,39 @@
+{%- assign content_img_reveal_delay_ms = site.content_img_loading_reveal_delay_ms | default: 200 -%}
+<script>
+  {
+    const revealDelayMs = {{ content_img_reveal_delay_ms | jsonify }}
+
+    document.querySelectorAll('main img').forEach((img) => {
+      if (img.complete || img.closest('.post-thumbnail, .full-width-tool-host')) {
+        return
+      }
+
+      const wrap = document.createElement('span')
+      wrap.className = 'content-img-loading-wrap'
+      img.replaceWith(wrap)
+      wrap.appendChild(img)
+
+      const loading = document.createElement('span')
+      loading.className = 'content-img-loading'
+      loading.setAttribute('role', 'status')
+      loading.setAttribute('aria-hidden', 'true')
+
+      const spinner = document.createElement('span')
+      spinner.className = 'asset-loading-spinner'
+      loading.appendChild(spinner)
+      wrap.insertBefore(loading, img)
+
+      const revealTimer = setTimeout(() => {
+        loading.classList.add('content-img-loading-visible')
+      }, revealDelayMs)
+
+      const finish = () => {
+        clearTimeout(revealTimer)
+        loading.remove()
+      }
+
+      img.addEventListener('load', finish, { once: true })
+      img.addEventListener('error', finish, { once: true })
+    })
+  }
+</script>

@@ -88,7 +88,7 @@ Background-only scripts pass `loading=false` to suppress the indicator. The reve
 showing it, and the indicator is removed the instant the script finishes loading or fails so it never lingers over
 already-rendered bundle content.
 
-The reveal delay comes from the `s3_loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200`
+The reveal delay comes from the shared `loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200`
 milliseconds.
 
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source,
@@ -130,7 +130,8 @@ metadata replacement. Successful invalidation still depends on the generated que
 
 `_includes/content-image-loading.html` scans post/page body `<img>` elements once the surrounding content has rendered and, for any still loading, wraps it with the shared, accessible, reduced-motion-aware loading indicator until it loads or fails. Post preview thumbnails (`_layouts/home.html`) and full-width embedded tool hosts already manage their own loading state and are skipped.
 
-The reveal delay prevents fast loads from ever showing the indicator and comes from the `content_img_loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200` milliseconds.
+The reveal delay prevents fast loads from ever showing the indicator and comes from the shared
+`loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200` milliseconds.
 
 ### Project Cards And Tags
 
@@ -231,8 +232,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 - Renames the navbar text color setting to `navbar-link-col`
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
-- Configures the reveal delay before S3 app loading indicators are shown
-- Configures the reveal delay before body content-image loading indicators are shown
+- Configures the shared reveal delay before S3 app and body content-image loading indicators are shown
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs

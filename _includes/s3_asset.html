@@ -20,7 +20,7 @@
 {%- assign s3_asset_matches = site.data.generated_s3_assets | where: 'key', s3_key -%}
 {%- assign s3_asset = s3_asset_matches | first -%}
 {%- assign s3_version = s3_asset.version | default: 'local' -%}
-{%- assign s3_loading_reveal_delay_ms = site.s3_loading_reveal_delay_ms | default: 200 -%}
+{%- assign loading_reveal_delay_ms = site.loading_reveal_delay_ms | default: 200 -%}
 {%- capture asset_url -%}
   {{- site.s3_bucket | append: '/' | append: s3_path_and_query -}}
   {%- if s3_path_and_query contains '?' -%}&v={{ s3_version }}{%- else -%}?v={{ s3_version }}{%- endif -%}
@@ -41,7 +41,7 @@
 
         const revealTimer = setTimeout(() => {
           loading.classList.add("s3-asset-loading-visible")
-        }, {{ s3_loading_reveal_delay_ms | jsonify }})
+        }, {{ loading_reveal_delay_ms | jsonify }})
 
         loading.addEventListener(
           "s3-asset-finished",

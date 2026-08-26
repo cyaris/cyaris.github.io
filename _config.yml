@@ -246,8 +246,7 @@ plugins:
 # --- Custom Variables --- #
 ################
 
-content_img_loading_reveal_delay_ms: 200
+loading_reveal_delay_ms: 200
 s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
 # Leave blank for live production bundles. Set to "test_" when intentionally loading staged bundle uploads.
 s3_bundle_prefix:
-s3_loading_reveal_delay_ms: 200

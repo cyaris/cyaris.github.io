@@ -199,7 +199,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Customizes navbar presentation and behavior:
   - avatar placement, ring border, and crop scaling
   - dropdown behavior
-  - firework cursor and image animations that respect `prefers-reduced-motion`
+  - firework cursor frame swaps and image animation styling, including reduced-motion handling
   - mobile expanded-menu scrolling and body scroll locking
   - navbar sizing and drop-shadow depth
   - responsive mobile/desktop launcher visibility
@@ -279,7 +279,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `_includes/nav.html`
 
-- Replaces the title/logo brand link with desktop and mobile firework launch controls
+- Replaces the title/logo brand link with desktop and mobile firework launch controls that render the local Kid Pix
+  dynamite APNG
 - Builds the Projects dropdown from `_data/projects.yml` entries with `navbar: true`
 - Changes dropdown parent links to lowercase relative URLs
 - Removes the right-aligned dropdown menu class

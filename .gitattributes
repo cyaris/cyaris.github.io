@@ -31,7 +31,6 @@ Dockerfile text eol=lf
 # General multimedia files
 *.jpg binary
 *.jpeg binary
-*.gif binary
 *.png binary
 *.t3x binary
 *.t3d binary

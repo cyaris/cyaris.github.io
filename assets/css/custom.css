@@ -372,9 +372,8 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   }
 }
 
-/* using png photos with transitions for firework on navbar for desktop. */
-/* using a gif in the same spot on mobile. */
-/* the same transition/animation is being used for the navbar cursor on desktop. */
+/* The cursor keeps its CSS frame swap because browser APNG cursor animation is inconsistent. */
+/* The navbar uses the equivalent APNG as an inline image. */
 @keyframes kidpix_cursor_animate {
   0% {
     cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto;

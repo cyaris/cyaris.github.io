@@ -226,7 +226,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/beautifuljekyll.js`
 
-`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer and toggles the body scroll-lock class with the mobile navbar state.
+`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer, toggles the body scroll-lock class with the mobile navbar state, and collapses an expanded mobile navbar after outside clicks or browser back/forward restoration.
 
 ### `_config.yml`
 

@@ -804,7 +804,7 @@ button:focus {
   cursor: pointer;
   color: var(--btn-link-col);
   font-size: 17px;
-  font-weight: 750;
+  font-weight: 800;
   padding: 16px 31px;
   text-decoration: none;
   border-radius: 28px;
@@ -820,7 +820,7 @@ button:focus {
   background-color: var(--btn-background-hover-col);
   border-color: var(--btn-border-hover-col);
   text-decoration: none;
-  font-weight: 750;
+  font-weight: 800;
 }
 
 .project-page-repo-badges {

@@ -198,7 +198,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Styles the shared asset-loading indicator, including S3 app-bundle, post-thumbnail, and body-content-image placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar presentation and behavior:
-  - avatar placement, crop scaling, expanded-menu movement, and ring border
+  - avatar placement, crop scaling, expanded-menu movement, homepage-only expanded-menu fading, and ring border
   - dropdown behavior, including 40 px mobile touch rows with proportionally scaled type
   - firework cursor frame swaps and image animation styling, including reduced-motion handling
   - mobile expanded-menu scrolling and body scroll locking
@@ -302,7 +302,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `_layouts/base.html`
 
-- Loads Open Sans through the Google Fonts CSS2 variable-font API with `display=optional` and removes the unused Lora request
+- Loads Open Sans through the Google Fonts CSS2 variable-font API with `display=swap` and removes the unused Lora request
 - Loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`
 - Loads `_includes/content-image-loading.html` after the page content and footer scripts so it can scan rendered body images
 - Removes the upstream `bootstrap-social.css` stylesheet load, since it only styled the removed social media sharing buttons

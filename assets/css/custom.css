@@ -343,6 +343,20 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     visibility: visible;
   }
 
+  body:has(.homepage-actions) .navbar-custom.top-nav-expanded .avatar-container {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      visibility linear 0.5s,
+      opacity 0.5s ease-in-out;
+    -webkit-transition:
+      visibility linear 0.5s,
+      opacity 0.5s ease-in-out;
+    -moz-transition:
+      visibility linear 0.5s,
+      opacity 0.5s ease-in-out;
+  }
+
   .navbar-custom .navbar-nav .nav-item {
     font-size: 1.14rem;
   }
@@ -364,6 +378,11 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     max-height: calc(100dvh - 4.625rem);
     overflow-y: auto;
     overscroll-behavior-y: contain;
+  }
+
+  body:has(.homepage-actions) .navbar-custom .navbar-collapse {
+    max-height: calc(100vh - 3.125rem);
+    max-height: calc(100dvh - 3.125rem);
   }
 
   .navbar-toggler:hover {

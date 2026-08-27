@@ -57,11 +57,16 @@
 
 - Use relative paths and Jekyll's `relative_url` filter for site-local links and assets. Reserve `absolute_url` for
   metadata, feeds, canonical URLs, and other outputs that require a fully qualified URL.
+- Keep Beautiful Jekyll-derived code aligned with the current upstream remote branch except for repository formatting,
+  necessary CSS-variable changes, and removal of code made stale by inactive integrations. Implement site-specific style
+  changes as overrides in `assets/css/custom.css`, which loads after `assets/css/beautifuljekyll.css`, instead of
+  modifying the upstream stylesheet.
 - Keep one-page CSS in that page. Move styles to `assets/css/custom.css` when more than one page needs them.
 - Keep mobile blog tag links hidden unless the user approves showing them. Preserve compact mobile sizing and wrapping
   rules so removing `display: none` later yields usable tag pills.
-- Keep `assets/css/custom.css` color variables aligned with `_config.yml`. Define the corresponding custom property in
-  `assets/css/beautifuljekyll.css` and reference it through `var(...)` from `custom.css`.
+- Keep `assets/css/custom.css` color variables aligned with `_config.yml`. Define config-backed custom properties in
+  `assets/css/beautifuljekyll.css` only when needed to keep `custom.css` valid plain CSS for editor tooling and Prettier,
+  then reference them through `var(...)` from `custom.css`.
 
 ## Local Workflow Ownership
 

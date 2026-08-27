@@ -69,6 +69,11 @@ main > .row > [class*="col"] > * + :is(h1, h2, h3, h4) {
   text-wrap: balance;
 }
 
+.intro-header .page-heading hr.small {
+  color: inherit;
+  border-color: currentcolor;
+}
+
 @media (min-width: 1200px) {
   .intro-header .page-heading h1 {
     font-size: 4.5rem;

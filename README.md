@@ -191,6 +191,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `assets/css/custom.css`
 
 - Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Profile Photo animation overflow at the viewport edge
+- Matches page-header title/subtitle separators to the surrounding text color
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
@@ -218,7 +219,6 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `assets/css/beautifuljekyll.css`
 
 - Emits the site-specific color palette as CSS custom properties for downstream stylesheets
-- Matches page-header title/subtitle separators to the surrounding text color
 - Removes inactive upstream Disqus comment styling
 - Removes inactive upstream navbar search overlay styling
 - Removes inactive upstream GitHub button header styling

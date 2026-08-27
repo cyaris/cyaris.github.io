@@ -197,7 +197,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Styles the shared asset-loading indicator, including S3 app-bundle, post-thumbnail, and body-content-image placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar presentation and behavior:
-  - avatar placement, ring border, and crop scaling
+  - avatar placement, crop scaling, expanded-menu movement, and ring border
   - dropdown behavior, including 40 px mobile touch rows with proportionally scaled type
   - firework cursor frame swaps and image animation styling, including reduced-motion handling
   - mobile expanded-menu scrolling and body scroll locking
@@ -226,7 +226,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/beautifuljekyll.js`
 
-`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer, toggles the body scroll-lock class with the mobile navbar state, and collapses an expanded mobile navbar after outside clicks or browser back/forward restoration.
+`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer, tracks the mobile navbar state for avatar movement and body scroll locking, and collapses an expanded mobile navbar after outside clicks or browser back/forward restoration.
 
 ### `_config.yml`
 

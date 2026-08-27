@@ -21,7 +21,7 @@ let BeautifulJekyllJS = {
       navbar.collapse("hide")
     }
 
-    // On mobile, hide the avatar and lock body scrolling while the navbar menu is expanded
+    // On mobile, move the avatar with the expanded navbar and lock body scrolling
     navbar.on("show.bs.collapse", function () {
       $(".navbar").addClass("top-nav-expanded")
       $("body").addClass("navbar-expanded")

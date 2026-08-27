@@ -269,6 +269,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `_includes/head.html`
 
 - Adds PNG favicon links for shortcut and browser icons, plus a dedicated Apple touch icon
+- Preconnects to the Google Fonts stylesheet and font origins before external styles load
 - Loads global firework launcher styles inside the document head
 - Falls back to the site RSS description when generated page-description text still contains raw Liquid tags
 - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks
@@ -301,6 +302,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `_layouts/base.html`
 
+- Loads Open Sans through the Google Fonts CSS2 variable-font API with `display=optional` and removes the unused Lora request
 - Loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`
 - Loads `_includes/content-image-loading.html` after the page content and footer scripts so it can scan rendered body images
 - Removes the upstream `bootstrap-social.css` stylesheet load, since it only styled the removed social media sharing buttons

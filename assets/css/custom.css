@@ -332,9 +332,15 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     margin-left: -75%;
   }
 
-  .navbar-custom .navbar-nav .nav-link {
-    padding-top: 7.5px;
-    padding-bottom: 7.5px;
+  .navbar-custom .navbar-nav .nav-item {
+    font-size: 1.14rem;
+  }
+
+  .navbar-custom .navbar-nav .nav-link,
+  .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
+    line-height: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
   .navbar-custom .navbar-toggler {
@@ -365,9 +371,6 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
     font-size: 0.925em;
     font-weight: 800;
-    line-height: 1.25rem;
-    padding-top: 7.5px;
-    padding-bottom: 7.5px;
     padding-left: 1rem;
   }
 }

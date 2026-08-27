@@ -43,8 +43,8 @@ layout: null
   --preview-pill-count-border-col: {{ site.preview-pill-count-border-col | default: "var(--preview-pill-border-col)" }};
 
   /* common CSS variables */
-  --body-font: 'Lora', 'Times New Roman', serif;
-  --header-font: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --body-font: 'Open Sans', 'Open Sans Fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --header-font: 'Open Sans', 'Open Sans Fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --mid-col: #808080;
 }
 

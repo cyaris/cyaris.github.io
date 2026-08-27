@@ -236,6 +236,9 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
+- Removes upstream setup-era guidance and the obsolete `feed_show_tags` toggle; listing pages render tag pills
+  unconditionally on desktop and hide them on mobile
+- Groups Jekyll and custom settings under consistently formatted section headings
 - Adds generated-site exclusions for build-only material:
   - `AGENTS.md` and `CLAUDE.md`
   - `docs/`

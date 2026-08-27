@@ -366,10 +366,6 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     overscroll-behavior-y: contain;
   }
 
-  .navbar-custom.top-nav-expanded .navbar-collapse {
-    padding-bottom: 3rem;
-  }
-
   .navbar-toggler:hover {
     border-color: #439aa5;
   }

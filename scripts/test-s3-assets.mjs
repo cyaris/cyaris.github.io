@@ -5,6 +5,7 @@ import path from "node:path"
 
 import {
   buildS3AssetEntries,
+  bundlePrefixForEnvironment,
   fallbackVersion,
   objectKeyFromS3Path,
   parseS3AssetIncludes,
@@ -80,6 +81,8 @@ assert.equal(
 )
 assert.equal(objectKeyFromS3Path("images/photo.png?size=large"), "images/photo.png")
 assert.equal(resolveS3Path("fireworks/bundle2.js", true, "test_"), "fireworks/test_bundle2.js")
+assert.equal(bundlePrefixForEnvironment("test_", "development"), "test_")
+assert.equal(bundlePrefixForEnvironment("test_", "production"), "")
 assert.equal(fallbackVersion("mastermind/bundle.js"), fallbackVersion("mastermind/bundle.js"))
 assert.notEqual(fallbackVersion("mastermind/bundle.js"), fallbackVersion("mastermind/bundle.css"))
 assert.equal(versionFromMetadata({ VersionId: "null", ETag: '"etag"' }).version, "etag")

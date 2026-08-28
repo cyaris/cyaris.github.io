@@ -1,5 +1,8 @@
 {%- assign s3_path = include.path -%}
 {%- assign s3_bundle_prefix = site.s3_bundle_prefix | default: '' -%}
+{%- if jekyll.environment == 'production' -%}
+  {%- assign s3_bundle_prefix = '' -%}
+{%- endif -%}
 {%- if include.bundle and s3_bundle_prefix != '' -%}
   {%- assign bundle_path = '/' | append: s3_bundle_prefix | append: 'bundle' -%}
   {%- assign s3_path = s3_path | replace: '/bundle', bundle_path -%}

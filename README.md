@@ -35,20 +35,21 @@ npm run update:s3-assets
 
 The local command writes stable fallback versions derived from each S3 object key. The fallback keeps repeated local and `dev` builds deterministic, but it does not prove that an S3 object exists and does not reflect object replacements.
 
-To query S3 metadata instead, run the same command in AWS mode:
+To query staged S3 metadata instead, run the same command in AWS mode. Local builds read the `test_` bundle filename
+prefix from `_config.yml`:
 
 ```sh
 S3_ASSET_VERSION_MODE=aws npm run update:s3-assets
 ```
 
-For a staged bundle build, pass the testing filename prefix as an environment variable:
+To query live production bundle metadata, set the Jekyll environment:
 
 ```sh
-S3_BUNDLE_PREFIX=test_ S3_ASSET_VERSION_MODE=aws npm run update:s3-assets
+JEKYLL_ENV=production S3_ASSET_VERSION_MODE=aws npm run update:s3-assets
 ```
 
-The AWS-mode command reads `s3_bucket` and `s3_bundle_prefix` from `_config.yml`. These environment variables can
-override configuration or AWS selection:
+The AWS-mode command reads `s3_bucket` and `s3_bundle_prefix` from `_config.yml`. Production always clears the bundle
+prefix. Outside production, these environment variables can override configuration or AWS selection:
 
 - `S3_BUCKET`
 - `AWS_REGION`
@@ -78,7 +79,8 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 `_includes/s3_asset.html` handles these S3-hosted asset responsibilities:
 
 - builds URLs from `site.s3_bucket`
-- substitutes the bundle prefix from `site.s3_bundle_prefix`
+- substitutes the bundle prefix from `site.s3_bundle_prefix` outside production and uses live, unprefixed bundle names
+  in production
 - appends object-version cache busting from `_data/generated_s3_assets.yml`
 - emits a stylesheet or script tag from the supplied `type`
 - defers scripts so surrounding page controls remain available while a shared, accessible, reduced-motion-aware loading
@@ -102,7 +104,10 @@ The version value comes from the strongest S3 metadata field available:
 - `ETag` when `VersionId` is absent or `null`
 - `LastModified` plus `ContentLength` when neither S3 versioning nor ETag metadata is available
 
-Version values are normalized for URL query strings before Jekyll reads them. Production bundles such as `mastermind/bundle.js` and testing bundles such as `mastermind/test_bundle.js` are separate S3 keys because `test_` is a filename prefix, not a directory prefix.
+Version values are normalized for URL query strings before Jekyll reads them. Production bundles such as
+`mastermind/bundle.js` and testing bundles such as `mastermind/test_bundle.js` are separate S3 keys because `test_` is a
+filename prefix, not a directory prefix. `_config.yml` selects testing bundles by default, while
+`JEKYLL_ENV=production` makes both metadata generation and rendered pages select the unprefixed production objects.
 
 Jekyll cannot rely on S3 cache metadata alone because a browser or intermediary cache may keep serving an unchanged URL until its cache lifetime expires. The site appends `?v=<s3-object-version>` so the HTML URL changes when the S3 object changes, while unchanged objects keep identical URLs across daily builds.
 
@@ -393,7 +398,8 @@ Deletes these inactive upstream files:
 
 ### `.github/workflows/pages.yml`
 
-`.github/workflows/pages.yml` generates GitHub repository metadata and S3 asset version data before the Jekyll build, then deploys `master` builds to GitHub Pages with GitHub Actions.
+`.github/workflows/pages.yml` generates GitHub repository metadata and unprefixed production S3 asset version data
+before the Jekyll build, then deploys `master` builds to GitHub Pages with GitHub Actions.
 
 ## GitHub Actions Workflows
 
@@ -415,7 +421,8 @@ The workflow then:
 - installs Ruby dependencies with Bundler and Appraisal
 - configures the GitHub Pages base path
 - generates `_data/github_repos.yml` from repository front matter
-- generates `_data/generated_s3_assets.yml` from current S3 object metadata or deterministic `dev` fallback data
+- generates `_data/generated_s3_assets.yml` for unprefixed production objects from current S3 metadata or deterministic
+  `dev` fallback data
 - builds the site with `JEKYLL_ENV=production`
 - uploads the Pages artifact
 - deploys that artifact from `master` through `actions/deploy-pages`

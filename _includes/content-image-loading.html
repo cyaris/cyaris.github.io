@@ -4,7 +4,7 @@
     const revealDelayMs = {{ loading_reveal_delay_ms | jsonify }}
 
     document.querySelectorAll('main img').forEach((img) => {
-      if (img.complete || img.closest('.post-thumbnail, .full-width-tool-host')) {
+      if (img.complete || img.closest('.image-scroll, .post-thumbnail, .full-width-tool-host')) {
         return
       }
 

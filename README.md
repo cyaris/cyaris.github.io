@@ -133,7 +133,7 @@ metadata replacement. Successful invalidation still depends on the generated que
 
 ### Content Image Loading Indicator
 
-`_includes/content-image-loading.html` scans post/page body `<img>` elements once the surrounding content has rendered and, for any still loading, wraps it with the shared, accessible, reduced-motion-aware loading indicator until it loads or fails. Post preview thumbnails (`_layouts/home.html`) and full-width embedded tool hosts already manage their own loading state and are skipped.
+`_includes/content-image-loading.html` scans post/page body `<img>` elements once the surrounding content has rendered and, for any still loading, wraps it with the shared, accessible, reduced-motion-aware loading indicator until it loads or fails. Post preview thumbnails (`_layouts/home.html`), horizontal image galleries, and full-width embedded tool hosts already own their image layout or loading state and are skipped.
 
 The reveal delay prevents fast loads from ever showing the indicator and comes from the shared
 `loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200` milliseconds.
@@ -192,6 +192,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `about_me.html`
 
 - Defines page-local horizontal image-scroll styling for the About Me gallery
+- Keeps gallery photos outside the global content-image loading wrapper so their flex sizing remains intact
 
 ### `assets/css/custom.css`
 

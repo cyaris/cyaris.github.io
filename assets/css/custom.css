@@ -212,15 +212,18 @@ a:focus {
  * values remain CSS variables so a runtime palette change updates an already
  * rolled-up app without rebuilding its bundle.
  */
-html body .profile-photo,
-html body .the-networks-of-war,
-html body .us-gun-violence-forecasting {
-  --svelte-lib-primary: var(--link-col);
-  --svelte-lib-primary-hover: var(--hover-col);
-  --svelte-lib-primary-dark: var(--navbar-link-hover-col);
-  --svelte-lib-primary-light: var(--preview-pill-border-col);
+html body .svelte-lib-app {
+  --brand: var(--link-col);
+  --brand-dark: var(--navbar-link-hover-col);
+  --brand-hover: var(--hover-col);
+  --brand-light: var(--preview-pill-border-col);
+  --link: var(--link-col);
+  --link-hover: var(--hover-col);
   --ui-text: var(--text-col);
   --ui-surface: var(--page-col);
+  --ui-focus: var(--link-col);
+  --ui-selection: var(--navbar-link-hover-col);
+  --ui-selection-text: var(--page-col);
   --chart-ink: var(--text-col);
 }
 

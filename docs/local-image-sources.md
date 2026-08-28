@@ -10,9 +10,13 @@ third-party image hosts. These records preserve the sources used during the 2026
 
 ## Intentionally External Images
 
-Two existing thumbnail URLs remain external because copying them into the repository would conflict with the source
-hosts' current reuse terms:
+Three thumbnail URLs remain external to preserve the selected image or because copying them into the repository would
+conflict with the source hosts' current reuse terms:
 
+- The Gun Violence Archive project card retains the exact
+  [`master` branch image URL](https://www.gunviolencearchive.org/sites/all/themes/gva_theme/images/new-logo.jpg) because
+  the public-domain Wikimedia Commons recovery stored at `assets/img/gun-violence-archive-logo.jpg` differs visually
+  from that image.
 - The Mastermind project card retains its
   [Walmart product-image URL](https://i5.walmartimages.com/seo/Hasbro-Mastermind-for-Kids-Board-Games_568cd372-e700-4a9f-a35a-c32f859b4850.104f171c37ef2cc96bb3ac486360508d.jpeg)
   because the

@@ -636,6 +636,7 @@ footer a:hover {
 .post-preview-heading .post-title {
   font-size: 2.125rem;
   line-height: 1.15;
+  margin-top: 0;
   margin-bottom: 0.35rem;
 }
 
@@ -737,13 +738,11 @@ footer a:hover {
   justify-content: center;
   pointer-events: none;
   position: absolute;
-  top: 0.5rem;
   z-index: 1;
 }
 
 .post-thumbnail img {
   height: 12rem;
-  margin-top: 0.5rem;
   object-fit: contain;
   width: 12rem;
 }
@@ -827,7 +826,6 @@ footer a:hover {
   .post-preview-heading .post-title {
     font-size: 1.375rem;
     line-height: 1.25;
-    margin-top: 0;
     margin-bottom: 0.15rem;
   }
 

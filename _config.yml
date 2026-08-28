@@ -232,4 +232,4 @@ plugins:
 loading_reveal_delay_ms: 200
 s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
 # Production builds ignore this staged bundle prefix and load the live bundle names.
-s3_bundle_prefix: test_
+s3_bundle_prefix: dev_

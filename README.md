@@ -35,7 +35,7 @@ npm run update:s3-assets
 
 The local command writes stable fallback versions derived from each S3 object key. The fallback keeps repeated local and `dev` builds deterministic, but it does not prove that an S3 object exists and does not reflect object replacements.
 
-To query staged S3 metadata instead, run the same command in AWS mode. Local builds read the `test_` bundle filename
+To query staged S3 metadata instead, run the same command in AWS mode. Local builds read the `dev_` bundle filename
 prefix from `_config.yml`:
 
 ```sh
@@ -105,8 +105,8 @@ The version value comes from the strongest S3 metadata field available:
 - `LastModified` plus `ContentLength` when neither S3 versioning nor ETag metadata is available
 
 Version values are normalized for URL query strings before Jekyll reads them. Production bundles such as
-`mastermind/bundle.js` and testing bundles such as `mastermind/test_bundle.js` are separate S3 keys because `test_` is a
-filename prefix, not a directory prefix. `_config.yml` selects testing bundles by default, while
+`mastermind/bundle.js` and development bundles such as `mastermind/dev_bundle.js` are separate S3 keys because `dev_`
+is a filename prefix, not a directory prefix. `_config.yml` selects development bundles by default, while
 `JEKYLL_ENV=production` makes both metadata generation and rendered pages select the unprefixed production objects.
 
 Jekyll cannot rely on S3 cache metadata alone because a browser or intermediary cache may keep serving an unchanged URL until its cache lifetime expires. The site appends `?v=<s3-object-version>` so the HTML URL changes when the S3 object changes, while unchanged objects keep identical URLs across daily builds.
@@ -125,8 +125,8 @@ callers can pass that value through the shared `cache-control` input while prese
 
 - `bundle.js`
 - `bundle.css`
-- `test_bundle.js`
-- `test_bundle.css`
+- `dev_bundle.js`
+- `dev_bundle.css`
 
 Refresh S3 metadata for directly uploaded PDFs, images, and APNG files during upload or with an in-place `aws s3 cp`
 metadata replacement. Successful invalidation still depends on the generated query version rather than cache headers.
@@ -212,8 +212,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
   - responsive mobile/desktop launcher visibility
   - toggler styling
 - Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
-- Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
-- Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
+- Customizes post preview title, subtitle, metadata, thumbnail sizing and top alignment, title hover colors, and preview borders
+- Aligns project-card subtitle-to-badge and badge-to-tag spacing, plus tag links, labels, icons, and pill colors, with GitHub repo badges
 - Places project page and blog post GitHub action badges and repository metadata badges in one row, with an optional centered layout for the `badge-alignment: center` modifier
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata

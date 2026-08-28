@@ -979,7 +979,8 @@ button:focus {
   text-decoration: none;
 }
 
-.post-preview .blog-tags {
+.post-preview .blog-tags > a,
+.post-preview .blog-tags-label-text {
   opacity: 0.8;
 }
 

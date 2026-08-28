@@ -2,19 +2,19 @@
 layout: page
 ---
 <style>
-  .project-repo-badges {
+  .post-preview-heading .project-repo-badges {
     align-items: flex-start;
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
     justify-content: flex-start;
     line-height: 1;
-    margin-top: 0.7rem;
+    margin-top: 0.625rem;
     max-width: 100%;
   }
 
   @media (max-width: 575px) {
-    .project-repo-badges {
+    .post-preview-heading .project-repo-badges {
       flex-direction: column;
       margin-top: 0.65rem;
       row-gap: 0;
@@ -142,7 +142,7 @@ layout: page
               <div class="blog-tags">
                 <span class="blog-tags-label">
                   <i class="fas fa-tag" aria-hidden="true"></i>
-                  tags:
+                  <span class="blog-tags-label-text">tags:</span>
                 </span>
                 {% for tag in post.tags %}
                   {% assign tag_slug = tag | slugify %}

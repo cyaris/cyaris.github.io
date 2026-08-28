@@ -219,6 +219,9 @@ html body .us-gun-violence-forecasting {
   --svelte-lib-primary-hover: var(--hover-col);
   --svelte-lib-primary-dark: var(--navbar-link-hover-col);
   --svelte-lib-primary-light: var(--preview-pill-border-col);
+  --ui-text: var(--text-col);
+  --ui-surface: var(--page-col);
+  --chart-ink: var(--text-col);
 }
 
 .full-width-tool-host {

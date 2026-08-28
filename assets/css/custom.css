@@ -207,6 +207,20 @@ a:focus {
 
 /* --- Full-Width Tool Hosts --- */
 
+/*
+ * Adapt the site palette to svelte-lib's semantic color contract. These
+ * values remain CSS variables so a runtime palette change updates an already
+ * rolled-up app without rebuilding its bundle.
+ */
+html body .profile-photo,
+html body .the-networks-of-war,
+html body .us-gun-violence-forecasting {
+  --svelte-lib-primary: var(--link-col);
+  --svelte-lib-primary-hover: var(--hover-col);
+  --svelte-lib-primary-dark: var(--navbar-link-hover-col);
+  --svelte-lib-primary-light: var(--preview-pill-border-col);
+}
+
 .full-width-tool-host {
   margin-top: 32px;
   margin-bottom: 10px;

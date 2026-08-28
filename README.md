@@ -226,7 +226,11 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/beautifuljekyll.js`
 
-`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer, tracks the mobile navbar state for avatar movement and body scroll locking, and collapses an expanded mobile navbar after outside clicks or browser back/forward restoration.
+`assets/js/beautifuljekyll.js` stays aligned with the upstream Beautiful Jekyll JavaScript except for repository formatting and removal of the inactive navbar search initializer.
+
+### `assets/js/custom.js`
+
+`assets/js/custom.js` tracks the mobile navbar state for avatar movement and body scroll locking, and collapses an expanded mobile navbar after menu selection, outside clicks, or browser back/forward restoration.
 
 ### `_config.yml`
 

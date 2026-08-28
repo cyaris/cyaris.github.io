@@ -222,7 +222,7 @@ html body .svelte-lib-app {
   --ui-text: var(--text-col);
   --ui-surface: var(--page-col);
   --ui-focus: var(--link-col);
-  --ui-selection: var(--navbar-link-hover-col);
+  --ui-selection: var(--brand-hover);
   --ui-selection-text: var(--page-col);
   --chart-ink: var(--text-col);
 }

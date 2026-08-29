@@ -151,7 +151,7 @@ The reveal delay prevents fast loads from ever showing the indicator and comes f
 Project listing thumbnails can render generated square APNG assets under `assets/img/`; `assets/img/networks-war-demo.png` animates the Networks of War project card while the legacy `assets/img/networks-war-globe-thumbnail.png` remains preserved in the repository.
 
 The thumbnail generation process derives `assets/img/profile-photo-thumbnail.png` from
-`../profile_photo/frontend/src/lib/static/pixels.json`, so the Profile Photo project card shows the app's pixelated
+`../pixel_portrait/frontend/src/lib/static/pixels.json`, so the Profile Photo project card shows the app's pixelated
 overlay state.
 
 ### Tableau Gallery And Dashboard Embeds
@@ -414,7 +414,7 @@ The `Pages` workflow runs on:
 
 - pushes to `dev` and `master`
 - manual dispatch
-- a daily 13:23 UTC schedule, 30 minutes after the `Upstream Watch` runs in `mastermind`, `profile_photo`,
+- a daily 13:23 UTC schedule, 30 minutes after the `Upstream Watch` runs in `mastermind`, `pixel_portrait`,
   `us_gun_violence_forecasting`, and `the_networks_of_war`
 
 The workflow then:

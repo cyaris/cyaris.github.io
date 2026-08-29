@@ -151,7 +151,7 @@ The reveal delay prevents fast loads from ever showing the indicator and comes f
 Project listing thumbnails can render generated square APNG assets under `assets/img/`; `assets/img/networks-war-demo.png` animates the Networks of War project card while the legacy `assets/img/networks-war-globe-thumbnail.png` remains preserved in the repository.
 
 The thumbnail generation process derives `assets/img/profile-photo-thumbnail.png` from
-`../pixel_portrait/frontend/src/lib/static/pixels.json`, so the Profile Photo project card shows the app's pixelated
+`../pixel_portrait/frontend/src/lib/static/pixels.json`, so the Pixel Portrait project card shows the app's pixelated
 overlay state.
 
 ### Tableau Gallery And Dashboard Embeds
@@ -196,7 +196,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/css/custom.css`
 
-- Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Profile Photo animation overflow at the viewport edge
+- Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Pixel Portrait animation overflow at the viewport edge
 - Matches page-header title/subtitle separators to the surrounding text color
 - Maps the site palette to `svelte-lib` semantic color tokens at the shared embedded-app root
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
@@ -266,7 +266,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `index.html`
 
-- Loads the Auto Transition-only Profile Photo homepage bundle instead of the full interactive Profile Photo bundle
+- Loads the Auto Transition-only Pixel Portrait homepage bundle instead of the full interactive Pixel Portrait bundle
 - Stacks the homepage action buttons at every viewport width and matches the project-page buttons' hover/focus underlines
 
 ### `_includes/footer.html`

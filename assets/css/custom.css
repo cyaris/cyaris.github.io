@@ -569,7 +569,9 @@ footer a:hover {
 
 .footer-links a:hover .fa-stack-2x,
 .footer-links a:focus .fa-stack-2x {
+  -webkit-text-stroke: 4px var(--social-icon-hover-col);
   color: var(--social-icon-background-hover-col);
+  paint-order: stroke fill;
 }
 
 .footer-links a:hover .fa-stack-1x,

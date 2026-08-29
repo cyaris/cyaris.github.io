@@ -212,7 +212,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
   - navbar sizing and drop-shadow depth
   - responsive mobile/desktop launcher visibility
   - toggler styling
-- Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
+- Customizes footer borders, link states, social icon sizing and hover rings, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing and visual top alignment, title hover colors, and preview borders
 - Aligns project-card subtitle-to-badge and badge-to-tag spacing, plus tag links, full-opacity labels and icons, and pill colors, with GitHub repo badges
 - Places project page and blog post GitHub action badges and repository metadata badges in one row, with an optional centered layout for the `badge-alignment: center` modifier

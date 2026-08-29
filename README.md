@@ -81,10 +81,11 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 - builds URLs from `site.s3_bucket`
 - substitutes the bundle prefix from `site.s3_bundle_prefix` outside production and uses live, unprefixed bundle names
   in production
-- appends object-version cache busting from `_data/generated_s3_assets.yml`
+- appends a browser-time cache buster to development bundles so each local page load requests the latest `dev_` object,
+  while production and non-bundle assets use object-version cache busting from `_data/generated_s3_assets.yml`
 - emits a stylesheet or script tag from the supplied `type`
-- defers scripts so surrounding page controls remain available while a shared, accessible, reduced-motion-aware loading
-  indicator tracks bundle completion or failure
+- loads scripts without blocking the parser so surrounding page controls remain available while a shared, accessible,
+  reduced-motion-aware loading indicator tracks bundle completion or failure
 
 Background-only scripts pass `loading=false` to suppress the indicator. The reveal delay prevents fast loads from ever
 showing it, and the indicator is removed the instant the script finishes loading or fails so it never lingers over

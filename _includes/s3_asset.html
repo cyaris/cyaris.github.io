@@ -24,13 +24,32 @@
 {%- assign s3_asset = s3_asset_matches | first -%}
 {%- assign s3_version = s3_asset.version | default: 'local' -%}
 {%- assign loading_reveal_delay_ms = site.loading_reveal_delay_ms | default: 200 -%}
+{%- assign runtime_cache_bust = false -%}
+{%- if include.bundle and jekyll.environment != 'production' -%}
+  {%- assign runtime_cache_bust = true -%}
+{%- endif -%}
 {%- capture asset_url -%}
   {{- site.s3_bucket | append: '/' | append: s3_path_and_query -}}
-  {%- if s3_path_and_query contains '?' -%}&v={{ s3_version }}{%- else -%}?v={{ s3_version }}{%- endif -%}
+  {%- unless runtime_cache_bust -%}
+    {%- if s3_path_and_query contains '?' -%}&v={{ s3_version }}{%- else -%}?v={{ s3_version }}{%- endif -%}
+  {%- endunless -%}
   {{- s3_fragment -}}
 {%- endcapture -%}
 {%- if include.type == 'style' -%}
-  <link rel="stylesheet" href="{{ asset_url }}">
+  {%- if runtime_cache_bust -%}
+    <script>
+      {
+        const link = document.createElement('link')
+
+        link.rel = 'stylesheet'
+        link.href = '{{ asset_url }}?v=' + Date.now()
+
+        document.head.appendChild(link)
+      }
+    </script>
+  {%- else -%}
+    <link rel="stylesheet" href="{{ asset_url }}">
+  {%- endif -%}
 {%- elsif include.type == 'script' -%}
   {%- unless include.loading == false -%}
     {%- assign loading_id = s3_key | slugify | prepend: 's3-asset-loading-' -%}
@@ -57,14 +76,35 @@
       }
     </script>
   {%- endunless -%}
-  <script
-    src="{{ asset_url }}"
-    {%- unless include.loading == false %}
-      defer
-      onload="document.getElementById('{{ loading_id }}')?.dispatchEvent(new Event('s3-asset-finished'))"
-      onerror="document.getElementById('{{ loading_id }}')?.dispatchEvent(new Event('s3-asset-finished'))"
-    {%- endunless -%}
-  ></script>
+  {%- if runtime_cache_bust -%}
+    <script>
+      {
+        const script = document.createElement("script")
+
+        script.async = false
+        script.src = "{{ asset_url }}?v=" + Date.now()
+        {%- unless include.loading == false %}
+          script.addEventListener("load", () => {
+            document.getElementById("{{ loading_id }}")?.dispatchEvent(new Event("s3-asset-finished"))
+          })
+          script.addEventListener("error", () => {
+            document.getElementById("{{ loading_id }}")?.dispatchEvent(new Event("s3-asset-finished"))
+          })
+        {%- endunless %}
+
+        document.currentScript.before(script)
+      }
+    </script>
+  {%- else -%}
+    <script
+      src="{{ asset_url }}"
+      {%- unless include.loading == false %}
+        defer
+        onload="document.getElementById('{{ loading_id }}')?.dispatchEvent(new Event('s3-asset-finished'))"
+        onerror="document.getElementById('{{ loading_id }}')?.dispatchEvent(new Event('s3-asset-finished'))"
+      {%- endunless -%}
+    ></script>
+  {%- endif -%}
 {%- else -%}
   {{- asset_url -}}
 {%- endif -%}

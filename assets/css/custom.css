@@ -224,7 +224,6 @@ html body .svelte-lib-app {
   --ui-focus: var(--link-col);
   --ui-selection: var(--brand-hover);
   --ui-selection-text: var(--page-col);
-  --chart-ink: var(--text-col);
 }
 
 .full-width-tool-host {

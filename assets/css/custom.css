@@ -986,10 +986,6 @@ button:focus {
   text-decoration: none;
 }
 
-.post-preview .blog-tags > a {
-  opacity: 0.8;
-}
-
 @media (max-width: 767px) {
   .blog-tags {
     align-items: center;

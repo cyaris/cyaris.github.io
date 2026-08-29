@@ -933,7 +933,7 @@ button:focus {
 
 /* --- Tag Links --- */
 
-.blog-tags-label {
+.blog-tags .blog-tags-label {
   align-items: center;
   color: var(--link-col);
   display: inline-flex;

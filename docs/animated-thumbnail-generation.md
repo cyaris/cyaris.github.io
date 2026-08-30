@@ -12,10 +12,12 @@ transparency and disposal metadata, and encode the canvases with `upng-js`. Set 
 source animation's play count and recalculate the chunk CRC; `upng-js` otherwise defaults to infinite playback.
 
 The Kid Pix source is
-[`img/cursor-tnt-anim.gif`](https://github.com/vikrum/kidpix/blob/main/img/cursor-tnt-anim.gif) from the GPL-3.0
-[`vikrum/kidpix`](https://github.com/vikrum/kidpix) repository. The upstream file's SHA-256 matches the source hash in
-the table below. The Nostradamus GIF came from this site's existing version history; its earlier external provenance
-was not recorded.
+[`img/cursor-tnt-anim.gif`](https://github.com/vikrum/kidpix/blob/4268b12a055503882b9e3b6382b110e39f1b1e12/img/cursor-tnt-anim.gif)
+from the GPL-3.0 [`vikrum/kidpix`](https://github.com/vikrum/kidpix) repository, pinned to commit
+`4268b12a055503882b9e3b6382b110e39f1b1e12` (the only commit to touch that path). The file at that commit has SHA-256
+`883997e6706b447b650f812e3bea2df4b48f5d34446971f853e19856b36e506f`, matching the source hash in the table below. The
+Nostradamus GIF came from this site's own version history and no earlier external provenance was recorded; its source
+hash in the table below is the reproducibility anchor for that input.
 
 The conversion used one-off `gifuct-js`, `pngjs`, and `upng-js` dependencies outside the repository. The preserved
 animation contracts are:

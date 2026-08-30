@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
     $("body").removeClass("navbar-expanded")
   })
 
-  // On mobile, collapse the navbar after selecting a menu item
-  navbar.find("a:not(.dropdown-toggle)").click(collapseNavbar)
+  // Collapse an expanded mobile navbar after launching a firework
+  $(".firework-launcher-desktop, .firework-launcher-mobile").click(collapseNavbar)
 
   // Collapse an expanded mobile navbar after clicking elsewhere on the page
   $(document).click(function (event) {

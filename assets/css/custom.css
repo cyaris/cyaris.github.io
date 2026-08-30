@@ -496,6 +496,12 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     animation: none;
     -webkit-animation: none;
   }
+
+  body:has(.homepage-actions) .navbar-custom.top-nav-expanded .avatar-container {
+    transition: none;
+    -webkit-transition: none;
+    -moz-transition: none;
+  }
 }
 
 .kidpix_png_top {

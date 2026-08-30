@@ -40,9 +40,12 @@
     <script>
       {
         const link = document.createElement('link')
+        const url = new URL('{{ asset_url }}')
+
+        url.searchParams.set('v', Date.now())
 
         link.rel = 'stylesheet'
-        link.href = '{{ asset_url }}?v=' + Date.now()
+        link.href = url.href
 
         document.head.appendChild(link)
       }
@@ -80,9 +83,12 @@
     <script>
       {
         const script = document.createElement("script")
+        const url = new URL("{{ asset_url }}")
+
+        url.searchParams.set("v", Date.now())
 
         script.async = false
-        script.src = "{{ asset_url }}?v=" + Date.now()
+        script.src = url.href
         {%- unless include.loading == false %}
           script.addEventListener("load", () => {
             document.getElementById("{{ loading_id }}")?.dispatchEvent(new Event("s3-asset-finished"))

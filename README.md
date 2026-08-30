@@ -301,6 +301,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Changes dropdown parent links to lowercase relative URLs
 - Removes the right-aligned dropdown menu class
 - Routes blank navbar links to the site root with `relative_url`
+- Routes the avatar home link with `relative_url` so local previews retain their active origin and port
 - Removes the inactive upstream navbar search link and overlay include
 
 ### `_includes/social-networks-links.html`

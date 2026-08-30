@@ -35,20 +35,21 @@ npm run update:s3-assets
 
 The local command writes stable fallback versions derived from each S3 object key. The fallback keeps repeated local and `dev` builds deterministic, but it does not prove that an S3 object exists and does not reflect object replacements.
 
-To query S3 metadata instead, run the same command in AWS mode:
+To query staged S3 metadata instead, run the same command in AWS mode. Local builds read the `dev_` bundle filename
+prefix from `_config.yml`:
 
 ```sh
 S3_ASSET_VERSION_MODE=aws npm run update:s3-assets
 ```
 
-For a staged bundle build, pass the testing filename prefix as an environment variable:
+To query live production bundle metadata, set the Jekyll environment:
 
 ```sh
-S3_BUNDLE_PREFIX=test_ S3_ASSET_VERSION_MODE=aws npm run update:s3-assets
+JEKYLL_ENV=production S3_ASSET_VERSION_MODE=aws npm run update:s3-assets
 ```
 
-The AWS-mode command reads `s3_bucket` and `s3_bundle_prefix` from `_config.yml`. These environment variables can
-override configuration or AWS selection:
+The AWS-mode command reads `s3_bucket` and `s3_bundle_prefix` from `_config.yml`. Production always clears the bundle
+prefix. Outside production, these environment variables can override configuration or AWS selection:
 
 - `S3_BUCKET`
 - `AWS_REGION`
@@ -78,21 +79,20 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 `_includes/s3_asset.html` handles these S3-hosted asset responsibilities:
 
 - builds URLs from `site.s3_bucket`
-- substitutes the bundle prefix from `site.s3_bundle_prefix`
-- appends object-version cache busting from `_data/generated_s3_assets.yml`
+- substitutes the bundle prefix from `site.s3_bundle_prefix` outside production and uses live, unprefixed bundle names
+  in production
+- appends a browser-time cache buster to development bundles so each local page load requests the latest `dev_` object,
+  while production and non-bundle assets use object-version cache busting from `_data/generated_s3_assets.yml`
 - emits a stylesheet or script tag from the supplied `type`
-- defers scripts so surrounding page controls remain available while a shared, accessible, reduced-motion-aware loading
-  indicator tracks bundle completion or failure
+- loads scripts without blocking the parser so surrounding page controls remain available while a shared, accessible,
+  reduced-motion-aware loading indicator tracks bundle completion or failure
 
 Background-only scripts pass `loading=false` to suppress the indicator. The reveal delay prevents fast loads from ever
-showing it. After the indicator appears, `s3_loading_enforce_minimum_duration` keeps it visible for the configured
-minimum so it does not flash.
+showing it, and the indicator is removed the instant the script finishes loading or fails so it never lingers over
+already-rendered bundle content.
 
-Loading-indicator timing comes from these `_config.yml` parameters:
-
-- `s3_loading_enforce_minimum_duration` determines whether a revealed indicator remains visible for the configured minimum and defaults to `true`
-- `s3_loading_minimum_duration_ms` sets that minimum in milliseconds and defaults to `800`, the duration of one spinner rotation
-- `s3_loading_reveal_delay_ms` sets how long the bundle must still be loading before the indicator is shown at all, in milliseconds, and defaults to `200`
+The reveal delay comes from the shared `loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200`
+milliseconds.
 
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source,
 resolves the exact S3 object key that each include serves, and writes current version data before Jekyll builds. The
@@ -105,7 +105,10 @@ The version value comes from the strongest S3 metadata field available:
 - `ETag` when `VersionId` is absent or `null`
 - `LastModified` plus `ContentLength` when neither S3 versioning nor ETag metadata is available
 
-Version values are normalized for URL query strings before Jekyll reads them. Production bundles such as `mastermind/bundle.js` and testing bundles such as `mastermind/test_bundle.js` are separate S3 keys because `test_` is a filename prefix, not a directory prefix.
+Version values are normalized for URL query strings before Jekyll reads them. Production bundles such as
+`mastermind/bundle.js` and development bundles such as `mastermind/dev_bundle.js` are separate S3 keys because `dev_`
+is a filename prefix, not a directory prefix. `_config.yml` selects development bundles by default, while
+`JEKYLL_ENV=production` makes both metadata generation and rendered pages select the unprefixed production objects.
 
 Jekyll cannot rely on S3 cache metadata alone because a browser or intermediary cache may keep serving an unchanged URL until its cache lifetime expires. The site appends `?v=<s3-object-version>` so the HTML URL changes when the S3 object changes, while unchanged objects keep identical URLs across daily builds.
 
@@ -123,11 +126,18 @@ callers can pass that value through the shared `cache-control` input while prese
 
 - `bundle.js`
 - `bundle.css`
-- `test_bundle.js`
-- `test_bundle.css`
+- `dev_bundle.js`
+- `dev_bundle.css`
 
 Refresh S3 metadata for directly uploaded PDFs, images, and APNG files during upload or with an in-place `aws s3 cp`
 metadata replacement. Successful invalidation still depends on the generated query version rather than cache headers.
+
+### Content Image Loading Indicator
+
+`_includes/content-image-loading.html` scans post/page body `<img>` elements once the surrounding content has rendered and, for any still loading, wraps it with the shared, accessible, reduced-motion-aware loading indicator until it loads or fails. Post preview thumbnails (`_layouts/home.html`), horizontal image galleries, and full-width embedded tool hosts already own their image layout or loading state and are skipped.
+
+The reveal delay prevents fast loads from ever showing the indicator and comes from the shared
+`loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200` milliseconds.
 
 ### Project Cards And Tags
 
@@ -142,7 +152,7 @@ metadata replacement. Successful invalidation still depends on the generated que
 Project listing thumbnails can render generated square APNG assets under `assets/img/`; `assets/img/networks-war-demo.png` animates the Networks of War project card while the legacy `assets/img/networks-war-globe-thumbnail.png` remains preserved in the repository.
 
 The thumbnail generation process derives `assets/img/profile-photo-thumbnail.png` from
-`../profile_photo/frontend/src/lib/static/pixels.json`, so the Profile Photo project card shows the app's pixelated
+`../pixel_portrait/frontend/src/lib/static/pixels.json`, so the Pixel Portrait project card shows the app's pixelated
 overlay state.
 
 ### Tableau Gallery And Dashboard Embeds
@@ -183,38 +193,40 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `about_me.html`
 
 - Defines page-local horizontal image-scroll styling for the About Me gallery
+- Keeps gallery photos outside the global content-image loading wrapper so their flex sizing remains intact
 
 ### `assets/css/custom.css`
 
-- Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Profile Photo animation overflow at the viewport edge
+- Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Pixel Portrait animation overflow at the viewport edge
+- Matches page-header title/subtitle separators to the surrounding text color
+- Maps the site palette to `svelte-lib` semantic color tokens at the shared embedded-app root
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
-- Styles the shared asset-loading indicator, including S3 app-bundle and post-thumbnail placement and reduced-motion states
+- Styles the shared asset-loading indicator, including S3 app-bundle, post-thumbnail, and body-content-image placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar presentation and behavior:
-  - avatar placement, ring border, and crop scaling
-  - dropdown behavior
-  - firework cursor and image animations that respect `prefers-reduced-motion`
+  - avatar placement, crop scaling, expanded-menu movement, homepage-only expanded-menu fading, and ring border
+  - dropdown behavior, including 40 px mobile touch rows with proportionally scaled type
+  - firework cursor frame swaps and image animation styling, including reduced-motion handling
   - mobile expanded-menu scrolling and body scroll locking
   - navbar sizing and drop-shadow depth
   - responsive mobile/desktop launcher visibility
   - toggler styling
-- Customizes footer borders, link states, social icon sizing, Tableau icon placement, and responsive footer spacing
-- Customizes post preview title, subtitle, metadata, thumbnail sizing, title hover colors, and preview borders
-- Aligns tag link styling, tag label styling, and tag pill vertical spacing with GitHub repo badges using shared preview pill color variables
+- Customizes footer borders, link states, social icon sizing and hover rings, Tableau icon placement, and responsive footer spacing
+- Customizes post preview title, subtitle, metadata, thumbnail sizing and visual top alignment, title hover colors, and preview borders
+- Aligns project-card subtitle-to-badge and badge-to-tag spacing, plus full-opacity tag labels, icons, and pills, with GitHub repo badges
 - Places project page and blog post GitHub action badges and repository metadata badges in one row, with an optional centered layout for the `badge-alignment: center` modifier
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
-- Defines shared button styling for `.btn-group`, including local focus-state overrides
+- Defines shared button styling for `.btn-group`, including explicit 800 font weight and local focus-state overrides
 - Customizes tag link and pagination styling, including desktop/mobile pagination text visibility, and anchors project/post pagination buttons to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
 - Disables text selection on interactive site controls and footer areas
 
 ### `assets/css/beautifuljekyll.css`
 
 - Emits the site-specific color palette as CSS custom properties for downstream stylesheets
-- Matches page-header title/subtitle separators to the surrounding text color
 - Removes inactive upstream Disqus comment styling
 - Removes inactive upstream navbar search overlay styling
 - Removes inactive upstream GitHub button header styling
@@ -222,16 +234,23 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/beautifuljekyll.js`
 
-`assets/js/beautifuljekyll.js` removes the inactive upstream navbar search initializer and toggles the body scroll-lock class with the mobile navbar state.
+`assets/js/beautifuljekyll.js` stays aligned with the upstream Beautiful Jekyll JavaScript except for repository formatting and removal of the inactive navbar search initializer.
+
+### `assets/js/custom.js`
+
+`assets/js/custom.js` tracks the mobile navbar state for avatar movement and body scroll locking. It collapses an expanded mobile navbar after firework launches, outside clicks, or browser back/forward restoration while leaving navbar-link and avatar selections expanded until navigation.
 
 ### `_config.yml`
 
 - Renames the navbar text color setting to `navbar-link-col`
 - Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
-- Configures the reveal delay before S3 app loading indicators are shown, whether they then enforce a minimum display duration, and that duration in milliseconds
+- Configures the shared reveal delay before S3 app and body content-image loading indicators are shown
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
+- Removes upstream setup-era guidance and the obsolete `feed_show_tags` toggle; listing pages render tag pills
+  unconditionally on desktop and hide them on mobile
+- Groups Jekyll and custom settings under consistently formatted section headings
 - Adds generated-site exclusions for build-only material:
   - `AGENTS.md` and `CLAUDE.md`
   - `docs/`
@@ -248,7 +267,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `index.html`
 
-- Loads the Auto Transition-only Profile Photo homepage bundle instead of the full interactive Profile Photo bundle
+- Loads the Auto Transition-only Pixel Portrait homepage bundle instead of the full interactive Pixel Portrait bundle
 - Stacks the homepage action buttons at every viewport width and matches the project-page buttons' hover/focus underlines
 
 ### `_includes/footer.html`
@@ -262,6 +281,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `_includes/head.html`
 
 - Adds PNG favicon links for shortcut and browser icons, plus a dedicated Apple touch icon
+- Preloads the locally hosted Open Sans normal variable font used by initial page content
 - Loads global firework launcher styles inside the document head
 - Falls back to the site RSS description when generated page-description text still contains raw Liquid tags
 - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks
@@ -275,11 +295,13 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `_includes/nav.html`
 
-- Replaces the title/logo brand link with desktop and mobile firework launch controls
+- Replaces the title/logo brand link with desktop and mobile firework launch controls that render the local Kid Pix
+  dynamite APNG
 - Builds the Projects dropdown from `_data/projects.yml` entries with `navbar: true`
 - Changes dropdown parent links to lowercase relative URLs
 - Removes the right-aligned dropdown menu class
 - Routes blank navbar links to the site root with `relative_url`
+- Routes the avatar home link with `relative_url` so local previews retain their active origin and port
 - Removes the inactive upstream navbar search link and overlay include
 
 ### `_includes/social-networks-links.html`
@@ -293,7 +315,10 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `_layouts/base.html`
 
+- Loads locally hosted Open Sans normal and italic variable fonts with `font-display: swap`, a metric-matched Arial
+  fallback, and removes the unused Lora request
 - Loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`
+- Loads `_includes/content-image-loading.html` after the page content and footer scripts so it can scan rendered body images
 - Removes the upstream `bootstrap-social.css` stylesheet load, since it only styled the removed social media sharing buttons
 
 ### `_layouts/home.html`
@@ -376,7 +401,8 @@ Deletes these inactive upstream files:
 
 ### `.github/workflows/pages.yml`
 
-`.github/workflows/pages.yml` generates GitHub repository metadata and S3 asset version data before the Jekyll build, then deploys `master` builds to GitHub Pages with GitHub Actions.
+`.github/workflows/pages.yml` generates GitHub repository metadata and unprefixed production S3 asset version data
+before the Jekyll build, then deploys `master` builds to GitHub Pages with GitHub Actions.
 
 ## GitHub Actions Workflows
 
@@ -390,7 +416,7 @@ The `Pages` workflow runs on:
 
 - pushes to `dev` and `master`
 - manual dispatch
-- a daily 13:23 UTC schedule, 30 minutes after the `Upstream Watch` runs in `mastermind`, `profile_photo`,
+- a daily 13:23 UTC schedule, 30 minutes after the `Upstream Watch` runs in `mastermind`, `pixel_portrait`,
   `us_gun_violence_forecasting`, and `the_networks_of_war`
 
 The workflow then:
@@ -398,7 +424,8 @@ The workflow then:
 - installs Ruby dependencies with Bundler and Appraisal
 - configures the GitHub Pages base path
 - generates `_data/github_repos.yml` from repository front matter
-- generates `_data/generated_s3_assets.yml` from current S3 object metadata or deterministic `dev` fallback data
+- generates `_data/generated_s3_assets.yml` for unprefixed production objects from current S3 metadata or deterministic
+  `dev` fallback data
 - builds the site with `JEKYLL_ENV=production`
 - uploads the Pages artifact
 - deploys that artifact from `master` through `actions/deploy-pages`

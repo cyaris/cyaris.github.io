@@ -4,9 +4,42 @@ This document records the current reproducibility contract for the site's genera
 Node dependencies under a task-specific directory made with `mktemp -d` (or under `${TMPDIR:-/tmp}`) so generation
 does not change site dependencies.
 
+## Preserved GIF Animations
+
+`assets/img/kidpix_dynamite_eraser.png` and `assets/img/nostradamus.png` are lossless APNG conversions of the former
+GIF assets. Decode the source GIF with `gifuct-js`, composite each frame into a full RGBA canvas according to its
+transparency and disposal metadata, and encode the canvases with `upng-js`. Set the APNG `acTL` play count to the
+source animation's play count and recalculate the chunk CRC; `upng-js` otherwise defaults to infinite playback.
+
+The Kid Pix source is
+[`img/cursor-tnt-anim.gif`](https://github.com/vikrum/kidpix/blob/4268b12a055503882b9e3b6382b110e39f1b1e12/img/cursor-tnt-anim.gif)
+from the GPL-3.0 [`vikrum/kidpix`](https://github.com/vikrum/kidpix) repository, pinned to commit
+`4268b12a055503882b9e3b6382b110e39f1b1e12` (the only commit to touch that path). The file at that commit has SHA-256
+`883997e6706b447b650f812e3bea2df4b48f5d34446971f853e19856b36e506f`, matching the source hash in the table below. The
+Nostradamus GIF came from this site's own version history and no earlier external provenance was recorded; its source
+hash in the table below is the reproducibility anchor for that input.
+
+The conversion used one-off `gifuct-js`, `pngjs`, and `upng-js` dependencies outside the repository. The preserved
+animation contracts are:
+
+| Asset | Dimensions | Frames | Frame timing | Plays | Source SHA-256 | APNG SHA-256 |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| Kid Pix dynamite eraser | 9x16 | 2 | 130 ms | 1 | `883997e6706b447b650f812e3bea2df4b48f5d34446971f853e19856b36e506f` | `5ef3bbf4de42e2b208830e717589b4d2f9f9eaf0ca205db3d4215dafc15b2994` |
+| Nostradamus | 400x400 | 61 | 100 ms | 1 | `517bdd635691de7156c99f4797bd8d1d2ffed99ef666a8423d2d4a8e9aa9a8d0` | `6cf127f010ba21e7702fd91a098f773ec81dac9b6c7ec5ceca9d689563425bcd` |
+
+After conversion, decode every APNG frame and compare its RGBA hash with the corresponding composited GIF frame. Also
+verify the PNG signature, `acTL` frame and play counts, `fcTL` delays, dimensions, and MIME type.
+
+The Kid Pix custom cursor intentionally retains the existing CSS animation that alternates
+`kidpix_dynamite_eraser_large_1.png` and `kidpix_dynamite_eraser_large_2.png` every 125 ms in a 250 ms infinite loop.
+Those 10x18 files are now real static PNGs rather than GIF-encoded files with `.png` extensions. The redundant 9x16
+non-cursor frame copies were removed. The CSS declares no explicit hotspot, so the browser keeps the existing top-left
+hotspot and `auto` fallback. This frame-swap implementation preserves cursor animation in browsers that render APNG
+`<img>` animations but display an APNG custom cursor as a static image.
+
 ## Firework Launcher
 
-`assets/img/firework-launcher-demo.png` contains transparent, full-frame APNG replacement frames encoded from `360x360`
+`assets/img/firework-launcher.png` contains transparent, full-frame APNG replacement frames encoded from `360x360`
 RGBA buffers with `upng-js`; `pngjs` may generate preview PNGs. Full-frame replacement preserves alpha fades without
 depending on version-specific encoder internals.
 
@@ -46,8 +79,8 @@ After regeneration, decode the APNG and confirm:
 - RGBA alpha preservation
 - no delta-frame blend artifacts
 
-`assets/img/firework-launcher-demo-new.png` is an unused comparison copy. Do not regenerate or synchronize it unless a
-specific comparison task still needs it; remove it once no external review depends on the historical filename.
+`assets/img/firework-launcher-archived.png` is an unused historical comparison copy. The rendered site references only
+`assets/img/firework-launcher.png`.
 
 ## Networks Of War
 

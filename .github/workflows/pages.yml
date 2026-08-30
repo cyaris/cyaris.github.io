@@ -110,6 +110,7 @@ jobs:
         run: npm run test:s3-assets
       - name: Generate S3 asset versions
         env:
+          JEKYLL_ENV: production
           S3_ASSET_VERSION_MODE: ${{ steps.s3-assets.outputs.mode }}
         run: npm run update:s3-assets
       - name: Build site

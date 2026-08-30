@@ -5,6 +5,7 @@ import path from "node:path"
 
 import {
   buildS3AssetEntries,
+  bundlePrefixForEnvironment,
   fallbackVersion,
   objectKeyFromS3Path,
   parseS3AssetIncludes,
@@ -56,14 +57,14 @@ assert.equal(versionFor(first, "mastermind/bundle.css"), "css-etag")
 assert.equal(versionFor(first, "pdf/resume/Charlie_Yaris_Resume.pdf"), "2026-08-01T12%3A00%3A00.000Z-12345")
 assert.equal(versionFor(first, "images/photo.png"), "photo-etag")
 
-const testing = await buildS3AssetEntries({
-  bundlePrefix: "test_",
+const development = await buildS3AssetEntries({
+  bundlePrefix: "dev_",
   headObject: key =>
     lookup(
       new Map([
         ["images/photo.png", { ETag: '"photo-etag"' }],
-        ["mastermind/test_bundle.css", { ETag: '"test-css-etag"' }],
-        ["mastermind/test_bundle.js", { ETag: '"test-js-etag"' }],
+        ["mastermind/dev_bundle.css", { ETag: '"dev-css-etag"' }],
+        ["mastermind/dev_bundle.js", { ETag: '"dev-js-etag"' }],
         ["pdf/resume/Charlie_Yaris_Resume.pdf", { ETag: '"resume-etag"' }]
       ]),
       key
@@ -72,14 +73,16 @@ const testing = await buildS3AssetEntries({
   root
 })
 
-assert.equal(versionFor(testing, "mastermind/test_bundle.js"), "test-js-etag")
-assert.equal(versionFor(testing, "mastermind/test_bundle.css"), "test-css-etag")
+assert.equal(versionFor(development, "mastermind/dev_bundle.js"), "dev-js-etag")
+assert.equal(versionFor(development, "mastermind/dev_bundle.css"), "dev-css-etag")
 assert.equal(
-  testing.some(entry => entry.key === "mastermind/bundle.js"),
+  development.some(entry => entry.key === "mastermind/bundle.js"),
   false
 )
 assert.equal(objectKeyFromS3Path("images/photo.png?size=large"), "images/photo.png")
-assert.equal(resolveS3Path("fireworks/bundle2.js", true, "test_"), "fireworks/test_bundle2.js")
+assert.equal(resolveS3Path("fireworks/bundle2.js", true, "dev_"), "fireworks/dev_bundle2.js")
+assert.equal(bundlePrefixForEnvironment("dev_", "development"), "dev_")
+assert.equal(bundlePrefixForEnvironment("dev_", "production"), "")
 assert.equal(fallbackVersion("mastermind/bundle.js"), fallbackVersion("mastermind/bundle.js"))
 assert.notEqual(fallbackVersion("mastermind/bundle.js"), fallbackVersion("mastermind/bundle.css"))
 assert.equal(versionFromMetadata({ VersionId: "null", ETag: '"etag"' }).version, "etag")

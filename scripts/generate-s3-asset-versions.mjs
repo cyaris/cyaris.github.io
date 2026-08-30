@@ -1,6 +1,12 @@
 import path from "node:path"
 
-import { buildS3AssetEntries, headS3Object, readSiteS3Config, writeS3AssetData } from "./lib/s3-assets.mjs"
+import {
+  buildS3AssetEntries,
+  bundlePrefixForEnvironment,
+  headS3Object,
+  readSiteS3Config,
+  writeS3AssetData
+} from "./lib/s3-assets.mjs"
 
 const root = process.cwd()
 const config = readSiteS3Config(root)
@@ -15,7 +21,7 @@ if (mode === "aws" && !config.bucket) {
 }
 
 const entries = await buildS3AssetEntries({
-  bundlePrefix: process.env.S3_BUNDLE_PREFIX ?? config.bundlePrefix,
+  bundlePrefix: bundlePrefixForEnvironment(process.env.S3_BUNDLE_PREFIX ?? config.bundlePrefix, process.env.JEKYLL_ENV),
   headObject: key =>
     headS3Object({
       bucket: process.env.S3_BUCKET || config.bucket,

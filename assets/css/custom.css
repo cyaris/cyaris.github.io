@@ -4,8 +4,49 @@ layout: null
 
 /* --- Body --- */
 
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("../fonts/open-sans-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: italic;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("../fonts/open-sans-latin-italic.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Open Sans Fallback";
+  src: local("Arial");
+  size-adjust: 103.6%;
+  ascent-override: 106.9%;
+  descent-override: 29.3%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Open Sans Fallback";
+  font-style: italic;
+  src: local("Arial Italic");
+  size-adjust: 103.6%;
+  ascent-override: 106.9%;
+  descent-override: 29.3%;
+  line-gap-override: 0%;
+}
+
 body {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Open Sans Fallback", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1rem;
   overscroll-behavior-x: none;
   touch-action: manipulation;
@@ -67,6 +108,11 @@ main > .row > [class*="col"] > * + :is(h1, h2, h3, h4) {
   font-size: 1.5rem;
   line-height: 1.2;
   text-wrap: balance;
+}
+
+.intro-header .page-heading hr.small {
+  color: inherit;
+  border-color: currentcolor;
 }
 
 @media (min-width: 1200px) {
@@ -138,7 +184,47 @@ a:focus {
   }
 }
 
+.content-img-loading-wrap {
+  display: inline-block;
+  max-width: 100%;
+  min-height: 3.5rem;
+  position: relative;
+}
+
+.content-img-loading {
+  align-items: center;
+  display: none;
+  inset: 0;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.content-img-loading-visible {
+  display: flex;
+}
+
 /* --- Full-Width Tool Hosts --- */
+
+/*
+ * Adapt the site palette to svelte-lib's semantic color contract. These
+ * values remain CSS variables so a runtime palette change updates an already
+ * rolled-up app without rebuilding its bundle.
+ */
+html body .svelte-lib-app {
+  --brand: var(--link-col);
+  --brand-dark: var(--navbar-link-hover-col);
+  --brand-hover: var(--hover-col);
+  --brand-light: var(--preview-pill-border-col);
+  --link: var(--link-col);
+  --link-hover: var(--hover-col);
+  --ui-text: var(--text-col);
+  --ui-surface: var(--page-col);
+  --ui-focus: var(--link-col);
+  --ui-selection: var(--brand-hover);
+  --ui-selection-text: var(--page-col);
+}
 
 .full-width-tool-host {
   margin-top: 32px;
@@ -308,12 +394,38 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
 
   .navbar-custom .avatar-container .avatar-img-border {
     width: 125%;
-    margin-left: -75%;
+    margin-left: -62.5%;
   }
 
-  .navbar-custom .navbar-nav .nav-link {
-    padding-top: 7.5px;
-    padding-bottom: 7.5px;
+  .navbar-custom.top-nav-expanded .avatar-container {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  body:has(.homepage-actions) .navbar-custom.top-nav-expanded .avatar-container {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      visibility linear 0.5s,
+      opacity 0.5s ease-in-out;
+    -webkit-transition:
+      visibility linear 0.5s,
+      opacity 0.5s ease-in-out;
+    -moz-transition:
+      visibility linear 0.5s,
+      opacity 0.5s ease-in-out;
+  }
+
+  .navbar-custom .navbar-nav .nav-item {
+    font-size: 1.14rem;
+  }
+
+  .navbar-custom .navbar-nav .nav-link,
+  .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
+    line-height: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
   .navbar-custom .navbar-toggler {
@@ -322,10 +434,15 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
 
   .navbar-custom .navbar-collapse {
     border-width: 2px;
-    max-height: calc(100vh - 3.125rem);
-    max-height: calc(100dvh - 3.125rem);
+    max-height: calc(100vh - 4.625rem);
+    max-height: calc(100dvh - 4.625rem);
     overflow-y: auto;
     overscroll-behavior-y: contain;
+  }
+
+  body:has(.homepage-actions) .navbar-custom .navbar-collapse {
+    max-height: calc(100vh - 3.125rem);
+    max-height: calc(100dvh - 3.125rem);
   }
 
   .navbar-toggler:hover {
@@ -342,18 +459,14 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    font-size: 0.85em;
+    font-size: 0.925em;
     font-weight: 800;
-    line-height: 1.25rem;
-    padding-top: 7.5px;
-    padding-bottom: 7.5px;
     padding-left: 1rem;
   }
 }
 
-/* using png photos with transitions for firework on navbar for desktop. */
-/* using a gif in the same spot on mobile. */
-/* the same transition/animation is being used for the navbar cursor on desktop. */
+/* The cursor keeps its CSS frame swap because browser APNG cursor animation is inconsistent. */
+/* The navbar uses the equivalent APNG as an inline image. */
 @keyframes kidpix_cursor_animate {
   0% {
     cursor: url(../img/kidpix_dynamite_eraser_large_1.png), auto;
@@ -382,6 +495,12 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   .firework-launch-button {
     animation: none;
     -webkit-animation: none;
+  }
+
+  body:has(.homepage-actions) .navbar-custom.top-nav-expanded .avatar-container {
+    transition: none;
+    -webkit-transition: none;
+    -moz-transition: none;
   }
 }
 
@@ -455,7 +574,9 @@ footer a:hover {
 
 .footer-links a:hover .fa-stack-2x,
 .footer-links a:focus .fa-stack-2x {
+  -webkit-text-stroke: 4px var(--social-icon-hover-col);
   color: var(--social-icon-background-hover-col);
+  paint-order: stroke fill;
 }
 
 .footer-links a:hover .fa-stack-1x,
@@ -486,7 +607,7 @@ footer a:hover {
 
 .post-preview .post-meta,
 .post-heading .post-meta {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Open Sans Fallback", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .post-preview {
@@ -522,6 +643,7 @@ footer a:hover {
 .post-preview-heading .post-title {
   font-size: 2.125rem;
   line-height: 1.15;
+  margin-top: 0;
   margin-bottom: 0.35rem;
 }
 
@@ -554,7 +676,7 @@ footer a:hover {
   border-radius: 999px;
   color: var(--link-col);
   display: inline-flex;
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Open Sans Fallback", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.82rem;
   font-style: normal;
   font-weight: 700;
@@ -713,7 +835,6 @@ footer a:hover {
   .post-preview-heading .post-title {
     font-size: 1.375rem;
     line-height: 1.25;
-    margin-top: 0;
     margin-bottom: 0.15rem;
   }
 
@@ -770,7 +891,7 @@ button:focus {
   cursor: pointer;
   color: var(--btn-link-col);
   font-size: 17px;
-  font-weight: 750;
+  font-weight: 800;
   padding: 16px 31px;
   text-decoration: none;
   border-radius: 28px;
@@ -786,7 +907,7 @@ button:focus {
   background-color: var(--btn-background-hover-col);
   border-color: var(--btn-border-hover-col);
   text-decoration: none;
-  font-weight: 750;
+  font-weight: 800;
 }
 
 .project-page-repo-badges {
@@ -817,11 +938,11 @@ button:focus {
 
 /* --- Tag Links --- */
 
-.blog-tags-label {
+.blog-tags .blog-tags-label {
   align-items: center;
   color: var(--link-col);
   display: inline-flex;
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Open Sans Fallback", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.82rem;
   font-style: normal;
   font-weight: 400;
@@ -837,14 +958,19 @@ button:focus {
   font-size: 0.92em;
 }
 
+.blog-tags .blog-tags-label-text {
+  color: var(--link-col);
+  opacity: 1;
+}
+
 .blog-tags a {
   align-items: center;
   background: var(--preview-pill-background-col);
   border: 1px solid var(--preview-pill-border-col);
   border-radius: 999px;
-  color: var(--tag-link-col);
+  color: var(--link-col);
   display: inline-flex;
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Open Sans Fallback", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.82rem;
   font-style: normal;
   font-weight: 400;
@@ -859,14 +985,10 @@ button:focus {
 
 .blog-tags a:hover,
 .blog-tags a:focus {
-  background: var(--tag-background-hover-col);
-  border-color: var(--tag-border-hover-col);
-  color: var(--tag-link-hover-col);
+  background: var(--preview-pill-background-hover-col);
+  border-color: var(--preview-pill-border-hover-col);
+  color: var(--link-col);
   text-decoration: none;
-}
-
-.post-preview .blog-tags {
-  opacity: 0.8;
 }
 
 @media (max-width: 767px) {

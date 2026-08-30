@@ -2,21 +2,21 @@
   <a class="navbar-brand firework-launcher-desktop" href="javascript:void(0)" onclick="launchFireworkBurst()"
     >Fireworks
     <img
-      class="kidpix_gif"
-      src="{{ '/assets/img/kidpix_dynamite_eraser.gif' | relative_url }}"
+      class="kidpix_apng"
+      src="{{ '/assets/img/kidpix_dynamite_eraser.png' | relative_url }}"
       style="margin-left: 7px; margin-bottom: 3.5px; height: 1.25rem;"
     >
   </a>
   <a class="navbar-brand firework-launcher-mobile" href="javascript:void(0)" onclick="launchFireworkBurst()">
-    <img class="kidpix_gif" src="{{ '/assets/img/kidpix_dynamite_eraser.gif' | relative_url }}">
+    <img class="kidpix_apng" src="{{ '/assets/img/kidpix_dynamite_eraser.png' | relative_url }}">
     <img
-      class="kidpix_gif"
-      src="{{ '/assets/img/kidpix_dynamite_eraser.gif' | relative_url }}"
+      class="kidpix_apng"
+      src="{{ '/assets/img/kidpix_dynamite_eraser.png' | relative_url }}"
       style="margin-left: 10px;"
     >
     <img
-      class="kidpix_gif"
-      src="{{ '/assets/img/kidpix_dynamite_eraser.gif' | relative_url }}"
+      class="kidpix_apng"
+      src="{{ '/assets/img/kidpix_dynamite_eraser.png' | relative_url }}"
       style="margin-left: 10px;"
     >
   </a>
@@ -98,7 +98,7 @@
   {% if site.avatar and page['show-avatar'] != false %}
     <div class="avatar-container">
       <div class="avatar-img-border">
-        <a href="{{ '/' | absolute_url }}">
+        <a href="{{ '/' | relative_url }}">
           <img alt="Navigation bar avatar" class="avatar-img" src="{{ site.avatar | relative_url }}">
         </a>
       </div>

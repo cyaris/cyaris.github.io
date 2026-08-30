@@ -59,6 +59,10 @@ export function resolveS3Path(assetPath, bundle, bundlePrefix) {
   return assetPath
 }
 
+export function bundlePrefixForEnvironment(bundlePrefix, environment) {
+  return environment === "production" ? "" : bundlePrefix
+}
+
 export function objectKeyFromS3Path(s3Path) {
   return s3Path.split("#", 1)[0].split("?", 1)[0].replace(/^\/+/, "")
 }

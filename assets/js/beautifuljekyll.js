@@ -16,21 +16,6 @@ let BeautifulJekyllJS = {
       }
     })
 
-    // On mobile, hide the avatar and lock body scrolling while the navbar menu is expanded
-    $("#main-navbar").on("show.bs.collapse", function () {
-      $(".navbar").addClass("top-nav-expanded")
-      $("body").addClass("navbar-expanded")
-    })
-    $("#main-navbar").on("hidden.bs.collapse", function () {
-      $(".navbar").removeClass("top-nav-expanded")
-      $("body").removeClass("navbar-expanded")
-    })
-
-    // On mobile, collapse the navbar after selecting a menu item
-    $("#main-navbar a:not(.dropdown-toggle)").click(function () {
-      $("#main-navbar").collapse("hide")
-    })
-
     // show the big header image
     BeautifulJekyllJS.initImgs()
   },

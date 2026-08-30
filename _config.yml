@@ -1,10 +1,3 @@
-###########################################################
-### Welcome to Beautiful Jekyll!
-### This config file is meant for settings that affect your entire website. When you first
-### set up your website you should go through all these settings and edit them, but after
-### the initial set up you won't need to come back to this file often.
-###########################################################
-
 ############################
 # --- Required options --- #
 ############################
@@ -29,12 +22,11 @@ navbar-links:
 # --- Logo --- #
 ################
 
-# Image to show in the navigation bar - works best with a square image
-# Remove this parameter if you don't want an image in the navbar
+# Navigation bar image
 avatar: /assets/img/minocqua_ice_fishing.png
 # avatar: /assets/img/me_at_joshua_tree.png
 
-# By default, the image is cut into a circle. You can disable this behaviour by setting 'round-avatar: false'
+# Crop the navigation bar image into a circle
 round-avatar: true
 
 # If you want to have an image logo in the top-left corner instead of having the title of the website,
@@ -46,9 +38,7 @@ round-avatar: true
 # --- Footer social media links --- #
 #####################################
 
-# Select the social network links that you want to show in the footer.
-# You can change the order that they show up on the page by changing the order here.
-# Uncomment the links you want to show and add your information to each one.
+# Footer links render in this order
 social-network-links:
   email: true
   linkedin: charlieyaris
@@ -57,16 +47,14 @@ social-network-links:
   # kaggle: cyaris
   instagram: lord_buttonless
 
-# If you want your website to generate an RSS feed, provide a description
-# The URL for the feed will be https://<your_website>/feed.xml
+# RSS feed description
 rss-description: Welcome to my website! I hope you enjoy your stay.
 
 ###########################
 # --- General options --- #
 ###########################
 
-# How to display the link to your website in the footer
-# Remove this if you don't want a link in the footer
+# Website label shown in the footer
 url-pretty: charlieyaris.com
 
 # Add the website title to the title of every page
@@ -77,9 +65,6 @@ excerpt_length: 50
 
 # Whether or not to show an excerpt for every blog post in the feed page
 feed_show_excerpt: false
-
-# Whether or not to show a list of tags below each post preview in the feed page
-feed_show_tags: true
 
 # Add a button in the footer to edit the current page. Only works if your website is hosted on GitHub
 edit_page_button: false
@@ -95,8 +80,6 @@ keywords: cyaris, charlie yaris, charlieyaris, yaris
 ######################################
 # --- Colours / background image --- #
 ######################################
-
-# Personalize the colours in your website. Colour values can be any valid CSS colour
 
 navbar-col: "#54bdca"
 navbar-border-col: "#f26419"
@@ -140,11 +123,6 @@ pagination-link-hover-col: "#ffffff"
 pagination-background-hover-col: "#20b3a1"
 pagination-border-hover-col: "#197278"
 
-tag-link-col: "#147a70"
-tag-link-hover-col: "#147a70"
-tag-background-hover-col: "#e2f4f2"
-tag-border-hover-col: "#1b998b"
-
 # Palette values kept for future experiments:
 # "#404040" - former inherited text/tag color
 # "#4aa4b0" - former commented navbar dropdown hover background option
@@ -172,7 +150,7 @@ tag-border-hover-col: "#1b998b"
 # --- Web Analytics Section --- #
 #################################
 
-# Fill in your Google Analytics tag ID (or "Measurement ID") to track your website usage
+# Google Analytics tag ID
 gtag: G-ZGW0J5HTZ8
 
 # Fill in your Cloudflare Analytics beacon token to track your website using Cloudflare Analytics
@@ -196,9 +174,9 @@ date_format: "%B %-d, %Y"
 # Facebook App ID
 #fb_app_id: ""
 
-#################################################################################
-# --- You don't need to touch anything below here (but you can if you want) --- #
-#################################################################################
+##########################
+# --- Jekyll Options --- #
+##########################
 
 # Output options (more information on Jekyll's site)
 timezone: America/Chicago
@@ -247,13 +225,11 @@ plugins:
 # Beautiful Jekyll / Dean Attali
 # 2fc73a3a967e97599c9763d05e564189
 
-################
+############################
 # --- Custom Variables --- #
-################
+############################
 
+loading_reveal_delay_ms: 200
 s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
-# Leave blank for live production bundles. Set to "test_" when intentionally loading staged bundle uploads.
-s3_bundle_prefix:
-s3_loading_enforce_minimum_duration: true
-s3_loading_minimum_duration_ms: 800
-s3_loading_reveal_delay_ms: 200
+# Production builds ignore this staged bundle prefix and load the live bundle names.
+s3_bundle_prefix: dev_

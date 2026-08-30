@@ -25,11 +25,11 @@
   thumbnail-img: https://i5.walmartimages.com/seo/Hasbro-Mastermind-for-Kids-Board-Games_568cd372-e700-4a9f-a35a-c32f859b4850.104f171c37ef2cc96bb3ac486360508d.jpeg
   thumbnail-size: small
   navbar: true
-- id: profile_photo
-  title: Profile Photo
-  subtitle: An interactive pixel-reveal portrait with laser eyes, progress tracking, and fireworks.
-  url: /profile_photo/
-  gh-repo: cyaris/profile_photo
+- id: pixel_portrait
+  title: Pixel Portrait
+  subtitle: An interactive pixel portrait with reveal and transition modes, laser-eye effects, and progress tracking.
+  url: /pixel_portrait/
+  gh-repo: cyaris/pixel_portrait
   tags: [canvas rendering, d3.js, javascript, python, svelte, tailwind css]
   thumbnail-img: /assets/img/profile-photo-thumbnail.png
   thumbnail-size: small
@@ -40,7 +40,7 @@
   url: /fireworks/
   gh-repo: cyaris/fireworks
   tags: [canvas rendering, d3.js, javascript, svelte, tailwind css]
-  thumbnail-img: /assets/img/firework-launcher-demo.png
+  thumbnail-img: /assets/img/firework-launcher.png
   thumbnail-size: normal
   navbar: false
 - id: tableau_gallery

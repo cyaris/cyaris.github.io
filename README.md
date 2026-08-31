@@ -238,7 +238,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/custom.js`
 
-`assets/js/custom.js` tracks the mobile navbar state for avatar movement and body scroll locking. It collapses an expanded mobile navbar after firework launches, outside clicks, or browser back/forward restoration while leaving navbar-link and avatar selections expanded until navigation.
+`assets/js/custom.js` reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state. It also tracks the mobile navbar state for avatar movement and body scroll locking, collapsing an expanded menu after firework launches or outside clicks while leaving navbar-link and avatar selections expanded until navigation.
 
 ### `_config.yml`
 

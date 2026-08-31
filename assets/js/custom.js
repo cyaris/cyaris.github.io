@@ -1,5 +1,11 @@
 // Site-specific behavior layered after Beautiful Jekyll's JavaScript.
 
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted) {
+    window.location.reload()
+  }
+})
+
 document.addEventListener("DOMContentLoaded", function () {
   const navbar = $("#main-navbar")
   const collapseNavbar = function () {
@@ -25,7 +31,4 @@ document.addEventListener("DOMContentLoaded", function () {
       collapseNavbar()
     }
   })
-
-  // Reset navbar state when the browser restores this page through back/forward navigation
-  $(window).on("pageshow", collapseNavbar)
 })

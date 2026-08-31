@@ -24,7 +24,7 @@ animation contracts are:
 
 | Asset | Dimensions | Frames | Frame timing | Plays | Source SHA-256 | APNG SHA-256 |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
-| Kid Pix dynamite eraser | 9x16 | 2 | 130 ms | 1 | `883997e6706b447b650f812e3bea2df4b48f5d34446971f853e19856b36e506f` | `5ef3bbf4de42e2b208830e717589b4d2f9f9eaf0ca205db3d4215dafc15b2994` |
+| Kid Pix dynamite eraser | 9x16 | 2 | 130 ms | Infinite | `883997e6706b447b650f812e3bea2df4b48f5d34446971f853e19856b36e506f` | `e5ec6eb073ba803b843f724076d75f8c5302cce141ade0183c5849de5415c795` |
 | Nostradamus | 400x400 | 61 | 100 ms | 1 | `517bdd635691de7156c99f4797bd8d1d2ffed99ef666a8423d2d4a8e9aa9a8d0` | `6cf127f010ba21e7702fd91a098f773ec81dac9b6c7ec5ceca9d689563425bcd` |
 
 After conversion, decode every APNG frame and compare its RGBA hash with the corresponding composited GIF frame. Also

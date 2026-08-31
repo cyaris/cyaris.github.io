@@ -209,7 +209,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
   - avatar placement, crop scaling, expanded-menu movement, homepage-only expanded-menu fading, and ring border
   - dropdown behavior, including 40 px mobile touch rows with proportionally scaled type
   - firework cursor frame swaps and image animation styling, including reduced-motion handling
-  - mobile expanded-menu scrolling and body scroll locking
+  - mobile expanded-menu scrolling and scroll-triggered dismissal without locking page scrolling
   - navbar sizing and drop-shadow depth
   - responsive mobile/desktop launcher visibility
   - toggler styling
@@ -238,7 +238,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/custom.js`
 
-`assets/js/custom.js` reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state. It also tracks the mobile navbar state for avatar movement and body scroll locking, collapsing an expanded menu after firework launches or outside clicks while leaving navbar-link and avatar selections expanded until navigation.
+`assets/js/custom.js` reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state. It also tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded until navigation.
 
 ### `_config.yml`
 

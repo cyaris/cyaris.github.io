@@ -384,10 +384,6 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
 }
 
 @media (max-width: 1200px) {
-  body.navbar-expanded {
-    overflow: hidden;
-  }
-
   .firework-launcher-desktop {
     display: none;
   }

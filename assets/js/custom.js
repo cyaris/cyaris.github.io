@@ -12,14 +12,12 @@ document.addEventListener("DOMContentLoaded", function () {
     navbar.collapse("hide")
   }
 
-  // On mobile, move the avatar with the expanded navbar and lock body scrolling
+  // On mobile, move the avatar with the expanded navbar
   navbar.on("show.bs.collapse", function () {
     $(".navbar").addClass("top-nav-expanded")
-    $("body").addClass("navbar-expanded")
   })
   navbar.on("hidden.bs.collapse", function () {
     $(".navbar").removeClass("top-nav-expanded")
-    $("body").removeClass("navbar-expanded")
   })
 
   // Collapse an expanded mobile navbar after launching a firework
@@ -28,6 +26,20 @@ document.addEventListener("DOMContentLoaded", function () {
   // Collapse an expanded mobile navbar after clicking elsewhere on the page
   $(document).click(function (event) {
     if (navbar.hasClass("show") && $(event.target).closest(".navbar").length === 0) {
+      collapseNavbar()
+    }
+  })
+
+  // Let an outside scroll gesture move the page while immediately collapsing the navbar
+  $(document).on("touchstart wheel", function (event) {
+    if (navbar.hasClass("show") && $(event.target).closest(".navbar").length === 0) {
+      collapseNavbar()
+    }
+  })
+
+  // Collapse after page scrolling initiated by a keyboard or scrollbar
+  $(window).on("scroll", function () {
+    if (navbar.hasClass("show")) {
       collapseNavbar()
     }
   })

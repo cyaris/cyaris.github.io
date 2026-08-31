@@ -44,7 +44,7 @@
                 {% when 'star' %}
                   <a
                     class="repo-badge{% if include.item_class %} {{ include.item_class }}{% endif %}"
-                    href="https://github.com/{{ repo_key }}/stargazers"
+                    href="https://github.com/{{ repo_key }}"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Star {{ repo_key }} on GitHub"
@@ -100,7 +100,7 @@
               </a>
               <a
                 class="repo-badge{% if include.item_class %} {{ include.item_class }}{% endif %}"
-                href="https://github.com/{{ repo_key }}/commits/{{ repo_data.default_branch | default: 'master' }}"
+                href="https://github.com/{{ repo_key }}/tree/{{ repo_data.default_branch | default: 'master' }}"
                 target="_blank"
                 rel="noopener noreferrer"
               >

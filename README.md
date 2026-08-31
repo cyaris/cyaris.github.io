@@ -70,6 +70,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
   - latest default-branch commit dates
   - optional counts
   - repository creation dates
+- Star links open the repository overview, where GitHub exposes its Star control, and default-branch date links open the branch's code tree.
 - The `badge-position` and `badge-alignment` front matter parameters (see [Custom Front Matter Parameters](#custom-front-matter-parameters)) control where the badge row sits on the page and how it's aligned.
 - `scripts/update-github-repo-dates.mjs` generates repository metadata for content files with `gh-repo` front matter and project cards with `gh-repo` data.
 - `.github/workflows/pages.yml` refreshes the repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages, while `.gitignore` keeps the generated `_data/github_repos.yml` file local.

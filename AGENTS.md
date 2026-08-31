@@ -47,6 +47,8 @@
 
 - Prefer focused, subject-only, square animations with short loops and deterministic behavior. Avoid the full website,
   navbar, browser chrome, or long setup motion unless the user asks for that context.
+- Encode every APNG with an `acTL` play count of `0` so it loops infinitely, including conversions from finite source
+  animations.
 - Keep one-off generation dependencies outside the repository. Prefer APNG or WebP for smooth transparency; GIF alpha
   is binary. Store final thumbnails under `assets/img/` with descriptive names.
 - Record reproducible source data or effects, tooling, dimensions, timing, seeds, animation phases, encoding,

@@ -217,6 +217,7 @@ html body .svelte-lib-app {
   --brand-dark: var(--navbar-link-hover-col);
   --brand-hover: var(--hover-col);
   --brand-light: var(--preview-pill-border-col);
+  --data-palette-reference: var(--navbar-col);
   --link: var(--link-col);
   --link-hover: var(--hover-col);
   --ui-text: var(--text-col);

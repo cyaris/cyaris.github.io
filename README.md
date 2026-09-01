@@ -201,7 +201,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Pixel Portrait animation overflow at the viewport edge
 - Matches page-header title/subtitle separators to the surrounding text color
 - Maps the site palette to `svelte-lib` semantic color tokens at the shared embedded-app root
-- Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
+- Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors, and suppresses focus borders and rings on links site-wide
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
 - Styles the shared asset-loading indicator, including S3 app-bundle, post-thumbnail, and body-content-image placement and reduced-motion states
@@ -221,7 +221,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
-- Defines shared button styling for `.btn-group`, including explicit 800 font weight and local focus-state overrides
+- Defines shared button styling for `.btn-group`, including explicit 800 font weight and hover-only emphasis
 - Customizes tag link and pagination styling, including desktop/mobile pagination text visibility, and anchors project/post pagination buttons to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
 - Disables text selection on interactive site controls and footer areas
 
@@ -239,7 +239,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/custom.js`
 
-`assets/js/custom.js` reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state. It clears pointer focus from links that open new windows so their hover styling returns to rest after the pointer leaves while preserving keyboard focus. It also tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded until navigation.
+`assets/js/custom.js` reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state. It also tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded until navigation.
 
 ### `_config.yml`
 

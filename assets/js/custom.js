@@ -7,13 +7,6 @@ window.addEventListener("pageshow", function (event) {
 })
 
 document.addEventListener("DOMContentLoaded", function () {
-  document.addEventListener("click", function (event) {
-    const newWindowLink = event.target.closest('a[target="_blank"]')
-    if (newWindowLink && event.detail > 0) {
-      newWindowLink.blur()
-    }
-  })
-
   const navbar = $("#main-navbar")
   const collapseNavbar = function () {
     navbar.collapse("hide")

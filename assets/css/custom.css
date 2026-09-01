@@ -146,6 +146,12 @@ a:focus {
   color: var(--hover-col);
 }
 
+a:focus,
+a:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 /* --- Asset Loading --- */
 
 .s3-asset-loading {
@@ -568,15 +574,13 @@ footer a:hover {
   transform: translate(-50%, -50%);
 }
 
-.footer-links a:hover .fa-stack-2x,
-.footer-links a:focus .fa-stack-2x {
+.footer-links a:hover .fa-stack-2x {
   -webkit-text-stroke: 4px var(--social-icon-hover-col);
   color: var(--social-icon-background-hover-col);
   paint-order: stroke fill;
 }
 
-.footer-links a:hover .fa-stack-1x,
-.footer-links a:focus .fa-stack-1x {
+.footer-links a:hover .fa-stack-1x {
   color: var(--social-icon-hover-col);
 }
 
@@ -683,8 +687,7 @@ footer a:hover {
   white-space: nowrap;
 }
 
-.repo-badge:hover,
-.repo-badge:focus {
+.repo-badge:hover {
   background: var(--preview-pill-background-hover-col);
   border-color: var(--preview-pill-border-hover-col);
   color: var(--link-col);
@@ -897,8 +900,7 @@ button:focus {
   width: 205px;
 }
 
-.btn-group:hover,
-.btn-group:focus-visible {
+.btn-group:hover {
   color: var(--btn-link-hover-col);
   background-color: var(--btn-background-hover-col);
   border-color: var(--btn-border-hover-col);
@@ -979,8 +981,7 @@ button:focus {
   white-space: nowrap;
 }
 
-.blog-tags a:hover,
-.blog-tags a:focus {
+.blog-tags a:hover {
   background: var(--preview-pill-background-hover-col);
   border-color: var(--preview-pill-border-hover-col);
   color: var(--link-col);
@@ -1038,8 +1039,7 @@ main > .row > [class*="col"] > .pagination.blog-pager {
   font-size: 20px;
 }
 
-.pagination .page-item .page-link:hover,
-.pagination .page-item .page-link:focus {
+.pagination .page-item .page-link:hover {
   color: var(--pagination-link-hover-col);
   background-color: var(--pagination-background-hover-col);
   border: 4.5px solid var(--pagination-border-hover-col);

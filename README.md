@@ -239,7 +239,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/custom.js`
 
-`assets/js/custom.js` reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state. It also tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded until navigation.
+`assets/js/custom.js` reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state. It clears pointer focus from links that open new windows so their hover styling returns to rest after the pointer leaves while preserving keyboard focus. It also tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded until navigation.
 
 ### `_config.yml`
 

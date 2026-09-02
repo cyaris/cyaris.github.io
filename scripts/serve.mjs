@@ -25,7 +25,11 @@ watchFile(configPath, { interval: 300 }, (current, previous) => {
 
 function startJekyll() {
   restartPending = false
-  jekyllProcess = spawn("bundle", jekyllArguments, { cwd: projectRoot, stdio: "inherit" })
+  jekyllProcess = spawn("bundle", jekyllArguments, {
+    cwd: projectRoot,
+    shell: process.platform === "win32",
+    stdio: "inherit"
+  })
 
   jekyllProcess.on("error", error => {
     unwatchFile(configPath)

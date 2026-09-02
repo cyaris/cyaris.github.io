@@ -4,6 +4,22 @@ Welcome to my website! I hope you enjoy your stay.
 
 ## Development
 
+### Local Server
+
+Start Jekyll with LiveReload and automatic `_config.yml` restarts:
+
+```sh
+npm run serve
+```
+
+Jekyll regenerates ordinary source changes without restarting. Because Jekyll reads `_config.yml` only at startup, the
+wrapper in `scripts/serve.mjs` watches that file and restarts the child server whenever it changes. Pass additional
+Jekyll options after `--`, for example:
+
+```sh
+npm run serve -- --port 4010
+```
+
 ### Upstream Theme
 
 This repository tracks updates from [Beautiful Jekyll](https://github.com/daattali/beautiful-jekyll).

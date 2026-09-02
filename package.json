@@ -4,6 +4,7 @@
   "private": true,
   "description": "Personal website built with Jekyll and GitHub Pages.",
   "scripts": {
+    "serve": "node scripts/serve.mjs",
     "test:s3-assets": "node scripts/test-s3-assets.mjs",
     "update:s3-assets": "node scripts/generate-s3-asset-versions.mjs",
     "update:github-repos": "node scripts/update-github-repo-dates.mjs",

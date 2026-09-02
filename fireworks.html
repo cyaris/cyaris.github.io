@@ -19,9 +19,13 @@ badge-alignment: left
     justify-content: center;
     line-height: 1.15;
     min-height: 65px;
-    padding: 0.65rem 1.5rem;
+    padding: calc(0.65rem + 3.5px) calc(1.5rem + 3.5px);
     touch-action: manipulation;
     white-space: normal;
+  }
+
+  .firework-launch-button:hover {
+    padding: 0.65rem 1.5rem;
   }
 
   @media (max-width: 575px) {
@@ -52,10 +56,4 @@ badge-alignment: left
       Launch Firework
     </button>
   </div>
-
-  <p>
-    Credit is owed to Mike Rossetti's
-    <a href="http://bl.ocks.org/s2t2/53e96654487b4b0ef6e5" target="_blank" rel="noopener noreferrer">D3.js Hanabi</a>
-    project for getting me started on coding my own D3.js fireworks.
-  </p>
 </div>

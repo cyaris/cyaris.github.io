@@ -2,14 +2,15 @@
 
 This document records the current reproducibility contract for the site's generated APNG thumbnails. Install one-off
 Node dependencies under a task-specific directory made with `mktemp -d` (or under `${TMPDIR:-/tmp}`) so generation
-does not change site dependencies.
+does not change site dependencies. Encode every APNG with an `acTL` play count of `0` so it loops infinitely; when
+changing the play count directly, recalculate the chunk CRC.
 
 ## Preserved GIF Animations
 
 `assets/img/kidpix_dynamite_eraser.png` and `assets/img/nostradamus.png` are lossless APNG conversions of the former
 GIF assets. Decode the source GIF with `gifuct-js`, composite each frame into a full RGBA canvas according to its
-transparency and disposal metadata, and encode the canvases with `upng-js`. Set the APNG `acTL` play count to the
-source animation's play count and recalculate the chunk CRC; `upng-js` otherwise defaults to infinite playback.
+transparency and disposal metadata, and encode the canvases with `upng-js`. Keep the decoded frame content and timing,
+but encode infinite playback even when the source animation has a finite play count.
 
 The Kid Pix source is
 [`img/cursor-tnt-anim.gif`](https://github.com/vikrum/kidpix/blob/4268b12a055503882b9e3b6382b110e39f1b1e12/img/cursor-tnt-anim.gif)
@@ -24,8 +25,8 @@ animation contracts are:
 
 | Asset | Dimensions | Frames | Frame timing | Plays | Source SHA-256 | APNG SHA-256 |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
-| Kid Pix dynamite eraser | 9x16 | 2 | 130 ms | 1 | `883997e6706b447b650f812e3bea2df4b48f5d34446971f853e19856b36e506f` | `5ef3bbf4de42e2b208830e717589b4d2f9f9eaf0ca205db3d4215dafc15b2994` |
-| Nostradamus | 400x400 | 61 | 100 ms | 1 | `517bdd635691de7156c99f4797bd8d1d2ffed99ef666a8423d2d4a8e9aa9a8d0` | `6cf127f010ba21e7702fd91a098f773ec81dac9b6c7ec5ceca9d689563425bcd` |
+| Kid Pix dynamite eraser | 9x16 | 2 | 130 ms | Infinite | `883997e6706b447b650f812e3bea2df4b48f5d34446971f853e19856b36e506f` | `e5ec6eb073ba803b843f724076d75f8c5302cce141ade0183c5849de5415c795` |
+| Nostradamus | 400x400 | 61 | 100 ms | Infinite | `517bdd635691de7156c99f4797bd8d1d2ffed99ef666a8423d2d4a8e9aa9a8d0` | `ba679c980c4359bdd96585a07e5cac929e76f22e7337f835bec62830b55dd963` |
 
 After conversion, decode every APNG frame and compare its RGBA hash with the corresponding composited GIF frame. Also
 verify the PNG signature, `acTL` frame and play counts, `fcTL` delays, dimensions, and MIME type.

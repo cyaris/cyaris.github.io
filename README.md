@@ -4,6 +4,22 @@ Welcome to my website! I hope you enjoy your stay.
 
 ## Development
 
+### Local Server
+
+Start Jekyll with LiveReload and automatic `_config.yml` restarts:
+
+```sh
+npm run serve
+```
+
+Jekyll regenerates ordinary source changes without restarting. Because Jekyll reads `_config.yml` only at startup, the
+wrapper in `scripts/serve.mjs` watches that file and restarts the child server whenever it changes. Pass additional
+Jekyll options after `--`, for example:
+
+```sh
+npm run serve -- --port 4010
+```
+
 ### Upstream Theme
 
 This repository tracks updates from [Beautiful Jekyll](https://github.com/daattali/beautiful-jekyll).
@@ -70,6 +86,7 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
   - latest default-branch commit dates
   - optional counts
   - repository creation dates
+- Star links open the repository overview, where GitHub exposes its Star control, and default-branch date links open the branch's code tree.
 - The `badge-position` and `badge-alignment` front matter parameters (see [Custom Front Matter Parameters](#custom-front-matter-parameters)) control where the badge row sits on the page and how it's aligned.
 - `scripts/update-github-repo-dates.mjs` generates repository metadata for content files with `gh-repo` front matter and project cards with `gh-repo` data.
 - `.github/workflows/pages.yml` refreshes the repository metadata before the Jekyll build and deploys `master` builds to GitHub Pages, while `.gitignore` keeps the generated `_data/github_repos.yml` file local.
@@ -171,7 +188,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 [supported parameters](https://github.com/daattali/beautiful-jekyll#supported-parameters).
 
 | Parameter | Description |
-| - | - |
+| --- | --- |
 | `type` | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type. |
 | `project-id` | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`. |
 | `description` | Optional per-page meta-description fallback that `_includes/head.html` reads after `share-description` and before `subtitle` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags. |
@@ -200,7 +217,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Pixel Portrait animation overflow at the viewport edge
 - Matches page-header title/subtitle separators to the surrounding text color
 - Maps the site palette to `svelte-lib` semantic color tokens at the shared embedded-app root
-- Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors
+- Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors, and suppresses pointer-focus borders and rings on links site-wide while keeping a visible `:focus-visible` outline for keyboard navigation
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
 - Styles the shared asset-loading indicator, including S3 app-bundle, post-thumbnail, and body-content-image placement and reduced-motion states
@@ -209,7 +226,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
   - avatar placement, crop scaling, expanded-menu movement, homepage-only expanded-menu fading, and ring border
   - dropdown behavior, including 40 px mobile touch rows with proportionally scaled type
   - firework cursor frame swaps and image animation styling, including reduced-motion handling
-  - mobile expanded-menu scrolling and body scroll locking
+  - mobile expanded-menu scrolling and scroll-triggered dismissal without locking page scrolling
   - navbar sizing and drop-shadow depth
   - responsive mobile/desktop launcher visibility
   - toggler styling
@@ -220,8 +237,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
-- Defines shared button styling for `.btn-group`, including explicit 800 font weight and local focus-state overrides
-- Customizes tag link and pagination styling, including desktop/mobile pagination text visibility, and anchors project/post pagination buttons to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
+- Defines shared button styling for `.btn-group`, including explicit 800 font weight, persistent 1 px borders, thicker hover-only emphasis, and a keyboard `:focus-visible` outline that also covers the `.btn-group` rendered as a `button`
+- Customizes tag link and pagination styling, including persistent 1 px pagination borders with thicker hover emphasis, desktop/mobile pagination text visibility, and project/post pagination buttons anchored by default to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
 - Disables text selection on interactive site controls and footer areas
 
 ### `assets/css/beautifuljekyll.css`
@@ -234,11 +251,12 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/beautifuljekyll.js`
 
-`assets/js/beautifuljekyll.js` stays aligned with the upstream Beautiful Jekyll JavaScript except for repository formatting and removal of the inactive navbar search initializer.
+- Stays aligned with the upstream Beautiful Jekyll JavaScript except for repository formatting and removal of the inactive navbar search initializer
 
 ### `assets/js/custom.js`
 
-`assets/js/custom.js` tracks the mobile navbar state for avatar movement and body scroll locking. It collapses an expanded mobile navbar after firework launches, outside clicks, or browser back/forward restoration while leaving navbar-link and avatar selections expanded until navigation.
+- Reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state
+- Tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded through navigation-triggered scroll events until the destination loads
 
 ### `_config.yml`
 
@@ -263,12 +281,16 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `fireworks.html`
 
-- Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides
+- Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides, including stable dimensions across border-width changes
 
 ### `index.html`
 
 - Loads the Auto Transition-only Pixel Portrait homepage bundle instead of the full interactive Pixel Portrait bundle
 - Stacks the homepage action buttons at every viewport width and matches the project-page buttons' hover/focus underlines
+
+### `pixel_portrait.html`
+
+- Keeps project pagination in normal flow below the embedded app's controls and matches the responsive width and spacing of other project pages before and after the app loads, while allowing portrait effects to overflow
 
 ### `_includes/footer.html`
 
@@ -333,6 +355,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata exists
 - Defines page-local Projects listing repository badge row spacing and mobile stacking styles
+- Routes the post "Read More" link and the newer/older pagination links with `relative_url` so local previews
+  retain their active origin and port
 
 ### `tags.html`
 
@@ -397,12 +421,12 @@ Deletes these inactive upstream files:
 
 ### `.gitignore`
 
-`.gitignore` ignores generated GitHub repository metadata and generated S3 asset version data.
+- Ignores generated GitHub repository metadata and generated S3 asset version data
 
 ### `.github/workflows/pages.yml`
 
-`.github/workflows/pages.yml` generates GitHub repository metadata and unprefixed production S3 asset version data
-before the Jekyll build, then deploys `master` builds to GitHub Pages with GitHub Actions.
+- Generates GitHub repository metadata and unprefixed production S3 asset version data before the Jekyll build, then
+deploys `master` builds to GitHub Pages with GitHub Actions
 
 ## GitHub Actions Workflows
 
@@ -412,7 +436,7 @@ behavior, inputs, and secrets.
 
 ### `.github/workflows/pages.yml`
 
-The `Pages` workflow runs on:
+Runs on:
 
 - pushes to `dev` and `master`
 - manual dispatch
@@ -448,12 +472,12 @@ gh workflow run .github/workflows/pages.yml --ref master
 
 ### `.github/workflows/auto-create-dev-pr.yml`
 
-The `Auto-create dev pull request` workflow runs on pushes to `dev` and calls the
+Runs on pushes to `dev` and calls the
 [shared auto-create-dev-pr workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-create-dev-pryml).
 
 ### `.github/workflows/auto-release.yml`
 
-The `Auto release` workflow runs from manual dispatch only and calls the
+Runs from manual dispatch only and calls the
 [shared auto-release workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-releaseyml). This
 repository contributes `.github/release-policy.yml` overrides to the shared release policy. Release creation or
 existing-release updates require reviewing the generated plan and explicitly enabling publication for an approved run.
@@ -469,6 +493,7 @@ gh workflow run .github/workflows/auto-release.yml --ref master \
 
 ### `.github/workflows/workflow-validation.yml`
 
-The `Workflow validation` workflow runs on local workflow and automation configuration changes, then calls the
+Runs on `dev` and `master` pushes that change `.github/release-policy.yml`, `.github/workflows/**`, or `renovate.json`,
+and on manual dispatch, then calls the
 [shared workflow-validation workflow](https://github.com/cyaris/shared-automation#githubworkflowsworkflow-validationyml)
 to validate the repository-owned Pages workflow, release-policy configuration, and Renovate configuration.

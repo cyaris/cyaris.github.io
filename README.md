@@ -217,7 +217,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Disables horizontal edge-swipe browser back/forward navigation and double-tap-to-zoom site-wide, and clips intentional Pixel Portrait animation overflow at the viewport edge
 - Matches page-header title/subtitle separators to the surrounding text color
 - Maps the site palette to `svelte-lib` semantic color tokens at the shared embedded-app root
-- Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors, and suppresses focus borders and rings on links site-wide
+- Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors, and suppresses pointer-focus borders and rings on links site-wide while keeping a visible `:focus-visible` outline for keyboard navigation
 - Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
 - Defines the reusable `.center` alignment utility
 - Styles the shared asset-loading indicator, including S3 app-bundle, post-thumbnail, and body-content-image placement and reduced-motion states

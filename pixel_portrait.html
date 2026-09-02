@@ -7,8 +7,35 @@ gh-repo: cyaris/pixel_portrait/
 full-width: true
 ---
 <style>
-  main:has(.profile-photo) > .row > [class*='col'] > .pagination.blog-pager {
+  main > .row > [class*='col'] > .pagination.blog-pager {
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 0;
+    width: 100%;
+  }
+
+  @media (min-width: 576px) {
+    main > .row > [class*='col'] > .pagination.blog-pager {
+      max-width: 31.875rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    main > .row > [class*='col'] > .pagination.blog-pager {
+      max-width: 43.125rem;
+    }
+  }
+
+  @media (min-width: 992px) {
+    main > .row > [class*='col'] > .pagination.blog-pager {
+      max-width: 48.125rem;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    main > .row > [class*='col'] > .pagination.blog-pager {
+      max-width: 45.625rem;
+    }
   }
 </style>
 

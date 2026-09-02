@@ -290,7 +290,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `pixel_portrait.html`
 
-- Keeps project pagination in normal flow after the embedded app's resting layout so visible app content cannot overlap it
+- Keeps project pagination in normal flow below the embedded app's controls and matches the responsive width and spacing of other project pages before and after the app loads, while allowing portrait effects to overflow
 
 ### `_includes/footer.html`
 

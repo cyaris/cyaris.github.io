@@ -237,7 +237,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
-- Defines shared button styling for `.btn-group`, including explicit 800 font weight, persistent 1 px borders, and thicker hover-only emphasis
+- Defines shared button styling for `.btn-group`, including explicit 800 font weight, persistent 1 px borders, thicker hover-only emphasis, and a keyboard `:focus-visible` outline that also covers the `.btn-group` rendered as a `button`
 - Customizes tag link and pagination styling, including persistent 1 px pagination borders with thicker hover emphasis, desktop/mobile pagination text visibility, and project/post pagination buttons anchored by default to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
 - Disables text selection on interactive site controls and footer areas
 

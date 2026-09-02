@@ -151,7 +151,8 @@ a:focus {
   box-shadow: none;
 }
 
-a:focus-visible {
+a:focus-visible,
+.btn-group:focus-visible {
   outline: 2px solid var(--link-col);
   outline-offset: 2px;
 }

@@ -291,6 +291,9 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   border-bottom: 2.5px solid var(--navbar-border-col);
   padding-right: 1.5rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  /* Chrome on iOS omits the fixed bar from the frozen frame it holds while a
+     navigation is in flight; its own compositing layer survives that window */
+  transform: translateZ(0);
 }
 
 /* ring the avatar so the navbar border doesn't appear to cut through it */

@@ -224,6 +224,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar presentation and behavior:
   - avatar placement, crop scaling, expanded-menu movement, homepage-only expanded-menu fading, and ring border
+  - compositing-layer promotion so Chrome on iOS keeps the fixed bar painted while a navigation is in flight
   - dropdown behavior, including 40 px mobile touch rows with proportionally scaled type
   - firework cursor frame swaps and image animation styling, including reduced-motion handling
   - mobile expanded-menu scrolling and scroll-triggered dismissal without locking page scrolling

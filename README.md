@@ -282,6 +282,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `fireworks.html`
 
 - Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides, including stable dimensions across border-width changes
+
 ### `index.html`
 
 - Loads the Auto Transition-only Pixel Portrait homepage bundle instead of the full interactive Pixel Portrait bundle
@@ -492,6 +493,7 @@ gh workflow run .github/workflows/auto-release.yml --ref master \
 
 ### `.github/workflows/workflow-validation.yml`
 
-Runs on local workflow and automation configuration changes, then calls the
+Runs on `dev` and `master` pushes that change `.github/release-policy.yml`, `.github/workflows/**`, or `renovate.json`,
+and on manual dispatch, then calls the
 [shared workflow-validation workflow](https://github.com/cyaris/shared-automation#githubworkflowsworkflow-validationyml)
 to validate the repository-owned Pages workflow, release-policy configuration, and Renovate configuration.

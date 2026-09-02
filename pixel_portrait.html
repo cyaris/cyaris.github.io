@@ -6,5 +6,11 @@ project-id: pixel_portrait
 gh-repo: cyaris/pixel_portrait/
 full-width: true
 ---
+<style>
+  main:has(.profile-photo) > .row > [class*='col'] > .pagination.blog-pager {
+    margin-top: 0;
+  }
+</style>
+
 {% include s3_asset.html path='pixel_portrait/bundle.css' type='style' bundle=true %}
 {% include s3_asset.html path='pixel_portrait/bundle.js' type='script' bundle=true %}

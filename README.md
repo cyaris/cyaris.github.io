@@ -238,7 +238,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
 - Defines shared button styling for `.btn-group`, including explicit 800 font weight, persistent 1 px borders, and thicker hover-only emphasis
-- Customizes tag link and pagination styling, including persistent 1 px pagination borders with thicker hover emphasis, desktop/mobile pagination text visibility, and project/post pagination buttons anchored to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
+- Customizes tag link and pagination styling, including persistent 1 px pagination borders with thicker hover emphasis, desktop/mobile pagination text visibility, and project/post pagination buttons anchored by default to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
 - Disables text selection on interactive site controls and footer areas
 
 ### `assets/css/beautifuljekyll.css`
@@ -286,6 +286,10 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 - Loads the Auto Transition-only Pixel Portrait homepage bundle instead of the full interactive Pixel Portrait bundle
 - Stacks the homepage action buttons at every viewport width and matches the project-page buttons' hover/focus underlines
+
+### `pixel_portrait.html`
+
+- Keeps project pagination in normal flow after the embedded app's resting layout so visible app content cannot overlap it
 
 ### `_includes/footer.html`
 

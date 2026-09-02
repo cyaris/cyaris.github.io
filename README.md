@@ -282,8 +282,6 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `fireworks.html`
 
 - Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides, including stable dimensions across border-width changes
-- Credits Mike Rossetti's D3.js Hanabi project as the inspiration for the site's fireworks
-
 ### `index.html`
 
 - Loads the Auto Transition-only Pixel Portrait homepage bundle instead of the full interactive Pixel Portrait bundle

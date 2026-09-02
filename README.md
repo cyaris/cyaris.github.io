@@ -237,8 +237,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows linked repository creation and latest default-branch commit date badges from generated GitHub repository metadata
 - Keeps post preview thumbnails left of the title and subtitle on portrait mobile with smaller heading text
-- Defines shared button styling for `.btn-group`, including explicit 800 font weight and hover-only emphasis
-- Customizes tag link and pagination styling, including desktop/mobile pagination text visibility, and anchors project/post pagination buttons to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
+- Defines shared button styling for `.btn-group`, including explicit 800 font weight, persistent 1 px borders, and thicker hover-only emphasis
+- Customizes tag link and pagination styling, including persistent 1 px pagination borders with thicker hover emphasis, desktop/mobile pagination text visibility, and project/post pagination buttons anchored to the bottom of the content column so they sit flush above the footer on short pages instead of floating below the content
 - Disables text selection on interactive site controls and footer areas
 
 ### `assets/css/beautifuljekyll.css`
@@ -280,7 +280,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `fireworks.html`
 
-- Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides
+- Defines page-local Firework Launcher spacing and launch-button cursor/sizing overrides, including stable dimensions across border-width changes
 
 ### `index.html`
 

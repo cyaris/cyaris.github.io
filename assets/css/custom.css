@@ -891,10 +891,10 @@ button:focus {
   color: var(--btn-link-col);
   font-size: 17px;
   font-weight: 800;
-  padding: 16px 31px;
+  padding: 19.5px 34.5px;
   text-decoration: none;
   border-radius: 28px;
-  border: 4.5px solid transparent;
+  border: 1px solid var(--btn-border-hover-col);
   /* static button sizes across all buttons. */
   height: 65px;
   width: 205px;
@@ -903,7 +903,8 @@ button:focus {
 .btn-group:hover {
   color: var(--btn-link-hover-col);
   background-color: var(--btn-background-hover-col);
-  border-color: var(--btn-border-hover-col);
+  border: 4.5px solid var(--btn-border-hover-col);
+  padding: 16px 31px;
   text-decoration: none;
   font-weight: 800;
 }
@@ -1017,9 +1018,9 @@ main > .row > [class*="col"] > .pagination.blog-pager {
   color: var(--pagination-link-col);
   text-transform: capitalize;
   background-color: var(--pagination-background-col);
-  border: 4.5px solid transparent;
+  border: 1px solid var(--pagination-border-hover-col);
   border-radius: 28px;
-  padding: 10px 17.5px;
+  padding: 13.5px 21px;
   text-align: center;
   font-weight: 750;
 }
@@ -1043,6 +1044,7 @@ main > .row > [class*="col"] > .pagination.blog-pager {
   color: var(--pagination-link-hover-col);
   background-color: var(--pagination-background-hover-col);
   border: 4.5px solid var(--pagination-border-hover-col);
+  padding: 10px 17.5px;
   font-weight: 750;
   box-shadow: none;
   -moz-box-shadow: none;

@@ -188,7 +188,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 [supported parameters](https://github.com/daattali/beautiful-jekyll#supported-parameters).
 
 | Parameter | Description |
-| - | - |
+| --- | --- |
 | `type` | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type. |
 | `project-id` | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`. |
 | `description` | Optional per-page meta-description fallback that `_includes/head.html` reads after `share-description` and before `subtitle` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags. |
@@ -251,11 +251,12 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/beautifuljekyll.js`
 
-`assets/js/beautifuljekyll.js` stays aligned with the upstream Beautiful Jekyll JavaScript except for repository formatting and removal of the inactive navbar search initializer.
+- Stays aligned with the upstream Beautiful Jekyll JavaScript except for repository formatting and removal of the inactive navbar search initializer
 
 ### `assets/js/custom.js`
 
-`assets/js/custom.js` reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state. It also tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded through navigation-triggered scroll events until the destination loads.
+- Reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state
+- Tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded through navigation-triggered scroll events until the destination loads
 
 ### `_config.yml`
 
@@ -354,6 +355,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Shows tag pills on Blog and Projects listing pages on desktop and hides post/listing tag pills on mobile
 - Shows GitHub action badges on Projects listings whenever repository front matter is present, plus generated repository star counts and dates when GitHub repository metadata exists
 - Defines page-local Projects listing repository badge row spacing and mobile stacking styles
+- Routes the post "Read More" link and the newer/older pagination links with `relative_url` so local previews
+  retain their active origin and port
 
 ### `tags.html`
 
@@ -418,12 +421,12 @@ Deletes these inactive upstream files:
 
 ### `.gitignore`
 
-`.gitignore` ignores generated GitHub repository metadata and generated S3 asset version data.
+- Ignores generated GitHub repository metadata and generated S3 asset version data
 
 ### `.github/workflows/pages.yml`
 
-`.github/workflows/pages.yml` generates GitHub repository metadata and unprefixed production S3 asset version data
-before the Jekyll build, then deploys `master` builds to GitHub Pages with GitHub Actions.
+- Generates GitHub repository metadata and unprefixed production S3 asset version data before the Jekyll build, then
+deploys `master` builds to GitHub Pages with GitHub Actions
 
 ## GitHub Actions Workflows
 
@@ -433,7 +436,7 @@ behavior, inputs, and secrets.
 
 ### `.github/workflows/pages.yml`
 
-The `Pages` workflow runs on:
+Runs on:
 
 - pushes to `dev` and `master`
 - manual dispatch
@@ -469,12 +472,12 @@ gh workflow run .github/workflows/pages.yml --ref master
 
 ### `.github/workflows/auto-create-dev-pr.yml`
 
-The `Auto-create dev pull request` workflow runs on pushes to `dev` and calls the
+Runs on pushes to `dev` and calls the
 [shared auto-create-dev-pr workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-create-dev-pryml).
 
 ### `.github/workflows/auto-release.yml`
 
-The `Auto release` workflow runs from manual dispatch only and calls the
+Runs from manual dispatch only and calls the
 [shared auto-release workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-releaseyml). This
 repository contributes `.github/release-policy.yml` overrides to the shared release policy. Release creation or
 existing-release updates require reviewing the generated plan and explicitly enabling publication for an approved run.
@@ -490,6 +493,6 @@ gh workflow run .github/workflows/auto-release.yml --ref master \
 
 ### `.github/workflows/workflow-validation.yml`
 
-The `Workflow validation` workflow runs on local workflow and automation configuration changes, then calls the
+Runs on local workflow and automation configuration changes, then calls the
 [shared workflow-validation workflow](https://github.com/cyaris/shared-automation#githubworkflowsworkflow-validationyml)
 to validate the repository-owned Pages workflow, release-policy configuration, and Renovate configuration.

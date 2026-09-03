@@ -83,6 +83,7 @@ keywords: cyaris, charlie yaris, charlieyaris, yaris
 
 default-theme: developer
 theme-storage-key: cyaris-palette
+theme-transition-duration-ms: 300
 theme-palettes:
   developer:
     label: Developer

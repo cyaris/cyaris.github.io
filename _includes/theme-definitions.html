@@ -2,6 +2,7 @@
   window.siteThemeDefinitions = Object.freeze({
     defaultTheme: {{ site.default-theme | jsonify }},
     storageKey: {{ site.theme-storage-key | jsonify }},
+    transitionDurationMs: {{ site['theme-transition-duration-ms'] | default: 300 | jsonify }},
     themes: Object.freeze({
       {%- for theme_pair in site.theme-palettes %}
         {{ theme_pair[0] | jsonify }}: Object.freeze({

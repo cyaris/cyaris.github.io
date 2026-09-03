@@ -62,7 +62,7 @@
 
     root.classList.add("theme-transitioning")
     const animateFrame = function () {
-      const progress = Math.min((window.performance.now() - startedAt) / 300, 1)
+      const progress = Math.min((window.performance.now() - startedAt) / definitions.transitionDurationMs, 1)
       const easedProgress = progress * progress * (3 - 2 * progress)
 
       Object.entries(variables).forEach(function ([property, value]) {

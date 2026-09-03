@@ -80,13 +80,13 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 
 ### Runtime Palette Selection
 
-- `_includes/theme-definitions.html` publishes every configured palette as a complete set of semantic CSS variables before site styles load.
+- `_includes/theme-definitions.html` publishes the configured transition duration and every palette as a complete set of semantic CSS variables before site styles load.
 - `_includes/theme-selector.html` renders the reusable navbar palette control for its desktop and mobile placements.
 - `assets/js/theme-persistence.js` isolates `localStorage` access so unavailable browser storage does not prevent in-page theme changes.
 - `assets/js/theme-manager.js` restores the saved palette before first paint, updates semantic variables without a reload, manages both accessible navbar dropdowns, keeps their selected states synchronized, emits `palettechange` animation frames for Canvas consumers, and disables animation under `prefers-reduced-motion`.
 - `assets/css/custom.css` maps the live site palette into the complete set of themeable `svelte-lib` UI roles while leaving application-owned data encodings intact.
 
-The manager interpolates every semantic color on animation frames with `color-mix(in oklch, ...)` for 300 milliseconds before settling on the exact configured value. The Developer palette retains the site's original colors, while the Aloe palette adds the supplied cream, lavender, and blue alternative. Adding another complete entry under `_config.yml` `theme-palettes` automatically extends both dropdowns.
+The manager interpolates every semantic color on animation frames with `color-mix(in oklch, ...)` for the number of milliseconds configured by `_config.yml` `theme-transition-duration-ms` before settling on the exact configured value. The Developer palette retains the site's original colors, while the Aloe palette adds the supplied cream, lavender, and blue alternative. Adding another complete entry under `_config.yml` `theme-palettes` automatically extends both dropdowns.
 
 ### GitHub Repository Badges And Dates
 
@@ -275,7 +275,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `_config.yml`
 
 - Renames the navbar text color setting to `navbar-link-col`
-- Defines the Developer and Aloe runtime palettes as complete semantic-variable sets while preserving the original top-level color settings as Developer aliases
+- Defines the runtime palette transition duration and the Developer and Aloe palettes as complete semantic-variable sets while preserving the original top-level color settings as Developer aliases
 - Configures the shared reveal delay before S3 app and body content-image loading indicators are shown
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children

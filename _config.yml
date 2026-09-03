@@ -1,5 +1,5 @@
 ############################
-# --- Required options --- #
+# --- Required Options --- #
 ############################
 
 title: Charlie Yaris | Data Engineer
@@ -7,9 +7,9 @@ title: Charlie Yaris | Data Engineer
 # Your name to show in the footer
 author: Charlie Yaris
 
-###############################################
-# --- List of links in the navigation bar --- #
-###############################################
+##########################
+# --- Navigation Bar --- #
+##########################
 
 navbar-links:
   About Me: /about_me/
@@ -17,6 +17,11 @@ navbar-links:
   Blog: /blog/
   Contact: /contact/
   Resume: /resume/
+
+# Allow sub-menu items (second-level navigation menu items) to be longer than the top-level menu
+# If this setting is off, then long sub-menu words might get cut off
+# See https://github.com/daattali/beautiful-jekyll/issues/765 to understand the issue this setting can solve
+navbar-var-length: false
 
 ################
 # --- Logo --- #
@@ -34,9 +39,12 @@ round-avatar: true
 # title-img: /assets/img/bialy_1.png
 
 
-#####################################
-# --- Footer social media links --- #
-#####################################
+##################
+# --- Footer --- #
+##################
+
+# Website label shown in the footer
+url-pretty: charlieyaris.com
 
 # Footer links render in this order
 social-network-links:
@@ -47,39 +55,41 @@ social-network-links:
   # kaggle: cyaris
   instagram: lord_buttonless
 
-# RSS feed description
-rss-description: Welcome to my website! I hope you enjoy your stay.
+# Add a button in the footer to edit the current page. Only works if your website is hosted on GitHub
+edit_page_button: false
 
-###########################
-# --- General options --- #
-###########################
-
-# Website label shown in the footer
-url-pretty: charlieyaris.com
+##############################
+# --- Metadata And Feeds --- #
+##############################
 
 # Add the website title to the title of every page
 title-on-all-pages: true
 
-# Excerpt word length - Truncate the excerpt of each post on the feed page to the specified number of words
-excerpt_length: 50
-
-# Whether or not to show an excerpt for every blog post in the feed page
-feed_show_excerpt: false
-
-# Add a button in the footer to edit the current page. Only works if your website is hosted on GitHub
-edit_page_button: false
-
-# Allow sub-menu items (second-level navigation menu items) to be longer than the top-level menu
-# If this setting is off, then long sub-menu words might get cut off
-# See https://github.com/daattali/beautiful-jekyll/issues/765 to understand the issue this setting can solve
-navbar-var-length: false
+# RSS feed description and fallback page description
+rss-description: Welcome to my website! I hope you enjoy your stay.
 
 # The keywords to associate with your website, for SEO purposes
 keywords: cyaris, charlie yaris, charlieyaris, yaris
 
-######################################
-# --- Colours / background image --- #
-######################################
+# Facebook App ID
+#fb_app_id: ""
+
+##############################
+# --- Posts And Listings --- #
+##############################
+
+# Whether or not to show an excerpt for every blog post in the feed page
+feed_show_excerpt: false
+
+# Excerpt word length - Truncate the excerpt of each post on the feed page to the specified number of words
+excerpt_length: 50
+
+# Ruby Date Format to show dates of posts
+date_format: "%B %-d, %Y"
+
+################################
+# --- Theme And Appearance --- #
+################################
 
 default-theme: developer
 theme-storage-key: cyaris-palette
@@ -94,6 +104,7 @@ theme-palettes:
       navbar-link-col: &developer-navbar-link-col "#ffffff"
       navbar-link-hover-col: &developer-navbar-link-hover-col "#175676"
       navbar-toggler-hover-border-col: &developer-navbar-toggler-hover-border-col "#439aa5"
+
       page-col: &developer-page-col "#ffffff"
       text-col: &developer-text-col "#33413f"
       link-col: &developer-link-col "#1b998b"
@@ -104,21 +115,25 @@ theme-palettes:
       preview-pill-background-hover-col: &developer-preview-pill-background-hover-col "#e2f4f2"
       preview-pill-border-hover-col: &developer-preview-pill-border-hover-col "#1b998b"
       preview-pill-count-border-col: &developer-preview-pill-count-border-col "#8fcac2"
+
       footer-col: &developer-footer-col "#54bdca"
       footer-text-col: &developer-footer-text-col "#ffffff"
       footer-border-col: &developer-footer-border-col "#f26419"
       footer-link-col: &developer-footer-link-col "#ffffff"
       footer-hover-col: &developer-footer-hover-col "#0085a1"
       footer-link-hover-col: &developer-footer-link-hover-col "#175676"
+
       social-icon-col: &developer-social-icon-col "#ffffff"
       social-icon-background-col: &developer-social-icon-background-col "#f07b41"
       social-icon-hover-col: &developer-social-icon-hover-col "#f26419"
       social-icon-background-hover-col: &developer-social-icon-background-hover-col "#ffffff"
+
       btn-link-col: &developer-btn-link-col "#ffffff"
       btn-background-col: &developer-btn-background-col "#f07b41"
       btn-link-hover-col: &developer-btn-link-hover-col "#ffffff"
       btn-background-hover-col: &developer-btn-background-hover-col "#f07b41"
       btn-border-hover-col: &developer-btn-border-hover-col "#c44536"
+
       pagination-link-col: &developer-pagination-link-col "#ffffff"
       pagination-background-col: &developer-pagination-background-col "#20b3a1"
       pagination-link-hover-col: &developer-pagination-link-hover-col "#ffffff"
@@ -133,6 +148,7 @@ theme-palettes:
       navbar-link-col: "#ffffff"
       navbar-link-hover-col: "#dce8ff"
       navbar-toggler-hover-border-col: "#5a93d8"
+
       page-col: "#f8f4ee"
       text-col: "#445168"
       link-col: "#5a93d8"
@@ -143,21 +159,25 @@ theme-palettes:
       preview-pill-background-hover-col: "#e8e2f8"
       preview-pill-border-hover-col: "#8b78c9"
       preview-pill-count-border-col: "#afc8f4"
+
       footer-col: "#8b78c9"
       footer-text-col: "#ffffff"
       footer-border-col: "#5a93d8"
       footer-link-col: "#ffffff"
       footer-hover-col: "#dce8ff"
       footer-link-hover-col: "#dce8ff"
+
       social-icon-col: "#ffffff"
       social-icon-background-col: "#5a93d8"
       social-icon-hover-col: "#8b78c9"
       social-icon-background-hover-col: "#ffffff"
+
       btn-link-col: "#ffffff"
       btn-background-col: "#5a93d8"
       btn-link-hover-col: "#ffffff"
       btn-background-hover-col: "#8b78c9"
       btn-border-hover-col: "#4a7bc2"
+
       pagination-link-col: "#ffffff"
       pagination-background-col: "#8b78c9"
       pagination-link-hover-col: "#ffffff"
@@ -224,6 +244,10 @@ pagination-border-hover-col: *developer-pagination-border-hover-col
 # Suggest a colour for mobile browsers to use as the browser's theme. This is only supported by a few mobile browsers.
 #mobile-theme-col: "#0085A1"
 
+#######################
+# --- Site Assets --- #
+#######################
+
 # For any extra visual customization, you can include additional CSS files in every page on your site. List any custom CSS files here
 #site-css:
 #  - "/assets/css/custom-styles.css"
@@ -232,9 +256,23 @@ pagination-border-hover-col: *developer-pagination-border-hover-col
 #site-js:
 #  - "/assets/js/custom-script.js"
 
-#################################
-# --- Web Analytics Section --- #
-#################################
+##############################
+# --- Loading Indicators --- #
+##############################
+
+loading_reveal_delay_ms: 200
+
+#####################
+# --- S3 Assets --- #
+#####################
+
+s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
+# Production builds ignore this staged bundle prefix and load the live bundle names.
+s3_bundle_prefix: dev_
+
+#########################
+# --- Web Analytics --- #
+#########################
 
 # Google Analytics tag ID
 gtag: G-ZGW0J5HTZ8
@@ -250,29 +288,23 @@ gtag: G-ZGW0J5HTZ8
 # you should switch to using the `gtag` field above instead.
 #google_analytics: "UA-XXXXXXXX-X"
 
-################
-# --- Misc --- #
-################
-
-# Ruby Date Format to show dates of posts
-date_format: "%B %-d, %Y"
-
-# Facebook App ID
-#fb_app_id: ""
-
 ##########################
 # --- Jekyll Options --- #
 ##########################
 
 # Output options (more information on Jekyll's site)
 timezone: America/Chicago
-markdown: kramdown
-highlighter: rouge
 permalink: /:year-:month-:day-:title/
 paginate: 15
+markdown: kramdown
+highlighter: rouge
 
 kramdown:
   input: GFM
+
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
 
 # Default YAML values (more information on Jekyll's site)
 defaults:
@@ -304,18 +336,5 @@ exclude:
   - scripts/
   - TODO.md
 
-plugins:
-  - jekyll-paginate
-  - jekyll-sitemap
-
 # Beautiful Jekyll / Dean Attali
 # 2fc73a3a967e97599c9763d05e564189
-
-############################
-# --- Custom Variables --- #
-############################
-
-loading_reveal_delay_ms: 200
-s3_bucket: https://s3.us-east-2.amazonaws.com/cyaris.github.io
-# Production builds ignore this staged bundle prefix and load the live bundle names.
-s3_bundle_prefix: dev_

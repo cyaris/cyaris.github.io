@@ -277,12 +277,13 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Renames the navbar text color setting to `navbar-link-col`
 - Defines the runtime palette transition duration and the Developer and Aloe palettes as complete semantic-variable sets while preserving the original top-level color settings as Developer aliases
 - Configures the shared reveal delay before S3 app and body content-image loading indicators are shown
+- Configures the S3 asset bucket and development bundle prefix
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
 - Removes upstream setup-era guidance and the obsolete `feed_show_tags` toggle; listing pages render tag pills
   unconditionally on desktop and hide them on mobile
-- Groups Jekyll and custom settings under consistently formatted section headings
+- Groups required, navigation, logo, footer, metadata/feed, post/listing, theme/appearance, site-asset, loading-indicator, S3 asset, analytics, and Jekyll settings under consistently formatted responsibility-based headings
 - Adds generated-site exclusions for build-only material:
   - `AGENTS.md` and `CLAUDE.md`
   - `docs/`

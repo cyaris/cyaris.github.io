@@ -7,24 +7,6 @@
   const themeProperties = Object.keys(definitions.themes[definitions.defaultTheme].variables)
   let activeTheme = definitions.defaultTheme
   let transitionTimer
-  let supportsOklchTransitions = false
-
-  if (window.CSS?.registerProperty && window.CSS.supports("color", "color-mix(in oklch, red, blue)")) {
-    try {
-      themeProperties.forEach(function (property) {
-        window.CSS.registerProperty({
-          name: property,
-          syntax: "<color>",
-          inherits: true,
-          initialValue: definitions.themes[definitions.defaultTheme].variables[property]
-        })
-      })
-      window.CSS.registerProperty({ name: "--theme-progress", syntax: "<number>", inherits: true, initialValue: "1" })
-      supportsOklchTransitions = true
-    } catch (_error) {
-      // A browser without usable custom-property registration still switches immediately.
-    }
-  }
 
   const closeSelector = function (selector, restoreFocus) {
     selector.querySelector(".theme-selector-toggle").setAttribute("aria-expanded", "false")
@@ -61,36 +43,40 @@
   const finishThemeTransition = function (variables) {
     Object.entries(variables).forEach(function ([property, value]) {
       root.style.setProperty(property, value)
-      root.style.removeProperty(property.replace("--", "--theme-from-"))
-      root.style.removeProperty(property.replace("--", "--theme-to-"))
     })
-    root.style.removeProperty("--theme-progress")
     root.classList.remove("theme-transitioning")
+    window.dispatchEvent(new Event("palettechange"))
   }
 
   const startThemeTransition = function (variables) {
-    const computedRoot = window.getComputedStyle(root)
+    const probe = document.body.appendChild(document.createElement("span"))
+    probe.hidden = true
     const currentValues = Object.fromEntries(
       themeProperties.map(function (property) {
-        return [property, computedRoot.getPropertyValue(property).trim()]
+        probe.style.color = `var(${property})`
+        return [property, window.getComputedStyle(probe).color]
       })
     )
+    probe.remove()
+    const startedAt = window.performance.now()
 
-    root.classList.remove("theme-transitioning")
-    root.style.setProperty("--theme-progress", "0")
-    Object.entries(variables).forEach(function ([property, value]) {
-      const fromProperty = property.replace("--", "--theme-from-")
-      const toProperty = property.replace("--", "--theme-to-")
-      root.style.setProperty(fromProperty, currentValues[property])
-      root.style.setProperty(toProperty, value)
-      root.style.setProperty(
-        property,
-        `color-mix(in oklch, var(${fromProperty}), var(${toProperty}) calc(var(--theme-progress) * 100%))`
-      )
-    })
     root.classList.add("theme-transitioning")
-    window.getComputedStyle(root).getPropertyValue("--theme-progress")
-    root.style.setProperty("--theme-progress", "1")
+    const animateFrame = function () {
+      const progress = Math.min((window.performance.now() - startedAt) / 300, 1)
+      const easedProgress = progress * progress * (3 - 2 * progress)
+
+      Object.entries(variables).forEach(function ([property, value]) {
+        root.style.setProperty(
+          property,
+          `color-mix(in oklch, ${currentValues[property]}, ${value} ${easedProgress * 100}%)`
+        )
+      })
+      window.dispatchEvent(new Event("palettechange"))
+
+      if (progress < 1) transitionTimer = window.setTimeout(animateFrame, 16)
+      else finishThemeTransition(variables)
+    }
+    animateFrame()
   }
 
   const applyTheme = function (themeName, options) {
@@ -99,7 +85,7 @@
     const shouldAnimate =
       options?.animate &&
       selectedTheme !== activeTheme &&
-      supportsOklchTransitions &&
+      window.CSS.supports("color", "color-mix(in oklch, red, blue)") &&
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     window.clearTimeout(transitionTimer)
@@ -110,12 +96,6 @@
 
     if (options?.persist) persistence.save(definitions.storageKey, selectedTheme)
     if (document.readyState !== "loading") updateSelectors()
-
-    if (shouldAnimate) {
-      transitionTimer = window.setTimeout(function () {
-        finishThemeTransition(variables)
-      }, 320)
-    }
 
     window.dispatchEvent(new CustomEvent("site-theme-change", { detail: { theme: selectedTheme } }))
   }

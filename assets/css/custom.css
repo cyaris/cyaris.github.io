@@ -231,10 +231,18 @@ html body .svelte-lib-app {
   --link: var(--link-col);
   --link-hover: var(--hover-col);
   --ui-text: var(--text-col);
+  --ui-border-strong: var(--preview-pill-border-hover-col);
   --ui-surface: var(--page-col);
+  --ui-surface-alt: var(--preview-pill-background-col);
+  --ui-surface-hover: var(--preview-pill-background-hover-col);
+  --ui-surface-selected: var(--preview-pill-border-col);
+  --ui-control: var(--text-col);
+  --ui-control-hover: var(--preview-pill-border-col);
+  --ui-control-text: var(--page-col);
   --ui-focus: var(--link-col);
   --ui-selection: var(--brand-hover);
   --ui-selection-text: var(--page-col);
+  --success: var(--link-col);
 }
 
 .full-width-tool-host {
@@ -591,12 +599,6 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   }
 }
 
-html.theme-transitioning {
-  transition-property: --theme-progress;
-  transition-duration: 300ms;
-  transition-timing-function: ease;
-}
-
 /* The cursor keeps its CSS frame swap because browser APNG cursor animation is inconsistent. */
 /* The navbar uses the equivalent APNG as an inline image. */
 @keyframes kidpix_cursor_animate {
@@ -624,10 +626,6 @@ html.theme-transitioning {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.theme-transitioning {
-    transition: none;
-  }
-
   .firework-launch-button {
     animation: none;
     -webkit-animation: none;

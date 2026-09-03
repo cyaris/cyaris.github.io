@@ -83,10 +83,10 @@ These site-local features are layered on top of Beautiful Jekyll. The `_includes
 - `_includes/theme-definitions.html` publishes every configured palette as a complete set of semantic CSS variables before site styles load.
 - `_includes/theme-selector.html` renders the reusable navbar palette control for its desktop and mobile placements.
 - `assets/js/theme-persistence.js` isolates `localStorage` access so unavailable browser storage does not prevent in-page theme changes.
-- `assets/js/theme-manager.js` restores the saved palette before first paint, updates semantic variables without a reload, manages both accessible navbar dropdowns, and keeps their selected states synchronized.
-- `assets/css/custom.css` maps the same live site variables into embedded `svelte-lib` roots and animates one registered progress variable, with transitions disabled under `prefers-reduced-motion`.
+- `assets/js/theme-manager.js` restores the saved palette before first paint, updates semantic variables without a reload, manages both accessible navbar dropdowns, keeps their selected states synchronized, emits `palettechange` animation frames for Canvas consumers, and disables animation under `prefers-reduced-motion`.
+- `assets/css/custom.css` maps the live site palette into the complete set of themeable `svelte-lib` UI roles while leaving application-owned data encodings intact.
 
-The manager interpolates each semantic color with `color-mix(in oklch, ...)` for 300 milliseconds before settling on the exact configured value. The Developer palette retains the site's original colors, while the Aloe palette adds the supplied cream, lavender, and blue alternative. Adding another complete entry under `_config.yml` `theme-palettes` automatically extends both dropdowns.
+The manager interpolates every semantic color on animation frames with `color-mix(in oklch, ...)` for 300 milliseconds before settling on the exact configured value. The Developer palette retains the site's original colors, while the Aloe palette adds the supplied cream, lavender, and blue alternative. Adding another complete entry under `_config.yml` `theme-palettes` automatically extends both dropdowns.
 
 ### GitHub Repository Badges And Dates
 

@@ -228,7 +228,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Matches page-header title/subtitle separators to the surrounding text color
 - Maps the site palette to `svelte-lib` semantic color tokens at the shared embedded-app root
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors, and suppresses pointer-focus borders and rings on links site-wide while keeping a visible `:focus-visible` outline for keyboard navigation
-- Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
+- Defines the site-specific palette fallbacks and Open Sans font variables consumed by custom styles, while runtime theme selection overrides the palette properties
 - Defines the reusable `.center` alignment utility
 - Styles the shared asset-loading indicator, including S3 app-bundle, post-thumbnail, and body-content-image placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
@@ -240,7 +240,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
   - mobile expanded-menu scrolling and scroll-triggered dismissal without locking page scrolling
   - navbar sizing and drop-shadow depth
   - responsive mobile/desktop launcher visibility
-  - toggler styling
+  - toggler styling, including palette-specific border colors while hovered or expanded
 - Customizes footer borders, link states, social icon sizing and hover rings, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing and visual top alignment, title hover colors, and preview borders
 - Aligns project-card subtitle-to-badge and badge-to-tag spacing, plus full-opacity tag labels, icons, and pills, with GitHub repo badges
@@ -254,7 +254,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/css/beautifuljekyll.css`
 
-- Emits the site-specific color palette as CSS custom properties for downstream stylesheets
+- Keeps active upstream declarations unchanged
 - Removes inactive upstream Disqus comment styling
 - Removes inactive upstream navbar search overlay styling
 - Removes inactive upstream GitHub button header styling
@@ -262,7 +262,10 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/beautifuljekyll.js`
 
-- Stays aligned with the upstream Beautiful Jekyll JavaScript except for repository formatting and removal of the inactive navbar search initializer
+- Differs from the current upstream JavaScript only in these documented ways:
+  - Applies repository formatting and `AGENTS.md`-required simplifications
+  - Removes mobile-navbar handlers superseded by `assets/js/custom.js`
+  - Removes the inactive navbar search initializer
 
 ### `assets/js/custom.js`
 

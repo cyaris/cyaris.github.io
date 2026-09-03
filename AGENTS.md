@@ -59,17 +59,17 @@
 
 - Use relative paths and Jekyll's `relative_url` filter for site-local links and assets. Reserve `absolute_url` for
   metadata, feeds, canonical URLs, and other outputs that require a fully qualified URL.
-- Keep Beautiful Jekyll-derived CSS and JavaScript aligned with the current upstream remote branch except for repository
-  formatting, necessary CSS-variable changes, and removal of code made stale by inactive integrations. Implement
-  site-specific styles in `assets/css/custom.css`, which loads after `assets/css/beautifuljekyll.css`, and site-specific
-  JavaScript in `assets/js/custom.js`, which loads after `assets/js/beautifuljekyll.js`, instead of modifying the
-  upstream-derived files.
+- Keep Beautiful Jekyll-derived CSS and JavaScript aligned with the current upstream remote branch. Do not add
+  site-specific CSS declarations to `assets/css/beautifuljekyll.css` or site-specific JavaScript behavior to
+  `assets/js/beautifuljekyll.js` unless an upstream breaking change or another applicable `AGENTS.md` instruction
+  requires the change. Put site-specific CSS, including config-backed runtime color fallbacks, in
+  `assets/css/custom.css`, and put site-specific JavaScript in `assets/js/custom.js`; the custom files load after their
+  Beautiful Jekyll counterparts. Removing upstream code made stale by an inactive integration remains allowed.
 - Keep one-page CSS in that page. Move styles to `assets/css/custom.css` when more than one page needs them.
 - Keep mobile blog tag links hidden unless the user approves showing them. Preserve compact mobile sizing and wrapping
   rules so removing `display: none` later yields usable tag pills.
-- Keep `assets/css/custom.css` color variables aligned with `_config.yml`. Define config-backed custom properties in
-  `assets/css/beautifuljekyll.css` only when needed to keep `custom.css` valid plain CSS for editor tooling and Prettier,
-  then reference them through `var(...)` from `custom.css`.
+- Keep `assets/css/custom.css` color variables aligned with `_config.yml`, including complete runtime theme definitions
+  and their plain-CSS fallbacks.
 
 ## Local Workflow Ownership
 

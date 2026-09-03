@@ -2,6 +2,36 @@
 layout: null
 ---
 
+:root {
+  --body-font: "Open Sans", "Open Sans Fallback", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --header-font: "Open Sans", "Open Sans Fallback", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --navbar-link-col: #ffffff;
+  --navbar-link-hover-col: #175676;
+  --navbar-toggler-hover-border-col: #439aa5;
+  --post-title-link-hover-col: #1b998b;
+  --preview-pill-background-col: #f2fbfa;
+  --preview-pill-border-col: #a8d9d3;
+  --preview-pill-background-hover-col: #e2f4f2;
+  --preview-pill-border-hover-col: #1b998b;
+  --preview-pill-count-border-col: #8fcac2;
+  --footer-border-col: #f26419;
+  --footer-link-hover-col: #175676;
+  --social-icon-col: #ffffff;
+  --social-icon-background-col: #f07b41;
+  --social-icon-hover-col: #f26419;
+  --social-icon-background-hover-col: #ffffff;
+  --btn-link-col: #ffffff;
+  --btn-background-col: #f07b41;
+  --btn-link-hover-col: #ffffff;
+  --btn-background-hover-col: #f07b41;
+  --btn-border-hover-col: #c44536;
+  --pagination-link-col: #ffffff;
+  --pagination-background-col: #20b3a1;
+  --pagination-link-hover-col: #ffffff;
+  --pagination-background-hover-col: #20b3a1;
+  --pagination-border-hover-col: #197278;
+}
+
 /* --- Body --- */
 
 @font-face {
@@ -577,8 +607,9 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     max-height: calc(100dvh - 3.125rem);
   }
 
-  .navbar-toggler:hover {
-    border-color: var(--navbar-link-hover-col);
+  .navbar-toggler:hover,
+  .navbar-toggler[aria-expanded="true"] {
+    border-color: var(--navbar-toggler-hover-border-col);
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {

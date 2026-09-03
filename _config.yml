@@ -92,6 +92,7 @@ theme-palettes:
       navbar-border-col: &developer-navbar-border-col "#f26419"
       navbar-link-col: &developer-navbar-link-col "#ffffff"
       navbar-link-hover-col: &developer-navbar-link-hover-col "#175676"
+      navbar-toggler-hover-border-col: &developer-navbar-toggler-hover-border-col "#439aa5"
       page-col: &developer-page-col "#ffffff"
       text-col: &developer-text-col "#33413f"
       link-col: &developer-link-col "#1b998b"
@@ -130,6 +131,7 @@ theme-palettes:
       navbar-border-col: "#5a93d8"
       navbar-link-col: "#ffffff"
       navbar-link-hover-col: "#dce8ff"
+      navbar-toggler-hover-border-col: "#5a93d8"
       page-col: "#f8f4ee"
       text-col: "#445168"
       link-col: "#5a93d8"
@@ -166,6 +168,7 @@ navbar-text-col: *developer-navbar-text-col
 navbar-border-col: *developer-navbar-border-col
 navbar-link-col: *developer-navbar-link-col
 navbar-link-hover-col: *developer-navbar-link-hover-col
+navbar-toggler-hover-border-col: *developer-navbar-toggler-hover-border-col
 
 page-col: *developer-page-col
 text-col: *developer-text-col

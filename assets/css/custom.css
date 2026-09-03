@@ -239,6 +239,12 @@ html body .svelte-lib-app {
   --ui-control: var(--text-col);
   --ui-control-hover: var(--preview-pill-border-col);
   --ui-control-text: var(--page-col);
+  --ui-action: var(--btn-background-col);
+  --ui-action-hover: var(--btn-background-hover-col);
+  --ui-action-border: var(--btn-border-hover-col);
+  --ui-action-border-hover: var(--btn-border-hover-col);
+  --ui-action-text: var(--btn-link-col);
+  --ui-action-text-hover: var(--btn-link-hover-col);
   --ui-focus: var(--link-col);
   --ui-selection: var(--brand-hover);
   --ui-selection-text: var(--page-col);

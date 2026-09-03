@@ -78,6 +78,16 @@ Git ignores the generated `_data/generated_s3_assets.yml` file locally.
 
 These site-local features are layered on top of Beautiful Jekyll. The `_includes` files listed here are not present in upstream Beautiful Jekyll.
 
+### Runtime Palette Selection
+
+- `_includes/theme-definitions.html` publishes every configured palette as a complete set of semantic CSS variables before site styles load.
+- `_includes/theme-selector.html` renders the reusable navbar palette control for its desktop and mobile placements.
+- `assets/js/theme-persistence.js` isolates `localStorage` access so unavailable browser storage does not prevent in-page theme changes.
+- `assets/js/theme-manager.js` restores the saved palette before first paint, updates semantic variables without a reload, manages both accessible navbar dropdowns, and keeps their selected states synchronized.
+- `assets/css/custom.css` maps the same live site variables into embedded `svelte-lib` roots and animates one registered progress variable, with transitions disabled under `prefers-reduced-motion`.
+
+The manager interpolates each semantic color with `color-mix(in oklch, ...)` for 300 milliseconds before settling on the exact configured value. The Developer palette retains the site's original colors, while the Aloe palette adds the supplied cream, lavender, and blue alternative. Adding another complete entry under `_config.yml` `theme-palettes` automatically extends both dropdowns.
+
 ### GitHub Repository Badges And Dates
 
 - `_includes/github-repo-badges.html` renders repository badges and metadata:
@@ -262,7 +272,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `_config.yml`
 
 - Renames the navbar text color setting to `navbar-link-col`
-- Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
+- Defines the Developer and Aloe runtime palettes as complete semantic-variable sets while preserving the original top-level color settings as Developer aliases
 - Configures the shared reveal delay before S3 app and body content-image loading indicators are shown
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
@@ -304,6 +314,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `_includes/head.html`
 
 - Adds PNG favicon links for shortcut and browser icons, plus a dedicated Apple touch icon
+- Loads the runtime palette definitions, safe persistence adapter, and theme manager before stylesheets so a saved palette applies before first paint
 - Preloads the locally hosted Open Sans normal variable font used by initial page content
 - Loads global firework launcher styles inside the document head
 - Falls back to the site RSS description when generated page-description text still contains raw Liquid tags
@@ -320,6 +331,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 - Replaces the title/logo brand link with desktop and mobile firework launch controls that render the local Kid Pix
   dynamite APNG
+- Adds the palette-emoji dropdown immediately after Resume on desktop and immediately before the hamburger button on mobile
 - Builds the Projects dropdown from `_data/projects.yml` entries with `navbar: true`
 - Changes dropdown parent links to lowercase relative URLs
 - Removes the right-aligned dropdown menu class

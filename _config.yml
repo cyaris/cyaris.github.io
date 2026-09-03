@@ -81,47 +81,129 @@ keywords: cyaris, charlie yaris, charlieyaris, yaris
 # --- Colours / background image --- #
 ######################################
 
-navbar-col: "#54bdca"
-navbar-border-col: "#f26419"
-navbar-link-col: "#ffffff"
-navbar-link-hover-col: "#175676"
+default-theme: developer
+theme-storage-key: cyaris-palette
+theme-palettes:
+  developer:
+    label: Developer
+    variables:
+      navbar-col: &developer-navbar-col "#54bdca"
+      navbar-text-col: &developer-navbar-text-col "#404040"
+      navbar-border-col: &developer-navbar-border-col "#f26419"
+      navbar-link-col: &developer-navbar-link-col "#ffffff"
+      navbar-link-hover-col: &developer-navbar-link-hover-col "#175676"
+      page-col: &developer-page-col "#ffffff"
+      text-col: &developer-text-col "#33413f"
+      link-col: &developer-link-col "#1b998b"
+      hover-col: &developer-hover-col "#1b998b"
+      post-title-link-hover-col: &developer-post-title-link-hover-col "#1b998b"
+      preview-pill-background-col: &developer-preview-pill-background-col "#f2fbfa"
+      preview-pill-border-col: &developer-preview-pill-border-col "#a8d9d3"
+      preview-pill-background-hover-col: &developer-preview-pill-background-hover-col "#e2f4f2"
+      preview-pill-border-hover-col: &developer-preview-pill-border-hover-col "#1b998b"
+      preview-pill-count-border-col: &developer-preview-pill-count-border-col "#8fcac2"
+      footer-col: &developer-footer-col "#54bdca"
+      footer-text-col: &developer-footer-text-col "#ffffff"
+      footer-border-col: &developer-footer-border-col "#f26419"
+      footer-link-col: &developer-footer-link-col "#ffffff"
+      footer-hover-col: &developer-footer-hover-col "#0085a1"
+      footer-link-hover-col: &developer-footer-link-hover-col "#175676"
+      social-icon-col: &developer-social-icon-col "#ffffff"
+      social-icon-background-col: &developer-social-icon-background-col "#f07b41"
+      social-icon-hover-col: &developer-social-icon-hover-col "#f26419"
+      social-icon-background-hover-col: &developer-social-icon-background-hover-col "#ffffff"
+      btn-link-col: &developer-btn-link-col "#ffffff"
+      btn-background-col: &developer-btn-background-col "#f07b41"
+      btn-link-hover-col: &developer-btn-link-hover-col "#ffffff"
+      btn-background-hover-col: &developer-btn-background-hover-col "#f07b41"
+      btn-border-hover-col: &developer-btn-border-hover-col "#c44536"
+      pagination-link-col: &developer-pagination-link-col "#ffffff"
+      pagination-background-col: &developer-pagination-background-col "#20b3a1"
+      pagination-link-hover-col: &developer-pagination-link-hover-col "#ffffff"
+      pagination-background-hover-col: &developer-pagination-background-hover-col "#20b3a1"
+      pagination-border-hover-col: &developer-pagination-border-hover-col "#197278"
+  aloe:
+    label: Aloe
+    variables:
+      navbar-col: "#8b78c9"
+      navbar-text-col: "#445168"
+      navbar-border-col: "#5a93d8"
+      navbar-link-col: "#ffffff"
+      navbar-link-hover-col: "#dce8ff"
+      page-col: "#f8f4ee"
+      text-col: "#445168"
+      link-col: "#5a93d8"
+      hover-col: "#8b78c9"
+      post-title-link-hover-col: "#8b78c9"
+      preview-pill-background-col: "#f1edf9"
+      preview-pill-border-col: "#b8a8e4"
+      preview-pill-background-hover-col: "#e8e2f8"
+      preview-pill-border-hover-col: "#8b78c9"
+      preview-pill-count-border-col: "#afc8f4"
+      footer-col: "#8b78c9"
+      footer-text-col: "#ffffff"
+      footer-border-col: "#5a93d8"
+      footer-link-col: "#ffffff"
+      footer-hover-col: "#dce8ff"
+      footer-link-hover-col: "#dce8ff"
+      social-icon-col: "#ffffff"
+      social-icon-background-col: "#5a93d8"
+      social-icon-hover-col: "#8b78c9"
+      social-icon-background-hover-col: "#ffffff"
+      btn-link-col: "#ffffff"
+      btn-background-col: "#5a93d8"
+      btn-link-hover-col: "#ffffff"
+      btn-background-hover-col: "#8b78c9"
+      btn-border-hover-col: "#4a7bc2"
+      pagination-link-col: "#ffffff"
+      pagination-background-col: "#8b78c9"
+      pagination-link-hover-col: "#ffffff"
+      pagination-background-hover-col: "#5a93d8"
+      pagination-border-hover-col: "#4a7bc2"
 
-page-col: "#ffffff"
-text-col: "#33413f"
-link-col: "#1b998b"
-hover-col: "#1b998b"
-post-title-link-hover-col: "#1b998b"
+navbar-col: *developer-navbar-col
+navbar-text-col: *developer-navbar-text-col
+navbar-border-col: *developer-navbar-border-col
+navbar-link-col: *developer-navbar-link-col
+navbar-link-hover-col: *developer-navbar-link-hover-col
+
+page-col: *developer-page-col
+text-col: *developer-text-col
+link-col: *developer-link-col
+hover-col: *developer-hover-col
+post-title-link-hover-col: *developer-post-title-link-hover-col
 # post-title-link-hover-col: ""#54bdca"
-preview-pill-background-col: "#f2fbfa"
-preview-pill-border-col: "#a8d9d3"
-preview-pill-background-hover-col: "#e2f4f2"
-preview-pill-border-hover-col: "#1b998b"
-preview-pill-count-border-col: "#8fcac2"
+preview-pill-background-col: *developer-preview-pill-background-col
+preview-pill-border-col: *developer-preview-pill-border-col
+preview-pill-background-hover-col: *developer-preview-pill-background-hover-col
+preview-pill-border-hover-col: *developer-preview-pill-border-hover-col
+preview-pill-count-border-col: *developer-preview-pill-count-border-col
 
-footer-col: "#54bdca"
-footer-border-col: "#f26419"
-footer-text-col: "#ffffff"
-footer-link-col: "#ffffff"
-footer-link-hover-col: "#175676"
+footer-col: *developer-footer-col
+footer-text-col: *developer-footer-text-col
+footer-border-col: *developer-footer-border-col
+footer-link-col: *developer-footer-link-col
+footer-hover-col: *developer-footer-hover-col
+footer-link-hover-col: *developer-footer-link-hover-col
 
 # social-links will have separate color variables from rest of footer
-social-icon-col: "#ffffff"
-social-icon-background-col: "#f07b41"
-social-icon-hover-col: "#f26419"
-social-icon-background-hover-col: "#ffffff"
+social-icon-col: *developer-social-icon-col
+social-icon-background-col: *developer-social-icon-background-col
+social-icon-hover-col: *developer-social-icon-hover-col
+social-icon-background-hover-col: *developer-social-icon-background-hover-col
 # social-icon-background-border-hover-col: "#f26419"
 
-btn-link-col: "#ffffff"
-btn-background-col: "#f07b41"
-btn-link-hover-col: "#ffffff"
-btn-background-hover-col: "#f07b41"
-btn-border-hover-col: "#c44536"
+btn-link-col: *developer-btn-link-col
+btn-background-col: *developer-btn-background-col
+btn-link-hover-col: *developer-btn-link-hover-col
+btn-background-hover-col: *developer-btn-background-hover-col
+btn-border-hover-col: *developer-btn-border-hover-col
 
-pagination-link-col: "#ffffff"
-pagination-background-col: "#20b3a1"
-pagination-link-hover-col: "#ffffff"
-pagination-background-hover-col: "#20b3a1"
-pagination-border-hover-col: "#197278"
+pagination-link-col: *developer-pagination-link-col
+pagination-background-col: *developer-pagination-background-col
+pagination-link-hover-col: *developer-pagination-link-hover-col
+pagination-background-hover-col: *developer-pagination-background-hover-col
+pagination-border-hover-col: *developer-pagination-border-hover-col
 
 # Palette values kept for future experiments:
 # "#404040" - former inherited text/tag color

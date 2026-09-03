@@ -21,6 +21,10 @@
     >
   </a>
 
+  <div class="theme-selector-mobile">
+    {% include theme-selector.html id='mobile' %}
+  </div>
+
   <button
     class="navbar-toggler"
     type="button"
@@ -86,6 +90,9 @@
           </li>
         {%- endif -%}
       {%- endfor -%}
+      <li class="nav-item theme-selector-desktop">
+        {% include theme-selector.html id='desktop' %}
+      </li>
     </ul>
   </div>
 

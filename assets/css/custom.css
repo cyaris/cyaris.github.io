@@ -313,6 +313,108 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   text-transform: none;
 }
 
+.theme-selector {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.theme-selector-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  min-height: 2.25rem;
+  padding: 0.25rem;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  color: var(--navbar-link-col);
+  background: transparent;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.theme-selector-toggle:hover {
+  border-color: var(--navbar-border-col);
+}
+
+.theme-selector-toggle:focus,
+.theme-selector-option:focus {
+  outline: none;
+}
+
+.theme-selector-toggle:focus-visible {
+  outline: 2px solid var(--navbar-link-hover-col);
+  outline-offset: 2px;
+}
+
+.theme-selector-option:focus-visible {
+  outline: 2px solid var(--text-col);
+  outline-offset: -2px;
+}
+
+.theme-selector-menu {
+  position: absolute;
+  z-index: 1100;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  min-width: 9.5rem;
+  padding: 0.35rem;
+  border: 1px solid var(--navbar-border-col);
+  border-radius: 0.6rem;
+  background-color: var(--page-col);
+  box-shadow: 0 0.35rem 0.85rem rgba(0, 0, 0, 0.2);
+}
+
+.theme-selector-menu[hidden] {
+  display: none;
+}
+
+.theme-selector-option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 0;
+  border-radius: 0.35rem;
+  color: var(--text-col);
+  background-color: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.theme-selector-option:hover,
+.theme-selector-option[aria-checked="true"] {
+  background-color: var(--preview-pill-background-hover-col);
+}
+
+.theme-selector-option-swatch {
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 1px solid var(--text-col);
+  border-radius: 50%;
+  background-color: var(--page-col);
+}
+
+.theme-selector-option[aria-checked="true"] .theme-selector-option-swatch {
+  background-color: var(--link-col);
+  box-shadow: inset 0 0 0 2px var(--page-col);
+}
+
+.theme-selector-mobile {
+  display: none;
+}
+
+.theme-selector-desktop {
+  display: none;
+}
+
 /* increasing size of projects navbar section width */
 .navbar-custom .navbar-nav .nav-item.dropdown {
   padding-right: 0.7375rem;
@@ -395,6 +497,12 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item[href$="/the_networks_of_war/"] {
     white-space: pre-line;
   }
+
+  .navbar-custom .theme-selector-desktop {
+    display: flex;
+    align-items: center;
+    margin-left: 0.25rem;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -456,7 +564,7 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   }
 
   .navbar-toggler:hover {
-    border-color: #439aa5;
+    border-color: var(--navbar-link-hover-col);
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
@@ -473,6 +581,20 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     font-weight: 800;
     padding-left: 1rem;
   }
+}
+
+@media (max-width: 1199.98px) {
+  .theme-selector-mobile {
+    display: flex;
+    margin-left: auto;
+    margin-right: 0.4rem;
+  }
+}
+
+html.theme-transitioning {
+  transition-property: --theme-progress;
+  transition-duration: 300ms;
+  transition-timing-function: ease;
 }
 
 /* The cursor keeps its CSS frame swap because browser APNG cursor animation is inconsistent. */
@@ -502,6 +624,10 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html.theme-transitioning {
+    transition: none;
+  }
+
   .firework-launch-button {
     animation: none;
     -webkit-animation: none;
@@ -554,6 +680,10 @@ footer a:hover {
 
 .footer-links .fa-stack-2x {
   color: var(--social-icon-background-col);
+}
+
+.footer-links .fa-stack-1x {
+  color: var(--social-icon-col);
 }
 
 .footer-links a[title="GitHub"] .fa-stack-1x {

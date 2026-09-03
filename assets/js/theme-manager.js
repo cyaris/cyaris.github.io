@@ -5,6 +5,7 @@
   const persistence = window.siteThemePersistence
   const root = document.documentElement
   const themeProperties = Object.keys(definitions.themes[definitions.defaultTheme].variables)
+
   let activeTheme = definitions.defaultTheme
   let transitionTimer
 

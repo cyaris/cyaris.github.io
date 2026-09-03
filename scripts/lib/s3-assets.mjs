@@ -16,11 +16,13 @@ export function collectContentFiles(dir) {
 export function parseS3AssetIncludes(file, contents) {
   const includes = []
   const tagPattern = /{%-?\s*include\s+s3_asset\.html\s+([\s\S]*?)-?%}/g
+
   let tagMatch
 
   while ((tagMatch = tagPattern.exec(contents))) {
     const attrs = {}
     const attrPattern = /([A-Za-z0-9_-]+)\s*=\s*("[^"]*"|'[^']*'|[^\s%]+)/g
+
     let attrMatch
     let pathIsQuoted = false
 
@@ -166,6 +168,7 @@ export function headS3Object({ bucket, key, profile, region }) {
 
   return new Promise((resolve, reject) => {
     const child = spawn("aws", args, { stdio: ["ignore", "pipe", "pipe"] })
+
     let stdout = ""
     let stderr = ""
 

@@ -1,6 +1,7 @@
 - id: the_networks_of_war
   title: "The Networks\nof War"
   subtitle: Performing network analysis on over 200 years of data from the Correlates of War (COW) Project.
+  description: Explore over 200 years of international conflict through an interactive network analysis of Correlates of War data.
   url: /the_networks_of_war/
   gh-repo: cyaris/the_networks_of_war
   tags: [d3.js, data storytelling, duckdb, force-directed graph, javascript, network analysis, pandas, python, sql, svelte, tailwind css]
@@ -10,6 +11,7 @@
 - id: us_gun_violence_forecasting
   title: US Gun Violence Forecasting
   subtitle: Comparing historical time series models using data from GunViolenceArchive.org.
+  description: Compare historical time series forecasts of US gun violence with observed Gun Violence Archive data.
   url: /us_gun_violence_forecasting/
   gh-repo: cyaris/us_gun_violence_forecasting
   tags: [canvas rendering, d3.js, data storytelling, error metrics, javascript, machine learning, numpy, pandas, prophet, python, svelte, tailwind css, time series modeling]

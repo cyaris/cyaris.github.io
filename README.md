@@ -201,7 +201,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 | --- | --- |
 | `type` | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type. |
 | `project-id` | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`. |
-| `description` | Optional per-page meta-description fallback that `_includes/head.html` reads after `share-description` and before `subtitle` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags. |
+| `description` | Optional per-page meta-description fallback that `_includes/head.html` reads after `share-description` and before a matching `_data/projects.yml` description or `subtitle` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags. |
 | `badge-position` | Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts. |
 | `badge-alignment` | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts. |
 | `thumbnail-fit` | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`. |
@@ -293,6 +293,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `contact.html`
 
 - Defines page-local contact form, Turnstile, status, honeypot, and mobile contact-page styles
+- Treats an empty or malformed Worker response body as an immediate error, preserves the submitted fields, and resets
+  only the Turnstile challenge
 
 ### `fireworks.html`
 
@@ -321,6 +323,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Loads the runtime palette definitions, safe persistence adapter, and theme manager before stylesheets so a saved palette applies before first paint
 - Preloads the locally hosted Open Sans normal variable font used by initial page content
 - Loads global firework launcher styles inside the document head
+- Uses the matching `_data/projects.yml` description for project pages without a page-specific description
+- Omits Twitter account meta tags when no Twitter handle is configured
 - Falls back to the site RSS description when generated page-description text still contains raw Liquid tags
 - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks
 

@@ -2,6 +2,36 @@
 layout: null
 ---
 
+:root {
+  --body-font: "Open Sans", "Open Sans Fallback", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --header-font: "Open Sans", "Open Sans Fallback", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --navbar-link-col: #ffffff;
+  --navbar-link-hover-col: #175676;
+  --navbar-toggler-hover-border-col: #439aa5;
+  --post-title-link-hover-col: #1b998b;
+  --preview-pill-background-col: #f2fbfa;
+  --preview-pill-border-col: #a8d9d3;
+  --preview-pill-background-hover-col: #e2f4f2;
+  --preview-pill-border-hover-col: #1b998b;
+  --preview-pill-count-border-col: #8fcac2;
+  --footer-border-col: #f26419;
+  --footer-link-hover-col: #175676;
+  --social-icon-col: #ffffff;
+  --social-icon-background-col: #f07b41;
+  --social-icon-hover-col: #f26419;
+  --social-icon-background-hover-col: #ffffff;
+  --btn-link-col: #ffffff;
+  --btn-background-col: #f07b41;
+  --btn-link-hover-col: #ffffff;
+  --btn-background-hover-col: #f07b41;
+  --btn-border-hover-col: #c44536;
+  --pagination-link-col: #ffffff;
+  --pagination-background-col: #20b3a1;
+  --pagination-link-hover-col: #ffffff;
+  --pagination-background-hover-col: #20b3a1;
+  --pagination-border-hover-col: #197278;
+}
+
 /* --- Body --- */
 
 @font-face {
@@ -231,10 +261,24 @@ html body .svelte-lib-app {
   --link: var(--link-col);
   --link-hover: var(--hover-col);
   --ui-text: var(--text-col);
+  --ui-border-strong: var(--preview-pill-border-hover-col);
   --ui-surface: var(--page-col);
+  --ui-surface-alt: var(--preview-pill-background-col);
+  --ui-surface-hover: var(--preview-pill-background-hover-col);
+  --ui-surface-selected: var(--preview-pill-border-col);
+  --ui-control: var(--text-col);
+  --ui-control-hover: var(--preview-pill-border-col);
+  --ui-control-text: var(--page-col);
+  --ui-action: var(--btn-background-col);
+  --ui-action-hover: var(--btn-background-hover-col);
+  --ui-action-border: var(--btn-border-hover-col);
+  --ui-action-border-hover: var(--btn-border-hover-col);
+  --ui-action-text: var(--btn-link-col);
+  --ui-action-text-hover: var(--btn-link-hover-col);
   --ui-focus: var(--link-col);
   --ui-selection: var(--brand-hover);
   --ui-selection-text: var(--page-col);
+  --success: var(--link-col);
 }
 
 .full-width-tool-host {
@@ -291,6 +335,9 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   border-bottom: 2.5px solid var(--navbar-border-col);
   padding-right: 1.5rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  /* Chrome on iOS omits the fixed bar from the frozen frame it holds while a
+     navigation is in flight; its own compositing layer survives that window */
+  transform: translateZ(0);
 }
 
 /* ring the avatar so the navbar border doesn't appear to cut through it */
@@ -308,6 +355,108 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
 .navbar-custom .navbar-nav .nav-item {
   font-size: 1rem;
   text-transform: none;
+}
+
+.theme-selector {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.theme-selector-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  min-height: 2.25rem;
+  padding: 0.25rem;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  color: var(--navbar-link-col);
+  background: transparent;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.theme-selector-toggle:hover {
+  border-color: var(--navbar-border-col);
+}
+
+.theme-selector-toggle:focus,
+.theme-selector-option:focus {
+  outline: none;
+}
+
+.theme-selector-toggle:focus-visible {
+  outline: 2px solid var(--navbar-link-hover-col);
+  outline-offset: 2px;
+}
+
+.theme-selector-option:focus-visible {
+  outline: 2px solid var(--text-col);
+  outline-offset: -2px;
+}
+
+.theme-selector-menu {
+  position: absolute;
+  z-index: 1100;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  min-width: 9.5rem;
+  padding: 0.35rem;
+  border: 1px solid var(--navbar-border-col);
+  border-radius: 0.6rem;
+  background-color: var(--page-col);
+  box-shadow: 0 0.35rem 0.85rem rgba(0, 0, 0, 0.2);
+}
+
+.theme-selector-menu[hidden] {
+  display: none;
+}
+
+.theme-selector-option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 0;
+  border-radius: 0.35rem;
+  color: var(--text-col);
+  background-color: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.theme-selector-option:hover,
+.theme-selector-option[aria-checked="true"] {
+  background-color: var(--preview-pill-background-hover-col);
+}
+
+.theme-selector-option-swatch {
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 1px solid var(--text-col);
+  border-radius: 50%;
+  background-color: var(--page-col);
+}
+
+.theme-selector-option[aria-checked="true"] .theme-selector-option-swatch {
+  background-color: var(--link-col);
+  box-shadow: inset 0 0 0 2px var(--page-col);
+}
+
+.theme-selector-mobile {
+  display: none;
+}
+
+.theme-selector-desktop {
+  display: none;
 }
 
 /* increasing size of projects navbar section width */
@@ -392,6 +541,12 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
   .navbar-custom .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item[href$="/the_networks_of_war/"] {
     white-space: pre-line;
   }
+
+  .navbar-custom .theme-selector-desktop {
+    display: flex;
+    align-items: center;
+    margin-left: 0.25rem;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -452,8 +607,9 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     max-height: calc(100dvh - 3.125rem);
   }
 
-  .navbar-toggler:hover {
-    border-color: #439aa5;
+  .navbar-toggler:hover,
+  .navbar-toggler[aria-expanded="true"] {
+    border-color: var(--navbar-toggler-hover-border-col);
   }
 
   .navbar-custom .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
@@ -469,6 +625,14 @@ main.container-fluid:has(.full-width-tool-host) .pagination.blog-pager {
     font-size: 0.925em;
     font-weight: 800;
     padding-left: 1rem;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .theme-selector-mobile {
+    display: flex;
+    margin-left: auto;
+    margin-right: 0.4rem;
   }
 }
 
@@ -551,6 +715,10 @@ footer a:hover {
 
 .footer-links .fa-stack-2x {
   color: var(--social-icon-background-col);
+}
+
+.footer-links .fa-stack-1x {
+  color: var(--social-icon-col);
 }
 
 .footer-links a[title="GitHub"] .fa-stack-1x {

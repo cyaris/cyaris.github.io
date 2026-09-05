@@ -38,7 +38,7 @@ let BeautifulJekyllJS = {
   },
 
   initImgs: function () {
-    // If the page was large images to randomly select from, choose an image
+    // If the page has large images to randomly select from, choose an image
     if ($("#header-big-imgs").length > 0) {
       BeautifulJekyllJS.bigImgEl = $("#header-big-imgs")
       BeautifulJekyllJS.numImgs = BeautifulJekyllJS.bigImgEl.attr("data-num-img")

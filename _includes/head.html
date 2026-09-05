@@ -2,6 +2,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  {% include theme-definitions.html %}
+  <script src="{{ '/assets/js/theme-persistence.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/theme-manager.js' | relative_url }}"></script>
+
   <link
     rel="preload"
     href="{{ '/assets/fonts/open-sans-latin.woff2' | relative_url }}"
@@ -32,11 +36,14 @@
     {%- endif -%}
   {% endcapture %}
 
+  {% assign project = site.data.projects | where: 'id', page['project-id'] | first %}
   {% capture description %}
     {%- if page.share-description -%}
       {{ page.share-description | strip_html | xml_escape }}
     {%- elsif page contains 'description' -%}
       {{ page.description | strip_html | xml_escape }}
+    {%- elsif project.description -%}
+      {{ project.description | strip_html | xml_escape }}
     {%- elsif page.subtitle -%}
       {{ page.subtitle | strip_html | xml_escape }}
     {%- else -%}
@@ -166,8 +173,10 @@
   {% else %}
     <meta name="twitter:card" content="summary">
   {% endif %}
-  <meta name="twitter:site" content="@{{ site.social-network-links.twitter }}">
-  <meta name="twitter:creator" content="@{{ site.social-network-links.twitter }}">
+  {% if site['social-network-links'].twitter %}
+    <meta name="twitter:site" content="@{{ site.social-network-links.twitter }}">
+    <meta name="twitter:creator" content="@{{ site.social-network-links.twitter }}">
+  {% endif %}
 
   <meta property="twitter:title" content="{{ title }}">
   <meta property="twitter:description" content="{{ description }}">

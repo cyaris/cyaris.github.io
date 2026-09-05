@@ -6,6 +6,7 @@ import { spawn } from "node:child_process"
 const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)))
 const configPath = join(projectRoot, "_config.yml")
 const jekyllArguments = ["exec", "jekyll", "serve", "--livereload", ...process.argv.slice(2)]
+
 let jekyllProcess
 let restartPending = false
 let restartTimeout

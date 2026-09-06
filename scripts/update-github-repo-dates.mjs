@@ -112,6 +112,7 @@ const userInfoByName = new Map()
 for (const repo of [...repos].sort()) {
   const info = await requestJson(`/repos/${repo}`)
   const user = repo.split("/")[0]
+
   let userInfo = userInfoByName.get(user)
   if (!userInfo) {
     userInfo = await requestJson(`/users/${user}`)

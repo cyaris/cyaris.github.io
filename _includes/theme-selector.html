@@ -1,0 +1,26 @@
+<div class="theme-selector" data-theme-selector>
+  <button
+    class="theme-selector-toggle"
+    type="button"
+    aria-label="Choose color palette"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-controls="theme-selector-menu-{{ include.id }}"
+  >
+    <span aria-hidden="true">🎨</span>
+  </button>
+  <div class="theme-selector-menu" id="theme-selector-menu-{{ include.id }}" role="menu" hidden>
+    {%- for theme_pair in site['theme-palettes'] %}
+      <button
+        class="theme-selector-option"
+        type="button"
+        role="menuitemradio"
+        aria-checked="{% if theme_pair[0] == site.default-theme %}true{% else %}false{% endif %}"
+        data-theme-option="{{ theme_pair[0] }}"
+      >
+        <span class="theme-selector-option-swatch" aria-hidden="true"></span>
+        <span>{{ theme_pair[1].label }}</span>
+      </button>
+    {%- endfor %}
+  </div>
+</div>

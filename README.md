@@ -78,6 +78,16 @@ Git ignores the generated `_data/generated_s3_assets.yml` file locally.
 
 These site-local features are layered on top of Beautiful Jekyll. The `_includes` files listed here are not present in upstream Beautiful Jekyll.
 
+### Runtime Palette Selection
+
+- `_includes/theme-definitions.html` publishes the configured transition duration and every palette as a complete set of semantic CSS variables before site styles load.
+- `_includes/theme-selector.html` renders the reusable navbar palette control for its desktop and mobile placements.
+- `assets/js/theme-persistence.js` isolates `localStorage` access so unavailable browser storage does not prevent in-page theme changes.
+- `assets/js/theme-manager.js` restores the saved palette before first paint, updates semantic variables without a reload, manages both accessible navbar dropdowns, keeps their selected states synchronized, emits `palettechange` animation frames for Canvas consumers, and disables animation under `prefers-reduced-motion`.
+- `assets/css/custom.css` maps the live site palette into the complete set of themeable `svelte-lib` UI roles while leaving application-owned data encodings intact.
+
+The manager interpolates every semantic color on animation frames with `color-mix(in oklch, ...)` for the number of milliseconds configured by `_config.yml` `theme-transition-duration-ms` before settling on the exact configured value. The Developer palette retains the site's original colors, while the Aloe palette adds the supplied cream, lavender, and blue alternative. Adding another complete entry under `_config.yml` `theme-palettes` automatically extends both dropdowns.
+
 ### GitHub Repository Badges And Dates
 
 - `_includes/github-repo-badges.html` renders repository badges and metadata:
@@ -191,7 +201,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 | --- | --- |
 | `type` | Groups a blog post or a `layout: home` listing page into a content type. Each post in `_posts` sets `type: post`; `blog.html` sets `type: post` to list them, while `projects.html` sets `type: project` to list `_data/projects.yml` cards instead. `_layouts/post.html` also uses it to scope "previous/next" pagination to posts sharing the same type. |
 | `project-id` | Links a `layout: page` project page to its matching `_data/projects.yml` entry. Enables "previous/next project" pagination in the same order as the Projects listing and applies the project header sizing class in `_includes/header.html`. |
-| `description` | Optional per-page meta-description fallback that `_includes/head.html` reads after `share-description` and before `subtitle` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags. |
+| `description` | Optional per-page meta-description fallback that `_includes/head.html` reads after `share-description` and before a matching `_data/projects.yml` description or `subtitle` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags. |
 | `badge-position` | Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts. |
 | `badge-alignment` | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts. |
 | `thumbnail-fit` | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`. |
@@ -218,18 +228,19 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Matches page-header title/subtitle separators to the surrounding text color
 - Maps the site palette to `svelte-lib` semantic color tokens at the shared embedded-app root
 - Overrides global typography, intro header title/subtitle/date sizing and spacing, emphasis opacity, and link colors, and suppresses pointer-focus borders and rings on links site-wide while keeping a visible `:focus-visible` outline for keyboard navigation
-- Reads site colors through CSS variables emitted by `assets/css/beautifuljekyll.css` so the file remains valid plain CSS for editor tooling and Prettier
+- Defines the site-specific palette fallbacks and Open Sans font variables consumed by custom styles, while runtime theme selection overrides the palette properties
 - Defines the reusable `.center` alignment utility
 - Styles the shared asset-loading indicator, including S3 app-bundle, post-thumbnail, and body-content-image placement and reduced-motion states
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar presentation and behavior:
   - avatar placement, crop scaling, expanded-menu movement, homepage-only expanded-menu fading, and ring border
+  - compositing-layer promotion so Chrome on iOS keeps the fixed bar painted while a navigation is in flight
   - dropdown behavior, including 40 px mobile touch rows with proportionally scaled type
   - firework cursor frame swaps and image animation styling, including reduced-motion handling
   - mobile expanded-menu scrolling and scroll-triggered dismissal without locking page scrolling
   - navbar sizing and drop-shadow depth
   - responsive mobile/desktop launcher visibility
-  - toggler styling
+  - toggler styling, including palette-specific border colors while hovered or expanded
 - Customizes footer borders, link states, social icon sizing and hover rings, Tableau icon placement, and responsive footer spacing
 - Customizes post preview title, subtitle, metadata, thumbnail sizing and visual top alignment, title hover colors, and preview borders
 - Aligns project-card subtitle-to-badge and badge-to-tag spacing, plus full-opacity tag labels, icons, and pills, with GitHub repo badges
@@ -243,7 +254,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/css/beautifuljekyll.css`
 
-- Emits the site-specific color palette as CSS custom properties for downstream stylesheets
+- Keeps active upstream declarations unchanged
 - Removes inactive upstream Disqus comment styling
 - Removes inactive upstream navbar search overlay styling
 - Removes inactive upstream GitHub button header styling
@@ -251,7 +262,10 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 ### `assets/js/beautifuljekyll.js`
 
-- Stays aligned with the upstream Beautiful Jekyll JavaScript except for repository formatting and removal of the inactive navbar search initializer
+- Differs from the current upstream JavaScript only in these documented ways:
+  - Applies repository formatting and `AGENTS.md`-required simplifications
+  - Removes mobile-navbar handlers superseded by `assets/js/custom.js`
+  - Removes the inactive navbar search initializer
 
 ### `assets/js/custom.js`
 
@@ -261,14 +275,15 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `_config.yml`
 
 - Renames the navbar text color setting to `navbar-link-col`
-- Adds site-specific color variables for the navbar, page, links, post titles, preview pills, footer, and social links
+- Defines the runtime palette transition duration and the Developer and Aloe palettes as complete semantic-variable sets while preserving the original top-level color settings as Developer aliases
 - Configures the shared reveal delay before S3 app and body content-image loading indicators are shown
+- Configures the S3 asset bucket and development bundle prefix
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
 - Removes inactive upstream navbar search, comment-provider, and Matomo configuration stubs
 - Removes upstream setup-era guidance and the obsolete `feed_show_tags` toggle; listing pages render tag pills
   unconditionally on desktop and hide them on mobile
-- Groups Jekyll and custom settings under consistently formatted section headings
+- Groups required, navigation, logo, footer, metadata/feed, post/listing, theme/appearance, site-asset, loading-indicator, S3 asset, analytics, and Jekyll settings under consistently formatted responsibility-based headings
 - Adds generated-site exclusions for build-only material:
   - `AGENTS.md` and `CLAUDE.md`
   - `docs/`
@@ -278,6 +293,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `contact.html`
 
 - Defines page-local contact form, Turnstile, status, honeypot, and mobile contact-page styles
+- Treats an empty or malformed Worker response body as an immediate error, preserves the submitted fields, and resets
+  only the Turnstile challenge
 
 ### `fireworks.html`
 
@@ -303,8 +320,11 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `_includes/head.html`
 
 - Adds PNG favicon links for shortcut and browser icons, plus a dedicated Apple touch icon
+- Loads the runtime palette definitions, safe persistence adapter, and theme manager before stylesheets so a saved palette applies before first paint
 - Preloads the locally hosted Open Sans normal variable font used by initial page content
 - Loads global firework launcher styles inside the document head
+- Uses the matching `_data/projects.yml` description for project pages without a page-specific description
+- Omits Twitter account meta tags when no Twitter handle is configured
 - Falls back to the site RSS description when generated page-description text still contains raw Liquid tags
 - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks
 
@@ -319,6 +339,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 
 - Replaces the title/logo brand link with desktop and mobile firework launch controls that render the local Kid Pix
   dynamite APNG
+- Adds the palette-emoji dropdown immediately after Resume on desktop and immediately before the hamburger button on mobile
 - Builds the Projects dropdown from `_data/projects.yml` entries with `navbar: true`
 - Changes dropdown parent links to lowercase relative URLs
 - Removes the right-aligned dropdown menu class

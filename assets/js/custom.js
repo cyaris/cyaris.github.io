@@ -8,7 +8,6 @@ window.addEventListener("pageshow", function (event) {
 
 document.addEventListener("DOMContentLoaded", function () {
   const navbar = $("#main-navbar")
-  let navbarNavigationPending = false
   const collapseNavbar = function () {
     navbar.collapse("hide")
   }
@@ -25,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
   $(".firework-launcher-desktop, .firework-launcher-mobile").click(collapseNavbar)
 
   // Keep the expanded navbar in place until a selected destination replaces the page
+  let navbarNavigationPending = false
   $(".navbar").on("click", "a:not([href^='javascript:'])", function (event) {
     if (!event.isDefaultPrevented() && event.which === 1 && !event.metaKey && !event.ctrlKey && !event.shiftKey) {
       navbarNavigationPending = true

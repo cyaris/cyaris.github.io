@@ -246,13 +246,11 @@ title: Contact
         })
 
         const responseText = await response.text()
-        let result = {}
-        if (responseText) {
-          try {
-            result = JSON.parse(responseText)
-          } catch (error) {
-            result = {}
-          }
+        let result
+        try {
+          result = JSON.parse(responseText)
+        } catch (error) {
+          throw new Error("Sorry, your message couldn't be sent. Please try again.")
         }
 
         if (!response.ok) {

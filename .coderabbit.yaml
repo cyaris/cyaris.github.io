@@ -105,6 +105,23 @@ reviews:
         - Incorrect assumptions about page load order
         - Missing cleanup for timers, observers, or listeners
         - Code that fails when JavaScript is deferred or loaded asynchronously
+        - Browser-history restoration or persisted theme state that leaves navigation, animation, or palette UI stale
+
+    - path: "{assets/js/theme-manager.js,assets/js/theme-persistence.js,_includes/theme-definitions.html}"
+      instructions: |
+        Check for:
+        - Theme definitions, configured variables, CSS fallbacks, and embedded-app mappings that no longer share the same complete property contract
+        - Storage failures or unknown saved values that prevent the configured default theme from applying before first paint
+        - Theme transitions that leave temporary classes, timers, inline variables, or palettechange events in an inconsistent state
+        - Selector keyboard, focus, aria-checked, aria-expanded, outside-click, or repeated-mount regressions
+
+    - path: "scripts/**/*.{js,mjs}"
+      instructions: |
+        Check for:
+        - S3 asset discovery that misses literal include paths, mishandles query strings, or silently accepts unresolved dynamic paths
+        - Generated asset-version data that is stale, nondeterministic, written to the wrong location, or inconsistent with Jekyll includes
+        - Local-server, repository-date, or asset scripts that assume one platform, working directory, branch, or unavailable command
+        - Missing regression tests for parser, filesystem, subprocess, or failure-path changes
 
     - path: "**/_config.yml"
       instructions: |
@@ -114,6 +131,7 @@ reviews:
         - Incorrect URL, baseurl, permalink, pagination, or plugin settings
         - Configuration changes that could break GitHub Pages deployment
         - Secrets or environment-specific values committed to the repository
+        - Theme palette entries, anchors, defaults, or transition settings that drift from theme-definitions.html and custom.css
 
     - path: "**/_includes/**"
       instructions: |

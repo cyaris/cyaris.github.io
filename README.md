@@ -234,7 +234,6 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Styles full-width embedded tool hosts inside Bootstrap breakpoints
 - Customizes navbar presentation and behavior:
   - avatar placement, crop scaling, expanded-menu movement, homepage-only expanded-menu fading, and ring border
-  - compositing-layer promotion so Chrome on iOS keeps the fixed bar painted while a navigation is in flight
   - dropdown behavior, including 40 px mobile touch rows with proportionally scaled type
   - firework cursor frame swaps and image animation styling, including reduced-motion handling
   - mobile expanded-menu scrolling and scroll-triggered dismissal without locking page scrolling
@@ -270,6 +269,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `assets/js/custom.js`
 
 - Reloads pages restored from the browser's back/forward cache so animations and navigation controls return to their initial state
+- Routes ordinary same-origin page links through fetched document replacement in Chrome on iOS, preloading same-origin styles and blocking scripts before the swap while preserving modifier-click, download, external-link, fragment, history, and failure-fallback behavior and avoiding Chrome's disappearing hard-navigation frame
 - Tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded through navigation-triggered scroll events until the destination loads
 
 ### `_config.yml`

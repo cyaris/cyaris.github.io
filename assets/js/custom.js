@@ -22,11 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  async function loadNavigationStylesheet(url, loadedUrls = new Set()) {
+  async function loadNavigationStylesheet(url, loadedUrls = new Set(), signal) {
     if (loadedUrls.has(url)) return ""
     loadedUrls.add(url)
 
-    const response = await fetch(url)
+    const response = await fetch(url, { signal })
     if (!response.ok) throw new Error(`Stylesheet request failed with status ${response.status}`)
 
     let css = await response.text()
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (const match of imports) {
       const importUrl = new URL(match[1], url)
       if (importUrl.origin === window.location.origin) {
-        css = css.replace(match[0], await loadNavigationStylesheet(importUrl.href, loadedUrls))
+        css = css.replace(match[0], await loadNavigationStylesheet(importUrl.href, loadedUrls, signal))
       }
     }
 
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
   }
 
-  async function inlineNavigationResources(html, url) {
+  async function inlineNavigationResources(html, url, signal) {
     const nextDocument = new DOMParser().parseFromString(html, "text/html")
     await Promise.all(
       [...nextDocument.querySelectorAll('link[rel~="stylesheet"][href]')].map(async function (link) {
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (stylesheetUrl.origin !== window.location.origin) return
 
         const style = nextDocument.createElement("style")
-        style.textContent = await loadNavigationStylesheet(stylesheetUrl.href)
+        style.textContent = await loadNavigationStylesheet(stylesheetUrl.href, undefined, signal)
         link.replaceWith(style)
       })
     )
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const scriptUrl = new URL(script.getAttribute("src"), url)
         if (scriptUrl.origin !== window.location.origin) return
 
-        const response = await fetch(scriptUrl.href)
+        const response = await fetch(scriptUrl.href, { signal })
         if (!response.ok) throw new Error(`Script request failed with status ${response.status}`)
 
         script.removeAttribute("src")
@@ -72,8 +72,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return `<!doctype html>\n${nextDocument.documentElement.outerHTML}`
   }
 
-  async function fetchNavigationDocument(url) {
-    const response = await fetch(url, { headers: { "X-Cyaris-Soft-Navigation": "1" } })
+  async function fetchNavigationDocument(url, signal) {
+    const response = await fetch(url, { headers: { "X-Cyaris-Soft-Navigation": "1" }, signal })
     if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) {
       throw new Error(`Navigation request failed with status ${response.status}`)
     }
@@ -81,7 +81,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const responseUrl = new URL(response.url)
     if (responseUrl.origin !== window.location.origin) throw new Error("Navigation left the site origin")
 
-    return { html: await inlineNavigationResources(await response.text(), responseUrl.href), url: responseUrl.href }
+    return {
+      html: await inlineNavigationResources(await response.text(), responseUrl.href, signal),
+      url: responseUrl.href
+    }
   }
 
   function replaceNavigationDocument({ html, scrollY, url }, pushState) {
@@ -145,6 +148,21 @@ document.addEventListener("DOMContentLoaded", function () {
   let lastScrollHistoryUpdate = 0
   let trailingScrollHistoryUpdateTimeout = null
   const scrollHistoryUpdateIntervalMs = 350
+
+  const navigationLoadingElement = document.getElementById("soft-navigation-loading")
+  const navigationTimeoutMs = 8000
+  const navigationLoadingRevealDelayMs = 200
+
+  function beginNavigationLoading() {
+    const revealTimeout = setTimeout(function () {
+      navigationLoadingElement?.classList.add("soft-navigation-loading-visible")
+    }, navigationLoadingRevealDelayMs)
+
+    return function endNavigationLoading() {
+      clearTimeout(revealTimeout)
+      navigationLoadingElement?.classList.remove("soft-navigation-loading-visible")
+    }
+  }
 
   function scheduleScrollHistoryUpdate() {
     const now = Date.now()
@@ -213,10 +231,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (navigationPending) return
     navigationPending = true
     setNavigationScrollState()
+    const endNavigationLoading = beginNavigationLoading()
 
     try {
-      replaceNavigationDocument({ ...(await fetchNavigationDocument(url.href)), scrollY: 0 }, true)
+      const signal = AbortSignal.timeout(navigationTimeoutMs)
+      replaceNavigationDocument({ ...(await fetchNavigationDocument(url.href, signal)), scrollY: 0 }, true)
     } catch {
+      endNavigationLoading()
       window.location.assign(url.href)
     }
   })
@@ -224,13 +245,16 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("popstate", async function (event) {
     if (!event.state?.cyarisSoftNavigation || navigationPending) return
     navigationPending = true
+    const endNavigationLoading = beginNavigationLoading()
 
     try {
+      const signal = AbortSignal.timeout(navigationTimeoutMs)
       replaceNavigationDocument(
-        { ...(await fetchNavigationDocument(window.location.href)), scrollY: event.state.scrollY || 0 },
+        { ...(await fetchNavigationDocument(window.location.href, signal)), scrollY: event.state.scrollY || 0 },
         false
       )
     } catch {
+      endNavigationLoading()
       window.location.reload()
     }
   })

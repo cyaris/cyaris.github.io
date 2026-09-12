@@ -15,7 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function setNavigationScrollState() {
     const state = history.state && typeof history.state === "object" ? history.state : {}
-    history.replaceState({ ...state, cyarisSoftNavigation: true, scrollY: window.scrollY }, "")
+    try {
+      history.replaceState({ ...state, cyarisSoftNavigation: true, scrollY: window.scrollY }, "")
+    } catch {
+      // WebKit throttles history.replaceState; a dropped update just keeps the previous scroll snapshot.
+    }
   }
 
   async function loadNavigationStylesheet(url, loadedUrls = new Set()) {
@@ -138,6 +142,25 @@ document.addEventListener("DOMContentLoaded", function () {
   setNavigationScrollState()
   let navigationPending = false
   let scrollStateUpdatePending = false
+  let lastScrollHistoryUpdate = 0
+  let trailingScrollHistoryUpdateTimeout = null
+  const scrollHistoryUpdateIntervalMs = 350
+
+  function scheduleScrollHistoryUpdate() {
+    const now = Date.now()
+    const elapsed = now - lastScrollHistoryUpdate
+    if (elapsed >= scrollHistoryUpdateIntervalMs) {
+      lastScrollHistoryUpdate = now
+      setNavigationScrollState()
+      return
+    }
+
+    clearTimeout(trailingScrollHistoryUpdateTimeout)
+    trailingScrollHistoryUpdateTimeout = setTimeout(function () {
+      lastScrollHistoryUpdate = Date.now()
+      setNavigationScrollState()
+    }, scrollHistoryUpdateIntervalMs - elapsed)
+  }
 
   try {
     const restoration = JSON.parse(sessionStorage.getItem("cyaris-soft-navigation-scroll"))
@@ -158,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
       scrollStateUpdatePending = true
       requestAnimationFrame(function () {
         scrollStateUpdatePending = false
-        setNavigationScrollState()
+        scheduleScrollHistoryUpdate()
       })
     },
     { passive: true }
@@ -182,11 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const url = new URL(link.href)
     const filename = url.pathname.split("/").pop()
-    if (
-      url.origin !== window.location.origin ||
-      (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) ||
-      (filename.includes(".") && !filename.endsWith(".html"))
-    ) {
+    if (url.origin !== window.location.origin || url.hash || (filename.includes(".") && !filename.endsWith(".html"))) {
       return
     }
 

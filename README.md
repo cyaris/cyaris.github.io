@@ -273,8 +273,9 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Routes ordinary same-origin page links through fetched document replacement in Chrome on iOS, preloading same-origin styles and blocking scripts before the swap while preserving modifier-click, download, external-link, fragment, history, and failure-fallback behavior and avoiding Chrome's disappearing hard-navigation frame
 - Throttles the soft-navigation scroll-position history writes to one per 350ms, with a trailing update so the final
   scroll position is still saved, to stay under WebKit's `history.replaceState` rate limit
-- Reveals the `#soft-navigation-loading` bar after a 200ms delay while a soft navigation is in flight, and times out a
-  stalled soft navigation after 8 seconds to fall back to a standard page load
+- Reveals the `#soft-navigation-loading` bar with a visually hidden `Loading page...` status label after a 200ms delay
+  while a soft navigation is in flight, and times out a stalled soft navigation after 8 seconds to fall back to a
+  standard page load
 - Tracks the mobile navbar state for avatar movement and collapses an expanded menu after firework launches, outside clicks, page scrolling, or outside-navbar scroll gestures while leaving navbar-link and avatar selections expanded through navigation-triggered scroll events until the destination loads
 
 ### `_config.yml`
@@ -368,8 +369,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Loads global firework launcher scripts at the end of the body while their styles are emitted from `_includes/head.html`
 - Loads `_includes/content-image-loading.html` after the page content and footer scripts so it can scan rendered body images
 - Removes the upstream `bootstrap-social.css` stylesheet load, since it only styled the removed social media sharing buttons
-- Renders a hidden `#soft-navigation-loading` bar before the navbar on every page so `assets/js/custom.js` has a
-  persistent element to reveal during a Chrome-on-iOS soft navigation
+- Renders an empty `#soft-navigation-loading` status bar before the navbar on every page so `assets/js/custom.js` has
+  a persistent element to reveal, and announce to screen readers, during a Chrome-on-iOS soft navigation
 
 ### `_layouts/home.html`
 

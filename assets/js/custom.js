@@ -156,11 +156,15 @@ document.addEventListener("DOMContentLoaded", function () {
   function beginNavigationLoading() {
     const revealTimeout = setTimeout(function () {
       navigationLoadingElement?.classList.add("soft-navigation-loading-visible")
+      navigationLoadingElement?.replaceChildren(
+        Object.assign(document.createElement("span"), { className: "sr-only", textContent: "Loading page..." })
+      )
     }, navigationLoadingRevealDelayMs)
 
     return function endNavigationLoading() {
       clearTimeout(revealTimeout)
       navigationLoadingElement?.classList.remove("soft-navigation-loading-visible")
+      navigationLoadingElement?.replaceChildren()
     }
   }
 

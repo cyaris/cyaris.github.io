@@ -169,6 +169,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function scheduleScrollHistoryUpdate() {
+    // Once popstate has made the destination entry current, the outgoing document's scroll position must not be
+    // written into it; the click path already snapshots its position before the fetch starts.
+    if (navigationPending) return
+
     const now = Date.now()
     const elapsed = now - lastScrollHistoryUpdate
     if (elapsed >= scrollHistoryUpdateIntervalMs) {
@@ -179,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     clearTimeout(trailingScrollHistoryUpdateTimeout)
     trailingScrollHistoryUpdateTimeout = setTimeout(function () {
+      if (navigationPending) return
       lastScrollHistoryUpdate = Date.now()
       setNavigationScrollState()
     }, scrollHistoryUpdateIntervalMs - elapsed)

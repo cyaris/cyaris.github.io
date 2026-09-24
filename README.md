@@ -467,7 +467,7 @@ behavior, inputs, and secrets.
 
 Runs on:
 
-- pushes to `dev` and `master`
+- pushes to `master`
 - manual dispatch
 - a daily 13:23 UTC schedule, 30 minutes after the `Upstream Watch` runs in `mastermind`, `pixel_portrait`,
   `us_gun_violence_forecasting`, and `the_networks_of_war`
@@ -522,7 +522,7 @@ gh workflow run .github/workflows/auto-release.yml --ref master \
 
 ### `.github/workflows/workflow-validation.yml`
 
-Runs on `dev` and `master` pushes that change `.github/release-policy.yml`, `.github/workflows/**`, or `renovate.json`,
+Runs on `master` pushes that change `.github/release-policy.yml`, `.github/workflows/**`, or `renovate.json`,
 and on manual dispatch, then calls the
 [shared workflow-validation workflow](https://github.com/cyaris/shared-automation#githubworkflowsworkflow-validationyml)
 to validate the repository-owned Pages workflow, release-policy configuration, and Renovate configuration.

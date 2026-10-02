@@ -501,7 +501,8 @@ gh workflow run .github/workflows/pages.yml --ref master
 
 ### `.github/workflows/auto-create-dev-pr.yml`
 
-Runs on pushes to `dev` and calls the
+Runs on pushes to `dev` and `master` and on manual dispatch, skipping `dev` pushes while the `DEV_PR_OPEN` repository
+variable is `true`, and calls the
 [shared auto-create-dev-pr workflow](https://github.com/cyaris/shared-automation#githubworkflowsauto-create-dev-pryml).
 
 ### `.github/workflows/auto-release.yml`

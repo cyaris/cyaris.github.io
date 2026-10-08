@@ -2,7 +2,7 @@
   title: Fantasy Playtime
   subtitle: A free fantasy football companion app that combines ESPN, Yahoo, Sleeper, and Fleaflicker leagues in one place.
   description: Follow every fantasy football league you play in from one app, with live scores by NFL game, matchups, injuries, and standings.
-  url: https://fantasyplaytime.com/
+  url: /fantasy_playtime/
   tags: [javascript, ocr, supabase, svelte, tailwind css]
   thumbnail-img: https://fantasyplaytime.com/fantasy_playtime/referee.svg
   thumbnail-size: small

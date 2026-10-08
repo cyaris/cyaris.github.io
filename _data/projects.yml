@@ -1,3 +1,12 @@
+- id: fantasy_playtime
+  title: Fantasy Playtime
+  subtitle: A free fantasy football companion app that combines ESPN, Yahoo, Sleeper, and Fleaflicker leagues in one place.
+  description: Follow every fantasy football league you play in from one app, with live scores by NFL game, matchups, injuries, and standings.
+  url: /fantasy_playtime/
+  tags: [javascript, oauth 2.0, ocr, sql, supabase, svelte, tailwind css, web push]
+  thumbnail-img: https://fantasyplaytime.com/fantasy_playtime/referee.svg
+  thumbnail-size: small
+  navbar: true
 - id: the_networks_of_war
   title: "The Networks\nof War"
   subtitle: Performing network analysis on over 200 years of data from the Correlates of War (COW) Project.

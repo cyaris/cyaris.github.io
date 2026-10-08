@@ -170,7 +170,8 @@ The reveal delay prevents fast loads from ever showing the indicator and comes f
 
 `_data/projects.yml` controls:
 
-- Projects page card order and destinations
+- Projects page card order and destinations, including external destinations such as Fantasy Playtime, whose
+  absolute `url` and `thumbnail-img` pass through `relative_url` unchanged
 - project metadata and tags
 - projects shown in the Projects navbar dropdown
 

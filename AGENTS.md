@@ -41,8 +41,10 @@
 - Keep `_config.yml`'s `url` set to the canonical `https://charlieyaris.com` origin so every canonical, `og:url`,
   `og:image`, sitemap, and `robots.txt` URL is absolute, and keep `scripts/test-seo.mjs` passing in the Pages build.
 - Give every indexable page a distinct title and a truthful description of its visible content, and give project
-  subpages titles that name their subpage. Keep contact, error, and duplicate-variant pages, such as Mastermind's
-  individual levels, out of search with `sitemap: false`, which also emits `noindex, follow`.
+  subpages titles that name their subpage. Write descriptions in the site owner's first-person voice, never as a
+  third-person "Charlie Yaris is…" summary; page titles already carry the name. Keep contact, error, and
+  duplicate-variant pages, such as Mastermind's individual levels, out of search with `sitemap: false`, which also
+  emits `noindex, follow`.
 - Keep homepage `WebSite` and `Person` structured data and post `BlogPosting` structured data consistent with visible
   content and `_config.yml`.
 - Never add hidden, transparent, off-screen, zero-size, or `sr-only` copy for search engines. Search copy for an

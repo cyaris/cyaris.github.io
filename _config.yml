@@ -4,6 +4,10 @@
 
 title: Charlie Yaris | Data Engineer
 
+# Canonical origin for canonical links, social metadata, the sitemap, and robots.txt. GitHub Pages also answers
+# www.charlieyaris.com and cyaris.github.io with a permanent redirect here.
+url: https://charlieyaris.com
+
 # Your name to show in the footer
 author: Charlie Yaris
 
@@ -67,6 +71,13 @@ title-on-all-pages: true
 
 # RSS feed description and fallback page description
 rss-description: Welcome to my website! I hope you enjoy your stay.
+
+# Site name for search results and link previews, with the other names people search for it by
+site-name: Charlie Yaris
+site-alternate-names: [cyaris, charlieyaris.com]
+
+# Job title for the homepage's structured-data Person entry
+job-title: Data Engineer
 
 # The keywords to associate with your website, for SEO purposes
 keywords: cyaris, charlie yaris, charlieyaris, yaris

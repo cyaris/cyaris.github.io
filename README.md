@@ -188,6 +188,34 @@ overlay state.
 - `_includes/tableau_dashboards/cook_county_court_sentencing.html` embeds the Cook County Court Sentencing Tableau dashboard.
 - `_includes/tableau_dashboards/maryland_traffic_violations.html` embeds the Maryland Traffic Violations Tableau dashboard.
 
+### Search Metadata And Hosting
+
+These follow `fantasy_playtime`'s search-indexing approach, adapted to Jekyll and GitHub Pages.
+
+- `_config.yml` sets `url: https://charlieyaris.com`, so canonical links, `og:url`, `og:image`, `jekyll-sitemap`'s
+  `sitemap.xml` locations, and its generated `robots.txt` `Sitemap:` line are absolute. Without it, GitHub Actions
+  builds emitted relative URLs, which search engines reject.
+- `_includes/head.html` emits `index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1` for
+  indexable pages. `sitemap: false` keeps a page out of the sitemap and emits `noindex, follow` instead; Contact, 404,
+  and the four Mastermind level pages use it.
+- The homepage carries `WebSite` structured data naming the site `Charlie Yaris` from `site-name` and
+  `site-alternate-names`, plus a `Person` entry built from `author`, `job-title`, `avatar`, and the configured LinkedIn,
+  GitHub, and Instagram links. Each blog post carries `BlogPosting` structured data.
+- `favicon.ico` holds 16, 32, and 48 px PNG frames resized from `favicon.png`, so clients that request `/favicon.ico`
+  directly get an icon rather than the 404 page.
+- `npm run test:seo` checks a built `_site` (or a directory passed as its argument): every canonical and sitemap URL is
+  absolute on the configured origin, `robots.txt` names the absolute sitemap, `noindex` pages stay out of the sitemap,
+  every indexable page has a description, and structured data parses. The Pages workflow runs it after each build.
+- Embedded app pages are lightweight shells, so their content renders client-side. Crawlable pre-JavaScript copy for an
+  app, as `fantasy_playtime` generates for its routes, belongs in that app's source repository.
+
+Hosting differs from `fantasy_playtime`, which serves a private S3 bucket through CloudFront and uses a proxied
+Cloudflare `www` record with a Redirect Rule to reach its apex. Cloudflare provides DNS only for `charlieyaris.com`: the
+apex `A` records and the `www` CNAME point at GitHub Pages without the Cloudflare proxy. GitHub Pages enforces HTTPS and
+answers `www.charlieyaris.com` and `cyaris.github.io` with a 301 to the same path and query on the apex, and redirects
+extensionless paths to their trailing-slash canonical form. The apex's `google-site-verification` TXT records verify the
+domain in Google Search Console, where `https://charlieyaris.com/sitemap.xml` is the sitemap to submit.
+
 ### Homepage Action Buttons
 
 `index.html` adds homepage portrait navigation buttons that reuse the site's shared `.btn-group` button styling.
@@ -204,6 +232,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 | `description` | Optional per-page meta-description fallback that `_includes/head.html` reads after `share-description` and before a matching `_data/projects.yml` description or `subtitle` when building the page's `<meta name="description">`, Open Graph, and Twitter description tags. |
 | `badge-position` | Set alongside `gh-repo` to control whether `_includes/github-repo-badges.html` renders above (`top`) or below (`bottom`) the page content. Defaults to `top` for both project pages and blog posts. |
 | `badge-alignment` | Set alongside `gh-repo` to control whether the GitHub badges row is left-aligned (`left`) or centered (`center`). Defaults to `center` on project pages and `left` on blog posts. |
+| `sitemap` | `false` omits the page from `jekyll-sitemap`'s `sitemap.xml` and makes `_includes/head.html` emit `noindex, follow`. |
 | `thumbnail-fit` | Optional per-post CSS `object-fit` value (eg. `contain`, `cover`) for the blog listing thumbnail. Defaults to `contain`. |
 | `thumbnail-position` | Optional per-post CSS `object-position` value for the blog listing thumbnail. Defaults to `center center`. |
 | `thumbnail-size` | Optional per-post thumbnail size on the blog listing: `normal`, `small`, or `extra-small`. Defaults to `normal`. |
@@ -216,6 +245,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Displays `assets/img/evil_bialy.png` for the 404 image
 - Applies the `image_404` class for local responsive image sizing
 - Lazily decodes the 404 image
+- Sets `sitemap: false`, which keeps the page out of search
 
 ### `about_me.html`
 
@@ -283,6 +313,9 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Renames the navbar text color setting to `navbar-link-col`
 - Defines the runtime palette transition duration and the Developer and Aloe palettes as complete semantic-variable sets while preserving the original top-level color settings as Developer aliases
 - Configures the shared reveal delay before S3 app and body content-image loading indicators are shown
+- Sets `url` to the canonical `https://charlieyaris.com` origin, which upstream removed in favor of GitHub Pages'
+  legacy metadata plugin
+- Adds `site-name`, `site-alternate-names`, and `job-title` for social metadata and structured data
 - Configures the S3 asset bucket and development bundle prefix
 - Keeps top-level navbar page links on trailing-slash pretty URLs
 - Keeps the Projects navbar entry as a top-level link while `_data/projects.yml` controls project dropdown children
@@ -299,6 +332,7 @@ These YAML front matter parameters are site-local additions layered on top of Be
 ### `contact.html`
 
 - Defines page-local contact form, Turnstile, status, honeypot, and mobile contact-page styles
+- Sets `sitemap: false`, which keeps the page out of search
 - Treats an empty or malformed Worker response body as an immediate error, preserves the submitted fields, and resets
   only the Turnstile challenge
 
@@ -329,7 +363,13 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Loads the runtime palette definitions, safe persistence adapter, and theme manager before stylesheets so a saved palette applies before first paint
 - Preloads the locally hosted Open Sans normal variable font used by initial page content
 - Loads global firework launcher styles inside the document head
-- Uses the matching `_data/projects.yml` description for project pages without a page-specific description
+- Uses the matching `_data/projects.yml` description, then its subtitle, for project pages without a page-specific
+  description, and falls back to the site RSS description when a page's description would otherwise be empty
+- Titles a project subpage with its title and subtitle, such as `Mastermind: Development Story`
+- Emits a robots meta tag that is `noindex, follow` for `sitemap: false` pages and allows full snippets and large image
+  previews elsewhere
+- Names the site with `site-name` in `og:site_name` and adds `og:locale`
+- Adds homepage `WebSite` and `Person` structured data and blog-post `BlogPosting` structured data
 - Omits Twitter account meta tags when no Twitter handle is configured
 - Falls back to the site RSS description when generated page-description text still contains raw Liquid tags
 - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks
@@ -454,8 +494,8 @@ Deletes these inactive upstream files:
 
 ### `.github/workflows/pages.yml`
 
-- Generates GitHub repository metadata and unprefixed production S3 asset version data before the Jekyll build, then
-deploys `master` builds to GitHub Pages with GitHub Actions
+- Generates GitHub repository metadata and unprefixed production S3 asset version data before the Jekyll build, checks
+the built site's search metadata, then deploys `master` builds to GitHub Pages with GitHub Actions
 
 ## GitHub Actions Workflows
 
@@ -480,6 +520,7 @@ The workflow then:
 - generates `_data/generated_s3_assets.yml` for unprefixed production objects from current S3 metadata or deterministic
   `dev` fallback data
 - builds the site with `JEKYLL_ENV=production`
+- checks the built site's search metadata with `scripts/test-seo.mjs`
 - uploads the Pages artifact
 - deploys that artifact from `master` through `actions/deploy-pages`
 

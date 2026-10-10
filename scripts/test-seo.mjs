@@ -4,7 +4,8 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 
 // Checks a built site's search metadata: every canonical, sitemap, and robots.txt URL is absolute on the configured
-// origin, `noindex` pages stay out of the sitemap, and every indexable page has a description.
+// origin, `noindex` pages stay out of the sitemap, every indexable page has a description, and the homepage and blog
+// posts carry their structured data.
 const projectRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const siteDirectory = path.resolve(process.argv[2] ?? path.join(projectRoot, "_site"))
 const origin = fs.readFileSync(path.join(projectRoot, "_config.yml"), "utf8").match(/^url: (\S+)$/m)?.[1]
@@ -58,8 +59,21 @@ for (let file of htmlFiles(siteDirectory)) {
     )
   }
 
-  for (let [, json] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
-    assert.doesNotThrow(() => JSON.parse(json), `${relativePath} has invalid structured data`)
+  let structuredDataTypes = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(
+    ([, json]) => {
+      assert.doesNotThrow(() => JSON.parse(json), `${relativePath} has invalid structured data`)
+
+      return JSON.parse(json)["@type"]
+    }
+  )
+  let requiredTypes =
+    relativePath === "index.html"
+      ? ["WebSite", "Person"]
+      : html.includes('<meta property="og:type" content="article">')
+        ? ["BlogPosting"]
+        : []
+  for (let type of requiredTypes) {
+    assert.ok(structuredDataTypes.includes(type), `${relativePath} has no ${type} structured data`)
   }
 }
 

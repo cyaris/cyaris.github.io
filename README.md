@@ -205,7 +205,8 @@ These follow `fantasy_playtime`'s search-indexing approach, adapted to Jekyll an
   directly get an icon rather than the 404 page.
 - `npm run test:seo` checks a built `_site` (or a directory passed as its argument): every canonical and sitemap URL is
   absolute on the configured origin, `robots.txt` names the absolute sitemap, `noindex` pages stay out of the sitemap,
-  every indexable page has a description, and structured data parses. The Pages workflow runs it after each build.
+  every indexable page has a description, structured data parses, the homepage has `WebSite` and `Person` data, and
+  each blog post has `BlogPosting` data. The Pages workflow runs it after each build.
 - Embedded app pages are lightweight shells, so their content renders client-side. Crawlable pre-JavaScript copy for an
   app, as `fantasy_playtime` generates for its routes, belongs in that app's source repository.
 

@@ -39,30 +39,31 @@
     {%- endif -%}
   {% endcapture %}
 
-  {% capture description %}
+  {% capture description_text %}
     {%- if page.share-description -%}
-      {{ page.share-description | strip_html | xml_escape }}
+      {{ page.share-description | strip_html }}
     {%- elsif page contains 'description' -%}
-      {{ page.description | strip_html | xml_escape }}
+      {{ page.description | strip_html }}
     {%- elsif project.description -%}
-      {{ project.description | strip_html | xml_escape }}
+      {{ project.description | strip_html }}
     {%- elsif project.subtitle -%}
-      {{ project.subtitle | strip_html | xml_escape }}
+      {{ project.subtitle | strip_html }}
     {%- elsif page.subtitle -%}
-      {{ page.subtitle | strip_html | xml_escape }}
+      {{ page.subtitle | strip_html }}
     {%- else -%}
       {%- assign excerpt_length = site.excerpt_length | default: 50 -%}
       {%- assign fallback_description = page.content | strip_html | strip -%}
       {%- if fallback_description contains '{%' -%}
-        {{ site['rss-description'] | default: site.title | strip_html | xml_escape }}
+        {{ site['rss-description'] | default: site.title | strip_html }}
       {%- else -%}
-        {{ fallback_description | xml_escape | truncatewords: excerpt_length | strip }}
+        {{ fallback_description | truncatewords: excerpt_length | strip }}
       {%- endif -%}
     {%- endif -%}
   {% endcapture %}
-  {% if description == '' %}
-    {% assign description = site['rss-description'] | default: site.title | strip_html | xml_escape %}
+  {% if description_text == '' %}
+    {% assign description_text = site['rss-description'] | default: site.title | strip_html %}
   {% endif %}
+  {% assign description = description_text | xml_escape %}
 
   <title>{{ title }}</title>
 
@@ -225,7 +226,7 @@
     </script>
   {% elsif page.id %}
     <script type="application/ld+json">
-      {"@context": "https://schema.org", "@type": "BlogPosting", "headline": {{ page.title | strip_html | jsonify }}, "description": {{ page.share-description | default: page.description | default: page.subtitle | strip_html | jsonify }}, "datePublished": {{ page.date | date_to_xmlschema | jsonify }}, "url": {{ page.url | absolute_url | jsonify }},{% if img != '' %} "image": {{ img | absolute_url | jsonify }},{% endif %} "author": {{ person | strip }}}
+      {"@context": "https://schema.org", "@type": "BlogPosting", "headline": {{ page.title | strip_html | jsonify }}, "description": {{ description_text | jsonify }}, "datePublished": {{ page.date | date_to_xmlschema | jsonify }}, "url": {{ page.url | absolute_url | jsonify }},{% if img != '' %} "image": {{ img | absolute_url | jsonify }},{% endif %} "author": {{ person | strip }}}
     </script>
   {% endif %}
 

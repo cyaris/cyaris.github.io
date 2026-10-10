@@ -369,7 +369,8 @@ These YAML front matter parameters are site-local additions layered on top of Be
 - Emits a robots meta tag that is `noindex, follow` for `sitemap: false` pages and allows full snippets and large image
   previews elsewhere
 - Names the site with `site-name` in `og:site_name` and adds `og:locale`
-- Adds homepage `WebSite` and `Person` structured data and blog-post `BlogPosting` structured data
+- Adds homepage `WebSite` and `Person` structured data and blog-post `BlogPosting` structured data whose description
+  matches the page's meta description
 - Omits Twitter account meta tags when no Twitter handle is configured
 - Falls back to the site RSS description when generated page-description text still contains raw Liquid tags
 - Removes inactive MathJax, Matomo, and Staticman stylesheet hooks

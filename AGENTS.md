@@ -32,6 +32,24 @@
 - Keep S3 asset include paths literal so `scripts/generate-s3-asset-versions.mjs` can discover them. When a dynamic path
   is necessary, add it to an explicit generator registry rather than omitting it from version generation.
 
+## Search Metadata
+
+- Mirror `../fantasy_playtime`'s search-indexing approach, recorded in its `AGENTS.md` `Feature Overview And SEO`
+  section and its README `Production hosting` section, adapted to Jekyll and GitHub Pages. Treat a gap between the two
+  sites as an inconsistency to fix here, or to raise as a decision when the hosting difference makes it inapplicable,
+  and update README `Search Metadata And Hosting` with each adaptation.
+- Keep `_config.yml`'s `url` set to the canonical `https://charlieyaris.com` origin so every canonical, `og:url`,
+  `og:image`, sitemap, and `robots.txt` URL is absolute, and keep `scripts/test-seo.mjs` passing in the Pages build.
+- Give every indexable page a distinct title and a truthful description of its visible content, and give project
+  subpages titles that name their subpage. Write descriptions in the site owner's first-person voice, never as a
+  third-person "Charlie Yaris is…" summary; page titles already carry the name. Keep contact, error, and
+  duplicate-variant pages, such as Mastermind's individual levels, out of search with `sitemap: false`, which also
+  emits `noindex, follow`.
+- Keep homepage `WebSite` and `Person` structured data and post `BlogPosting` structured data consistent with visible
+  content and `_config.yml`.
+- Never add hidden, transparent, off-screen, zero-size, or `sr-only` copy for search engines. Search copy for an
+  embedded app's own content belongs in that app's source repository, per Embedded App Hosting.
+
 ## Content
 
 - Keep all tags alphabetized and lowercase.

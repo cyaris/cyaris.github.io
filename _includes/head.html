@@ -18,9 +18,12 @@
   <link rel="icon" type="image/png" href="{{ '/favicon.png' | relative_url }}">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
 
+  {% assign project = site.data.projects | where: 'id', page['project-id'] | first %}
   {% capture pagetitle %}
     {%- if page.share-title -%}
       {{ page.share-title | strip_html | xml_escape }}
+    {%- elsif page.title and project and page.subtitle and page.url != project.url -%}
+      {{ page.title | strip_html | xml_escape }}: {{ page.subtitle | strip_html | xml_escape }}
     {%- elsif page.title -%}
       {{ page.title | strip_html | xml_escape  }}
     {%- else -%}
@@ -36,26 +39,31 @@
     {%- endif -%}
   {% endcapture %}
 
-  {% assign project = site.data.projects | where: 'id', page['project-id'] | first %}
-  {% capture description %}
+  {% capture description_text %}
     {%- if page.share-description -%}
-      {{ page.share-description | strip_html | xml_escape }}
+      {{ page.share-description | strip_html }}
     {%- elsif page contains 'description' -%}
-      {{ page.description | strip_html | xml_escape }}
+      {{ page.description | strip_html }}
     {%- elsif project.description -%}
-      {{ project.description | strip_html | xml_escape }}
+      {{ project.description | strip_html }}
+    {%- elsif project.subtitle -%}
+      {{ project.subtitle | strip_html }}
     {%- elsif page.subtitle -%}
-      {{ page.subtitle | strip_html | xml_escape }}
+      {{ page.subtitle | strip_html }}
     {%- else -%}
       {%- assign excerpt_length = site.excerpt_length | default: 50 -%}
       {%- assign fallback_description = page.content | strip_html | strip -%}
       {%- if fallback_description contains '{%' -%}
-        {{ site['rss-description'] | default: site.title | strip_html | xml_escape }}
+        {{ site['rss-description'] | default: site.title | strip_html }}
       {%- else -%}
-        {{ fallback_description | xml_escape | truncatewords: excerpt_length | strip }}
+        {{ fallback_description | truncatewords: excerpt_length | strip }}
       {%- endif -%}
     {%- endif -%}
   {% endcapture %}
+  {% if description_text == '' %}
+    {% assign description_text = site['rss-description'] | default: site.title | strip_html %}
+  {% endif %}
+  {% assign description = description_text | xml_escape %}
 
   <title>{{ title }}</title>
 
@@ -71,6 +79,13 @@
   {% endif %}
 
   <meta name="description" content="{{ description }}">
+
+  {% comment %} `sitemap: false` keeps a page out of both the sitemap and search results. {% endcomment %}
+  {% if page.sitemap == false %}
+    <meta name="robots" content="noindex, follow">
+  {% else %}
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  {% endif %}
 
   {% if site['mobile-theme-col'] %}
     <meta name="theme-color" content="{{ site.mobile-theme-col }}">
@@ -126,9 +141,10 @@
     <meta property="fb:app_id" content="{{ site.fb_app_id }}">
   {% endif %}
 
-  {% if site.title %}
-    <meta property="og:site_name" content="{{ site.title }}">
+  {% if site['site-name'] %}
+    <meta property="og:site_name" content="{{ site.site-name }}">
   {% endif %}
+  <meta property="og:locale" content="en_US">
 
   {%- capture img -%}
     {%- if page.share-img -%}
@@ -183,6 +199,35 @@
 
   {% if img != '' %}
     <meta name="twitter:image" content="{{ img | absolute_url }}">
+  {% endif %}
+
+  {% assign person_same_as = '' | split: '' %}
+  {% if site['social-network-links'].linkedin %}
+    {% assign profile_url = 'https://linkedin.com/in/' | append: site['social-network-links'].linkedin %}
+    {% assign person_same_as = person_same_as | push: profile_url %}
+  {% endif %}
+  {% if site['social-network-links'].github %}
+    {% assign profile_url = 'https://github.com/' | append: site['social-network-links'].github %}
+    {% assign person_same_as = person_same_as | push: profile_url %}
+  {% endif %}
+  {% if site['social-network-links'].instagram %}
+    {% assign profile_url = 'https://instagram.com/' | append: site['social-network-links'].instagram %}
+    {% assign person_same_as = person_same_as | push: profile_url %}
+  {% endif %}
+  {% capture person %}
+    {"@type": "Person", "name": {{ site.author | jsonify }}, "jobTitle": {{ site.job-title | jsonify }}, "url": {{ '/' | absolute_url | jsonify }}, "image": {{ site.avatar | absolute_url | jsonify }}, "sameAs": {{ person_same_as | jsonify }}}
+  {% endcapture %}
+  {% if page.url == '/' %}
+    <script type="application/ld+json">
+      {"@context": "https://schema.org", "@type": "WebSite", "name": {{ site.site-name | jsonify }}, "alternateName": {{ site.site-alternate-names | jsonify }}, "url": {{ '/' | absolute_url | jsonify }}}
+    </script>
+    <script type="application/ld+json">
+      {"@context": "https://schema.org", {{ person | strip | remove_first: '{' }}
+    </script>
+  {% elsif page.id %}
+    <script type="application/ld+json">
+      {"@context": "https://schema.org", "@type": "BlogPosting", "headline": {{ page.title | strip_html | jsonify }}, "description": {{ description_text | jsonify }}, "datePublished": {{ page.date | date_to_xmlschema | jsonify }}, "url": {{ page.url | absolute_url | jsonify }},{% if img != '' %} "image": {{ img | absolute_url | jsonify }},{% endif %} "author": {{ person | strip }}}
+    </script>
   {% endif %}
 
   {% if page['head-extra'] %}

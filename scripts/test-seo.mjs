@@ -40,14 +40,12 @@ for (let url of sitemapUrls) assert.ok(url.startsWith(`${origin}/`), `sitemap UR
 let pageCount = 0
 for (let file of htmlFiles(siteDirectory)) {
   let html = fs.readFileSync(file, "utf8")
-  // Redirect stubs and embedded fragments carry no page head.
-  if (!html.includes('<meta name="robots"')) continue
-
   let relativePath = path.relative(siteDirectory, file)
   let canonical = attribute(html, /<link rel="canonical" href="([^"]*)"/)
   let robots = attribute(html, /<meta name="robots" content="([^"]*)"/)
 
   pageCount++
+  assert.ok(robots, `${relativePath} has no robots meta tag`)
   assert.ok(canonical?.startsWith(`${origin}/`), `${relativePath} canonical ${canonical} is not on ${origin}`)
   assert.equal(attribute(html, /<meta property="og:url" content="([^"]*)"/), canonical, `${relativePath} og:url`)
 

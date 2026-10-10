@@ -1,10 +1,11 @@
 import assert from "node:assert/strict"
 import fs from "node:fs"
 import path from "node:path"
+import { fileURLToPath } from "node:url"
 
 // Checks a built site's search metadata: every canonical, sitemap, and robots.txt URL is absolute on the configured
 // origin, `noindex` pages stay out of the sitemap, and every indexable page has a description.
-const projectRoot = path.dirname(path.dirname(new URL(import.meta.url).pathname))
+const projectRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const siteDirectory = path.resolve(process.argv[2] ?? path.join(projectRoot, "_site"))
 const origin = fs.readFileSync(path.join(projectRoot, "_config.yml"), "utf8").match(/^url: (\S+)$/m)?.[1]
 

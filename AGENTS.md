@@ -1,19 +1,9 @@
 # Repository Guidance
 
-## Shared Conventions
-
-- Inherit README and Markdown style, GitHub Actions, reusable workflow, pull-request review, workflow failure, commit,
-  and release-management rules from `../shared-automation/AGENTS.md`.
-
 ## Embedded App Hosting
 
-- Treat embedded Svelte app pages as hosts for compiled bundles. Change behavior, routes, and app-scoped styles in the
-  source repository, rebuild and upload the bundle, and keep Jekyll pages as lightweight shells with host-page CSS. Do
-  not patch generated bundle behavior or duplicate route content in Jekyll.
 - `full-width: true` selects the site's full-width Jekyll/Bootstrap layout. Keep embedded tools full-width and scope
   page-local alignment overrides to surrounding page furniture unless the task targets the chart.
-- Frontend Tailwind bundles apply only below each app wrapper. Use page CSS, inline CSS, or global site CSS for Jekyll
-  elements outside that scope.
 
 ## Documentation
 
@@ -34,21 +24,16 @@
 
 ## Search Metadata
 
-- Mirror `../fantasy_playtime`'s search-indexing approach, recorded in its `AGENTS.md` `Feature Overview And SEO`
-  section and its README `Production hosting` section, adapted to Jekyll and GitHub Pages. Treat a gap between the two
-  sites as an inconsistency to fix here, or to raise as a decision when the hosting difference makes it inapplicable,
-  and update README `Search Metadata And Hosting` with each adaptation.
+- Apply the workspace Web Pages rules to Jekyll and GitHub Pages, and record each adaptation in README
+  `Search Metadata And Hosting`. Treat a gap with `../fantasy_playtime`'s search indexing, which follows the same
+  rules, as an inconsistency to fix here, or to raise as a decision when the hosting difference makes it inapplicable.
 - Keep `_config.yml`'s `url` set to the canonical `https://charlieyaris.com` origin so every canonical, `og:url`,
   `og:image`, sitemap, and `robots.txt` URL is absolute, and keep `scripts/test-seo.mjs` passing in the Pages build.
-- Give every indexable page a distinct title and a truthful description of its visible content, and give project
-  subpages titles that name their subpage. Write descriptions in the site owner's first-person voice, never as a
-  third-person "Charlie Yaris is…" summary; page titles already carry the name. Keep contact, error, and
-  duplicate-variant pages, such as Mastermind's individual levels, out of search with `sitemap: false`, which also
-  emits `noindex, follow`.
+- Give project subpages titles that name their subpage. Write descriptions in the site owner's first-person voice,
+  never as a third-person "Charlie Yaris is…" summary, since page titles already carry the name. Keep a page out of
+  search with `sitemap: false`, which also emits `noindex, follow`, as for Mastermind's individual levels.
 - Keep homepage `WebSite` and `Person` structured data and post `BlogPosting` structured data consistent with visible
   content and `_config.yml`.
-- Never add hidden, transparent, off-screen, zero-size, or `sr-only` copy for search engines. Search copy for an
-  embedded app's own content belongs in that app's source repository, per Embedded App Hosting.
 
 ## Content
 
@@ -56,10 +41,9 @@
 
 ## JavaScript And HTML
 
-- Follow the JavaScript- and HTML-relevant formatting, dependency-ownership, lightweight-shell, and single-use guidance
-  from `../svelte-lib/AGENTS.md` for site JavaScript, Node scripts, embedded JavaScript, and HTML/Liquid templates.
-  Repository-local rules override it. Apply Svelte, embedded-app, package-export, or library rules only to comparable
-  code.
+- The workspace JavaScript rules apply to site JavaScript, Node scripts, embedded JavaScript, and HTML/Liquid
+  templates, and `../shared-automation/agents/jekyll-hosting.md` to the shell pages that host embedded bundles.
+  Repository-local rules override them.
 
 ## Animated Thumbnail Assets
 
@@ -89,6 +73,6 @@
 - Keep `assets/css/custom.css` color variables aligned with `_config.yml`, including complete runtime theme definitions
   and their plain-CSS fallbacks.
 
-## Local Workflow Ownership
+## Workspace Rule Files
 
-- Keep the root `Pages` workflow local unless another Jekyll site begins sharing the same build behavior.
+- Before changing a Jekyll-hosted page, route, or bundle prefix, read `../shared-automation/agents/jekyll-hosting.md`.

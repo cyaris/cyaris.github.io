@@ -82,7 +82,3 @@
   rules so removing `display: none` later yields usable tag pills.
 - Keep `assets/css/custom.css` color variables aligned with `_config.yml`, including complete runtime theme definitions
   and their plain-CSS fallbacks.
-
-## Local Workflow Ownership
-
-- Keep the root `Pages` workflow local unless another Jekyll site begins sharing the same build behavior.

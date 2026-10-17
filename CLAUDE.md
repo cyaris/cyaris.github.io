@@ -4,3 +4,4 @@
 @../shared-automation/agents/workflows.md
 @../svelte-lib/agents/javascript.md
 @../svelte-lib/agents/jekyll-hosting.md
+@../svelte-lib/agents/web-pages.md

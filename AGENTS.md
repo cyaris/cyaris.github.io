@@ -2,8 +2,12 @@
 
 ## Shared Conventions
 
-- Inherit README and Markdown style, GitHub Actions, reusable workflow, pull-request review, workflow failure, commit,
-  and release-management rules from `../shared-automation/AGENTS.md`.
+- Inherit README and Markdown style, link verification, GitHub Actions, reusable workflow, release policy, dispatch,
+  pull-request review and merge authorization, workflow failure, commit, and release-management rules from the
+  shared topics in `../shared-automation/agents/`, which `CLAUDE.md` imports:
+  - `documentation.md`
+  - `git-and-pull-requests.md`
+  - `workflows.md`
 
 ## Embedded App Hosting
 
@@ -56,10 +60,9 @@
 
 ## JavaScript And HTML
 
-- Follow the JavaScript- and HTML-relevant formatting, dependency-ownership, lightweight-shell, and single-use guidance
-  from `../svelte-lib/AGENTS.md` for site JavaScript, Node scripts, embedded JavaScript, and HTML/Liquid templates.
-  Repository-local rules override it. Apply Svelte, embedded-app, package-export, or library rules only to comparable
-  code.
+- Follow `../svelte-lib/agents/javascript.md` for site JavaScript, Node scripts, embedded JavaScript, and HTML/Liquid
+  templates, and `../svelte-lib/agents/jekyll-hosting.md` for the shell pages that host embedded bundles. `CLAUDE.md`
+  imports both. Repository-local rules override them.
 
 ## Animated Thumbnail Assets
 

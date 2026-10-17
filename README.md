@@ -121,6 +121,10 @@ already-rendered bundle content.
 The reveal delay comes from the shared `loading_reveal_delay_ms` `_config.yml` parameter, which defaults to `200`
 milliseconds.
 
+`scripts/enable-s3-public-read.sh` sets the `cyaris.github.io` bucket's Block Public Access configuration so a bucket
+policy can grant public read access while public ACLs stay blocked, then prints the resulting configuration. It needs
+AWS credentials that can change the bucket's public access settings.
+
 `scripts/generate-s3-asset-versions.mjs` discovers literal `{% include s3_asset.html %}` calls in the Jekyll source,
 resolves the exact S3 object key that each include serves, and writes current version data before Jekyll builds. The
 generated data treats S3 as the source of truth and never queries upstream app repositories. All current include paths
